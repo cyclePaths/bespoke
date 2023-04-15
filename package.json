@@ -22,6 +22,7 @@
   "author": "Cycle-Paths",
   "license": "ISC",
   "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
     "@types/express-session": "^1.17.7",
     "@types/passport": "^1.0.12",
     "@types/webpack-dev-server": "^4.7.2",
@@ -32,6 +33,7 @@
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
     "prisma": "^4.12.0",
+    "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
     "webpack": "^5.79.0",
     "webpack-cli": "^5.0.1",
