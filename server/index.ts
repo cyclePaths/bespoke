@@ -13,18 +13,14 @@ const PORT = 8080;
 
 // Middleware
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(CLIENT_PATH));
-
 app.use(session({ secret: SESSION_SECRET , resave: false, saveUninitialized: false }));
-
 app.use(passport.initialize());
-
 app.use(passport.session());
 
-//Listening
 
+
+//Listening
 app.listen(PORT, () => console.log(`App now listening for requests at: http://localhost:${PORT}`));
 
