@@ -44,9 +44,7 @@
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  },
-  "include": ["src/client/*", "types"],
-  "exclude": ["node_modules", "dist"]
+  }
 }
 
 // /* <--DEFAULT `TSC --INIT` tsconfig.json GENERATION --> */
