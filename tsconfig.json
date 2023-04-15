@@ -40,8 +40,8 @@
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/client/*", "types"],
-  "exclude": ["node_modules", "dist"]
+  // "include": ["src/client/*", "types"],
+  // "exclude": ["node_modules", "dist"]
   }
 
 
