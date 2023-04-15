@@ -1,48 +1,51 @@
 {
   "compilerOptions": {
-  /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* Visit https://aka.ms/tsconfig to read more about this file */
 
-  /* Projects */
-  /* Empty */
+    /* Projects */
+    /* Empty */
 
-  /* Language and Environment */
-  "target": "es6",                                     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-  "lib": ["es5", "es6", "DOM.Iterable", "DOM"],        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
-  "jsx": "preserve",                                   /* Specify what JSX code is generated. <-- MAYBE use "react" instead of "preserve" --> */
+    /* Language and Environment */
+    "target": "es6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": [
+      "es5",
+      "es6",
+      "DOM.Iterable",
+      "DOM"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+    "jsx": "preserve" /* Specify what JSX code is generated. <-- MAYBE use "react" instead of "preserve" --> */,
 
-  /* Modules */
-  "module": "commonjs",                                /* Specify what module code is generated. */ // <-- USED TO BE "ES6" -->
-  "moduleResolution": "node",                          /* Specify how TypeScript looks up a file from a given module specifier. */
-  "resolveJsonModule": true,                           /* Enable importing .json files. */
+    /* Modules */
+    "module": "commonjs" /* Specify what module code is generated. */, // <-- USED TO BE "ES6" -->
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "resolveJsonModule": true /* Enable importing .json files. */,
 
-  /* JavaScript Support */
-  /* Empty */
+    /* JavaScript Support */
+    /* Empty */
 
-  /* Emit */
-  "sourceMap": true,                                   /* Create source map files for emitted JavaScript files. */
-  "outDir": "./dist/",                                 /* Specify an output folder for all emitted files. --> "dist" <-- ? */
-  "declaration": true,                                 /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
-  "noEmit": true,                                      /* Disable emitting files from a compilation. */ // <-- SWITCH FOR emitDeclarationOnly: true -->
+    /* Emit */
+    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
+    "outDir": "./dist/" /* Specify an output folder for all emitted files. --> "dist" <-- ? */,
+    "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
+    "noEmit": true /* Disable emitting files from a compilation. */, // <-- SWITCH FOR emitDeclarationOnly: true -->
 
-  /* Interop Constraints */
-  "isolatedModules": true,                             /* Ensure that each file can be safely transpiled without relying on other imports. */
-  "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-  "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-  "allowSyntheticDefaultImports": true,                /* Allow 'import x from y' when a module doesn't have a default export. */
+    /* Interop Constraints */
+    "isolatedModules": true /* Ensure that each file can be safely transpiled without relying on other imports. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
 
-  /* Type Checking */
-  "strict": true,                                      /* Enable all strict type-checking options. */
-  "noImplicitAny": false,                              /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-  "strictFunctionTypes": true,                         /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
-  "alwaysStrict": true,                                /* Ensure 'use strict' is always emitted. */
-  "noUnusedLocals": false,                              /* Enable error reporting when local variables aren't read. */
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
+    "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
+    "noUnusedLocals": false /* Enable error reporting when local variables aren't read. */,
 
-  /* Completeness */
-  "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-},
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  }
 }
-
-
 
 // /* <--DEFAULT `TSC --INIT` tsconfig.json GENERATION --> */
 // {
