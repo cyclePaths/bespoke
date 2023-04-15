@@ -10,8 +10,9 @@
     "dev": "npm start && npm run build",
     "prod": "concurrently -c 'bgYellow.bold,bgGreen.bold' 'npm run start' 'npm run webpack'",
     "deploy": "git pull origin main && npm install && npm run prod",
-    "lint": "eslint . --ext .ts",
-    "lint-and-fix": "eslint . --ext .ts --fix"
+    "lint": "eslint --ignore-path .eslintignore --ext .ts,.tsx .",
+    "lint-and-fix": "eslint --ignore-path .eslintignore --ext .ts,.tsx . --fix",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\""
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
     "@mui/styled-engine-sc": "^5.12.0",
     "@types/react": "^18.0.35",
     "axios": "^1.3.5",
+    "concurrently": "^8.0.1",
     "cookie-parser": "^1.4.6",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
