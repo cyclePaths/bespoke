@@ -2,7 +2,7 @@
 
 import 'dotenv/config';
 
-const { SESSION_SECRET } = process.env;
+const SESSION_SECRET = process.env.SESSION_SECRET || '';
 
 // module.exports = {
 //   SESSION_SECRET
