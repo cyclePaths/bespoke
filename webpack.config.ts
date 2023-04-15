@@ -6,7 +6,7 @@ const config: Configuration = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)?$/,
+        test: /\.(ts|js|tsx)?$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",

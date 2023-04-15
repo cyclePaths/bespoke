@@ -1,14 +1,14 @@
 import React from 'react'
 
 const App = () => {
-  return (`
+  return (
     <div>
       Hello World!
     </div>
-  `)
+  )
 }
 
-export default App
+export default App;
 
 
 
