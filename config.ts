@@ -1,5 +1,4 @@
-require ('dotenv').config();
+import 'dotenv/config';
 
-const { SESSION_SECRET: string } = process.env;
+export const SESSION_SECRET = process.env.SESSION_SECRET || '';
 
-export default SESSION_SECRET;
