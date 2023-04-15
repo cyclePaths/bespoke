@@ -2,14 +2,12 @@
   "name": "bespoke",
   "version": "1.0.0",
   "description": "",
-  "main": "./webpack.config.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.ts",
-    "const": "nodemon server/index.ts",
-    "build": "webpack --watch --mode development ./webpack.config.ts",
-    "webpack": "./webpack.config.ts --mode production",
-    "dev": "npm start npm run build",
+    "build": "tsc && webpack --watch --mode development",
+    "dev": "npm start && npm run build",
     "prod": "concurrently -c 'bgYellow.bold,bgGreen.bold' 'npm run start' 'npm run webpack'",
     "deploy": "git pull origin main && npm install && npm run prod"
   },
