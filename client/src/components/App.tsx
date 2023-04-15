@@ -1,7 +1,12 @@
 import React from 'react';
+import Forecast from './Forecast';
 
 const App = () => {
-  return <div>Hello World!</div>;
+  return (
+    <div>
+      <Forecast></Forecast>
+    </div>
+  );
 };
 
 export default App;

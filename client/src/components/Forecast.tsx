@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const Forecast = () => {
-  return <div></div>;
+  return (
+    <div>
+      <div>Weather</div>
+    </div>
+  );
 };
 
 export default Forecast;
