@@ -5,11 +5,11 @@
   "main": "./webpack.config.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/index.ts",
-    "start:dev": "nodemon server/index.ts",
+    "start": "nodemon server/index.ts",
+    "const": "nodemon server/index.ts",
     "build": "webpack --watch --mode development ./webpack.config.ts",
     "webpack": "./webpack.config.ts --mode production",
-    "dev": "concurrently -c 'bgYellow.bold,bgGreen.bold' 'npm run start:dev' 'npm run build'",
+    "dev": "npm start npm run build",
     "prod": "concurrently -c 'bgYellow.bold,bgGreen.bold' 'npm run start' 'npm run webpack'",
     "deploy": "git pull origin main && npm install && npm run prod"
   },
@@ -21,14 +21,14 @@
   "author": "Cycle-Paths",
   "license": "ISC",
   "devDependencies": {
+    "@types/express-session": "^1.17.7",
+    "@types/passport": "^1.0.12",
     "@types/webpack-dev-server": "^4.7.2",
     "babel-loader": "^9.1.2",
-
     "eslint": "^8.36.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
-
     "nodemon": "^2.0.22",
     "prisma": "^4.12.0",
     "ts-node": "^10.9.1",
