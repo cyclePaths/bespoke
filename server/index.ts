@@ -4,6 +4,7 @@ import passport from 'passport';
 import path from 'path';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
+import Routes from './routes/mapped-routes';
 
 const CLIENT_PATH = path.resolve(__dirname, '../client/dist');
 
@@ -20,6 +21,12 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+// app.use('/routes', Routes);
+
+// Render All Pages
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('client', 'dist', 'index.html'));
+});
 
 //Listening
 app.listen(PORT, () =>

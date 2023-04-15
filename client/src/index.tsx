@@ -13,7 +13,7 @@ root.render(
   <HashRouter>
     <Routes>
       <Route path='/' element={<App />}>
-        <Route path='/routes' element={<RouteM />} />
+        <Route path='routes' element={<RouteM />} />
       </Route>
     </Routes>
   </HashRouter>
