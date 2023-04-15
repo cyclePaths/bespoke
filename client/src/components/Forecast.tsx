@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Forecast = () => {
-  return (
-    <div>
+  return <div></div>;
+};
 
-    </div>
-  )
-}
-
-export default Forecast
+export default Forecast;
