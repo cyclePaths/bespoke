@@ -14,6 +14,10 @@ function Profile() {
         console.log('Could not GET user', err);
       })
   }, [])
+
+  return (
+    <div>Hello from Profile</div>
+  )
 }
 
 
