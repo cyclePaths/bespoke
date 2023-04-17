@@ -1,6 +1,6 @@
 
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -31,8 +31,8 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to='/Brendan'>
-            Brendan
+          <Link to='/bulletinBoard'>
+            bulletinBoard
           </Link>
         </li>
         <li>
@@ -42,6 +42,7 @@ const Navbar = () => {
         </li>
       </ul>
     </div>
+    <Outlet/>
    </nav>
   )
 
