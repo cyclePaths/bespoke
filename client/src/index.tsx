@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import ReactDom from 'react-dom';
-import { HashRouter as Router } from 'react-router-dom';
-import App from './components/App';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
+//element imports:
+import App from './components/App';
+import Navbar from './components/Navbar/Navbar';
+import BulletinBoard from './components/BulletinBoard/BulletinBoard';
+import Weather from './components/Weather/Weather';
+import RouteM from './components/Routes/RouteM';
 
 const root: any = createRoot(document.getElementById('app'));
 // export const UserContext = React.createContext();
 //below here, the HTML should eventually be wrapped in <UserContextProvider> tags
 //our individual components will be rendered w/ individual <Route> tags
 root.render(
-  <Router>
-    <App />
-  </Router>
+  <HashRouter>
+    <Routes>
+      <Route path='/' element={<App />}>
+        <Route path='bulletinBoard' element={<BulletinBoard />} />
+        <Route path='forecast' element={<Weather />} />
+        <Route path='routes' element={<RouteM />} />
+      </Route>
+    </Routes>
+  </HashRouter>
 );
