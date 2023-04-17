@@ -20,17 +20,16 @@ const root: any = createRoot(document.getElementById('app'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={<App/>}>
-      <Route path='bulletinBoard' element={<BulletinBoard/>}/>
-      <Route path='forecast' element={<Weather/>}/>
+      <Route path='/' element={<App />}>
+        <Route path='bulletinBoard' element={<BulletinBoard />} />
+        <Route path='weather' element={<Weather />} />
 
-      {/*<Route path='/home' element={<Home/>} />
+        {/*<Route path='/home' element={<Home/>} />
       <Route path='/Andrew' element={<Andrew/>} />
       <Route path='/Ernest' element={<Ernest/>} />
       <Route path='/Brendan' element={<Brendan/>} />
       <Route path='/Jordan' element={<Jordan/>} /> */}
-
-    </Route>
+      </Route>
     </Routes>
   </BrowserRouter>
 );
