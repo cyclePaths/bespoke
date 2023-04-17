@@ -6,6 +6,8 @@ import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
+import CreateReport from './components/Reports/CreateReport';
+
 
 // import Home from './home';
 // import Andrew from './Andrew';
@@ -23,6 +25,7 @@ root.render(
       <Route path='/' element={<App/>}>
       <Route path='bulletinBoard' element={<BulletinBoard/>}/>
       <Route path='forecast' element={<Weather/>}/>
+      <Route path='createReport' element={<CreateReport/>}/>
 
       {/*<Route path='/home' element={<Home/>} />
       <Route path='/Andrew' element={<Andrew/>} />
