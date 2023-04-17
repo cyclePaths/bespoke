@@ -1,11 +1,11 @@
 import React from 'react';
 
-const BulletinBoard = () => {
+const BoardPost = () => {
   return (
     <div>
-      <div>BulletinBoard</div>
+      <div>BoardPost</div>
     </div>
   );
 };
 
-export default BulletinBoard;
+export default BoardPost;

@@ -16,12 +16,11 @@ root.render(
   <HashRouter>
     <Routes>
       <Route path='/' element={<App/>}>
-      <Route path='/' element={<Navbar/>}>
       <Route path='bulletinBoard' element={<BulletinBoard/>}/>
       <Route path='forecast' element={<Weather/>}/>
 
 
-      </Route>
+
       </Route>
     </Routes>
   </HashRouter>

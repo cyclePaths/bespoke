@@ -1,13 +1,12 @@
 import React from 'react';
-//import { Switch, Route } from 'react-router-dom'
-import Forecast from './Weather/Forecast';
+import { Link } from 'react-router-dom'
+import Navbar from './Navbar/Navbar';
 
+//We will eventually use Link to allow us to create clickable routing
 const App = () => {
   return (
     <div>
-
-        <Forecast></Forecast>
-
+      <Navbar/>
     </div>
   )
 };
