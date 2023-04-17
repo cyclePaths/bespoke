@@ -10,7 +10,7 @@ const Navbar = () => {
     <nav>
       <div>NavbarNavbarNavbar</div>
     <Link to='/something'>
-     {/* Logo image link here */}
+     Logo image link here
     </Link>
 
     <div id="navbar">
@@ -36,8 +36,8 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to='/Jordan'>
-            Jordan
+          <Link to='/profile'>
+            Profile
           </Link>
         </li>
       </ul>

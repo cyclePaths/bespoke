@@ -12,7 +12,7 @@ import Weather from './components/Weather/Weather';
 // import Andrew from './Andrew';
 // import Ernest from './Ernest';
 // import Brendan from './Brendan';
-// import Jordan from './Jordan';
+import Profile from './components/Profile/Profile';
 
 const root: any = createRoot(document.getElementById('app'));
 // export const UserContext = React.createContext();
@@ -24,12 +24,13 @@ root.render(
       <Route path='/' element={<App/>}/>
       <Route path='bulletinBoard' element={<BulletinBoard/>}/>
       <Route path='forecast' element={<Weather/>}/>
+      <Route path='profile' element={<Profile/>} />
 
       {/*<Route path='/home' element={<Home/>} />
       <Route path='/Andrew' element={<Andrew/>} />
       <Route path='/Ernest' element={<Ernest/>} />
       <Route path='/Brendan' element={<Brendan/>} />
-      <Route path='/Jordan' element={<Jordan/>} /> */}
+      */}
 
 
     </Routes>
