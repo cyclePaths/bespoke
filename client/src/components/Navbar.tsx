@@ -1,6 +1,7 @@
 
 import React, { useState, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import CreateReport from './Reports/CreateReport';
 
 
 const Navbar = () => {
@@ -26,8 +27,8 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to='/Ernest'>
-            Ernest
+          <Link to='/createReport'>
+            Create Report
           </Link>
         </li>
         <li>
