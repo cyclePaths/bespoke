@@ -9,6 +9,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
+import Stopwatch from './components/Stopwatch';
 
 const root: any = createRoot(document.getElementById('app'));
 // export const UserContext = React.createContext();
@@ -23,6 +24,7 @@ root.render(
       <Route path='forecast' element={<Weather/>}/>
       <Route path='profile' element={<Profile/>} />
       <Route path='createReport' element={<CreateReport/>} />
+      <Route path='stopwatch' element={<Stopwatch/>} />
 
     </Route>
     </Routes>
