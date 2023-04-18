@@ -24,9 +24,9 @@ app.use(passport.session());
 // app.use('/routes', Routes);
 
 // Render All Pages
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve('client', 'dist', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('client', 'dist', 'index.html'));
+});
 
 //Listening
 app.listen(PORT, () =>
