@@ -8,13 +8,16 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 
+/*
+Instructions for react places autocomplete came from https://www.npmjs.com/package/react-places-autocomplete. I've refactored the code example from class component to hooks, and split between Profile.tsx and Addresses.tsx
+*/
 
-
-
+//bringing over props from Profile.tsx
 interface AddressesProps {
   address: Address;
   setAddress: React.Dispatch<React.SetStateAction<Address>>;
 }
+//bringing over props from Profile.tsx
 interface AddressesProps {
   selectedAddress: SelectedAddress;
   setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;
@@ -22,21 +25,14 @@ interface AddressesProps {
 
 function Addresses(props: AddressesProps) {
   const { address, setAddress, selectedAddress, setSelectedAddress } = props;
-  console.log(address)
 
-  // const clearFields = () => {
-  //   const input = document.getElementById('address-input');
-  //   if (input instanceof HTMLInputElement) {
-  //     input.value = placeholder;
-  //   }
-
-  // };
-
+  //setting state on change
   const handleChange = useCallback(address => {
     setAddress(address);
 
   }, []);
 
+    //setting state on select of address. This also clears the input box and removes focus
   const handleSelect = useCallback(address => {
     geocodeByAddress(address)
       .then((results) => {getLatLng(results[0])})
@@ -51,17 +47,6 @@ function Addresses(props: AddressesProps) {
       .catch((err) => (console.log('Error', err)));
   }, []);
 
-
-
-  // const saveAddress = () => {
-
-    // address.name = '';
-    // address.streetNumber = 0;
-    // address.streetName = '';
-    // address.city = '';
-    // address.zipCode = 0;
-
-  // }
 
   return (
 <div>
@@ -106,30 +91,6 @@ function Addresses(props: AddressesProps) {
     <div>{selectedAddress}</div>
     </div>
   );
-
-  // return(
-  //   <div>
-  //     <div>Hello from Addresses</div>
-
-      {/* <div>
-        <form>
-          <label>Location Nickname</label><br></br>
-          <input></input><br></br>
-          <label>Street Number</label><br></br>
-          <input></input><br></br>
-          <label>Street Name</label><br></br>
-          <input></input><br></br>
-          <label>City</label><br></br>
-          <input></input><br></br>
-          <label>Zip</label><br></br>
-          <input></input><br></br>
-          <button type='submit'>Save Address</button>
-        </form>
-      </div> */}
-
-    // </div>
-
-  // )
 }
 
 

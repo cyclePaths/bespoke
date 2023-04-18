@@ -2,35 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Addresses from './Addresses';
 
-// export type Address = {
-//   name: string;
-//   streetNumber: number;
-//   streetName:string;
-//   city: String;
-//   zipCode: number;
-// }
 
-// export type Address = {
-// address: '';
-// }
-
+//Setting state types
 export type Address = string;
 export type SelectedAddress = string;
 
 export default function Profile() {
 
-// const [address, setAddress] = useState<Address>({
-//   name: '',
-//   streetNumber: 0,
-//   streetName: '',
-//   city: '',
-//   zipCode: 0
-// })
 
+//setting state with hooks
 const [address, setAddress] = useState('');
 const [selectedAddress, setSelectedAddress] = useState('');
-
-
 
 
   useEffect(() => {
@@ -45,9 +27,6 @@ const [selectedAddress, setSelectedAddress] = useState('');
   }, []);
 
 
-  // const saveAddress = () => {
-
-  // }
 
   return (
     <div>
@@ -59,4 +38,4 @@ const [selectedAddress, setSelectedAddress] = useState('');
 
 }
 
-// export default Profile;
+
