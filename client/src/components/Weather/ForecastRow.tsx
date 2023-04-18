@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Forecast from './Forecast';
 import axios from 'axios';
+import { RootProps } from '../../Root';
 
 export interface CurrentWeather {
   temperature: number;
@@ -38,7 +39,7 @@ export interface Hourly {
   isDay?: Boolean;
 }
 
-export interface ForecastProps {
+export interface ForecastProps extends RootProps {
   currentWeather: CurrentWeather;
   measurementUnits: MeasurementUnits;
   hourlyForecasts: Hourly[];
@@ -47,7 +48,14 @@ export interface ForecastProps {
   setHourlyForecasts: (unit: Hourly[]) => void;
 }
 
-const ForecastRow = () => {
+const ForecastRow = ({
+  windSpeedMeasurementUnit,
+  temperatureMeasurementUnit,
+  precipitationMeasurementUnit,
+  setWindSpeedMeasurementUnit,
+  setTemperatureMeasurementUnit,
+  setPrecipitationMeasurementUnit,
+}: RootProps) => {
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather>({
     temperature: 0,
     windspeed: 0,
@@ -95,9 +103,9 @@ const ForecastRow = () => {
     99: 'Thunderstorm with Heavy Hail',
   };
 
-  const precipitationUnit = 'inch';
-  const windSpeedUnit = 'mph';
-  const temperatureUnit = 'fahrenheit';
+  const precipitationUnit = precipitationMeasurementUnit;
+  const windSpeedUnit = windSpeedMeasurementUnit;
+  const temperatureUnit = temperatureMeasurementUnit;
   const latitude = 30.0;
   const longitude = -90.17;
   const numDaysToForecast = 1;
@@ -596,19 +604,32 @@ const ForecastRow = () => {
       );
   };
 
-  const forecastPropsObj: ForecastProps = {
-    currentWeather: currentWeather,
-    measurementUnits: measurementUnits,
-    hourlyForecasts: hourlyForecasts,
-    setCurrentWeather: setCurrentWeather,
-    setMeasurementUnits: setMeasurementUnits,
-    setHourlyForecasts: setHourlyForecasts,
-  };
+  // const forecastPropsObj: ForecastProps = {
+  //   currentWeather: currentWeather,
+  //   measurementUnits: measurementUnits,
+  //   hourlyForecasts: hourlyForecasts,
+  //   setCurrentWeather: setCurrentWeather,
+  //   setMeasurementUnits: setMeasurementUnits,
+  //   setHourlyForecasts: setHourlyForecasts,
+  // };
 
   return (
     <div>
       <button onClick={getForecasts}>TEST</button>
-      <Forecast forecastPropsObj={forecastPropsObj}></Forecast>
+      <Forecast
+        currentWeather={currentWeather}
+        measurementUnits={measurementUnits}
+        hourlyForecasts={hourlyForecasts}
+        setCurrentWeather={setCurrentWeather}
+        setMeasurementUnits={setMeasurementUnits}
+        setHourlyForecasts={setHourlyForecasts}
+        windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+        temperatureMeasurementUnit={temperatureMeasurementUnit}
+        precipitationMeasurementUnit={precipitationMeasurementUnit}
+        setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
+        setTemperatureMeasurementUnit={setTemperatureMeasurementUnit}
+        setPrecipitationMeasurementUnit={setPrecipitationMeasurementUnit}
+      ></Forecast>
     </div>
   );
 };
