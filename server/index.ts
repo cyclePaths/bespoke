@@ -4,7 +4,7 @@ import session from 'express-session';
 import passport from 'passport';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
-import Routes from './routes/mapped-routes';
+import BikeRoutes from './routes/mapped-routes';
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -71,7 +71,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 8080;
 
-// app.use('/routes', Routes);
+app.use('/routes', BikeRoutes);
 
 // Render All Pages
 app.get('*', (req, res) => {

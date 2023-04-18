@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import axios from 'axios';
 
-const Routes = Router();
+const BikeRoutes = Router();
 
 // Routes.get('/', (req, res) => {
 //   res.render('routes');
 // });
 
-export default Routes;
+export default BikeRoutes;
