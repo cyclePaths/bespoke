@@ -23,7 +23,6 @@ root.render(
       <Route path='forecast' element={<Weather/>}/>
       <Route path='profile' element={<Profile/>} />
       <Route path='createReport' element={<CreateReport/>} />
-
     </Route>
     </Routes>
   </BrowserRouter>
