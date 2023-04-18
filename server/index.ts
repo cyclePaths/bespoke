@@ -5,6 +5,7 @@ import path from 'path';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import Routes from './routes/mapped-routes';
+import { WeatherRoute } from './routes/weather-routes';
 
 
 const CLIENT_PATH = path.resolve(__dirname, '../client/dist');
@@ -23,6 +24,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/weather', WeatherRoute);
 // app.use('/routes', Routes);
 
 // Render All Pages
