@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  CurrentWeather,
-  MeasurementUnits,
-  Hourly,
-  ForecastProps,
-} from './ForecastRow';
+import { ForecastProps } from './ForecastRow';
 
 export interface PropsInterface {
   forecastPropsObj: ForecastProps;
@@ -17,6 +12,12 @@ const Forecast = ({
   setCurrentWeather,
   setMeasurementUnits,
   setHourlyForecasts,
+  windSpeedMeasurementUnit,
+  temperatureMeasurementUnit,
+  precipitationMeasurementUnit,
+  setWindSpeedMeasurementUnit,
+  setTemperatureMeasurementUnit,
+  setPrecipitationMeasurementUnit,
 }: ForecastProps) => {
   const clickTest = () => {
     console.log(currentWeather);
