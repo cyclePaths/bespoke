@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   GoogleMap,
   Marker,
@@ -14,6 +14,11 @@ const options = {
 };
 
 const Map: React.FC = () => {
+  //Create some state components to render the locations and the routes list
+  const [location, setLocation] = useState();
+  const [routes, setRoutes] = useState();
+  const [markers, setMarkers] = useState<any[]>([]);
+
   // Rendering for the map //
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -29,6 +34,7 @@ const Map: React.FC = () => {
   const onUnMount = (): void => {
     mapRef.current = null;
   };
+  // End of Map Rendering //
 
   if (!isLoaded) return <div>Map is loading</div>;
   return (
@@ -40,7 +46,21 @@ const Map: React.FC = () => {
         zoom={12}
         onLoad={onLoad}
         onUnmount={onUnMount}
-      />
+        onClick={(event) =>
+          setMarkers((current) => [
+            ...current,
+            {
+              lat: event.latLng!.lat(),
+              lng: event.latLng!.lng(),
+              time: new Date(),
+            },
+          ])
+        }
+      >
+        {/* {markers.map((marker) => (
+          <Marker key={marker.time.toISOString} />
+        ))} */}
+      </GoogleMap>
     </div>
   );
 };

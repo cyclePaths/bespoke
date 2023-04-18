@@ -1,26 +1,76 @@
+import path from 'path';
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
-import path from 'path';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import Routes from './routes/mapped-routes';
-
-const CLIENT_PATH = path.resolve(__dirname, '../client/dist');
+//Authentication Imports
+import '../auth';
+const isLoggedIn = (req, res, next) => {
+  req.user ? next() : res.sendStatus(401);
+};
+//
 
 const app = express();
 
-const PORT = 8080;
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(CLIENT_PATH));
+//  Authentication Middleware
 app.use(
   session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false })
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+//  Authentication Routes
+// 1. Sign-In Splash
+app.get('/', (req, res) => {
+  res.send('<a href="/auth/google">Sign in with Google</div>');
+});
+
+// 2. Google endpoint
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+// 3. Callback endpoint
+app.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/protected',
+    failureRedirect: '/auth/failure',
+  })
+);
+
+// 4. Login Failure Route:
+app.get('/auth/failure', (req, res) => {
+  res.send('Unable to sign in!');
+});
+
+// 5. Login Success Route:
+app.get('/protected', isLoggedIn, (req, res) => {
+  res.redirect('/home');
+});
+
+// 6. Logout Route:
+app.get('/logout', (req, res) => {
+  req.logout(() => {
+    if (req.session) {
+      req.session.destroy(() => {
+        alert('Now logged out');
+      });
+    }
+  });
+  res.redirect('/');
+});
+
+// Middleware
+const CLIENT_PATH = path.resolve(__dirname, '../client/dist/');
+app.use(express.static(CLIENT_PATH));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+const PORT = 8080;
+
 // app.use('/routes', Routes);
 
 // Render All Pages
