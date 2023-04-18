@@ -596,19 +596,26 @@ const ForecastRow = () => {
       );
   };
 
-  const forecastPropsObj: ForecastProps = {
-    currentWeather: currentWeather,
-    measurementUnits: measurementUnits,
-    hourlyForecasts: hourlyForecasts,
-    setCurrentWeather: setCurrentWeather,
-    setMeasurementUnits: setMeasurementUnits,
-    setHourlyForecasts: setHourlyForecasts,
-  };
+  // const forecastPropsObj: ForecastProps = {
+  //   currentWeather: currentWeather,
+  //   measurementUnits: measurementUnits,
+  //   hourlyForecasts: hourlyForecasts,
+  //   setCurrentWeather: setCurrentWeather,
+  //   setMeasurementUnits: setMeasurementUnits,
+  //   setHourlyForecasts: setHourlyForecasts,
+  // };
 
   return (
     <div>
       <button onClick={getForecasts}>TEST</button>
-      <Forecast forecastPropsObj={forecastPropsObj}></Forecast>
+      <Forecast
+        currentWeather={currentWeather}
+        measurementUnits={measurementUnits}
+        hourlyForecasts={hourlyForecasts}
+        setCurrentWeather={setCurrentWeather}
+        setMeasurementUnits={setMeasurementUnits}
+        setHourlyForecasts={setHourlyForecasts}
+      ></Forecast>
     </div>
   );
 };

@@ -16,7 +16,6 @@ const Root = () => {
             <Route path='/home' element={<Home />} />
             <Route path='bulletinBoard' element={<BulletinBoard />} />
             <Route path='weather' element={<Weather />} />
-
             <Route path='profile' element={<Profile />} />
             <Route path='createReport' element={<CreateReport />} />
           </Route>
