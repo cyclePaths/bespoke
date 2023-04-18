@@ -10,7 +10,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
   return (
     <nav>
       <div>NavbarNavbarNavbar</div>
-      <Link to='/something'>{/* Logo image link here */}</Link>
+      <Link to='/something'>Logo image link here</Link>
 
       <div id='navbar'>
         <ul>
@@ -21,13 +21,13 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             <Link to='/Andrew'>Andrew</Link>
           </li>
           <li>
-            <Link to='/Ernest'>Ernest</Link>
+            <Link to='/createReport'>Create Report</Link>
           </li>
           <li>
             <Link to='/bulletinBoard'>bulletinBoard</Link>
           </li>
           <li>
-            <Link to='/Jordan'>Jordan</Link>
+            <Link to='/profile'>Profile</Link>
           </li>
           <li>
             <Link to='/weather'>Weather</Link>

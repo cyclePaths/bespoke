@@ -7,11 +7,13 @@ import { SESSION_SECRET } from '../config';
 import Routes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 
+
 const CLIENT_PATH = path.resolve(__dirname, '../client/dist');
 
 const app = express();
 
 const PORT = 8080;
+
 
 // Middleware
 app.use(express.json());
