@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactDom from 'react-dom';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 //element imports:
 import App from './components/App';
-import Navbar from './components/Navbar';
 import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
-import RouteM from './components/Routes/RouteM';
+import RouteM from './components/BikeRoutes/RouteM';
 import Navbar from './components/Navbar';
 
 // import Home from './home';
@@ -23,8 +22,7 @@ const root: any = createRoot(document.getElementById('app'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={<App />} />
-      <Route path='home' element=
+      <Route path='/' element={<App />}>
         <Route path='bulletinBoard' element={<BulletinBoard />} />
         <Route path='forecast' element={<Weather />} />
         <Route path='routes' element={<RouteM />} />
@@ -33,6 +31,7 @@ root.render(
       <Route path='/Ernest' element={<Ernest/>} />
       <Route path='/Brendan' element={<Brendan/>} />
       <Route path='/Jordan' element={<Jordan/>} /> */}
+      </Route>
     </Routes>
   </BrowserRouter>
 );

@@ -2,3 +2,4 @@
 node_modules
 client/dist/bundle.js
 client/dist/bundle.js.LICENSE.txt
+client/src/components/Routes/Utils.ts
