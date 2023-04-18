@@ -16,7 +16,7 @@ export interface RootProps {
   setPrecipitationMeasurementUnit: (unit: string) => void;
 }
 
-const Root = (props: RootProps) => {
+const Root = () => {
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
   const [temperatureMeasurementUnit, setTemperatureMeasurementUnit] =

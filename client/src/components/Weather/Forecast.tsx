@@ -1,10 +1,6 @@
 import React from 'react';
 import { ForecastProps } from './ForecastRow';
 
-export interface PropsInterface {
-  forecastPropsObj: ForecastProps;
-}
-
 const Forecast = ({
   currentWeather,
   measurementUnits,
