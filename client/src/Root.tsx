@@ -7,6 +7,8 @@ import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import RouteM from './components/BikeRoutes/RouteM';
+import Stopwatch from './components/Stopwatch';
+
 
 export interface RootProps {
   windSpeedMeasurementUnit: string;
@@ -15,6 +17,12 @@ export interface RootProps {
   setWindSpeedMeasurementUnit: (unit: string) => void;
   setTemperatureMeasurementUnit: (unit: string) => void;
   setPrecipitationMeasurementUnit: (unit: string) => void;
+}
+
+export interface StopwatchTime {
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 const Root = () => {
@@ -50,8 +58,10 @@ const Root = () => {
             />
             <Route path='profile' element={<Profile />} />
             <Route path='createReport' element={<CreateReport />} />
+            <Route path='stopwatch' element={<Stopwatch/>} />
           </Route>
         </Routes>
+        <Stopwatch />
       </BrowserRouter>
     </div>
   );

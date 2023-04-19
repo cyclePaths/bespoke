@@ -47,7 +47,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   }
 }
-
 // /* <--DEFAULT `TSC --INIT` tsconfig.json GENERATION --> */
 // {
 //   "compilerOptions": {
