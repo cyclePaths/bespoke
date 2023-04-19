@@ -72,6 +72,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 8080;
 
+// Routes to be used
 app.use('/routes', BikeRoutes);
 
 // Render All Pages
