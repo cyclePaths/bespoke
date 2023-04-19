@@ -5,6 +5,7 @@ import passport from 'passport';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
+import reportRouter from './routes/report-routes';
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {

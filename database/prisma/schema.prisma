@@ -1,5 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//
+// -> npx prisma generate
 
 generator client {
   provider = "prisma-client-js"
@@ -11,29 +13,17 @@ datasource db {
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  email         String          @unique
-  name          String
-  CreatedPosts  Post[]
-  CreatedRoutes CreatedRoutes[]
+  id    String @id @default(uuid())
+  email String @unique
+  name  String
 }
 
-model Post {
+model Report {
   id        String   @id @default(uuid())
   title     String
   body      String?
+  type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model CreatedRoutes {
-  id          Int      @id @default(autoincrement())
-  coordinates Int[]
-  isPrivate   Boolean  @default(false)
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int
-  createdAt   DateTime @default(now())
 }
