@@ -6,6 +6,10 @@ const config: Configuration = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
         test: /\.(ts|tsx|js)?$/,
         exclude: /node_modules/,
         use: {
