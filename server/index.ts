@@ -5,6 +5,7 @@ import passport from 'passport';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
+import { WeatherRoute } from './routes/weather-routes';
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -70,6 +71,9 @@ app.use(express.static(CLIENT_PATH));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 8080;
+
+//routes from individual files
+app.use('/weather', WeatherRoute);
 
 app.use('/routes', BikeRoutes);
 
