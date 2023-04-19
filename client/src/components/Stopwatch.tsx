@@ -61,7 +61,7 @@ const Stopwatch = () => {
   const { hours, minutes, seconds } = time;
 
   return (
-    <div>
+    <div style={{position: 'fixed', top: 0, right: 0, marginRight: '20px'}}>
       <h1>
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} : {String(seconds).padStart(2, '0')}
       </h1>

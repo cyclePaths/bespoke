@@ -61,6 +61,7 @@ const Root = () => {
             <Route path='stopwatch' element={<Stopwatch/>} />
           </Route>
         </Routes>
+        <Stopwatch />
       </BrowserRouter>
     </div>
   );

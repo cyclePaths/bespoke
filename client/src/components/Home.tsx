@@ -9,7 +9,7 @@ const Home = () => {
   return(
     <div>
     <div>ET Phone Home</div>
-    <button type='button'  onClick={() => navigate('/stopwatch')}>Stopwatch</button>
+    {/* <button type='button'  onClick={() => navigate('/stopwatch')}>Stopwatch</button> */}
     </div>
   )
 }
