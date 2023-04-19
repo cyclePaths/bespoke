@@ -63,7 +63,7 @@ const Map: React.FC = () => {
   if (!isLoaded) return <div>Map is loading</div>;
   return (
     <div>
-      <Search address={address} setAddress={setAddress} />
+      {/* <Search address={address} setAddress={setAddress} /> */}
 
       {/* This is the map rendering on screen */}
       <GoogleMap
