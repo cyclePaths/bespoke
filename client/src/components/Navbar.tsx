@@ -55,7 +55,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
     <Outlet/>
    </nav>
    </div>
-  
+
   );
 };
 
