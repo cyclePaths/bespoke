@@ -1,28 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
-} from 'react-places-autocomplete';
+} from 'use-places-autocomplete';
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+  ComboboxOptionText,
+} from '@reach/combobox';
+import '@reach/combobox/styles.css';
 
-const Search = () => {
+interface Props {
+  address: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Search = ({ address, setAddress }: Props) => {
   const {
     ready,
     value,
-    suggestions: { status, data },
     setValue,
+    suggestions: { status, data },
     clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOption: {
-      location: { lat: () => 29.946949, lng: () => -90.0843514 },
-      radius: 200 * 1000,
-    },
-  });
+  } = usePlacesAutocomplete();
+
   return (
-    <div
-      onSelect={(address) => {
-        console.log(address);
-      }}
-    ></div>
+    <Combobox>
+      <ComboboxInput
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        disabled={!ready}
+        className='combobox-input'
+        placeholder='search an address'
+      />
+      <ComboboxPopover>
+        <ComboboxList>
+          {status === 'OK' &&
+            data.map(({ place_id, description }) => (
+              <ComboboxOption
+                key={place_id}
+                value={description}
+                className='address-options'
+              />
+            ))}
+        </ComboboxList>
+      </ComboboxPopover>
+    </Combobox>
   );
 };
 

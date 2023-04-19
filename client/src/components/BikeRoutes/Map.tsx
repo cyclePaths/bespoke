@@ -5,12 +5,8 @@ import {
   InfoWindow,
   useJsApiLoader,
 } from '@react-google-maps/api';
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from 'react-places-autocomplete';
 import MAP_API_TOKEN from './Utils';
-// import Search from './Search';
+import Search from './Search';
 
 // Sets the map to not be google styled //
 const options = {
@@ -28,6 +24,7 @@ const Map: React.FC = () => {
   // Create some state components to render the locations, routes, markers, and selected markers //
   const [location, setLocation] = useState();
   const [routes, setRoutes] = useState();
+  const [address, setAddress] = useState<string>('');
   const [markers, setMarkers] = useState<any[]>([]);
   const [selected, setSelected] = useState<Coodinates | null>(null);
 
@@ -66,7 +63,7 @@ const Map: React.FC = () => {
   if (!isLoaded) return <div>Map is loading</div>;
   return (
     <div>
-      {/* <Search /> */}
+      <Search address={address} setAddress={setAddress} />
 
       {/* This is the map rendering on screen */}
       <GoogleMap
