@@ -10,6 +10,7 @@ const BulletinBoard = () => {
   //const context = useContext(UserContext);
   const [bulletins, setBulletins] = useState([]);
 
+  // Function to retrieve all bulletins
   const getAllBulletins = () => {
     axios.get('/api/bulletins')
     .then((bulletinData) => {
@@ -20,6 +21,7 @@ const BulletinBoard = () => {
     });
   };
 
+  //Function to display only the bulletin with ID matching the ID of click-selected bulletin
   const handleBulletinSelection = (e) => {
     axios.get('/api/bulletins')
     .then((bulletinData) => {
@@ -31,7 +33,7 @@ const BulletinBoard = () => {
   };
 
 
-
+    //useEffect hook populates with bulletins
     useEffect(() => {
     getAllBulletins();
   })
