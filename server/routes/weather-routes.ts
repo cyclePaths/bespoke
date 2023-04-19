@@ -57,13 +57,6 @@ WeatherRoute.get('/forecast', (req, res) => {
         is_day: data.current_weather.is_day,
         time: data.current_weather.time,
       };
-      const measurementUnits = {
-        temperature: data.hourly_units.temperature,
-        speed: data.hourly_units.windspeed_10m,
-        precipitation: data.hourly_units.precipitation,
-        visibility: data.hourly_units.visibility,
-        depth: data.hourly_units.snow_depth,
-      };
       console.log(
         'Here is a Current Weather object from the data received via the GET request: ',
         {
@@ -134,7 +127,6 @@ WeatherRoute.get('/forecast', (req, res) => {
       }
       const responseObj = {
         currentWeather: currentWeather,
-        measurementUnits: measurementUnits,
         hourly: hourly,
       };
       res.status(200).send(responseObj);
