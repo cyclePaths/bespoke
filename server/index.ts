@@ -5,6 +5,7 @@ import passport from 'passport';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
+import reportRouter from './routes/report-routes';
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -71,6 +72,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 8080;
 
+// Routes to be used
 app.use('/routes', BikeRoutes);
 
 // Render All Pages
