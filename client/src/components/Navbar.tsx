@@ -24,7 +24,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             <Link to='/createReport'>Create Report</Link>
           </li>
           <li>
-            <Link to='/bulletinBoard'>bulletinBoard</Link>
+            <Link to='/bulletinBoard'>Bulletin Board</Link>
           </li>
           <li>
             <Link to='/profile'>Profile</Link>
