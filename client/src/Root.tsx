@@ -6,6 +6,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
+import RouteM from './components/BikeRoutes/RouteM';
 
 export interface RootProps {
   windSpeedMeasurementUnit: string;
@@ -31,6 +32,7 @@ const Root = () => {
           <Route path='/' element={<App />}>
             <Route path='/home' element={<Home />} />
             <Route path='bulletinBoard' element={<BulletinBoard />} />
+            <Route path='routes' element={<RouteM />} />
             <Route
               path='weather'
               element={

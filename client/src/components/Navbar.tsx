@@ -18,7 +18,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             <Link to='/home'>Home</Link>
           </li>
           <li>
-            <Link to='/Andrew'>Andrew</Link>
+            <Link to='/routes'>Routes</Link>
           </li>
           <li>
             <Link to='/createReport'>Create Report</Link>
