@@ -1,11 +1,12 @@
-
 import React, { useState, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import CreateReport from './Reports/CreateReport';
+import { AppProps } from './App';
 
+export interface NavbarProps {
+  appPropsObj: AppProps;
+}
 
-const Navbar = () => {
-
+const Navbar = ({ appPropsObj }: NavbarProps) => {
   return (
 
     <div>
@@ -54,9 +55,8 @@ const Navbar = () => {
     <Outlet/>
    </nav>
    </div>
-  )
-
-}
-
+  
+  );
+};
 
 export default Navbar;

@@ -41,12 +41,12 @@
     "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
     "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
     "noUnusedLocals": false /* Enable error reporting when local variables aren't read. */,
+    "types": ["googlemaps", "node"],
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   }
 }
-
 // /* <--DEFAULT `TSC --INIT` tsconfig.json GENERATION --> */
 // {
 //   "compilerOptions": {
