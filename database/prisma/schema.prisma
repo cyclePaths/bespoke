@@ -8,9 +8,11 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  name  String
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  thumbnail String
+  weight    Int
 }
 
 model Report {
@@ -23,4 +25,12 @@ model Report {
   published    Boolean  @default(false)
   location_lat Float
   location_lng Float
+}
+
+model Bulletin {
+  id        Int      @id @default(autoincrement())
+  topic     String
+  creator   String
+  text      String
+  createdAt DateTime @default(now())
 }

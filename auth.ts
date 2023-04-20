@@ -1,6 +1,9 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from './config';
+import { Prisma, PrismaClient } from '@prisma/client'
+import { userInfo } from 'os';
+const prisma = new PrismaClient();
 
 //This imports the strategy and sets its configuration
 passport.use(
@@ -11,14 +14,29 @@ passport.use(
       callbackURL: 'http://localhost:8080/google/callback',
       passReqToCallback: true,
     },
-    //   Below, I will add the database functionality
-    function (request, accessToken, refreshToken, profile, done) {
-          // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return done(null, profile);
-          // });
-    }
-  )
-);
+    async function (request, accessToken, refreshToken, profile, done) {
+      try {
+        const previousUser = await prisma.user.findUnique({
+          where: { email: profile.email },
+        });
+        if (previousUser) {
+          return done(null, profile);
+        } else {
+          const newUser = await prisma.user.create({
+            data: {
+              email: profile.email,
+              name: profile.displayName
+            },
+          });
+          return done(null, newUser)
+        }
+      } catch (error) {
+        return done(error, null);
+      }
+    }))
+
+
+
 
 passport.serializeUser((user, done) => {
   done(null, user);
