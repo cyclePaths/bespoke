@@ -28,7 +28,6 @@ export interface MeasurementUnits {
 }
 
 export interface Hourly {
-  //May not need the "?"'s
   time?: Date;
   temperature?: number;
   humidity?: number;
@@ -45,13 +44,6 @@ export interface Hourly {
   visibility?: number;
   isDay?: Boolean;
 }
-
-// export interface ForecastProps extends RootProps {
-//   currentWeather?: CurrentWeather;
-//   hourlyForecasts: Hourly[];
-//   setCurrentWeather?: (unit: CurrentWeather) => void;
-//   setHourlyForecasts?: (unit: Hourly[]) => void;
-// }
 
 export interface RootProps {
   windSpeedMeasurementUnit: string;
@@ -115,6 +107,9 @@ const Root = () => {
         )
       );
   };
+  useEffect(() => {
+    getForecasts();
+  }, []);
 
   return (
     <div>

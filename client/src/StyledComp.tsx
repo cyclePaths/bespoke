@@ -17,4 +17,21 @@ const WeatherIcon = styled.img`
   width: 100px;
 `;
 
-export { MapLayout, ForecastRowContainer, WeatherIcon };
+const ForecastBit = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+const ForecastHelperIcon = styled.img`
+  display: flex;
+  height: 50px;
+  width: 50px;
+`;
+
+export {
+  MapLayout,
+  ForecastRowContainer,
+  WeatherIcon,
+  ForecastBit,
+  ForecastHelperIcon,
+};
