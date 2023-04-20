@@ -24,10 +24,10 @@ interface ValueGroup {
   [key: string]: string;
 }
 
-interface ExerciseState {
-  optionGroups: OptionGroup;
-  valueGroups: ValueGroup;
-}
+// interface ExerciseState {
+//   optionGroups: OptionGroup;
+//   valueGroups: ValueGroup;
+// }
 
 const Profile: React.FC = () => {
   //setting state with hooks
