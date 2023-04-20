@@ -1,12 +1,20 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   GoogleMap,
   Marker,
+  DirectionsRenderer,
   InfoWindow,
   useJsApiLoader,
 } from '@react-google-maps/api';
 import MAP_API_TOKEN from './Utils';
-import Search from './Search';
+import Places from './Places';
+import axios from 'axios';
 
 // Sets the map to not be google styled //
 const options = {
@@ -20,13 +28,57 @@ interface Coodinates {
   time: Date;
 }
 
+// Helpers in the component //
+type LatLngLiteral = google.maps.LatLngLiteral;
+type DirectionsResult = google.maps.DirectionsResult;
+type MapOptions = google.maps.MapOptions;
+
 const Map: React.FC = () => {
   // Create some state components to render the locations, routes, markers, and selected markers //
-  const [location, setLocation] = useState();
-  const [routes, setRoutes] = useState();
-  const [address, setAddress] = useState<string>('');
+  const [startingPoint, setStartingPoint] = useState<LatLngLiteral>();
   const [markers, setMarkers] = useState<any[]>([]);
-  const [selected, setSelected] = useState<Coodinates | null>(null);
+  const [selected, setSelected] = useState<LatLngLiteral>();
+  const [directions, setDirections] = useState<DirectionsResult>();
+
+  const center = useMemo<LatLngLiteral>(
+    () => ({ lat: 29.946949, lng: -90.0843514 }),
+    []
+  );
+
+  // This is for creating routes //
+  const fetchDirections = (position: LatLngLiteral) => {
+    if (!startingPoint) {
+      return;
+    }
+    const service = new google.maps.DirectionsService();
+    service.route(
+      {
+        origin: startingPoint,
+        destination: selected!,
+        travelMode: google.maps.TravelMode.BICYCLING,
+      },
+      (result, status) => {
+        if (status === 'OK' && result) {
+          setDirections(result);
+        }
+      }
+    );
+  };
+  // End of created routes //
+
+  // Passed down to places to save routes to the database //
+  const saveRoute = (): void => {
+    if (directions) {
+      axios
+        .post('/bikeRoutes/newRoute', directions)
+        .then(() => {
+          console.log('Route saved to db');
+        })
+        .catch((err) => {
+          console.error('Failed request:', err);
+        });
+    }
+  };
 
   // Rendering for the map //
   const { isLoaded } = useJsApiLoader({
@@ -34,65 +86,88 @@ const Map: React.FC = () => {
     googleMapsApiKey: MAP_API_TOKEN!,
   });
 
-  const mapRef = useRef<google.maps.Map | null>(null);
+  const mapRef = useRef<GoogleMap>();
 
-  const onLoad = (map: google.maps.Map): void => {
-    mapRef.current = map;
-  };
+  const onLoad = useCallback((map): void => (mapRef.current = map), []);
 
-  const onUnMount = (): void => {
-    mapRef.current = null;
-  };
   // End of Map Rendering //
 
   // The click event for the map //
-  const onMapClick = useCallback(
-    (event) =>
+  const onMapClick = useCallback((event) => {
+    setMarkers((current) => [
+      ...current,
+      {
+        lat: event.latLng!.lat(),
+        lng: event.latLng!.lng(),
+        time: new Date(),
+      },
+    ]);
+    setSelected({
+      lat: event.latLng!.lat(),
+      lng: event.latLng!.lng(),
+    });
+  }, []);
+  // End of click event of the map //
+
+  // Set the starting point on the map //
+  useEffect(() => {
+    if (startingPoint) {
       setMarkers((current) => [
         ...current,
         {
-          lat: event.latLng!.lat(),
-          lng: event.latLng!.lng(),
+          lat: startingPoint!.lat,
+          lng: startingPoint!.lng,
           time: new Date(),
         },
-      ]),
-    []
-  );
-  // End of click event of the map //
+      ]);
+    } else {
+      return;
+    }
+  }, [startingPoint]);
 
   if (!isLoaded) return <div>Map is loading</div>;
   return (
-    <div>
-      {/* <Search address={address} setAddress={setAddress} /> */}
+    <div className='container'>
+      {/* This is the address search bar */}
+      <div>
+        <Places
+          setStartingPoint={(position) => {
+            setStartingPoint(position);
+            mapRef.current?.panTo(position);
+          }}
+          saveRoute={saveRoute}
+        />
+      </div>
 
       {/* This is the map rendering on screen */}
       <GoogleMap
         mapContainerStyle={{ height: '250px', width: '395px' }}
         options={options as google.maps.MapOptions}
-        center={{ lat: 29.946949, lng: -90.0843514 }}
-        zoom={12}
+        center={center}
+        zoom={13}
         onLoad={onLoad}
-        onUnmount={onUnMount}
         onClick={onMapClick}
       >
+        {directions && <DirectionsRenderer directions={directions} />}
+
         {/* This is the markers that will be placed on the screen on render */}
         {markers.map((marker) => (
           <Marker
             key={marker.time.toISOString()}
             position={{ lat: marker.lat, lng: marker.lng }}
             onClick={() => {
-              setSelected(marker);
+              fetchDirections(selected!);
             }}
           />
         ))}
 
         {/* This is the info window of a marker on the screen */}
 
-        {selected ? (
+        {/* {selected ? (
           <InfoWindow
             position={{ lat: selected.lat, lng: selected.lng }}
             onCloseClick={() => {
-              setSelected(null);
+              setSelected(undefined);
             }}
           >
             <div>
@@ -100,7 +175,7 @@ const Map: React.FC = () => {
               <p>Here We Are</p>
             </div>
           </InfoWindow>
-        ) : null}
+        ) : null} */}
       </GoogleMap>
     </div>
   );
