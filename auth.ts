@@ -1,9 +1,14 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from './config';
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client';
 import { userInfo } from 'os';
 const prisma = new PrismaClient();
+
+interface CreateUserInput {
+  name: string;
+  email: string;
+}
 
 //This imports the strategy and sets its configuration
 passport.use(
@@ -22,21 +27,22 @@ passport.use(
         if (previousUser) {
           return done(null, profile);
         } else {
+          const user: CreateUserInput = {
+            name: profile.displayName,
+            email: profile.email,
+          };
+
           const newUser = await prisma.user.create({
-            data: {
-              email: profile.email,
-              name: profile.displayName
-            },
+            data: user,
           });
-          return done(null, newUser)
+          return done(null, newUser);
         }
       } catch (error) {
         return done(error, null);
       }
-    }))
-
-
-
+    }
+  )
+);
 
 passport.serializeUser((user, done) => {
   done(null, user);

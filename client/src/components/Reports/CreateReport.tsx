@@ -64,7 +64,7 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setError(error.message);
     }
@@ -76,14 +76,14 @@ const CreateReport = () => {
       interval = setInterval(() => {
         if (!navigator.geolocation) {
           setError('Geolocation is not supported by this browser.');
-          clearInterval(interval);
+          clearInterval(interval!);
           return;
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
             setCurrentLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval);
+            clearInterval(interval!);
             interval = null;
           },
           (error) => setError(error.message)

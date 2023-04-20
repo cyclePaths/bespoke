@@ -8,20 +8,14 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
   name      String
-  thumbnail String
-  weight    Int
+  thumbnail String?
+  weight    Int?
 }
 
 model Report {
-<<<<<<< HEAD
-  id        String   @id @default(uuid())
-  title     String
-  body      String
-  type      String
-=======
   id           Int      @id @default(autoincrement())
   title        String?
   body         String?
@@ -29,8 +23,8 @@ model Report {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   published    Boolean  @default(false)
-  location_lat Float
-  location_lng Float
+  location_lat Float?
+  location_lng Float?
 }
 
 model Bulletin {
@@ -38,10 +32,12 @@ model Bulletin {
   topic     String
   creator   String
   text      String
->>>>>>> 4963185611f1cba065c8783132b64bd3514a18d3
   createdAt DateTime @default(now())
 }
 
 model BikeRoutes {
-  id Int @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
+  routeStart Int
+  routeEnd   Int
+  createdAt  DateTime @default(now())
 }
