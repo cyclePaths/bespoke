@@ -8,7 +8,7 @@ import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
-import BikeRoutes from './components/BikeRoutes/RouteM';
+import RouteM from './components/BikeRoutes/RouteM';
 
 export interface CurrentWeather {
   temperature: number;
@@ -123,7 +123,7 @@ const Root = () => {
           <Route path='/' element={<App />}>
             <Route path='/home' element={<Home />} />
             <Route path='bulletinBoard' element={<BulletinBoard />} />
-            <Route path='bikeRoutes' element={<BikeRoutes />} />
+            <Route path='bikeRoutes' element={<RouteM />} />
             <Route
               path='weather'
               element={

@@ -79,6 +79,7 @@ app.use('/weather', WeatherRoute);
 
 // Routes to be used
 app.use('/routes', BikeRoutes);
+app.use('/reports', reportRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {
