@@ -1,10 +1,18 @@
 import styled from 'styled-components';
 
-const MapLayout = styled.div`
+const InputLayout = styled.input`
   border-color: black;
-  height: 250px;
-  width: 395px;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
-export { MapLayout };
+const DropdownLayout = styled.div`
+  box-shadow: black;
+  margin-bottom: 10px;
+`;
+
+const RouteButton = styled.button`
+  margin-left: 10px;
+`;
+
+export { InputLayout, DropdownLayout, RouteButton };

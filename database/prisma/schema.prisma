@@ -21,9 +21,13 @@ model User {
 model Report {
   id        String   @id @default(uuid())
   title     String
-  body      String?
+  body      String
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
+}
+
+model BikeRoutes {
+  id Int @id @default(autoincrement())
 }

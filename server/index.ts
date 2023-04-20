@@ -73,7 +73,8 @@ app.use(express.json());
 const PORT = 8080;
 
 // Routes to be used
-app.use('/routes', BikeRoutes);
+app.use('/bikeRoutes', BikeRoutes);
+app.use('/createReport', reportRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {
