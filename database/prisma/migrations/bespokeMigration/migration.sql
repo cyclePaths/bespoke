@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
 
@@ -9,7 +9,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Report" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "body" TEXT,
     "type" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "Report" (
 
 -- CreateTable
 CREATE TABLE "Bulletin" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "topic" TEXT NOT NULL,
     "creator" TEXT NOT NULL,
     "text" TEXT NOT NULL,
