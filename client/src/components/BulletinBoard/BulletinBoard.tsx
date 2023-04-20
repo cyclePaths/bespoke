@@ -36,7 +36,7 @@ const BulletinBoard = () => {
     //useEffect hook populates with bulletins
     useEffect(() => {
     getAllBulletins();
-  })
+  }, [])
 
   return (
     <div>

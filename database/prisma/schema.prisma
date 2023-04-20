@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-//
-// -> npx prisma generate
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,19 +8,38 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  name  String
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  thumbnail String
+  weight    Int
 }
 
 model Report {
+<<<<<<< HEAD
   id        String   @id @default(uuid())
   title     String
   body      String
   type      String
+=======
+  id           Int      @id @default(autoincrement())
+  title        String?
+  body         String?
+  type         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  published    Boolean  @default(false)
+  location_lat Float
+  location_lng Float
+}
+
+model Bulletin {
+  id        Int      @id @default(autoincrement())
+  topic     String
+  creator   String
+  text      String
+>>>>>>> 4963185611f1cba065c8783132b64bd3514a18d3
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
 }
 
 model BikeRoutes {

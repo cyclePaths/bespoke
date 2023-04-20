@@ -5,7 +5,9 @@ import passport from 'passport';
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
+import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
+
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -72,9 +74,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 8080;
 
+//routes from individual files
+app.use('/weather', WeatherRoute);
+
 // Routes to be used
+<<<<<<< HEAD
 app.use('/bikeRoutes', BikeRoutes);
 app.use('/createReport', reportRouter);
+=======
+app.use('/routes', BikeRoutes);
+app.use('/reports', reportRouter);
+>>>>>>> 4963185611f1cba065c8783132b64bd3514a18d3
 
 // Render All Pages
 app.get('*', (req, res) => {

@@ -15,4 +15,20 @@ const RouteButton = styled.button`
   margin-left: 10px;
 `;
 
-export { InputLayout, DropdownLayout, RouteButton };
+const ForecastRowContainer = styled.div`
+  display: flex;
+`;
+
+const WeatherIcon = styled.img`
+  display: flex;
+  height: 100px;
+  width: 100px;
+`;
+
+export {
+  InputLayout,
+  DropdownLayout,
+  RouteButton,
+  ForecastRowContainer,
+  WeatherIcon,
+};
