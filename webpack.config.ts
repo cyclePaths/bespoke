@@ -2,9 +2,13 @@ import path from 'path';
 import { Configuration } from 'webpack';
 
 const config: Configuration = {
-  entry: './client/src/index.tsx',
+  entry: ['./client/src/index.tsx', './node_modules/react-scrollable-picker/src/style.less'],
   module: {
     rules: [
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],

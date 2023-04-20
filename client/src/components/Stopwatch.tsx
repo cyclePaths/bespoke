@@ -62,9 +62,9 @@ const Stopwatch = () => {
 
   return (
     <div style={{position: 'fixed', top: 0, right: 0, marginRight: '20px'}}>
-      <h1>
+      <h3>
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} : {String(seconds).padStart(2, '0')}
-      </h1>
+      </h3>
       {!isRunning && <button onClick={startStopwatch}>Start</button>}
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
@@ -74,71 +74,6 @@ const Stopwatch = () => {
 };
 
 export default Stopwatch;
-
-
-
-// function Stopwatch({ stopwatchState, setStopwatchState }) {
-//   const [isRunning, setIsRunning] = useState<boolean>(false);
-//   const intervalRef = useRef<Subscription | null>(null);
-
-//   useEffect(() => {
-//     return () => {
-//       if (intervalRef.current) {
-//         intervalRef.current.unsubscribe();
-//       }
-//     };
-//   }, []);
-
-//   const startStopwatch = () => {
-//     setIsRunning(true);
-//     intervalRef.current = interval(1000).pipe(
-//       scan((acc) => {
-//         const { hours, minutes, seconds } = acc;
-//         return { seconds: seconds + 1, minutes, hours };
-//       }, stopwatchState),
-//       map(({ seconds, minutes, hours }) => {
-//         const totalSeconds = seconds + minutes * 60 + hours * 3600;
-//         const newSeconds = totalSeconds % 60;
-//         const newMinutes = Math.floor(totalSeconds / 60) % 60;
-//         const newHours = Math.floor(totalSeconds / 3600);
-//         return { seconds: newSeconds, minutes: newMinutes, hours: newHours };
-//       }),
-//       takeUntil(stopwatchStop$)
-//     ).subscribe(setStopwatchState);
-//   };
-
-//   const stopStopwatch = () => {
-//     setIsRunning(false);
-//     if (intervalRef.current) {
-//       intervalRef.current.unsubscribe();
-//     }
-//   };
-
-//   const resetStopwatch = () => {
-//     setIsRunning(false);
-//     setStopwatchState({ hours: 0, minutes: 0, seconds: 0 });
-//     if (intervalRef.current) {
-//       intervalRef.current.unsubscribe();
-//     }
-//   };
-
-//   const stopwatchStop$ = new Subject();
-
-//   const { hours, minutes, seconds } = stopwatchState;
-
-//   return (
-//     <div>
-//       <h1>
-//         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} : {String(seconds).padStart(2, '0')}
-//       </h1>
-//       {!isRunning && <button onClick={startStopwatch}>Start</button>}
-//       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
-//       <button onClick={resetStopwatch}>Reset</button>
-//     </div>
-//   );
-// }
-
-// export default Stopwatch;
 
 
 
