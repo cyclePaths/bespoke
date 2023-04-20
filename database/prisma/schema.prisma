@@ -16,19 +16,13 @@ model User {
 }
 
 model Report {
-  id        String   @id
-  title     String
-  body      String?
-  type      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-}
-
-model Bulletin {
-  id        String   @id
-  topic     String
-  creator   String
-  text      String
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  title        String?
+  body         String?
+  type         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  published    Boolean  @default(false)
+  location_lat Float
+  location_lng Float
 }
