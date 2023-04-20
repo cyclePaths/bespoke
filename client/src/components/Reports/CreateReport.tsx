@@ -19,7 +19,7 @@ const CreateReport = () => {
     lat: number;
     lng: number;
   } | null>(null);
-  const [error, setError] = useState<string | undefined>('');
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reportType = (
@@ -71,7 +71,7 @@ const CreateReport = () => {
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {
         if (!navigator.geolocation) {
