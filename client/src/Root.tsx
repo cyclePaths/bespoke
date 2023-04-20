@@ -123,7 +123,7 @@ const Root = () => {
           <Route path='/' element={<App />}>
             <Route path='/home' element={<Home />} />
             <Route path='bulletinBoard' element={<BulletinBoard />} />
-            <Route path='routes' element={<RouteM />} />
+            <Route path='bikeRoutes' element={<RouteM />} />
             <Route
               path='weather'
               element={

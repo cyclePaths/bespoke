@@ -6,8 +6,8 @@ import axios from 'axios';
 const BikeRoutes = Router();
 const prisma = new PrismaClient();
 
-BikeRoutes.post('/newRoute', (req, res): void => {
-  console.log(req);
+BikeRoutes.post('/newRoute', (req, res) => {
+  console.log(req.body.request);
 });
 
 export default BikeRoutes;
