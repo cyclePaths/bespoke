@@ -42,23 +42,18 @@ const Weather = ({
 
   return (
     <div>
-      {forecastRowArrays.forEach((weatherRow) => {
-        <ForecastRow
-          key={weatherRow[0].time}
-          windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-          temperatureMeasurementUnit={temperatureMeasurementUnit}
-          precipitationMeasurementUnit={precipitationMeasurementUnit}
-          hourlyForecasts={hourlyForecasts}
-          getForecasts={getForecasts}
-        />;
+      <button onClick={getForecasts}>TEST</button>
+      {forecastRowArrays.map((weatherRow, i) => {
+        return (
+          <ForecastRow
+            key={i}
+            windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+            temperatureMeasurementUnit={temperatureMeasurementUnit}
+            precipitationMeasurementUnit={precipitationMeasurementUnit}
+            rowData={weatherRow}
+          />
+        );
       })}
-      <ForecastRow
-        windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-        temperatureMeasurementUnit={temperatureMeasurementUnit}
-        precipitationMeasurementUnit={precipitationMeasurementUnit}
-        hourlyForecasts={hourlyForecasts}
-        getForecasts={getForecasts}
-      />
     </div>
   );
 };

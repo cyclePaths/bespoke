@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Forecast from './Forecast';
 import axios from 'axios';
-import { RootProps } from '../../Root';
+import { Hourly } from '../../Root';
 
-
+interface forecastRowProps {
+  windSpeedMeasurementUnit: string;
+  temperatureMeasurementUnit: string;
+  precipitationMeasurementUnit: string;
+  rowData: Hourly[];
+}
 
 const ForecastRow = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
-}: RootProps) => {
-
-
+  rowData,
+}: forecastRowProps) => {
   // const forecastPropsObj: ForecastProps = {
   //   currentWeather: currentWeather,
   //   measurementUnits: measurementUnits,
@@ -23,15 +27,31 @@ const ForecastRow = ({
 
   return (
     <div>
-      <button onClick={getForecasts}>TEST</button>
-      <Forecast
-        currentWeather={currentWeather}
-        measurementUnits={measurementUnits}
-        hourlyForecasts={hourlyForecasts}
-        windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-        temperatureMeasurementUnit={temperatureMeasurementUnit}
-        precipitationMeasurementUnit={precipitationMeasurementUnit}
-      ></Forecast>
+      {rowData.map((forecast, i) => {
+        return (
+          <Forecast
+            key={i}
+            time={forecast.time}
+            temperature={forecast.temperature}
+            humidity={forecast.humidity}
+            apparentTemperature={forecast.apparentTemperature}
+            cloudcover={forecast.cloudcover}
+            windspeed={forecast.windspeed}
+            precipitation={forecast.precipitation}
+            snowfall={forecast.snowfall}
+            precipitationProbability={forecast.precipitationProbability}
+            rain={forecast.rain}
+            showers={forecast.showers}
+            weatherDescription={forecast.weatherDescription}
+            snowDepth={forecast.snowDepth}
+            visibility={forecast.visibility}
+            isDay={forecast.isDay}
+            windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+            temperatureMeasurementUnit={temperatureMeasurementUnit}
+            precipitationMeasurementUnit={precipitationMeasurementUnit}
+          ></Forecast>
+        );
+      })}
     </div>
   );
 };

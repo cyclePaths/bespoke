@@ -1,32 +1,48 @@
 import React from 'react';
-import { ForecastProps } from './ForecastRow';
+import { Hourly } from '../../Root';
+
+interface ForecastProps extends Hourly {
+  windSpeedMeasurementUnit: string;
+  temperatureMeasurementUnit: string;
+  precipitationMeasurementUnit: string;
+}
 
 const Forecast = ({
-  currentWeather,
-  measurementUnits,
-  hourlyForecasts,
-  setCurrentWeather,
-  setMeasurementUnits,
-  setHourlyForecasts,
+  time,
+  temperature,
+  humidity,
+  apparentTemperature,
+  cloudcover,
+  windspeed,
+  precipitation,
+  snowfall,
+  precipitationProbability,
+  rain,
+  showers,
+  weatherDescription,
+  snowDepth,
+  visibility,
+  isDay,
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
-  setWindSpeedMeasurementUnit,
-  setTemperatureMeasurementUnit,
-  setPrecipitationMeasurementUnit,
 }: ForecastProps) => {
-  const clickTest = () => {
-    console.log(currentWeather);
-  };
+  const clickTest = () => {};
   return (
     <div>
       <button onClick={clickTest}>PROPS TEST</button>
       <div>Weather Icon</div>
-      <div>{currentWeather.weatherdescription}</div>
-      <div>Precipitation Chance (if any)</div>
-      <div>Temperature</div>
-      <div>Wind Chill/Heat Index</div>
-      <div>Humidity</div>
+      <div>Weather Description: {weatherDescription}</div>
+      <div>
+        Precipitation Chance:{' '}
+        {precipitationProbability + precipitationMeasurementUnit}
+      </div>
+      <div>Temperature: {temperature + temperatureMeasurementUnit}</div>
+      <div>
+        Feels Like (Apparent Temperature):{' '}
+        {apparentTemperature + temperatureMeasurementUnit}
+      </div>
+      <div>Humidity: {humidity}%</div>
     </div>
   );
 };
