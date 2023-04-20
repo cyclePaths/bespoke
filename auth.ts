@@ -5,6 +5,11 @@ import { Prisma, PrismaClient } from '@prisma/client'
 import { userInfo } from 'os';
 const prisma = new PrismaClient();
 
+interface CreateUser {
+  email: string;
+  name: string;
+}
+
 //This imports the strategy and sets its configuration
 passport.use(
   new GoogleStrategy(
@@ -22,14 +27,15 @@ passport.use(
         if (previousUser) {
           return done(null, profile);
         } else {
+          const newUserData: CreateUser = {
+            email: profile.email,
+            name: profile.displayName
+          };
           const newUser = await prisma.user.create({
-            data: {
-              email: profile.email,
-              name: profile.displayName
-            },
-          });
-          return done(null, newUser)
-        }
+            data: newUserData
+        });
+        return done(null, newUser)
+       }
       } catch (error) {
         return done(error, null);
       }
