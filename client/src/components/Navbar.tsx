@@ -30,8 +30,8 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           </Link>
         </li>
         <li style={{ margin: '0 10px' }}>
-          <Link to='/Andrew'>
-            Andrew
+          <Link to='/bikeRoutes'>
+            Bike Routes
           </Link>
         </li>
         <li style={{ margin: '0 10px' }}>
@@ -41,9 +41,14 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
         </li>
         <li style={{ margin: '0 10px' }}>
           <Link to='/bulletinBoard'>
-            bulletinBoard
+            Bulletin Board
           </Link>
         </li>
+        <li style={{ margin: '0 10px' }}>
+          <Link to='/weather'>
+            Weather
+          </Link>
+          </li>
         <li style={{ margin: '0 10px' }}>
           <Link to='/profile'>
             Profile
