@@ -13,9 +13,9 @@ passport.use(
     },
     //   Below, I will add the database functionality
     function (request, accessToken, refreshToken, profile, done) {
-      //     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+          // User.findOrCreate({ googleId: profile.id }, function (err, user) {
       return done(null, profile);
-      //     });
+          // });
     }
   )
 );
