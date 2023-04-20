@@ -1,6 +1,7 @@
 import React from 'react';
 import { Hourly } from '../../Root';
 import { WeatherIcon } from '../../StyledComp';
+import { weatherIcons } from '../../../assets';
 
 interface ForecastProps extends Hourly {
   windSpeedMeasurementUnit: string;
