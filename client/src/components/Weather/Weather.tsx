@@ -42,7 +42,7 @@ const Weather = ({
 
   return (
     <div>
-      <button onClick={getForecasts}>TEST</button>
+      <button onClick={getForecasts}>Get Forecast Data</button>
       {forecastRowArrays.map((weatherRow, i) => {
         return (
           <ForecastRow

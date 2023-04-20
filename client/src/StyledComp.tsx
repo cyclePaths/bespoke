@@ -7,4 +7,14 @@ const MapLayout = styled.div`
   align-items: center;
 `;
 
-export { MapLayout };
+const ForecastRowContainer = styled.div`
+  display: flex;
+`;
+
+const WeatherIcon = styled.img`
+  display: flex;
+  height: 100px;
+  width: 100px;
+`;
+
+export { MapLayout, ForecastRowContainer, WeatherIcon };

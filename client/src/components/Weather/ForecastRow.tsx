@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Forecast from './Forecast';
 import axios from 'axios';
 import { Hourly } from '../../Root';
+import { ForecastRowContainer } from '../../StyledComp';
 
 interface forecastRowProps {
   windSpeedMeasurementUnit: string;
@@ -26,7 +27,7 @@ const ForecastRow = ({
   // };
 
   return (
-    <div>
+    <ForecastRowContainer>
       {rowData.map((forecast, i) => {
         return (
           <Forecast
@@ -52,7 +53,7 @@ const ForecastRow = ({
           ></Forecast>
         );
       })}
-    </div>
+    </ForecastRowContainer>
   );
 };
 
