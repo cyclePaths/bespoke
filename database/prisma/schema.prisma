@@ -16,12 +16,6 @@ model User {
 }
 
 model Report {
-<<<<<<< HEAD
-  id        String   @id @default(uuid())
-  title     String
-  body      String
-  type      String
-=======
   id           Int      @id @default(autoincrement())
   title        String?
   body         String?
@@ -38,7 +32,6 @@ model Bulletin {
   topic     String
   creator   String
   text      String
->>>>>>> 4963185611f1cba065c8783132b64bd3514a18d3
   createdAt DateTime @default(now())
 }
 
