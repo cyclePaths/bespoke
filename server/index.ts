@@ -8,6 +8,14 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  thumbnail: string;
+  weight: number;
+}
+
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {

@@ -23,8 +23,8 @@ model Report {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   published    Boolean  @default(false)
-  location_lat Float
-  location_lng Float
+  location_lat Float?
+  location_lng Float?
 }
 
 model Bulletin {
