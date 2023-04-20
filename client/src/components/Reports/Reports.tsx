@@ -1,20 +1,41 @@
-import React from 'react';
 
 
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-/*
-Not sure if this will be a page or if reports will be rendered on the bulletin board???
-*/
-// When renders, does get request to get latest reports
-const Reports = () => {
+type Report = {
+  id: number;
+  title: string;
+  body: string;
+  type: string;
+}
+
+const Reports: React.FC = () => {
+
+  const [reports, setReports] = useState<Report[]>([]);
 
 
+  useEffect(() => {
+    const fetchReports = async () => {
+      try{
+        const response = await axios.get('/reports');
+        setReports(response.data);
+      }catch (error){
+        console.error(error);
+      }
+    };
+    fetchReports();
+  }, [])
 
   return (
     <div>
-        A view of reports made, filterable
+      <ul>
+        {reports.map((report) => (
+          <li key={report.id}>
+            <p>{report.title}</p>
+          </li>
+        ))}
+      </ul>
     </div>
-  );
-};
-
-export default Reports;
+  )
+}

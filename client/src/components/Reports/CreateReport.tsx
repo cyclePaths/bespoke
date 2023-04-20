@@ -38,6 +38,7 @@ const CreateReport = () => {
       // clear input fields
       setBody('');
       setType('');
+      
     } catch (error) {
       console.error(error);
     }
