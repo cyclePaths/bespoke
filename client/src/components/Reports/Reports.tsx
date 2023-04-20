@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -8,24 +6,22 @@ type Report = {
   title: string;
   body: string;
   type: string;
-}
+};
 
 const Reports: React.FC = () => {
-
   const [reports, setReports] = useState<Report[]>([]);
-
 
   useEffect(() => {
     const fetchReports = async () => {
-      try{
+      try {
         const response = await axios.get('/reports');
         setReports(response.data);
-      }catch (error){
+      } catch (error) {
         console.error(error);
       }
     };
     fetchReports();
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -37,5 +33,5 @@ const Reports: React.FC = () => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};

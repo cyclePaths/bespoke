@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id    Int   @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   email String @unique
   name  String
 }
 
 model Report {
-  id        Int   @id @default(autoincrement())
-  title     String?
-  body      String
-  type      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
+  id           Int      @id @default(autoincrement())
+  title        String?
+  body         String?
+  type         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  published    Boolean  @default(false)
+  location_lat Float
+  location_lng Float
 }
