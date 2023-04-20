@@ -17,6 +17,8 @@ model User {
   email     String @unique
   name      String
   thumbnail String
+  weight    Int
+  
 }
 
 model Report {

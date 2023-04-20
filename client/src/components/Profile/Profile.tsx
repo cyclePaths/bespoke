@@ -187,6 +187,16 @@ const Profile: React.FC = () => {
     }));
   };
 
+  const enterWeight = () => {
+    axios.post('/profile/weight', {
+      weight: weight
+    })
+      .then(() => {})
+      .catch((err) => {
+        console.log('Failed to input weight', err)
+      })
+  }
+
   useEffect(() => {
     setWeight(200)
   }, [])
