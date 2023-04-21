@@ -64,19 +64,20 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setError(error.message);
     }
   };
 
+  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: any = null;
     if (navigator.geolocation) {
       interval = setInterval(() => {
         if (!navigator.geolocation) {
           setError('Geolocation is not supported by this browser.');
-          clearInterval(interval);
+          clearInterval(interval!);
           return;
         }
         navigator.geolocation.getCurrentPosition(
