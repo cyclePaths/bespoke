@@ -9,6 +9,8 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import RouteM from './components/BikeRoutes/RouteM';
 import Stopwatch from './components/Stopwatch';
+import Reports from './components/Reports/Reports';
+
 
 export interface CurrentWeather {
   temperature: number;
@@ -143,6 +145,7 @@ const Root = () => {
             />
             <Route path='profile' element={<Profile />} />
             <Route path='createReport' element={<CreateReport />} />
+            <Route path='reports' element={<Reports />} />
             <Route path='stopwatch' element={<Stopwatch />} />
           </Route>
         </Routes>

@@ -26,7 +26,7 @@ const CreateReport = () => {
   } | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  
+
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
   };
@@ -41,6 +41,7 @@ const CreateReport = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("Submit attempted");
     try {
       if (!currentLocation) {
         throw new Error('Current location not available');
@@ -78,6 +79,7 @@ const CreateReport = () => {
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {
+      console.log("Getting location");
       interval = setInterval(() => {
         if (!navigator.geolocation) {
           setError('Geolocation is not supported by this browser.');
