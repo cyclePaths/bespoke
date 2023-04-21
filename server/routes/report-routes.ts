@@ -5,7 +5,6 @@ import { PrismaClient, Report } from '@prisma/client';
 const prisma = new PrismaClient();
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { find } from 'rxjs';
 
 // GET ALL REPORTS
 reportRouter.get('/', async (req, res) => {

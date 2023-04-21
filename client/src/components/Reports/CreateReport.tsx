@@ -74,6 +74,7 @@ const CreateReport = () => {
     }
   };
 
+  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {
