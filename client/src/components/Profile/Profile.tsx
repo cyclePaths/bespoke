@@ -156,8 +156,8 @@ const Profile: React.FC = () => {
   useEffect(() => {
     axios
       .get('/profile/user')
-      .then(() => {
-        console.log('Successful GET of user');
+      .then((response) => {
+        console.log('Successful GET of user', response.data);
       })
       .catch((err) => {
         console.log('Could not GET user', err);
@@ -228,6 +228,16 @@ const Profile: React.FC = () => {
         </div>
       </div>
       <div>Current Weight: {weight} lbs</div>
+      <div>
+        <input
+        placeholder='update...' onChange={(event) => setWeight(Number(event.target.value))}
+        >
+        </input>
+        <button type='button' onClick={() => {enterWeight()}}>Enter</button>
+      </div>
+      <div>
+        <div>New weight:</div>
+      </div>
     </div>
   );
 };
