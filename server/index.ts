@@ -27,7 +27,7 @@ const app = express();
 
 //  Authentication Middleware
 app.use(
-  session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false })
+  session({ secret: SESSION_SECRET, resave: true, saveUninitialized: true })
 );
 app.use(passport.initialize());
 app.use(passport.session());

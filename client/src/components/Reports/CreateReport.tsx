@@ -88,7 +88,7 @@ const CreateReport = () => {
           (position) => {
             const { latitude, longitude } = position.coords;
             setCurrentLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval);
+            clearInterval(interval!);
             interval = null;
           },
           (error) => setError(error.message)
