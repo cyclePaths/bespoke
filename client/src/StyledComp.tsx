@@ -25,7 +25,20 @@ const WeatherIcon = styled.img`
   width: 100px;
 `;
 
+const ForecastBit = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+const ForecastHelperIcon = styled.img`
+  display: flex;
+  height: 45px;
+  width: 45px;
+`;
+
 export {
+  ForecastBit,
+  ForecastHelperIcon,
   InputLayout,
   DropdownLayout,
   RouteButton,

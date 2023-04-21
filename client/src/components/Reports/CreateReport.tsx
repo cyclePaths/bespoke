@@ -27,7 +27,6 @@ const CreateReport = () => {
   } | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
 
-
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
   };
@@ -76,6 +75,7 @@ const CreateReport = () => {
     }
   };
 
+  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {

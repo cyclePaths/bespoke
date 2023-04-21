@@ -1,6 +1,6 @@
 import React from 'react';
 import { Hourly } from '../../Root';
-import { WeatherIcon } from '../../StyledComp';
+import { WeatherIcon, ForecastBit, ForecastHelperIcon } from '../../StyledComp';
 import { weatherIcons } from '../../../assets';
 
 interface ForecastProps extends Hourly {
@@ -34,9 +34,9 @@ const Forecast = ({
   let precipitationUnit: string = '';
   let depthUnit: string = '';
   if (temperatureMeasurementUnit === 'fahrenheit') {
-    temperatureUnit = '°F';
+    temperatureUnit = weatherIcons.misc.degreesFahrenheit;
   } else if (temperatureMeasurementUnit === 'celsius') {
-    temperatureUnit = '°C';
+    temperatureUnit = weatherIcons.misc.degreesCelsius;
   }
   if (precipitationMeasurementUnit === 'mm') {
     depthUnit = 'cm';
@@ -52,14 +52,21 @@ const Forecast = ({
         Weather Icon:
         <WeatherIcon src='https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg' />
       </div>
-      <div>Weather Description: {weatherDescription}</div>
-      <div>Precipitation Chance: {precipitationProbability}%</div>
-      <div>Temperature: {temperature + temperatureUnit}</div>
+      <ForecastBit>Weather Description: {weatherDescription}</ForecastBit>
+      <ForecastBit>
+        Precipitation Chance: {precipitationProbability}{' '}
+        <ForecastHelperIcon src={weatherIcons.misc.humidity} />
+      </ForecastBit>
+      <ForecastBit>
+        Temperature: {temperature} <ForecastHelperIcon src={temperatureUnit} />
+      </ForecastBit>
       <div>
-        Feels Like (Apparent Temperature):{' '}
-        {apparentTemperature + temperatureUnit}
+        Feels Like (Apparent Temperature): {apparentTemperature}
+        <img src={temperatureUnit} />
       </div>
-      <div>Humidity: {humidity}%</div>
+      <div>
+        Humidity: {humidity} <img src={weatherIcons.misc.humidity} />
+      </div>
     </div>
   );
 };
