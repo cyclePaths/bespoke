@@ -57,27 +57,27 @@ WeatherRoute.get('/forecast', (req, res) => {
         is_day: data.current_weather.is_day,
         time: data.current_weather.time,
       };
-      console.log(
-        'Here is a Current Weather object from the data received via the GET request: ',
-        {
-          temperature: data.current_weather.temperature,
-          windspeed: data.current_weather.windspeed,
-          winddirection: data.current_weather.winddirection,
-          weatherdescription: weatherCodes[data.current_weather.weathercode],
-          is_day: data.current_weather.is_day,
-          time: data.current_weather.time,
-        }
-      );
-      console.log(
-        'Here is a Measurement Units object from the data received via the GET request: ',
-        {
-          temperature: data.hourly_units.temperature,
-          speed: data.hourly_units.windspeed_10m,
-          precipitation: data.hourly_units.precipitation,
-          visibility: data.hourly_units.visibility,
-          depth: data.hourly_units.snow_depth,
-        }
-      );
+      // console.log(
+      //   'Here is a Current Weather object from the data received via the GET request: ',
+      //   {
+      //     temperature: data.current_weather.temperature,
+      //     windspeed: data.current_weather.windspeed,
+      //     winddirection: data.current_weather.winddirection,
+      //     weatherdescription: weatherCodes[data.current_weather.weathercode],
+      //     is_day: data.current_weather.is_day,
+      //     time: data.current_weather.time,
+      //   }
+      // );
+      // console.log(
+      //   'Here is a Measurement Units object from the data received via the GET request: ',
+      //   {
+      //     temperature: data.hourly_units.temperature,
+      //     speed: data.hourly_units.windspeed_10m,
+      //     precipitation: data.hourly_units.precipitation,
+      //     visibility: data.hourly_units.visibility,
+      //     depth: data.hourly_units.snow_depth,
+      //   }
+      // );
 
       const hourly = new Array(24).fill(0).map(() => ({
         time: new Date(),

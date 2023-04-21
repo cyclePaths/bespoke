@@ -27,6 +27,7 @@ const CreateReport = () => {
   const [error, setError] = useState<string | undefined>(undefined);
 
 
+
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
   };
@@ -76,6 +77,7 @@ const CreateReport = () => {
     }
   };
 
+  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {
@@ -83,14 +85,14 @@ const CreateReport = () => {
       interval = setInterval(() => {
         if (!navigator.geolocation) {
           setError('Geolocation is not supported by this browser.');
-          clearInterval(interval);
+          clearInterval(interval!);
           return;
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
             setCurrentLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval);
+            clearInterval(interval!);
             interval = null;
           },
           (error) => setError(error.message)

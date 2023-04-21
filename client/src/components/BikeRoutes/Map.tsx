@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  useContext,
 } from 'react';
 import {
   GoogleMap,
@@ -15,6 +16,7 @@ import {
 import MAP_API_TOKEN from './Utils';
 import Places from './Places';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 
 // Sets the map to not be google styled //
 const options = {
@@ -39,6 +41,9 @@ const Map: React.FC = () => {
   const [markers, setMarkers] = useState<any[]>([]);
   const [selected, setSelected] = useState<LatLngLiteral>();
   const [directions, setDirections] = useState<DirectionsResult>();
+
+  // Pull context //
+  const user = useContext(UserContext);
 
   const center = useMemo<LatLngLiteral>(
     () => ({ lat: 29.946949, lng: -90.0843514 }),
@@ -70,7 +75,7 @@ const Map: React.FC = () => {
   const saveRoute = (): void => {
     if (directions) {
       axios
-        .post('/bikeRoutes/newRoute', directions)
+        .post('/bikeRoutes/newRoute', { directions, user })
         .then(() => {
           console.log('Route saved to db');
         })
