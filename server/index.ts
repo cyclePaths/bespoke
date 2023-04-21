@@ -78,7 +78,13 @@ const PORT = 8080;
 app.use('/weather', WeatherRoute);
 
 // Routes to be used
+<<<<<<< HEAD
+app.use('/bikeRoutes', BikeRoutes);
+app.use('/createReport', reportRouter);
+=======
 app.use('/routes', BikeRoutes);
+app.use('/reports', reportRouter);
+>>>>>>> 4963185611f1cba065c8783132b64bd3514a18d3
 
 // Render All Pages
 app.get('*', (req, res) => {

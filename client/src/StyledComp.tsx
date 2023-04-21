@@ -1,10 +1,18 @@
 import styled from 'styled-components';
 
-const MapLayout = styled.div`
+const InputLayout = styled.input`
   border-color: black;
-  height: 250px;
-  width: 395px;
   align-items: center;
+  margin-bottom: 10px;
+`;
+
+const DropdownLayout = styled.div`
+  box-shadow: black;
+  margin-bottom: 10px;
+`;
+
+const RouteButton = styled.button`
+  margin-left: 10px;
 `;
 
 const ForecastRowContainer = styled.div`
@@ -24,14 +32,16 @@ const ForecastBit = styled.div`
 
 const ForecastHelperIcon = styled.img`
   display: flex;
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
 `;
 
 export {
-  MapLayout,
-  ForecastRowContainer,
-  WeatherIcon,
   ForecastBit,
   ForecastHelperIcon,
+  InputLayout,
+  DropdownLayout,
+  RouteButton,
+  ForecastRowContainer,
+  WeatherIcon,
 };
