@@ -37,10 +37,12 @@ model Bulletin {
 }
 
 model BikeRoutes {
-  id         Int      @id @default(autoincrement())
-  routeStart Int
-  routeEnd   Int
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  id        Int      @id @default(autoincrement())
+  startLat  Decimal
+  startLng  Decimal
+  endLat    Decimal
+  endLng    Decimal
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }

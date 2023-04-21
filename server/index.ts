@@ -2,6 +2,8 @@ import path from 'path';
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
@@ -73,6 +75,21 @@ app.get('/logout', (req, res) => {
     }
   });
   res.redirect('/');
+});
+
+// 7. Provides user context to every part of the client
+app.get('/auth/user', (req, res) => {
+  const user = req.user;
+  prisma.user
+    .findFirst({
+      where: user!,
+    })
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 // Middleware
