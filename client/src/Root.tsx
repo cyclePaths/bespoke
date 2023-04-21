@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, createContext } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import App from './components/App';
@@ -62,7 +62,21 @@ export interface StopwatchTime {
   seconds: number;
 }
 
+export interface User {
+  email?: string;
+  id?: number;
+  name?: string;
+  thumbnail?: any;
+  weight?: any;
+}
+
+export const UserContext = createContext<User | undefined>(undefined);
+
 const Root = () => {
+  // Created User Info and Geolocation for context //
+  const [user, setUser] = useState<User>({});
+  const [geoLocation, setGeoLocation] = useState<any>();
+
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
   const [temperatureMeasurementUnit, setTemperatureMeasurementUnit] =
@@ -107,42 +121,59 @@ const Root = () => {
         )
       );
   };
+
+  const findContext = () => {
+    axios
+      .get('auth/user')
+      .then((result) => {
+        setUser(result.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   useEffect(() => {
     getForecasts();
+    findContext();
   }, []);
 
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<App />}>
-            <Route path='/home' element={<Home />} />
-            <Route path='bulletinBoard' element={<BulletinBoard />} />
-            <Route path='bikeRoutes' element={<RouteM />} />
-            <Route
-              path='weather'
-              element={
-                <Weather
-                  windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                  temperatureMeasurementUnit={temperatureMeasurementUnit}
-                  precipitationMeasurementUnit={precipitationMeasurementUnit}
-                  hourlyForecasts={hourlyForecasts}
-                  setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
-                  setTemperatureMeasurementUnit={setTemperatureMeasurementUnit}
-                  setPrecipitationMeasurementUnit={
-                    setPrecipitationMeasurementUnit
-                  }
-                  getForecasts={getForecasts}
-                />
-              }
-            />
-            <Route path='profile' element={<Profile />} />
-            <Route path='createReport' element={<CreateReport />} />
-            <Route path='stopwatch' element={<Stopwatch />} />
-          </Route>
-        </Routes>
-        <Stopwatch />
-      </BrowserRouter>
+      <UserContext.Provider value={user}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<App />}>
+              <Route path='/home' element={<Home />} />
+              <Route path='bulletinBoard' element={<BulletinBoard />} />
+              <Route path='bikeRoutes' element={<RouteM />} />
+              <Route
+                path='weather'
+                element={
+                  <Weather
+                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                    temperatureMeasurementUnit={temperatureMeasurementUnit}
+                    precipitationMeasurementUnit={precipitationMeasurementUnit}
+                    hourlyForecasts={hourlyForecasts}
+                    setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
+                    setTemperatureMeasurementUnit={
+                      setTemperatureMeasurementUnit
+                    }
+                    setPrecipitationMeasurementUnit={
+                      setPrecipitationMeasurementUnit
+                    }
+                    getForecasts={getForecasts}
+                  />
+                }
+              />
+              <Route path='profile' element={<Profile />} />
+              <Route path='createReport' element={<CreateReport />} />
+              <Route path='stopwatch' element={<Stopwatch />} />
+            </Route>
+          </Routes>
+          <Stopwatch />
+        </BrowserRouter>
+      </UserContext.Provider>
     </div>
   );
 };
