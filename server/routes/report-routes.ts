@@ -18,7 +18,6 @@ reportRouter.get('/', async (req, res) => {
 });
 
 // GET BY ID
-
 reportRouter.get('/:id', async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
@@ -66,7 +65,6 @@ reportRouter.post('/', async (req, res) => {
 //  DELETE a report by ID
 reportRouter.delete('/:id', async (req, res) => {
   const id = Number(req.params.id);
-  console.log(id);
   try {
     const deletedPost = await prisma.report.delete({
       where: {
@@ -83,4 +81,5 @@ reportRouter.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Server Error' });
   }
 });
+
 export default reportRouter;

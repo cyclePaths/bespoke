@@ -25,7 +25,7 @@ passport.use(
           where: { email: profile.email },
         });
         if (previousUser) {
-          return done(null, profile);
+          return done(null, previousUser);
         } else {
           const newUserData: CreateUser = {
             email: profile.email,
