@@ -1,38 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-//  define report object
+// define report object
 interface Report {
   id: number;
-  type: string;
-  body: string;
-  location: { lat: number; lng: number };
+  title?: string;
+  body?: string;
+  type?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  published: boolean;
+  location_lat: number;
+  location_lng: number;
 }
 
 const CreateReport = () => {
-  //  reports must be array of Report objects
+  // reports must be array of Report objects
   const [reports, setReports] = useState<Report[]>([]);
-  const [body, setBody] = useState('');
-  const [type, setType] = useState('');
+  const [body, setBody] = useState<string>('');
+  const [type, setType] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
-  const [error, setError] = useState<string | undefined>('');
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const reportType = (
-      document.getElementById('report-type-input') as HTMLInputElement
-    )?.value;
-    setType(reportType || '');
+    setType(event.target.value);
   };
 
   const handleBodyText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const reportBody = (
-      document.getElementById('report-body-input') as HTMLInputElement
-    )?.value;
-    setBody(reportBody || '');
+    setBody(event.target.value);
   };
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,17 +52,22 @@ const CreateReport = () => {
       if (image) {
         formData.append('image', image);
       }
-      const reportData = {
+      const reportData: Report = {
         body,
         type,
         location_lat: currentLocation!.lat,
         location_lng: currentLocation!.lng,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        published: false,
+        id: reports.length + 1,
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
+      // find out what error can be
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -72,7 +76,7 @@ const CreateReport = () => {
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
-    let interval: any = null;
+    let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {
         if (!navigator.geolocation) {
@@ -134,7 +138,7 @@ const CreateReport = () => {
               <p>Type: {report.type}</p>
               <p>Body: {report.body}</p>
               <p>
-                Location: {report.location.lat}, {report.location.lng}
+                Location: {report.location_lat}, {report.location_lng}
               </p>
             </div>
           ))}
