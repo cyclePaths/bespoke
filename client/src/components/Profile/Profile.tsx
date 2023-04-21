@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
-// import { HTMLElement } from 'lib.dom';
+import { UserContext } from  '../../Root';
+
 
 //Setting state types
 export type Address = string;
@@ -30,6 +31,10 @@ interface ValueGroup {
 // }
 
 const Profile: React.FC = () => {
+
+const [greeting, setGreeting] = useState('');
+const [currentUser, setCurrentUser] = useState('');
+
   //setting state with hooks
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -146,12 +151,13 @@ const Profile: React.FC = () => {
     durationMinutes: '',
   });
 
+  const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
 
   // console.log(typeof valueGroups)
-  console.log(valueGroups.workout);
-  console.log(valueGroups.durationHours);
-  console.log(valueGroups.durationMinutes);
+  // console.log(valueGroups.workout);
+  // console.log(valueGroups.durationHours);
+  // console.log(valueGroups.durationMinutes);
 
   useEffect(() => {
     axios
@@ -189,23 +195,46 @@ const Profile: React.FC = () => {
 
   const enterWeight = () => {
     axios.post('/profile/weight', {
-      weight: weight
+      weight: weightValue
     })
-      .then(() => {})
+      .then((response) => {
+        const input = document.getElementById('weight-input');
+        if (input instanceof HTMLInputElement) {
+          input.value = '';
+          input.blur();
+        }
+      })
       .catch((err) => {
         console.log('Failed to input weight', err)
-      })
+      });
+
+
   }
 
+  const user = useContext(UserContext);
+
+  console.log(user)
+
+  let userGreeting = `Hello ${user.name}`
+  console.log(userGreeting)
+
+
+
   useEffect(() => {
-    setWeight(200)
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+        setWeight(data.weight)
+        console.log(data.weight, 'HEYYYYY')
+      })
+
+    // setWeight(weight)
   }, [])
 
 
 
   return (
     <div>
-      <div>Hello from Profile</div>
+      <div>{userGreeting}</div>
       <div>
         <Addresses
           address={address}
@@ -227,17 +256,18 @@ const Profile: React.FC = () => {
           <button type='button'>Submit</button>
         </div>
       </div>
-      <div>Current Weight: {weight} lbs</div>
+      <div>Weight: {weight} lbs</div>
       <div>
         <input
-        placeholder='update...' onChange={(event) => setWeight(Number(event.target.value))}
+        id='weight-input'
+        placeholder='update...' onChange={(event) => setWeightValue(Number(event.target.value))}
         >
         </input>
-        <button type='button' onClick={() => {enterWeight()}}>Enter</button>
+        <button type='button' onClick={() => {enterWeight(), setWeight(weightValue)} }>Enter</button>
       </div>
-      <div>
-        <div>New weight:</div>
-      </div>
+      {/* <div>
+        <div>New weight: {weight}</div>
+      </div> */}
     </div>
   );
 };

@@ -70,7 +70,7 @@ export interface User {
   weight?: any;
 }
 
-export const UserContext = createContext<User | undefined>(undefined);
+export const UserContext = createContext<User>(Object());
 
 const Root = () => {
   // Created User Info and Geolocation for context //
@@ -135,7 +135,7 @@ const Root = () => {
 
   useEffect(() => {
     getForecasts();
-    findContext();
+   findContext();
   }, []);
 
   return (
