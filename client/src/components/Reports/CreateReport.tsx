@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 
 // define report object
 interface Report {
@@ -10,8 +11,8 @@ interface Report {
   createdAt: Date;
   updatedAt: Date;
   published: boolean;
-  location_lat: number;
-  location_lng: number;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 const CreateReport = () => {
@@ -79,6 +80,7 @@ const CreateReport = () => {
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
+    console.log(UserContext);
     let interval: any | undefined;
     if (navigator.geolocation) {
       console.log("Getting location");

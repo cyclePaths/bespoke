@@ -9,6 +9,7 @@ import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
+import { UserContext } from '../client/src/Root';
 
 interface User {
   id: number;
@@ -16,6 +17,8 @@ interface User {
   name: string;
   thumbnail: string;
   weight: number;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 //Authentication Imports
@@ -85,12 +88,18 @@ app.get('/auth/user', (req, res) => {
       where: user!,
     })
     .then((result) => {
+      console.log(result);
       res.status(200).send(result);
     })
     .catch((err) => {
       console.error(err);
     });
 });
+
+// PATCH USER
+app.put('/auth/user', (req, res) => {
+  console.log(UserContext);
+})
 
 // Middleware
 const CLIENT_PATH = path.resolve(__dirname, '../client/dist/');

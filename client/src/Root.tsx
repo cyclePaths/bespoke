@@ -69,6 +69,8 @@ export interface User {
   name?: string;
   thumbnail?: any;
   weight?: any;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 export const UserContext = createContext<User | undefined>(undefined);
@@ -138,6 +140,10 @@ const Root = () => {
         console.error(err);
       });
   };
+//
+const updateUserGeoLocation = () => {
+
+};
 
   const getLocation = () => {
     let interval: any | undefined;
@@ -153,6 +159,7 @@ const Root = () => {
           (position) => {
             const { latitude, longitude } = position.coords;
             setGeoLocation({ lat: latitude, lng: longitude });
+            // updateUserGeoLocation();
             clearInterval(interval!);
             interval = null;
           },
@@ -170,8 +177,10 @@ const Root = () => {
     };
   };
 
+
   useEffect(() => {
     getForecasts();
+    getLocation();
     findContext();
     getLocation();
   }, []);
