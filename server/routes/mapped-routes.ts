@@ -7,7 +7,9 @@ const BikeRoutes = Router();
 const prisma = new PrismaClient();
 
 BikeRoutes.post('/newRoute', (req, res) => {
-  console.log(req.body.request);
+  const { request } = req.body;
+  // const { id } = req.user;
+  console.log(req.user);
 });
 
 export default BikeRoutes;

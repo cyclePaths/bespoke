@@ -8,6 +8,14 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  thumbnail: string;
+  weight: number;
+}
+
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -19,7 +27,7 @@ const app = express();
 
 //  Authentication Middleware
 app.use(
-  session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false })
+  session({ secret: SESSION_SECRET, resave: true, saveUninitialized: true })
 );
 app.use(passport.initialize());
 app.use(passport.session());

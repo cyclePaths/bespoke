@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 // const router: Router = express.Router();
 const reportRouter = express.Router();
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Report } from '@prisma/client';
 const prisma = new PrismaClient();
 import axios from 'axios';
 import { Request, Response } from 'express';
@@ -41,13 +41,20 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 //  POST a new Report
 reportRouter.post('/', async (req, res) => {
   try {
-    const { body, type, title } = req.body;
+    const { id, body, type, title, location_lat, location_lng } = req.body;
+    const data: Report = {
+      id,
+      body,
+      type,
+      title,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      published: false,
+      location_lat,
+      location_lng,
+    };
     const newPost = await prisma.report.create({
-      data: {
-        body,
-        type,
-        title,
-      },
+      data,
     });
     res.status(201).json(newPost);
   } catch (error) {
