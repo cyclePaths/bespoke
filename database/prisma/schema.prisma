@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
   name      String
-  thumbnail String
-  weight    Int
+  thumbnail String?
+  weight    Int?
 }
 
 model Report {
@@ -23,8 +23,8 @@ model Report {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   published    Boolean  @default(false)
-  location_lat Float
-  location_lng Float
+  location_lat Float?
+  location_lng Float?
 }
 
 model Bulletin {

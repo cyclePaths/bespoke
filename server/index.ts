@@ -8,6 +8,14 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  thumbnail: string;
+  weight: number;
+}
+
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -78,8 +86,8 @@ const PORT = 8080;
 app.use('/weather', WeatherRoute);
 
 // Routes to be used
-app.use('/routes', BikeRoutes);
-app.use('/reports', reportRouter);
+app.use('/bikeRoutes', BikeRoutes);
+app.use('/createReport', reportRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {
