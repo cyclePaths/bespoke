@@ -11,6 +11,7 @@ import RouteM from './components/BikeRoutes/RouteM';
 import Stopwatch from './components/Stopwatch';
 import Reports from './components/Reports/Reports';
 
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -78,12 +79,7 @@ export const UserContext = createContext<User | undefined>(undefined);
 const Root = () => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>({});
-  // const [geoLocation, setGeoLocation] = useState<any>();
-  const [geoLocation, setGeoLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [geoLocation, setGeoLocation] = useState<any>();
 
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
@@ -140,62 +136,15 @@ const Root = () => {
         console.error(err);
       });
   };
-//
-const updateUserGeoLocation = () => {
-
-};
-
-  const getLocation = () => {
-    let interval: any | undefined;
-    if (navigator.geolocation) {
-      console.log('Getting location');
-      interval = setInterval(() => {
-        if (!navigator.geolocation) {
-          setError('Geolocation is not supported by this browser.');
-          clearInterval(interval!);
-          return;
-        }
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setGeoLocation({ lat: latitude, lng: longitude });
-            // updateUserGeoLocation();
-            clearInterval(interval!);
-            interval = null;
-          },
-          (error) => setError(error.message)
-        );
-      }, 1000);
-    } else {
-      setError('Geolocation is not supported by this browser.');
-    }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-    };
-  };
-
 
   useEffect(() => {
     getForecasts();
     getLocation();
     findContext();
-    getLocation();
   }, []);
 
   return (
     <div>
-      <div>
-        {error && <p>{error}</p>}
-        <div>
-          <h1>
-            Current Location:{' '}
-            {geoLocation ? `${geoLocation.lat}, ${geoLocation.lng}` : 'N/A'}
-          </h1>
-        </div>
-      </div>
       <UserContext.Provider value={user}>
         <BrowserRouter>
           <Routes>
