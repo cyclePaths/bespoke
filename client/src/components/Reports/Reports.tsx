@@ -15,7 +15,13 @@ const Reports: React.FC = () => {
     const fetchReports = async () => {
       try {
         const response = await axios.get('/reports');
-        setReports(response.data);
+        const filteredReports = response.data.filter((report) => {
+          const reportCreatedAt = new Date(report.createdAt);
+          const currentDate = new Date();
+          const monthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+          return reportCreatedAt >= monthAgo;
+        });
+        setReports(filteredReports);
       } catch (error) {
         console.error(error);
       }
@@ -26,8 +32,9 @@ const Reports: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const markers = reports.map((report) => {
+        const latLng = { lat: report.location_lat!, lng: report.location_lng! };
         const marker = new google.maps.Marker({
-          position: { lat: report.location_lat, lng: report.location_lng },
+          position: latLng,
           map,
         });
 
@@ -36,8 +43,8 @@ const Reports: React.FC = () => {
             <p>${report.type}</p>
             <p>${report.title}</p>
             <p>${report.body}</p>
-            <p>${report.createdAt}</p>
-          </div>`
+            <p>Reported: ${report.createdAt}</p>
+          </div>`,
         });
 
         marker.addListener('click', () => {
@@ -48,7 +55,12 @@ const Reports: React.FC = () => {
       });
 
       const bounds = new google.maps.LatLngBounds();
-      markers.forEach((marker) => bounds.extend(marker.getPosition()));
+      markers.forEach((marker) => {
+        const position = marker.getPosition();
+        if (position) {
+          bounds.extend(position);
+        }
+      });
       map.fitBounds(bounds);
     }
   }, [map, reports]);
@@ -69,7 +81,7 @@ const Reports: React.FC = () => {
           }
         );
       } else {
-        console.error('Error: Your browser doesn\'t support geolocation.');
+        console.error("Error: Your browser doesn't support geolocation.");
       }
     }
   }, [map]);
@@ -84,10 +96,8 @@ const Reports: React.FC = () => {
       <h2>Reports:</h2>
       {reports.map((report) => (
         <div key={report.id}>
-          <p>Type: {report.type}</p>
-          <p>Title: {report.title}</p>
-          <p>Body: {report.body}</p>
-
+          <p>{report.title}</p>
+          <p>{report.type}</p>
           <p>
             Location: {report.location_lat}, {report.location_lng}
           </p>

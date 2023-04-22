@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import { useNavigate } from 'react-router-dom';
 
 // define report object
 interface Report {
@@ -16,7 +17,8 @@ interface Report {
 }
 
 const CreateReport = () => {
-  // reports must be array of Report objects
+  const navigate = useNavigate();
+
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -30,7 +32,7 @@ const CreateReport = () => {
 
   const user = useContext(UserContext);
 
-  const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypeText = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value);
   };
 
@@ -78,6 +80,7 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
+      navigate('/reports');
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -115,12 +118,6 @@ const CreateReport = () => {
     };
   }, []);
 
-  // useEffect(() => {
-
-  //     console.log("User", user);
-
-  // }, [])
-
   return (
     <div>
       <div>
@@ -131,12 +128,13 @@ const CreateReport = () => {
         </p>
       </div>
       <form onSubmit={handleSubmit}>
-        <input
-          id='report-type-input'
-          type='text'
-          placeholder='Report Type'
-          onChange={handleTypeText}
-        />
+        <select id='report-type-input' onChange={handleTypeText}>
+          <option value=''>Select a Report Type</option>
+          <option value='Road Hazard'>Road Hazard</option>
+          <option value='Theft Alert'>Theft Alert</option>
+          <option value='Collision'>Collision</option>
+          <option value='Point of Interest'>Point of Interest</option>
+        </select>
         <input
           id='report-title-input'
           type='text'

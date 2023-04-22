@@ -126,7 +126,9 @@ interface UpdateUserData extends User {
 
 app.put('/home/user/:id', async (req, res) => {
   const { id } = req.params;
+  console.log(req.params);
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
+  console.log(req.body);
   try {
     const updatedUser = await prisma.user.update({
       where: { id: parseInt(id) }, // use the ID of the authenticated user

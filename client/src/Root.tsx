@@ -148,6 +148,7 @@ const Root = () => {
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log("ROOT: Attempting to get LOcation")
             const { latitude, longitude } = position.coords;
             setGeoLocation({ lat: latitude, lng: longitude });
             clearInterval(interval!);
@@ -168,12 +169,12 @@ const Root = () => {
   };
 
   const updateUserLocation = () => {
+    console.log("attempting to update");
     const { id } = user;
     const updatedData = {
-      location_lat: geoLocation.location_lat,
-      location_lng: geoLocation.location_lng,
+      location_lat: geoLocation.lat,
+      location_lng: geoLocation.lng,
     };
-
     axios
       .put(`/home/user/${id}`, updatedData)
       .then((result) => {
@@ -188,7 +189,7 @@ const Root = () => {
     if (user.id && geoLocation) {
       updateUserLocation();
     }
-  }, [user, geoLocation]);
+  }, [user]);
 
   useEffect(() => {
     getForecasts();

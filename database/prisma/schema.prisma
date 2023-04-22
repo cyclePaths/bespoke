@@ -17,6 +17,8 @@ model User {
   reports       Report[]
   favAddresses  String[]
   homeAddress   String?
+  location_lat Float?
+  location_lng Float?
 }
 
 model Report {
