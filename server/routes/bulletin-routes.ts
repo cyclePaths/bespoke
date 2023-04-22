@@ -1,5 +1,6 @@
-import { Router } from 'express';
-import { PrismaClient, Bulletin  } from '@prisma/client';
+import express, { Router } from 'express';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { Request, Response } from 'express';
 
 const bulletinRouter = Router()
 const prisma = new PrismaClient()
@@ -23,7 +24,7 @@ bulletinRouter.get('/bulletin', (req, res) => {
 });
 
 // POST bulletin to database - BulletinBoard.tsx
-bulletinRouter.post('/bulletin', (req, res) => {
+bulletinRouter.post('/', (req, res) => {
     const { topic, creator, text } = req.body
     const newBulletin: CreateBulletin = {
         topic: topic,
@@ -32,7 +33,7 @@ bulletinRouter.post('/bulletin', (req, res) => {
         createdAt: new Date()
     };
     prisma.bulletin.create({ data: newBulletin })
-    .then (() => res.sendStatus(201))
+    .then ((bulletin) => res.status(201).send(bulletin))
     .catch(() => {
         console.log('Failed to POST new bulletin')
         res.sendStatus(500)
