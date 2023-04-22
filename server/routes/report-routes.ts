@@ -60,6 +60,34 @@ reportRouter.post('/', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+// reportRouter.post('/', async (req, res) => {
+//   try {
+//     const { email } = req.params;
+//     const { body, type, title, location_lat, location_lng } = req.body;
+//     const data = {
+//       body,
+//       type,
+//       title,
+//       updatedAt: new Date(),
+//       published: false,
+//       location_lat,
+//       location_lng,
+//       author: {
+//         connect: {
+//           email: email
+//         },
+//       },
+//     };
+//     const newPost = await prisma.report.create({
+//       data,
+//     });
+//     res.status(201).json(newPost);
+//     console.log("Success")
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
 
 //  DELETE a report by ID
 reportRouter.delete('/:id', async (req, res) => {

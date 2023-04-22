@@ -112,6 +112,12 @@ const CreateReport = () => {
     };
   }, []);
 
+  useEffect(() => {
+
+      console.log("User", user);
+    
+  }, [user, ])
+
   return (
     <div>
       <div>

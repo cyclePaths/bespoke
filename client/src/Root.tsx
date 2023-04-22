@@ -171,30 +171,28 @@ const Root = () => {
     const { id } = user;
     const updatedData = {
       location_lat: geoLocation.location_lat,
-      location_lng: geoLocation.location_lng
+      location_lng: geoLocation.location_lng,
     };
 
     axios
-    .put(`/home/user/${id}`, updatedData)
-    .then((result) => {
-      setUser(result.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  }
-
+      .put(`/home/user/${id}`, updatedData)
+      .then((result) => {
+        setUser(result.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   useEffect(() => {
-    if(user.id && geoLocation){
+    if (user.id && geoLocation) {
       updateUserLocation();
     }
-  }, [user, geoLocation])
-
+  }, [user, geoLocation]);
 
   useEffect(() => {
     getForecasts();
-   findContext();
+    findContext();
   }, []);
 
   return (
