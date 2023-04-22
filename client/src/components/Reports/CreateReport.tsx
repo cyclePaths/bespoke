@@ -12,6 +12,7 @@ interface Report {
   published: boolean;
   location_lat?: number;
   location_lng?: number;
+  userId: number;
 }
 
 const CreateReport = () => {
@@ -60,6 +61,7 @@ const CreateReport = () => {
       if (image) {
         formData.append('image', image);
       }
+      console.log(user);
       const reportData: Omit<Report, 'id'> = {
         body,
         type,
@@ -69,6 +71,7 @@ const CreateReport = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         published: false,
+        userId: user.id!,
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
@@ -112,11 +115,11 @@ const CreateReport = () => {
     };
   }, []);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-      console.log("User", user);
+  //     console.log("User", user);
 
-  }, [])
+  // }, [])
 
   return (
     <div>

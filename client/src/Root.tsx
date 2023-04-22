@@ -192,11 +192,19 @@ const Root = () => {
 
   useEffect(() => {
     getForecasts();
+    getLocation();
     findContext();
   }, []);
 
   return (
     <div>
+      <div>
+        <p>
+          {geoLocation
+            ? `Current location: ${geoLocation.lat}, ${geoLocation.lng}`
+            : 'Getting Current Location...'}
+        </p>
+      </div>
       <UserContext.Provider value={user}>
         <BrowserRouter>
           <Routes>

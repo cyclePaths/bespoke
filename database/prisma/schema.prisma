@@ -14,7 +14,7 @@ model User {
   thumbnail     String?
   weight        Int?
   createdRoutes BikeRoutes[]
-  reports       String[]     @default([])
+  reports       Report[]
   favAddresses  String[]
   homeAddress   String?
 }
@@ -29,6 +29,8 @@ model Report {
   published    Boolean  @default(false)
   location_lat Float?
   location_lng Float?
+  userId  Int
+  author User      @relation(fields: [userId], references: [id])
 }
 
 model Bulletin {
