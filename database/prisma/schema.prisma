@@ -51,9 +51,9 @@ model BikeRoutes {
 model Rides {
   id       Int    @id @default(autoincrement())
   activity String
-  duration String
+  duration Int
   weight   Int
   calories Int
-  User     User  @relation(fields: [userId], references: [id])
-  userId   Int
+  User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
 }

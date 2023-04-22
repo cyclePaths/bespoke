@@ -37,11 +37,12 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
-  // console.log('Post Workout', req)
+  console.log('Post Workout', req.body)
 
     try {
       const { activity, duration, weight, calories } = req.body;
-      const { id } = req.user;
+
+      const { id } = req.user as User;
 
       const rideData: Rides = {
         id,
@@ -49,6 +50,7 @@ profileRouter.post('/workout', async (req, res) => {
         duration,
         weight,
         calories,
+        userId: id
       };
 
       const updateRide = await prisma.rides.upsert({
@@ -70,7 +72,10 @@ profileRouter.post('/workout', async (req, res) => {
           User: { connect: { id: id } }
         }
       })
-
+      res.status(201).send(updateRide);
+    } catch (err) {
+      console.log('Failed to update ride', err);
+      res.sendStatus(500);
     }
 
 
