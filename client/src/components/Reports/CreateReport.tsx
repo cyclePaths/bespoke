@@ -2,6 +2,8 @@ import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import ReportsMap from './ReportsMap';
 
 // define report object
 interface Report {
@@ -28,6 +30,7 @@ const CreateReport = () => {
     lat: number;
     lng: number;
   } | null>(null);
+  const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const user = useContext(UserContext);
@@ -122,9 +125,7 @@ const CreateReport = () => {
     <div>
       <div>
         <p>
-          {currentLocation
-            ? `Current location: ${currentLocation.lat}, ${currentLocation.lng}`
-            : 'Getting Current Location...'}
+          {currentLocation ? <ReportsMap /> : 'Getting Current Location...'}
         </p>
       </div>
       <form onSubmit={handleSubmit}>
