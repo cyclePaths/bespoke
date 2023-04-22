@@ -19,6 +19,7 @@ interface User {
   weight: number;
   location_lat?: number;
   location_lng?: number;
+  favAddresses?: number[] | undefined;
 }
 
 //Authentication Imports
