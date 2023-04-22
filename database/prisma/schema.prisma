@@ -16,6 +16,7 @@ model User {
   createdRoutes BikeRoutes[]
   favAddresses  String[]
   homeAddress   String?
+  rides         Rides[]
 }
 
 model Report {
@@ -47,4 +48,12 @@ model BikeRoutes {
   user        User      @relation(fields: [userId], references: [id])
 }
 
-
+model Rides {
+  id       Int    @id @default(autoincrement())
+  activity String
+  duration String
+  weight   Int
+  calories Int
+  User     User  @relation(fields: [userId], references: [id])
+  userId   Int
+}

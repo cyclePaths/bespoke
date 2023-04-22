@@ -2,15 +2,21 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
-import { UserContext } from  '../../Root';
-import { exiledRedHeadedStepChildrenOptionGroups, exiledRedHeadedStepChildrenValueGroups } from '../../../profile-assets';
-
-
+import { UserContext } from '../../Root';
+// import StopwatchStats from './StopwatchStats';
+import {
+  exiledRedHeadedStepChildrenOptionGroups,
+  exiledRedHeadedStepChildrenValueGroups,
+} from '../../../profile-assets';
 
 //Setting state types
 export type Address = string;
 export type SelectedAddress = string;
 export type HomeAddress = string;
+export type Weight = number;
+// export type ValueGroup = {
+//   [key: string]: string;
+// }
 
 // const optionGroups = {};
 // const valueGroups = {};
@@ -24,12 +30,11 @@ interface OptionGroup {
   [key: string]: Option[];
 }
 
-interface ValueGroup {
+export interface ValueGroup {
   [key: string]: string;
 }
 
 const Profile: React.FC = () => {
-
   //setting state with hooks
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -39,10 +44,13 @@ const Profile: React.FC = () => {
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
 
-  const [optionGroups, setOptionGroups] = useState<OptionGroup>(exiledRedHeadedStepChildrenOptionGroups);
+  const [optionGroups, setOptionGroups] = useState<OptionGroup>(
+    exiledRedHeadedStepChildrenOptionGroups
+  );
 
-  const [valueGroups, setValueGroups] = useState<ValueGroup>(exiledRedHeadedStepChildrenValueGroups);
-
+  const [valueGroups, setValueGroups] = useState<ValueGroup>(
+    exiledRedHeadedStepChildrenValueGroups
+  );
 
   useEffect(() => {
     axios
@@ -56,20 +64,24 @@ const Profile: React.FC = () => {
   }, []);
 
   const calorieRequest = () => {
-    const { workout, durationHours, durationMinutes} = valueGroups;
+    const { workout, durationHours, durationMinutes } = valueGroups;
     const numberHours = Number(durationHours);
     const numberMinutes = Number(durationMinutes);
-    axios.get('/profile/calories', {
-      params: {activity: `${workout}`, weight: weight, duration: (numberHours + numberMinutes)}
-    })
+    axios
+      .get('/profile/calories', {
+        params: {
+          activity: `${workout}`,
+          weight: weight,
+          duration: numberHours + numberMinutes,
+        },
+      })
       .then(() => {
         console.log('Successful GET of Calories');
       })
       .catch((err) => {
         console.log('Failed to GET Calories', err);
-      })
-
-  }
+      });
+  };
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -79,9 +91,10 @@ const Profile: React.FC = () => {
   };
 
   const enterWeight = () => {
-    axios.post('/profile/weight', {
-      weight: weightValue
-    })
+    axios
+      .post('/profile/weight', {
+        weight: weightValue,
+      })
       .then((response) => {
         const input = document.getElementById('weight-input');
         if (input instanceof HTMLInputElement) {
@@ -90,32 +103,25 @@ const Profile: React.FC = () => {
         }
       })
       .catch((err) => {
-        console.log('Failed to input weight', err)
+        console.log('Failed to input weight', err);
       });
-    }
-
-
+  };
 
   const user = useContext(UserContext);
 
   // console.log(user)
 
-  let userGreeting = `Hello ${user.name}`
+  let userGreeting = `Hello ${user.name}`;
   // console.log(userGreeting)
 
-
-
   useEffect(() => {
-    axios.get('/profile/weight')
-      .then(({ data }) => {
-        setWeight(data.weight)
-        console.log(data.weight, 'HEYYYYY')
-      })
+    axios.get('/profile/weight').then(({ data }) => {
+      setWeight(data.weight);
+      console.log(data.weight, 'HEYYYYY');
+    });
 
     // setWeight(weight)
-  }, [])
-
-
+  }, []);
 
   return (
     <div>
@@ -143,18 +149,29 @@ const Profile: React.FC = () => {
           <button type='button'>Submit</button>
         </div>
       </div>
+      {/* <div>
+        <StopwatchStats
+            //  optionGroups={optionGroups}
+             valueGroups={valueGroups}
+             onChange={handleChange} />
+      </div> */}
       <div>Weight: {weight} lbs</div>
       <div>
         <input
-        id='weight-input'
-        placeholder='update...' onChange={(event) => setWeightValue(Number(event.target.value))}
+          id='weight-input'
+          placeholder='update...'
+          onChange={(event) => setWeightValue(Number(event.target.value))}
+        ></input>
+        <button
+          type='button'
+          onClick={() => {
+            enterWeight(), setWeight(weightValue);
+          }}
         >
-        </input>
-        <button type='button' onClick={() => {enterWeight(), setWeight(weightValue)} }>Enter</button>
+          Enter
+        </button>
       </div>
-      {/* <div>
-        <div>New weight: {weight}</div>
-      </div> */}
+      {/* <Stopwatch weight={weight} /> */}
     </div>
   );
 };
