@@ -19,7 +19,7 @@ interface User {
   weight: number;
   location_lat?: number;
   location_lng?: number;
-  favAddresses?: number[] | undefined;
+  // favAddresses?: number[] | undefined;
 }
 
 //Authentication Imports
@@ -83,11 +83,12 @@ app.get('/logout', (req, res) => {
 
 // 7. Provides user context to every part of the client
 app.get('/auth/user', (req, res) => {
-  const user = req.user!;
-  console.log("USRE", user);
+  // const user = req.user;
+  const user = req.user as User;
   prisma.user
     .findFirst({
-      where: user!,
+      // where: user!,
+      where: { email: user.email },
     })
     .then((result) => {
       res.status(200).send(result);
@@ -110,7 +111,7 @@ app.use('/weather', WeatherRoute);
 // Routes to be used
 app.use('/bikeRoutes', BikeRoutes);
 app.use('/reports', reportRouter);
-app.use('/profile', profileRouter)
+app.use('/profile', profileRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {
@@ -126,18 +127,17 @@ interface UpdateUserData extends User {
 app.put('/home/user/:id', async (req, res) => {
   const { id } = req.params;
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
-    try {
-      const updatedUser = await prisma.user.update({
-        where: {id: parseInt(id)}, // use the ID of the authenticated user
-        data: { location_lat, location_lng } as UpdateUserData
-      });
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) }, // use the ID of the authenticated user
+      data: { location_lat, location_lng } as UpdateUserData,
+    });
 
-      res.status(200).json(updatedUser);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to update user data' });
-    }
-  });
-
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user data' });
+  }
+});
 
 //Listening
 app.listen(PORT, () =>

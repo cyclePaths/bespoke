@@ -5,7 +5,9 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "thumbnail" TEXT,
     "weight" INTEGER,
-    "favAddresses" INTEGER[],
+    "reports" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "favAddresses" TEXT[],
+    "homeAddress" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

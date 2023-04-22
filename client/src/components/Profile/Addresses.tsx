@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Address } from './Profile';
-import { SelectedAddress } from './Profile';
+import axios from 'axios';
+import { Address, SelectedAddress, HomeAddress } from './Profile';
+// import { SelectedAddress } from './Profile';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import {
   geocodeByAddress,
@@ -16,15 +17,19 @@ Instructions for react places autocomplete came from https://www.npmjs.com/packa
 interface AddressesProps {
   address: Address;
   setAddress: React.Dispatch<React.SetStateAction<Address>>;
-}
-//bringing over props from Profile.tsx
-interface AddressesProps {
   selectedAddress: SelectedAddress;
   setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;
+  homeAddress: HomeAddress;
+  setHomeAddress: React.Dispatch<React.SetStateAction<HomeAddress>>;
 }
+//bringing over props from Profile.tsx
+// interface AddressesProps {
+//   selectedAddress: SelectedAddress;
+//   setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;
+// }
 
 function Addresses(props: AddressesProps) {
-  const { address, setAddress, selectedAddress, setSelectedAddress } = props;
+  const { address, setAddress, selectedAddress, setSelectedAddress, homeAddress, setHomeAddress } = props;
 
   //setting state on change
   const handleChange = useCallback(address => {
@@ -33,23 +38,51 @@ function Addresses(props: AddressesProps) {
   }, []);
 
     //setting state on select of address. This also clears the input box and removes focus
-  const handleSelect = useCallback(address => {
-    geocodeByAddress(address)
-      .then((results) => {getLatLng(results[0])})
-      .then((latLng) => {
+    const handleSelect = useCallback(async (address) => {
+      try {
+        const results = await geocodeByAddress(address);
+        const latLng = await getLatLng(results[0]);
         setSelectedAddress(address);
-        setAddress('');
+     setAddress('');
         const input = document.getElementById('address-input');
-      if (input instanceof HTMLInputElement) {
-        input.blur();
+        if (input instanceof HTMLInputElement) {
+          input.blur();
+        }
+      } catch (err) {
+        console.log('Error', err);
       }
+    }, []);
+
+
+    const saveHome = () => {
+      axios.post('/profile/address', {
+        address: selectedAddress
       })
-      .catch((err) => (console.log('Error', err)));
-  }, []);
+
+        .then(() => {
+          console.log(selectedAddress, 'ADDRESS')
+          setHomeAddress(`My home is ${selectedAddress}`);
+          setSelectedAddress('');
+        })
+        .catch((err) => {
+          console.log('Failed to post address', err);
+        })
+    }
+
+    useEffect(() => {
+      axios.get('/profile/address')
+        .then(({ data }) => {
+          setHomeAddress(`My home is ${data.homeAddress}`);
+console.log(data, 'Please')
+
+        })
+    }, [homeAddress])
+
 
 
   return (
 <div>
+  <div>{homeAddress}</div>
     <PlacesAutocomplete
       value={address}
       onChange={handleChange}
@@ -88,10 +121,12 @@ function Addresses(props: AddressesProps) {
         </div>
       )}
     </PlacesAutocomplete>
-    <div>
-      <button type='button' style={{marginTop: '10px'}}>Favorite</button>
-    </div>
+
     <div>{selectedAddress}</div>
+
+    <div>
+      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
+    </div>
 
     </div>
   );

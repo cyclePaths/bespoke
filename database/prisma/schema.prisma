@@ -14,8 +14,9 @@ model User {
   thumbnail     String?
   weight        Int?
   createdRoutes BikeRoutes[]
-  favAddresses  Int[]
   reports       String[]     @default([])
+  favAddresses  String[]
+  homeAddress   String?
 }
 
 model Report {
