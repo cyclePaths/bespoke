@@ -83,10 +83,12 @@ app.get('/logout', (req, res) => {
 
 // 7. Provides user context to every part of the client
 app.get('/auth/user', (req, res) => {
-  const user = req.user;
+  // const user = req.user;
+  const user = req.user as User;
   prisma.user
     .findFirst({
-      where: user!,
+      // where: user!,
+      where: { email: user.email },
     })
     .then((result) => {
       res.status(200).send(result);

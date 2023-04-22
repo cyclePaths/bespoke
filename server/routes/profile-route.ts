@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  console.log(req.body.user, ' hello');
+  // console.log(req.body.user, ' hello');
 
   res.send('hello world');
   // try {
@@ -28,7 +28,7 @@ profileRouter.get('/calories', (req, res) => {
 profileRouter.post('/weight', async (req: Request, res: Response) => {
   try {
     const { weight } = req.body;
-    const { id, email, name, thumbnail, favAddresses } = req.user as User || {};
+    const { id, email, name, thumbnail, favAddresses, homeAddress } = req.user as User || {};
 
     const userData: User = {
       id,
@@ -36,7 +36,8 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       name,
       thumbnail,
       weight,
-      favAddresses
+      favAddresses,
+      homeAddress,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -73,6 +74,61 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
     res.status(200).send(weightValue);
   } catch (err) {
     console.log('Failed to get weight', err);
+    res.sendStatus(500);
+  }
+})
+
+
+profileRouter.post('/address', async (req: Request, res: Response) => {
+  console.log(req.body)
+  try {
+    const { address } = req.body;
+    const { id, email, name, thumbnail, favAddresses, homeAddress, weight } = req.user as User || {};
+
+    const userData: User = {
+      id,
+      email,
+      name,
+      thumbnail,
+      weight,
+      favAddresses,
+      homeAddress,
+    };
+
+    const updateAddress = await prisma.user.upsert({
+      where: {
+        id: id,
+      },
+      update: {
+        homeAddress: address,
+      },
+      create: {
+        ...userData,
+        homeAddress: address,
+      },
+    });
+    res.status(201).send(updateAddress);
+  } catch (err) {
+    console.log('Failed to update address', err);
+    res.sendStatus(500);
+  }
+})
+
+profileRouter.get('/address', async (req: Request, res: Response) => {
+  console.log(req.user)
+
+  try {
+    const { id } = req.user as User || {};
+    // const { id, email, name, thumbnail } = (req.user as User) || {};
+    const address = await prisma.user.findUnique({
+
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send(address);
+  } catch (err) {
+    console.log('Failed to get address', err);
     res.sendStatus(500);
   }
 })
