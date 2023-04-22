@@ -17,6 +17,7 @@ const RouteButton = styled.button`
 
 const ForecastRowContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const WeatherIcon = styled.img`
@@ -27,17 +28,22 @@ const WeatherIcon = styled.img`
 
 const ForecastBit = styled.div`
   display: flex;
-  position: relative;
+  align-items: center;
+`;
+
+const ForecastText = styled.p`
+  margin: 0;
 `;
 
 const ForecastHelperIcon = styled.img`
-  display: flex;
+  margin-left: -13px;
   height: 45px;
-  width: 45px;
+  width: 46px;
 `;
 
 export {
   ForecastBit,
+  ForecastText,
   ForecastHelperIcon,
   InputLayout,
   DropdownLayout,

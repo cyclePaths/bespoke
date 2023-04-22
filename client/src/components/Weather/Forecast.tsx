@@ -1,6 +1,11 @@
 import React from 'react';
 import { Hourly } from '../../Root';
-import { WeatherIcon, ForecastBit, ForecastHelperIcon } from '../../StyledComp';
+import {
+  WeatherIcon,
+  ForecastBit,
+  ForecastText,
+  ForecastHelperIcon,
+} from '../../StyledComp';
 import { weatherIcons } from '../../../assets';
 
 interface ForecastProps extends Hourly {
@@ -54,19 +59,23 @@ const Forecast = ({
       </div>
       <ForecastBit>Weather Description: {weatherDescription}</ForecastBit>
       <ForecastBit>
-        Precipitation Chance: {precipitationProbability}{' '}
+        <ForecastText>
+          Precipitation Chance: {precipitationProbability}
+        </ForecastText>
         <ForecastHelperIcon src={weatherIcons.misc.humidity} />
       </ForecastBit>
       <ForecastBit>
-        Temperature: {temperature} <ForecastHelperIcon src={temperatureUnit} />
+        <ForecastText>Temperature: {temperature}</ForecastText>
+        <ForecastHelperIcon src={temperatureUnit} />
       </ForecastBit>
-      <div>
-        Feels Like (Apparent Temperature): {apparentTemperature}
-        <img src={temperatureUnit} />
-      </div>
-      <div>
-        Humidity: {humidity} <img src={weatherIcons.misc.humidity} />
-      </div>
+      <ForecastBit>
+        <ForecastText>Adj Temp: {apparentTemperature}</ForecastText>
+        <ForecastHelperIcon src={temperatureUnit} />
+      </ForecastBit>
+      <ForecastBit>
+        <ForecastText>Humidity: {humidity}</ForecastText>
+        <ForecastHelperIcon src={weatherIcons.misc.humidity} />
+      </ForecastBit>
     </div>
   );
 };
