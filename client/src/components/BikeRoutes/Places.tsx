@@ -10,9 +10,16 @@ import { InputLayout, DropdownLayout, RouteButton } from '../../StyledComp';
 type PlaceProps = {
   setStartingPoint: (position: google.maps.LatLngLiteral) => void;
   saveRoute: () => void;
+  fetchDirections: (position: google.maps.LatLngLiteral) => void;
+  selected: google.maps.LatLngLiteral | undefined;
 };
 
-const Places = ({ setStartingPoint, saveRoute }: PlaceProps) => {
+const Places = ({
+  setStartingPoint,
+  saveRoute,
+  fetchDirections,
+  selected,
+}: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
   // Handle the input box //
@@ -38,6 +45,10 @@ const Places = ({ setStartingPoint, saveRoute }: PlaceProps) => {
     saveRoute();
   };
 
+  const handleRoute = (): void => {
+    fetchDirections(selected!);
+  };
+
   return (
     <div>
       <PlacesAutocomplete
@@ -54,8 +65,10 @@ const Places = ({ setStartingPoint, saveRoute }: PlaceProps) => {
                 className: 'location-search-input',
               })}
             />
-
-            <RouteButton onClick={handleSave}>Save Create Route</RouteButton>
+            <div>
+              <RouteButton onClick={handleRoute}>Track Route</RouteButton>
+              <RouteButton onClick={handleSave}>Save Create Route</RouteButton>
+            </div>
 
             <DropdownLayout>
               {loading && <div>Loading...</div>}

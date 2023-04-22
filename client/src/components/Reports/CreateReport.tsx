@@ -14,6 +14,7 @@ interface Report {
   location_lng: number;
 }
 
+
 const CreateReport = () => {
   // reports must be array of Report objects
   const [reports, setReports] = useState<Report[]>([]);

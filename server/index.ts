@@ -9,6 +9,7 @@ import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
+import profileRouter from './routes/profile-route';
 
 interface User {
   id: number;
@@ -105,6 +106,7 @@ app.use('/weather', WeatherRoute);
 // Routes to be used
 app.use('/bikeRoutes', BikeRoutes);
 app.use('/createReport', reportRouter);
+app.use('/profile', profileRouter)
 
 // Render All Pages
 app.get('*', (req, res) => {
