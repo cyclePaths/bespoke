@@ -13,10 +13,11 @@ WeatherRoute.get('/forecast', (req, res) => {
     longitude,
     numDaysToForecast,
   } = req.query;
-  // console.log('forecast request received!');
+  //first request, done exclusively to get timezone
   axios
+    //note can add '&daily=sunrise&daily=sunset' to endpoint so that sunrise/set and moonrise/set icons can be used, but need timezone to get these; can have user set and then add in to endpoint with '&timezone=<timezone>'
     .get(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&daily=sunrise&daily=sunset&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day`
     )
     .then(({ data }) => {
       // console.log(data.hourly.time[1].slice(11, 13));
@@ -28,28 +29,6 @@ WeatherRoute.get('/forecast', (req, res) => {
         is_day: data.current_weather.is_day,
         time: data.current_weather.time,
       };
-      // console.log(
-      //   'Here is a Current Weather object from the data received via the GET request: ',
-      //   {
-      //     temperature: data.current_weather.temperature,
-      //     windspeed: data.current_weather.windspeed,
-      //     winddirection: data.current_weather.winddirection,
-      //     weatherdescription: weatherCodes[data.current_weather.weathercode],
-      //     is_day: data.current_weather.is_day,
-      //     time: data.current_weather.time,
-      //   }
-      // );
-      // console.log(
-      //   'Here is a Measurement Units object from the data received via the GET request: ',
-      //   {
-      //     temperature: data.hourly_units.temperature,
-      //     speed: data.hourly_units.windspeed_10m,
-      //     precipitation: data.hourly_units.precipitation,
-      //     visibility: data.hourly_units.visibility,
-      //     depth: data.hourly_units.snow_depth,
-      //   }
-      // );
-
       const hourly = new Array(24).fill(0).map(() => ({
         time: new Date(),
         temperature: 0,
@@ -96,9 +75,17 @@ WeatherRoute.get('/forecast', (req, res) => {
           }
         });
       }
+      console.log('this should be the sunrise date: ', data.daily.sunrise[0]);
+      console.log('this should be the sunset date: ', data.daily.sunset[0]);
+      let sunriseHour = new Date(data.daily.sunrise[0]).getHours();
+      let sunsetHour = new Date(data.daily.sunset[0]).getHours();
+      console.log('this should be the sunrise hour: ', sunriseHour);
+      console.log('this should be the sunset hour: ', sunsetHour);
       const responseObj = {
         currentWeather: currentWeather,
         hourly: hourly,
+        sunriseHour: sunriseHour,
+        sunsetHour: sunsetHour,
       };
       res.status(200).send(responseObj);
     })

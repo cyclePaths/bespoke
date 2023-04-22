@@ -29,27 +29,29 @@ export interface MeasurementUnits {
 }
 
 export interface Hourly {
-  time?: Date;
-  temperature?: number;
-  humidity?: number;
-  apparentTemperature?: number;
-  cloudcover?: number;
-  windspeed?: number;
-  precipitation?: number;
-  snowfall?: number;
-  precipitationProbability?: number;
-  rain?: number;
-  showers?: number;
-  weatherDescription?: string;
-  snowDepth?: number;
-  visibility?: number;
-  isDay?: Boolean;
+  time: Date;
+  temperature: number;
+  humidity: number;
+  apparentTemperature: number;
+  cloudcover: number;
+  windspeed: number;
+  precipitation: number;
+  snowfall: number;
+  precipitationProbability: number;
+  rain: number;
+  showers: number;
+  weatherDescription: string;
+  snowDepth: number;
+  visibility: number;
+  isDay: Boolean;
 }
 
-export interface RootProps {
+export interface RootPropsToWeather {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
+  sunriseHour: number;
+  sunsetHour: number;
   hourlyForecasts: Hourly[];
   setHourlyForecasts?: (unit: Hourly[]) => void;
   setWindSpeedMeasurementUnit?: (unit: string) => void;
@@ -97,10 +99,10 @@ const Root = () => {
   }); //note: currentWeather is only going to be used on the home screen - everything else will just use the hourly breakdown
 
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
-
-  const latitude = 30.0; //will need to be able to update lat/long according to inputted location
-  const longitude = -90.17;
-  const numDaysToForecast = 1; //this is for if we implement a weekly weather report
+  const [sunriseHour, setSunriseHour] = useState<number>(0);
+  const [sunsetHour, setSunsetHour] = useState<number>(0);
+  //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
+  const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
   const getForecasts = () => {
     //axios request has been tested and is working; states are properly being set with objects containing the required values
     axios
@@ -109,12 +111,14 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: latitude,
-          longitude: longitude,
+          latitude: 30.0,
+          longitude: -90.17,
           numDaysToForecast: numDaysToForecast,
         },
       })
       .then(({ data }) => {
+        setSunriseHour(data.sunriseHour);
+        setSunsetHour(data.sunsetHour);
         setCurrentWeather(data.currentWeather);
         setHourlyForecasts(data.hourly);
       })
@@ -170,31 +174,29 @@ const Root = () => {
   const updateUserLocation = () => {
     const { id } = user;
     const updatedData = {
-      location_lat: geoLocation.location_lat,
-      location_lng: geoLocation.location_lng
+      location_lat: geoLocation.lat,
+      location_lng: geoLocation.lng,
     };
 
     axios
-    .put(`/home/user/${id}`, updatedData)
-    .then((result) => {
-      setUser(result.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  }
-
+      .put(`/home/user/${id}`, updatedData)
+      .then((result) => {
+        setUser(result.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   useEffect(() => {
-    if(user.id && geoLocation){
+    if (user.id && geoLocation) {
       updateUserLocation();
     }
-  }, [user, geoLocation])
-
+  }, [user, geoLocation]);
 
   useEffect(() => {
     getForecasts();
-   findContext();
+    findContext();
   }, []);
 
   return (
@@ -213,6 +215,8 @@ const Root = () => {
                     windSpeedMeasurementUnit={windSpeedMeasurementUnit}
                     temperatureMeasurementUnit={temperatureMeasurementUnit}
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
+                    sunriseHour={sunriseHour}
+                    sunsetHour={sunsetHour}
                     hourlyForecasts={hourlyForecasts}
                     setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
                     setTemperatureMeasurementUnit={

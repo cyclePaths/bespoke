@@ -1,18 +1,20 @@
 import React from 'react';
 import ForecastRow from './ForecastRow';
-import { RootProps } from '../../Root';
+import { RootPropsToWeather } from '../../Root';
 import { Hourly } from '../../Root';
 
 const Weather = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  sunriseHour,
+  sunsetHour,
   hourlyForecasts,
   setWindSpeedMeasurementUnit,
   setTemperatureMeasurementUnit,
   setPrecipitationMeasurementUnit,
   getForecasts,
-}: RootProps) => {
+}: RootPropsToWeather) => {
   //need to break up hourly forecasts into chunks of 4 forecasts each for the ForecastRow to map through
 
   let forecastRowArrays: Hourly[][] = [];
@@ -29,20 +31,14 @@ const Weather = ({
   });
   forecastRowArrays.push(forecastArray);
 
-  // let counter = 0;
-  // let hourlyIndex = 0;
-  // for(let i = 0; i < 6; i++){
-  //   let start = hourlyIndex;
-  //   let forecastRow = []
-  //   for(let i = start; i < start + 4; i++){
-  //     hourlyIndex = i;
-  //     forecastRow.push(hourlyForecasts[i]);
-  //   }
-  // }
+  const clickTest = () => {
+    console.log('this is the sunrise hour: ', sunriseHour);
+    console.log('this is the sunset hour: ', sunsetHour);
+  };
 
   return (
     <div>
-      <button onClick={getForecasts}>Get Forecast Data</button>
+      <button onClick={clickTest}>Sunrise and Sunset times</button>
       {forecastRowArrays.map((weatherRow, i) => {
         return (
           <ForecastRow
@@ -50,6 +46,8 @@ const Weather = ({
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
+            sunriseHour={sunriseHour}
+            sunsetHour={sunsetHour}
             rowData={weatherRow}
           />
         );
