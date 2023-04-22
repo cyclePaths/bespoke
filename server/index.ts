@@ -88,18 +88,12 @@ app.get('/auth/user', (req, res) => {
       where: user!,
     })
     .then((result) => {
-      console.log(result);
       res.status(200).send(result);
     })
     .catch((err) => {
       console.error(err);
     });
 });
-
-// PATCH USER
-app.put('/auth/user', (req, res) => {
-  console.log(UserContext);
-})
 
 // Middleware
 const CLIENT_PATH = path.resolve(__dirname, '../client/dist/');
@@ -119,6 +113,22 @@ app.use('/reports', reportRouter);
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('client', 'dist', 'index.html'));
 });
+
+// UPDATE USER
+app.put('/home/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {id: parseInt(id)}, // use the ID of the authenticated user
+        data: { location_lat, location_lng }
+      });
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update user data' });
+    }
+  });
+
 
 //Listening
 app.listen(PORT, () =>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 
@@ -15,6 +15,7 @@ interface Report {
   location_lng?: number;
 }
 
+
 const CreateReport = () => {
   // reports must be array of Report objects
   const [reports, setReports] = useState<Report[]>([]);
@@ -27,6 +28,7 @@ const CreateReport = () => {
   } | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  const user = useContext(UserContext);
 
 
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +45,6 @@ const CreateReport = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Submit attempted");
     try {
       if (!currentLocation) {
         throw new Error('Current location not available');
@@ -64,14 +65,13 @@ const CreateReport = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         published: false,
-        id: reports.length + 1,
+        id: reports.length + 1
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
-      // find out what error can be
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -80,10 +80,8 @@ const CreateReport = () => {
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
-    console.log(UserContext);
     let interval: any | undefined;
     if (navigator.geolocation) {
-      console.log("Getting location");
       interval = setInterval(() => {
         if (!navigator.geolocation) {
           setError('Geolocation is not supported by this browser.');
@@ -113,14 +111,6 @@ const CreateReport = () => {
 
   return (
     <div>
-      {error && <p>{error}</p>}
-      <div>
-        <h1>
-          Current Location:{' '}
-          {currentLocation
-            ? `${currentLocation.lat}, ${currentLocation.lng}`
-            : 'N/A'}
-        </h1>
         <form onSubmit={handleSubmit}>
           <input
             id='report-type-input'
@@ -137,19 +127,6 @@ const CreateReport = () => {
           <input type='file' accept='image/*' onChange={handleImage} />
           <input type='submit' value='submit' />
         </form>
-        <div>
-          <h2>Reports:</h2>
-          {reports.map((report) => (
-            <div key={report.id}>
-              <p>Type: {report.type}</p>
-              <p>Body: {report.body}</p>
-              <p>
-                Location: {report.location_lat}, {report.location_lng}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
