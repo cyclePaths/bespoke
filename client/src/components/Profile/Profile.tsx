@@ -10,6 +10,7 @@ import { exiledRedHeadedStepChildrenOptionGroups, exiledRedHeadedStepChildrenVal
 //Setting state types
 export type Address = string;
 export type SelectedAddress = string;
+export type HomeAddress = string;
 
 // const optionGroups = {};
 // const valueGroups = {};
@@ -32,6 +33,7 @@ const Profile: React.FC = () => {
   //setting state with hooks
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
+  const [homeAddress, setHomeAddress] = useState('');
   const [greeting, setGreeting] = useState('');
   const [currentUser, setCurrentUser] = useState('');
   const [weightValue, setWeightValue] = useState(0);
@@ -92,27 +94,14 @@ const Profile: React.FC = () => {
       });
     }
 
-    // const saveHome = () => {
-    //   axios.post('/profile/address', {
-    //     address: address
-    //   })
-    //     .then(() => {
-
-    //     })
-    //     .catch((err) => {
-    //       console.log('Failed to post address', err);
-    //     })
-    // }
-
-
 
 
   const user = useContext(UserContext);
 
-  console.log(user)
+  // console.log(user)
 
   let userGreeting = `Hello ${user.name}`
-  console.log(userGreeting)
+  // console.log(userGreeting)
 
 
 
@@ -137,6 +126,8 @@ const Profile: React.FC = () => {
           setAddress={setAddress}
           selectedAddress={selectedAddress}
           setSelectedAddress={setSelectedAddress}
+          homeAddress={homeAddress}
+          setHomeAddress={setHomeAddress}
         />
       </div>
       <div

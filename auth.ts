@@ -34,7 +34,7 @@ passport.use(
             name: profile.displayName,
             thumbnail: undefined,
             weight: undefined,
-            favAddresses: null,
+            favAddresses: undefined,
             homeAddress: undefined,
           };
           const newUser = await prisma.user.create({
