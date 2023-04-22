@@ -9,7 +9,7 @@ import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
-import { UserContext } from '../client/src/Root';
+import profileRouter from './routes/profile-route';
 
 interface User {
   id: number;
@@ -107,7 +107,8 @@ app.use('/weather', WeatherRoute);
 
 // Routes to be used
 app.use('/bikeRoutes', BikeRoutes);
-app.use('/reports', reportRouter);
+app.use('/createReport', reportRouter);
+app.use('/profile', profileRouter)
 
 // Render All Pages
 app.get('*', (req, res) => {
@@ -115,14 +116,21 @@ app.get('*', (req, res) => {
 });
 
 // UPDATE USER
+interface UpdateUserData extends User {
+  location_lat?: number;
+  location_lng?: number;
+}
+
+
 app.put('/home/user/:id', async (req, res) => {
   const { id } = req.params;
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
     try {
       const updatedUser = await prisma.user.update({
         where: {id: parseInt(id)}, // use the ID of the authenticated user
-        data: { location_lat, location_lng }
+        data: { location_lat, location_lng } as UpdateUserData
       });
+
       res.status(200).json(updatedUser);
     } catch (error) {
       res.status(500).json({ error: 'Failed to update user data' });

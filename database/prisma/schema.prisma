@@ -14,8 +14,7 @@ model User {
   thumbnail     String?
   weight        Int?
   createdRoutes BikeRoutes[]
-  location_lat  Float?
-  location_lng  Float?
+  favAddresses  Int[]
 }
 
 model Report {
@@ -39,12 +38,12 @@ model Bulletin {
 }
 
 model BikeRoutes {
-  id        Int      @id @default(autoincrement())
-  startLat  Decimal
-  startLng  Decimal
-  endLat    Decimal
-  endLng    Decimal
-  createdAt DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  origin      Decimal[]
+  destination Decimal[]
+  createdAt   DateTime  @default(now())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
 }
+
+

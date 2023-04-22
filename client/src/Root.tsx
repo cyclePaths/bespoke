@@ -7,10 +7,9 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
-import RouteM from './components/BikeRoutes/RouteM';
 import Stopwatch from './components/Stopwatch';
+import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
-
 
 export interface CurrentWeather {
   temperature: number;
@@ -74,7 +73,7 @@ export interface User {
   location_lng?: number;
 }
 
-export const UserContext = createContext<User | undefined>(undefined);
+export const UserContext = createContext<User>(Object());
 
 const Root = () => {
   // Created User Info and Geolocation for context //
@@ -195,8 +194,7 @@ const Root = () => {
 
   useEffect(() => {
     getForecasts();
-    getLocation();
-    findContext();
+   findContext();
   }, []);
 
   return (

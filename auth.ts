@@ -11,7 +11,6 @@ interface CreateUser {
   weight?: number;
 }
 
-//This imports the strategy and sets its configuration
 passport.use(
   new GoogleStrategy(
     {

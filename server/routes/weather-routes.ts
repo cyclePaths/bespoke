@@ -1,37 +1,8 @@
 import express from 'express';
 import axios from 'axios';
+import { weatherCodes } from '../server-assets';
 
 export const WeatherRoute = express.Router();
-
-const weatherCodes = {
-  //these are what each of the weather codes mean; no codes should be missing even though there are gaps between numbers
-  0: 'Clear Sky',
-  1: 'Mainly Clear',
-  2: 'Partly Cloudy',
-  3: 'Overcast',
-  45: 'Fog',
-  48: 'Depositing Rime Fog',
-  51: 'Light Drizzle',
-  53: 'Moderate Drizzle',
-  55: 'Dense Drizzle',
-  56: 'Light Freezing Drizzle',
-  57: 'Dense Freezing Drizzle',
-  61: 'Light Rain',
-  63: 'Moderate Rain',
-  65: 'Heavy Rain',
-  71: 'Light Snow',
-  73: 'Moderate Snow',
-  75: 'Heavy Snow',
-  77: 'Snow Grains',
-  80: 'Light Showers',
-  81: 'Moderate Showers',
-  82: 'Violent Showers',
-  85: 'Light Snow Showers',
-  86: 'Heavy Snow Showers',
-  95: 'Thunderstorm',
-  96: 'Thunderstorm With Light Hail',
-  99: 'Thunderstorm with Heavy Hail',
-};
 
 WeatherRoute.get('/forecast', (req, res) => {
   const {
@@ -42,7 +13,7 @@ WeatherRoute.get('/forecast', (req, res) => {
     longitude,
     numDaysToForecast,
   } = req.query;
-  console.log('forecast request received!');
+  // console.log('forecast request received!');
   axios
     .get(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day`
