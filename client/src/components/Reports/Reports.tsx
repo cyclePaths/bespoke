@@ -33,9 +33,10 @@ const Reports: React.FC = () => {
 
         const infoWindow = new google.maps.InfoWindow({
           content: `<div>
-            <p>Type: ${report.type}</p>
-            <p>Title: ${report.title}</p>
-            <p>Body: ${report.body}</p>
+            <p>${report.type}</p>
+            <p>${report.title}</p>
+            <p>${report.body}</p>
+            <p>${report.createdAt}</p>
           </div>`
         });
 
@@ -45,6 +46,10 @@ const Reports: React.FC = () => {
 
         return marker;
       });
+
+      const bounds = new google.maps.LatLngBounds();
+      markers.forEach((marker) => bounds.extend(marker.getPosition()));
+      map.fitBounds(bounds);
     }
   }, [map, reports]);
 
@@ -73,7 +78,6 @@ const Reports: React.FC = () => {
     <div>
       <GoogleMap
         mapContainerStyle={{ height: '250px', width: '395px' }}
-        zoom={10}
         onLoad={onLoad}
       />
 
