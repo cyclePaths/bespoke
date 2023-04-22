@@ -88,7 +88,11 @@ function Addresses(props: AddressesProps) {
         </div>
       )}
     </PlacesAutocomplete>
+    <div>
+      <button type='button' style={{marginTop: '10px'}}>Favorite</button>
+    </div>
     <div>{selectedAddress}</div>
+
     </div>
   );
 }
