@@ -9,6 +9,7 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
+import Reports from './components/Reports/Reports';
 
 export interface CurrentWeather {
   temperature: number;
@@ -68,6 +69,8 @@ export interface User {
   name?: string;
   thumbnail?: any;
   weight?: any;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 export const UserContext = createContext<User>(Object());
@@ -76,6 +79,7 @@ const Root = () => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>({});
   const [geoLocation, setGeoLocation] = useState<any>();
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
@@ -133,6 +137,61 @@ const Root = () => {
       });
   };
 
+  const getLocation = () => {
+    let interval: any | undefined;
+    if (navigator.geolocation) {
+      interval = setInterval(() => {
+        if (!navigator.geolocation) {
+          setError('Geolocation is not supported by this browser.');
+          clearInterval(interval!);
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setGeoLocation({ lat: latitude, lng: longitude });
+            clearInterval(interval!);
+            interval = null;
+          },
+          (error) => setError(error.message)
+        );
+      }, 1000);
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+  };
+
+  const updateUserLocation = () => {
+    const { id } = user;
+    const updatedData = {
+      location_lat: geoLocation.location_lat,
+      location_lng: geoLocation.location_lng
+    };
+
+    axios
+    .put(`/home/user/${id}`, updatedData)
+    .then((result) => {
+      setUser(result.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  }
+
+
+  useEffect(() => {
+    if(user.id && geoLocation){
+      updateUserLocation();
+    }
+  }, [user, geoLocation])
+
+
   useEffect(() => {
     getForecasts();
    findContext();
@@ -168,6 +227,8 @@ const Root = () => {
               />
               <Route path='profile' element={<Profile />} />
               <Route path='createReport' element={<CreateReport />} />
+              <Route path='reports' element={<Reports />} />
+
               <Route path='stopwatch' element={<Stopwatch />} />
             </Route>
           </Routes>
