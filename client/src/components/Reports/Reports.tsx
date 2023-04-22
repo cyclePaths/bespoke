@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Report } from '@prisma/client';
 
-type Report = {
-  id: number;
-  title: string;
-  body: string;
-  type: string;
-};
 
 const Reports: React.FC = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -25,13 +20,19 @@ const Reports: React.FC = () => {
 
   return (
     <div>
-      <ul>
-        {reports.map((report) => (
-          <li key={report.id}>
-            <p>{report.title}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <h2>Reports:</h2>
+    {reports.map((report) => (
+      <div key={report.id}>
+        <p>Type: {report.type}</p>
+        <p>Body: {report.body}</p>
+        <p>
+          Location: {report.location_lat}, {report.location_lng}
+        </p>
+      </div>
+    ))}
+  </div>
   );
 };
+
+export default Reports;
+
