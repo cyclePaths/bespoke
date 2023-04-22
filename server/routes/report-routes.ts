@@ -19,7 +19,7 @@ reportRouter.get('/', async (req, res) => {
 
 // GET BY ID
 reportRouter.get('/:id', async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   try {
     const post = await prisma.report.findUnique({
       where: {
@@ -40,12 +40,11 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 //  POST a new Report
 reportRouter.post('/', async (req, res) => {
   try {
-    const { id, body, type, title, location_lat, location_lng } = req.body;
-    const data: Omit<Report, "id"> = {
+    const { body, type, title, location_lat, location_lng } = req.body;
+    const data = {
       body,
       type,
       title,
-      createdAt: new Date(),
       updatedAt: new Date(),
       published: false,
       location_lat,
@@ -64,7 +63,7 @@ reportRouter.post('/', async (req, res) => {
 
 //  DELETE a report by ID
 reportRouter.delete('/:id', async (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   try {
     const deletedPost = await prisma.report.delete({
       where: {

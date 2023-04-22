@@ -15,10 +15,11 @@ model User {
   weight        Int?
   createdRoutes BikeRoutes[]
   favAddresses  Int[]
+  reports       String[]     @default([])
 }
 
 model Report {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   title        String?
   body         String?
   type         String?
@@ -45,5 +46,3 @@ model BikeRoutes {
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
 }
-
-

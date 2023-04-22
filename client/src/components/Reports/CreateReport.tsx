@@ -4,10 +4,9 @@ import { UserContext } from '../../Root';
 
 // define report object
 interface Report {
-  id: number;
-  title?: string;
   body?: string;
   type?: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   published: boolean;
@@ -15,12 +14,12 @@ interface Report {
   location_lng?: number;
 }
 
-
 const CreateReport = () => {
   // reports must be array of Report objects
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
@@ -30,9 +29,12 @@ const CreateReport = () => {
 
   const user = useContext(UserContext);
 
-
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
+  };
+
+  const handleTitleText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
   };
 
   const handleBodyText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,20 +54,21 @@ const CreateReport = () => {
       const formData = new FormData();
       formData.append('body', body);
       formData.append('type', type);
+      formData.append('title', title);
       formData.append('latitude', currentLocation.lat.toString());
       formData.append('longitude', currentLocation.lng.toString());
       if (image) {
         formData.append('image', image);
       }
-      const reportData: Report = {
+      const reportData: Omit<Report, 'id'> = {
         body,
         type,
+        title,
         location_lat: currentLocation!.lat,
         location_lng: currentLocation!.lng,
         createdAt: new Date(),
         updatedAt: new Date(),
         published: false,
-        id: reports.length + 1
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
@@ -111,22 +114,35 @@ const CreateReport = () => {
 
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            id='report-type-input'
-            type='text'
-            placeholder='Report Type'
-            onChange={handleTypeText}
-          />
-          <input
-            id='report-body-input'
-            type='text'
-            placeholder='Comments'
-            onChange={handleBodyText}
-          />
-          <input type='file' accept='image/*' onChange={handleImage} />
-          <input type='submit' value='submit' />
-        </form>
+      <div>
+        <p>
+          {currentLocation
+            ? `Current location: ${currentLocation.lat}, ${currentLocation.lng}`
+            : 'Getting Current Location...'}
+        </p>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          id='report-type-input'
+          type='text'
+          placeholder='Report Type'
+          onChange={handleTypeText}
+        />
+        <input
+          id='report-title-input'
+          type='text'
+          placeholder='Report Title'
+          onChange={handleTitleText}
+        />
+        <input
+          id='report-body-input'
+          type='text'
+          placeholder='Comments'
+          onChange={handleBodyText}
+        />
+        <input type='file' accept='image/*' onChange={handleImage} />
+        <input type='submit' value='submit' />
+      </form>
     </div>
   );
 };

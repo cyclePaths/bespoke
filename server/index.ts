@@ -19,6 +19,7 @@ interface User {
   weight: number;
   location_lat?: number;
   location_lng?: number;
+  favAddresses?: number[] | undefined;
 }
 
 //Authentication Imports
@@ -82,7 +83,8 @@ app.get('/logout', (req, res) => {
 
 // 7. Provides user context to every part of the client
 app.get('/auth/user', (req, res) => {
-  const user = req.user;
+  const user = req.user!;
+  console.log("USRE", user);
   prisma.user
     .findFirst({
       where: user!,
@@ -107,7 +109,7 @@ app.use('/weather', WeatherRoute);
 
 // Routes to be used
 app.use('/bikeRoutes', BikeRoutes);
-app.use('/createReport', reportRouter);
+app.use('/reports', reportRouter);
 app.use('/profile', profileRouter)
 
 // Render All Pages
@@ -120,7 +122,6 @@ interface UpdateUserData extends User {
   location_lat?: number;
   location_lng?: number;
 }
-
 
 app.put('/home/user/:id', async (req, res) => {
   const { id } = req.params;
