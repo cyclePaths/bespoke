@@ -17,6 +17,7 @@ interface User {
   name: string;
   thumbnail: string;
   weight: number;
+  // favAddresses?: string[];
   location_lat?: number;
   location_lng?: number;
 }
@@ -121,6 +122,7 @@ app.get('*', (req, res) => {
 interface UpdateUserData extends User {
   location_lat?: number;
   location_lng?: number;
+  // favAddresses?: string[];
 }
 
 

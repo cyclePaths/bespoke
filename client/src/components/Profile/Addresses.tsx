@@ -60,9 +60,12 @@ function Addresses(props: AddressesProps) {
       })
 
         .then(() => {
-          console.log(selectedAddress, 'ADDRESS')
-          setHomeAddress(`My home is ${selectedAddress}`);
-          setSelectedAddress('');
+          // if (selectedAddress !== null) {
+            console.log(selectedAddress, 'ADDRESS')
+            setHomeAddress(`My home is ${selectedAddress}`);
+            setSelectedAddress('');
+          // }
+
         })
         .catch((err) => {
           console.log('Failed to post address', err);
@@ -72,7 +75,12 @@ function Addresses(props: AddressesProps) {
     useEffect(() => {
       axios.get('/profile/address')
         .then(({ data }) => {
-          setHomeAddress(`My home is ${data.homeAddress}`);
+          if (data.homeAddress === null) {
+            setHomeAddress('');
+          } else {
+            setHomeAddress(`My home is ${data.homeAddress}`);
+          }
+
 console.log(data, 'Please')
 
         })
