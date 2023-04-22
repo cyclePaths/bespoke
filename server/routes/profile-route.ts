@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  console.log(req.body.user, ' hello');
+  // console.log(req.body.user, ' hello');
 
   res.send('hello world');
   // try {
@@ -28,7 +28,7 @@ profileRouter.get('/calories', (req, res) => {
 profileRouter.post('/weight', async (req: Request, res: Response) => {
   try {
     const { weight } = req.body;
-    const { id, email, name, thumbnail, favAddresses } = req.user as User || {};
+    const { id, email, name, thumbnail, favAddresses, homeAddress } = req.user as User || {};
 
     const userData: User = {
       id,
@@ -36,7 +36,8 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       name,
       thumbnail,
       weight,
-      favAddresses
+      favAddresses,
+      homeAddress,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -75,6 +76,9 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
     console.log('Failed to get weight', err);
     res.sendStatus(500);
   }
+})
+profileRouter.post('/address', async (req: Request, res: Response) => {
+  console.log(req.body)
 })
 
 

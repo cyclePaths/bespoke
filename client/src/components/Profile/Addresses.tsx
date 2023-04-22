@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import { Address } from './Profile';
 import { SelectedAddress } from './Profile';
 import PlacesAutocomplete from 'react-places-autocomplete';
@@ -37,15 +38,34 @@ function Addresses(props: AddressesProps) {
     geocodeByAddress(address)
       .then((results) => {getLatLng(results[0])})
       .then((latLng) => {
-        setSelectedAddress(address);
+        setSelectedAddress(address)
+      })
+      .then(useEffect(() => {
+        console.log(selectedAddress, 'SELECTEDADDRESS')
         setAddress('');
         const input = document.getElementById('address-input');
       if (input instanceof HTMLInputElement) {
         input.blur();
       }
-      })
+      }, [selectedAddress]))
+
       .catch((err) => (console.log('Error', err)));
   }, []);
+
+
+    const saveHome = () => {
+      axios.post('/profile/address', {
+        address: selectedAddress
+      })
+
+        .then(() => {
+          console.log(selectedAddress, 'ADDRESS')
+        })
+        .catch((err) => {
+          console.log('Failed to post address', err);
+        })
+    }
+
 
 
   return (
@@ -88,10 +108,12 @@ function Addresses(props: AddressesProps) {
         </div>
       )}
     </PlacesAutocomplete>
-    <div>
-      <button type='button' style={{marginTop: '10px'}}>Favorite</button>
-    </div>
+
     <div>{selectedAddress}</div>
+
+    <div>
+      <button type='button' style={{marginTop: '10px'}} onClick={saveHome}>Set Home</button>
+    </div>
 
     </div>
   );

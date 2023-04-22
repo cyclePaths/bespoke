@@ -90,9 +90,22 @@ const Profile: React.FC = () => {
       .catch((err) => {
         console.log('Failed to input weight', err)
       });
+    }
+
+    // const saveHome = () => {
+    //   axios.post('/profile/address', {
+    //     address: address
+    //   })
+    //     .then(() => {
+
+    //     })
+    //     .catch((err) => {
+    //       console.log('Failed to post address', err);
+    //     })
+    // }
 
 
-  }
+
 
   const user = useContext(UserContext);
 

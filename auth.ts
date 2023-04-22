@@ -9,6 +9,8 @@ interface CreateUser {
   name: string;
   thumbnail?: string;
   weight?: number;
+  favAddresses
+  homeAddress?: string;
 }
 
 passport.use(
@@ -32,6 +34,8 @@ passport.use(
             name: profile.displayName,
             thumbnail: undefined,
             weight: undefined,
+            favAddresses: null,
+            homeAddress: undefined,
           };
           const newUser = await prisma.user.create({
             data: newUserData as Prisma.UserCreateInput,
