@@ -28,7 +28,7 @@ profileRouter.get('/calories', (req, res) => {
 profileRouter.post('/weight', async (req: Request, res: Response) => {
   try {
     const { weight } = req.body;
-    const { id, email, name, thumbnail } = req.user as User || {};
+    const { id, email, name, thumbnail, favAddresses } = req.user as User || {};
 
     const userData: User = {
       id,
@@ -36,6 +36,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       name,
       thumbnail,
       weight,
+      favAddresses
     };
 
     const updateWeight = await prisma.user.upsert({
