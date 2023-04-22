@@ -17,6 +17,8 @@ interface User {
   name: string;
   thumbnail: string;
   weight: number;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 //Authentication Imports
@@ -80,10 +82,12 @@ app.get('/logout', (req, res) => {
 
 // 7. Provides user context to every part of the client
 app.get('/auth/user', (req, res) => {
-  const user = req.user;
+  // const user = req.user;
+  const user = req.user as User;
   prisma.user
     .findFirst({
-      where: user!,
+      // where: user!,
+      where: { email: user.email },
     })
     .then((result) => {
       res.status(200).send(result);
@@ -112,6 +116,29 @@ app.use('/profile', profileRouter)
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('client', 'dist', 'index.html'));
 });
+
+// UPDATE USER
+interface UpdateUserData extends User {
+  location_lat?: number;
+  location_lng?: number;
+}
+
+
+app.put('/home/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
+    try {
+      const updatedUser = await prisma.user.update({
+        where: {id: parseInt(id)}, // use the ID of the authenticated user
+        data: { location_lat, location_lng } as UpdateUserData
+      });
+
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update user data' });
+    }
+  });
+
 
 //Listening
 app.listen(PORT, () =>

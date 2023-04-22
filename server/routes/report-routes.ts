@@ -41,8 +41,7 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 reportRouter.post('/', async (req, res) => {
   try {
     const { id, body, type, title, location_lat, location_lng } = req.body;
-    const data: Report = {
-      id,
+    const data: Omit<Report, "id"> = {
       body,
       type,
       title,
@@ -56,6 +55,7 @@ reportRouter.post('/', async (req, res) => {
       data,
     });
     res.status(201).json(newPost);
+    console.log("Success")
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
