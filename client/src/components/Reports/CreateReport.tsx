@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 
 // define report object
 interface Report {
@@ -10,8 +11,8 @@ interface Report {
   createdAt: Date;
   updatedAt: Date;
   published: boolean;
-  location_lat: number;
-  location_lng: number;
+  location_lat?: number;
+  location_lng?: number;
 }
 
 
@@ -26,6 +27,9 @@ const CreateReport = () => {
     lng: number;
   } | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
+
+  const user = useContext(UserContext);
+
 
   const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setType(event.target.value);
@@ -61,14 +65,13 @@ const CreateReport = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         published: false,
-        id: reports.length + 1,
+        id: reports.length + 1
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
-      // find out what error can be
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -108,14 +111,6 @@ const CreateReport = () => {
 
   return (
     <div>
-      {error && <p>{error}</p>}
-      <div>
-        <h1>
-          Current Location:{' '}
-          {currentLocation
-            ? `${currentLocation.lat}, ${currentLocation.lng}`
-            : 'N/A'}
-        </h1>
         <form onSubmit={handleSubmit}>
           <input
             id='report-type-input'
@@ -132,19 +127,6 @@ const CreateReport = () => {
           <input type='file' accept='image/*' onChange={handleImage} />
           <input type='submit' value='submit' />
         </form>
-        <div>
-          <h2>Reports:</h2>
-          {reports.map((report) => (
-            <div key={report.id}>
-              <p>Type: {report.type}</p>
-              <p>Body: {report.body}</p>
-              <p>
-                Location: {report.location_lat}, {report.location_lng}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
