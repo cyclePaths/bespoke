@@ -10,6 +10,7 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
+import bulletinRouter from './routes/bulletin-routes';
 
 interface User {
   id: number;
@@ -112,6 +113,7 @@ app.use('/weather', WeatherRoute);
 app.use('/bikeRoutes', BikeRoutes);
 app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter)
+app.use('/bulletin', bulletinRouter)
 
 // Render All Pages
 app.get('*', (req, res) => {

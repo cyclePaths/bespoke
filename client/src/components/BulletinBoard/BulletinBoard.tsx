@@ -12,7 +12,7 @@ const BulletinBoard = () => {
 
   // Function to retrieve all bulletins
   const getAllBulletins = () => {
-    axios.get('/api/bulletins')
+    axios.get('/bulletin')
     .then((bulletinData) => {
       setBulletins(bulletinData.data);
     })
@@ -23,7 +23,7 @@ const BulletinBoard = () => {
 
   //Function to display only the bulletin with ID matching the ID of click-selected bulletin
   const handleBulletinSelection = (e) => {
-    axios.get('/bulletins')
+    axios.get('/bulletin')
     .then((bulletinData) => {
       setBulletins(bulletinData.data.filter((selected) => e.bulletinID === selected.bulletinID));
     })

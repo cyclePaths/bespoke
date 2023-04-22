@@ -13,7 +13,7 @@ interface CreateBulletin {
 
 
 // GET bulletins from database - BulletinBoard.tsx
-bulletinRouter.get('/bulletins', (req, res) => {
+bulletinRouter.get('/bulletin', (req, res) => {
     prisma.bulletin.findMany()
     .then((bulletins) => res.status(200).send(bulletins))
     .catch(() => {
@@ -23,8 +23,8 @@ bulletinRouter.get('/bulletins', (req, res) => {
 });
 
 // POST bulletin to database - BulletinBoard.tsx
-bulletinRouter.post('/bulletins', (req, res) => {
-    const { topic, creator, text, createdAt } = req.body
+bulletinRouter.post('/bulletin', (req, res) => {
+    const { topic, creator, text } = req.body
     const newBulletin: CreateBulletin = {
         topic: topic,
         creator: creator,
@@ -38,6 +38,8 @@ bulletinRouter.post('/bulletins', (req, res) => {
         res.sendStatus(500)
     })
 });
+
+export default bulletinRouter
 
 
 
