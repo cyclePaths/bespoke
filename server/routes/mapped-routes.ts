@@ -8,12 +8,12 @@ const prisma = new PrismaClient();
 
 // Types for typescript //
 type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
-  startLat: number;
-  startLng: number;
-  endLat: number;
-  endLng: number;
+  origin: [number, number];
+  destination: [number, number];
   user: { connect: { id: number } };
 };
+
+// End of typescript types //
 
 // Creates new bike route with POST //
 /// Only good for point A to point B ///
@@ -26,10 +26,8 @@ BikeRoutes.post('/newRoute', (req, res) => {
   const destinationLng: number = directions.request.destination.location.lng;
 
   const newBikeRoute: NewBikeRoute = {
-    startLat: originLat,
-    startLng: originLng,
-    endLat: destinationLat,
-    endLng: destinationLng,
+    origin: [originLat, originLng],
+    destination: [destinationLat, destinationLng],
     user: { connect: { id: id } },
   };
 
@@ -40,6 +38,23 @@ BikeRoutes.post('/newRoute', (req, res) => {
     })
     .catch((err) => {
       console.error('Failed to handle:', err);
+      res.sendStatus(500);
+    });
+});
+
+BikeRoutes.get('/routes/:id', (req, res) => {
+  const { id } = req.params;
+
+  prisma.user
+    .findUnique({
+      where: { id: parseInt(id) },
+      include: { createdRoutes: true },
+    })
+    .then((user) => {
+      res.status(200).send(user!.createdRoutes);
+    })
+    .catch((err) => {
+      console.error('Cannot resolve GET:', err);
       res.sendStatus(500);
     });
 });

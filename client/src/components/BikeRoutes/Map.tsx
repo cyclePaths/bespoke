@@ -15,6 +15,7 @@ import {
 } from '@react-google-maps/api';
 import MAP_API_TOKEN from './Utils';
 import Places from './Places';
+import FetchedRoutes from './FetchedRoutes';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 
@@ -24,10 +25,9 @@ const options = {
   zoomControl: true,
 };
 
-interface Coodinates {
+interface Coordinates {
   lat: number;
   lng: number;
-  time: Date;
 }
 
 // Helpers in the component //
@@ -35,12 +35,17 @@ type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
 
+const geocoder = new google.maps.Geocoder();
+
 const Map: React.FC = () => {
   // Create some state components to render the locations, routes, markers, and selected markers //
   const [startingPoint, setStartingPoint] = useState<LatLngLiteral>();
   const [markers, setMarkers] = useState<any[]>([]);
   const [selected, setSelected] = useState<LatLngLiteral>();
   const [directions, setDirections] = useState<DirectionsResult>();
+  const [address, setAddress] = useState<any>({});
+  const [routeList, setRouteList] = useState<any>();
+  const [reportsList, setReportsList] = useState<any>();
 
   // Pull context //
   const user = useContext(UserContext);
@@ -55,11 +60,17 @@ const Map: React.FC = () => {
     if (!startingPoint) {
       return;
     }
+
+    /// Functionality building for multi-waypoint routes ///
+
+    const stops = markers.slice(1);
+    const end = stops.pop();
+
     const service = new google.maps.DirectionsService();
     service.route(
       {
         origin: startingPoint,
-        destination: selected!,
+        destination: end!,
         travelMode: google.maps.TravelMode.BICYCLING,
       },
       (result, status) => {
@@ -71,7 +82,7 @@ const Map: React.FC = () => {
   };
   // End of created routes //
 
-  // Passed down to places to save routes to the database //
+  // Passed down to Places to save routes to the database //
   const saveRoute = (): void => {
     if (directions) {
       axios
@@ -104,7 +115,6 @@ const Map: React.FC = () => {
       {
         lat: event.latLng!.lat(),
         lng: event.latLng!.lng(),
-        time: new Date(),
       },
     ]);
     setSelected({
@@ -114,21 +124,63 @@ const Map: React.FC = () => {
   }, []);
   // End of click event of the map //
 
+  // Fetching maps and handling loading a route on the page //
+  const fetchMaps = (user_id: number | undefined): void => {
+    axios
+      .get(`bikeRoutes/routes/${user_id}`)
+      .then(({ data }) => {
+        setRouteList(data);
+      })
+      .catch((err) => {
+        console.error('Failed to GET:', err);
+      });
+  };
+
+  const handleRoute = (): void => {
+    // console.log(routeList[0].origin, routeList[0].destination);
+    const originObj: Coordinates = {
+      lat: parseFloat(routeList[0].origin[0]),
+      lng: parseFloat(routeList[0].origin[1]),
+    };
+    const destObj: Coordinates = {
+      lat: parseFloat(routeList[0].destination[0]),
+      lng: parseFloat(routeList[0].destination[1]),
+    };
+
+    setStartingPoint(originObj);
+    setMarkers((current) => [...current, destObj]);
+  };
+  // End of routes list //
+
   // Set the starting point on the map //
   useEffect(() => {
     if (startingPoint) {
       setMarkers((current) => [
-        ...current,
         {
           lat: startingPoint!.lat,
           lng: startingPoint!.lng,
-          time: new Date(),
         },
+        ...current,
       ]);
     } else {
       return;
     }
   }, [startingPoint]);
+
+  // Grab the address of the selected coordinates //
+  useEffect(() => {
+    if (selected) {
+      geocoder.geocode({ location: selected }).then((response) => {
+        setAddress(response.results[0]);
+      });
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    if (routeList) {
+      handleRoute();
+    }
+  }, [routeList]);
 
   if (!isLoaded) return <div>Map is loading</div>;
   return (
@@ -141,6 +193,8 @@ const Map: React.FC = () => {
             mapRef.current?.panTo(position);
           }}
           saveRoute={saveRoute}
+          fetchDirections={fetchDirections}
+          selected={selected}
         />
       </div>
 
@@ -158,17 +212,21 @@ const Map: React.FC = () => {
         {/* This is the markers that will be placed on the screen on render */}
         {markers.map((marker) => (
           <Marker
-            key={marker.time.toISOString()}
+            key={marker.lat}
             position={{ lat: marker.lat, lng: marker.lng }}
-            onClick={() => {
-              fetchDirections(selected!);
+            onClick={(event) => {
+              setSelected({
+                lat: event.latLng!.lat(),
+                lng: event.latLng!.lng(),
+              });
+              // fetchDirections(selected!);
             }}
           />
         ))}
 
         {/* This is the info window of a marker on the screen */}
 
-        {/* {selected ? (
+        {selected ? (
           <InfoWindow
             position={{ lat: selected.lat, lng: selected.lng }}
             onCloseClick={() => {
@@ -176,12 +234,18 @@ const Map: React.FC = () => {
             }}
           >
             <div>
-              <h2>Route on Map</h2>
-              <p>Here We Are</p>
+              <p>{address.formatted_address}</p>
             </div>
           </InfoWindow>
-        ) : null} */}
+        ) : null}
       </GoogleMap>
+      <FetchedRoutes
+        fetchMaps={fetchMaps}
+        routeList={routeList}
+        setRouteList={setRouteList}
+        reportsList={reportsList}
+        setReportsList={setReportsList}
+      />
     </div>
   );
 };
