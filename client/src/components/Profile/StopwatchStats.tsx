@@ -9,6 +9,7 @@ const StopwatchStats = ({
   minutes,
   seconds,
   isPickerVisible,
+  setIsPickerVisible,
 }) => {
   const user = useContext(UserContext);
 
@@ -58,6 +59,7 @@ const StopwatchStats = ({
             type='button'
             onClick={() => {
               workoutStats();
+              setIsPickerVisible(false)
             }}
           >
             Get Stats

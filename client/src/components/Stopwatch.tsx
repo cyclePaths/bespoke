@@ -96,11 +96,28 @@ const Stopwatch = () => {
     setIsPickerVisible(true);
   };
 
-  const resetStopwatch = () => {
+  const pauseStopwatch = () => {
     setIsRunning(false);
-    setTime({ hours: 0, minutes: 0, seconds: 0 });
     if (intervalRef.current) {
       intervalRef.current.unsubscribe();
+    }
+    // setIsPickerVisible(true);
+  };
+
+  const resetStopwatch = () => {
+    setIsRunning(false);
+    setTime({ hours: 1, minutes: 5, seconds: 0 });
+    if (intervalRef.current) {
+      intervalRef.current.unsubscribe();
+    }
+  };
+
+  const toggleStopwatch = () => {
+    if (isRunning) {
+      pauseStopwatch();
+    } else {
+      resetStopwatch();
+      setIsPickerVisible(false)
     }
   };
 
@@ -117,7 +134,8 @@ const Stopwatch = () => {
       {!isRunning && <button onClick={startStopwatch}>Start</button>}
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
-      <button onClick={resetStopwatch}>Reset</button>
+      <button onClick={toggleStopwatch}>{isRunning ? 'Pause' : 'Reset'}</button>
+      {/* <button onClick={resetStopwatch}>{isRunning ? 'Reset' : 'Clear'}</button> */}
 
       {isPickerVisible && (
   <div>
@@ -139,6 +157,7 @@ const Stopwatch = () => {
         minutes={minutes}
         seconds={seconds}
         isPickerVisible={isPickerVisible}
+        setIsPickerVisible={setIsPickerVisible}
         />
       </div>
     </div>
