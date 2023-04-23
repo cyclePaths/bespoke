@@ -20,7 +20,7 @@ const CreateComment = (props) => {
        if (commentText) {
          axios.post('/comments', {
             bulletinOrigin: bulletinOrigin,
-            creator: context.name,
+            commentCreatorr: context.name,
             commentText,
           })
           .then(() => {
