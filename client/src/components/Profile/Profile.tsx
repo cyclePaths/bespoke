@@ -56,20 +56,34 @@ const Profile: React.FC = () => {
       });
   }, []);
 
-  const calorieRequest = () => {
+  const workoutStatsRequest = () => {
     const { workout, durationHours, durationMinutes } = valueGroups;
     const numberHours = Number(durationHours);
     const numberMinutes = Number(durationMinutes);
+    const totalTime = numberHours + numberMinutes;
     axios
-      .get('/profile/calories', {
+      .get('/profile/workout', {
         params: {
           activity: `${workout}`,
-          weight: weight,
           duration: numberHours + numberMinutes,
+          weight: weight,
         },
       })
-      .then(() => {
-        console.log('Successful GET of Calories');
+      // console.log('Successful GET of Calories');
+      .then((response) => {
+        const { total_calories } = response.data;
+        console.log(response);
+        axios
+          .post('profile/workout2', {
+            activity: `${workout}`,
+            duration: totalTime,
+            weight: weight,
+            calories: total_calories,
+          })
+          .then(() => {})
+          .catch((err) => {
+            console.log('Could not post stats', err);
+          });
       })
       .catch((err) => {
         console.log('Failed to GET Calories', err);
@@ -109,7 +123,6 @@ const Profile: React.FC = () => {
       setWeight(data.weight);
       console.log(data.weight, 'HEYYYYY');
     });
-
   }, []);
 
   return (
@@ -132,24 +145,40 @@ const Profile: React.FC = () => {
           onChange={handleChange}
         />
         <div>
-          <button type='button'>Submit</button>
+          <button type='button' onClick={() => workoutStatsRequest()}>
+            Submit
+          </button>
         </div>
       </div>
-      <div>Weight: {weight} lbs</div>
-      <div>
-        <input
-          id='weight-input'
-          placeholder='update...'
-          onChange={(event) => setWeightValue(Number(event.target.value))}
-        ></input>
-        <button
-          type='button'
-          onClick={() => {
-            enterWeight(), setWeight(weightValue);
-          }}
-        >
-          Enter
-        </button>
+      <div
+        id='weight'
+        className='weight'
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: 60,
+          left: 0,
+          right: 0,
+        }}
+      >
+        <div style={{ marginRight: 10 }}>Weight: {weight} lbs</div>
+        <div>
+          <input
+            id='weight-input'
+            placeholder='update...'
+            onChange={(event) => setWeightValue(Number(event.target.value))}
+          ></input>
+          <button
+            type='button'
+            onClick={() => {
+              enterWeight(), setWeight(weightValue);
+            }}
+          >
+            Enter
+          </button>
+        </div>
       </div>
     </div>
   );

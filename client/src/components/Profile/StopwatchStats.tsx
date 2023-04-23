@@ -29,7 +29,11 @@ const StopwatchStats = ({
     const { workout } = valueGroups;
     axios
       .get('/profile/workout', {
-        params: { activity: `${workout}`, duration: totalTime, weight: weight },
+        params: {
+          activity: `${workout}`,
+          duration: totalTime,
+          weight: weight
+        },
       })
       .then((response) => {
         const { total_calories } = response.data;

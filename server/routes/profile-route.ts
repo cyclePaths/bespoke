@@ -15,7 +15,7 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
   const options = {
     method: 'GET',
     url: 'https://api.api-ninjas.com/v1/caloriesburned',
-    params: { activity: activity, weight: weight, duration: duration },
+    params: { activity: activity, duration: duration, weight: weight },
     headers: {
       'X-Api-Key': CALORIES_BURNED_API,
     },
@@ -34,7 +34,7 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
     });
 });
 
-profileRouter.post('/workout', async (req, res) => {
+profileRouter.post('/workout2', async (req, res) => {
   console.log('Post Workout', req.body);
 
   try {
@@ -50,7 +50,6 @@ profileRouter.post('/workout', async (req, res) => {
       calories,
       userId: id,
     };
-
     const newRide = await prisma.rides.create({
       data: {
         activity,
@@ -66,6 +65,68 @@ profileRouter.post('/workout', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+
+
+
+
+
+
+
+profileRouter.post('/calories', async (req, res) => {
+  console.log('Post Stats', req.body);
+
+  try {
+    const { activity, duration, weight, calories } = req.body;
+
+    const { id } = req.user as User;
+
+    const rideData: Rides = {
+      id,
+      activity,
+      duration,
+      weight,
+      calories,
+      userId: id,
+    };
+    const newRide = await prisma.rides.create({
+      data: {
+        activity,
+        duration,
+        weight,
+        calories,
+        userId: id,
+      }
+    })
+    res.status(201).send(newRide);
+  } catch (err) {
+    console.log('Failed to update ride', err);
+    res.sendStatus(500);
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Creates new user weight with POST. Updates any current weight value //
 profileRouter.post('/weight', async (req: Request, res: Response) => {
