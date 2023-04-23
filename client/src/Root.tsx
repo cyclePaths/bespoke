@@ -97,15 +97,21 @@ export interface User {
   name?: string;
   thumbnail?: any;
   weight?: any;
-  location_lat?: number;
-  location_lng?: number;
+  homeAddress?: string;
+  location_lat: number;
+  location_lng: number;
+}
+
+export interface geoLocation {
+  lat: number;
+  lng: number;
 }
 
 export const UserContext = createContext<User>(Object());
 
 const Root = () => {
   // Created User Info and Geolocation for context //
-  const [user, setUser] = useState<User>({});
+  const [user, setUser] = useState<User>();
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -251,8 +257,17 @@ const Root = () => {
   const findContext = () => {
     axios
       .get('auth/user')
-      .then((result) => {
-        setUser(result.data);
+      .then(({ data }) => {
+        setUser({
+          email: data.email,
+          id: data.id,
+          name: data.name,
+          thumbnail: data.thumbnail,
+          weight: data.weight,
+          homeAddress: data.homeAddress,
+          location_lat: parseFloat(data.location_lat),
+          location_lng: parseFloat(data.location_lng),
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -260,7 +275,7 @@ const Root = () => {
   };
 
   const getLocation = () => {
-    console.log("root.tsx getLocation")
+    console.log('root.tsx getLocation');
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {
@@ -271,7 +286,7 @@ const Root = () => {
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            console.log("ROOT: Attempting to get LOcation")
+            console.log('ROOT: Attempting to get LOcation');
             const { latitude, longitude } = position.coords;
             setGeoLocation({ lat: latitude, lng: longitude });
             clearInterval(interval!);
@@ -291,29 +306,25 @@ const Root = () => {
     };
   };
 
-  const updateUserLocation = () => {
-    console.log("root.tsx attempting to update");
-    const { id } = user;
+  const updateUserLocation = (geoObj: geoLocation) => {
+    const id = user!.id;
     const updatedData = {
-      location_lat: geoLocation.lat,
-      location_lng: geoLocation.lng,
+      location_lat: geoObj.lat,
+      location_lng: geoObj.lng,
     };
     axios
       .put(`/home/user/${id}`, updatedData)
-      .then((result) => {
-        setUser(result.data);
-      })
+      .then(() => findContext())
       .catch((err) => {
         console.error(err);
       });
   };
 
   useEffect(() => {
-    if(user.id && geoLocation){
-      updateUserLocation();
+    if (geoLocation) {
+      updateUserLocation(geoLocation);
     }
-  }, [user])
-
+  }, [geoLocation]);
 
   useEffect(() => {
     getForecasts();
@@ -362,14 +373,7 @@ const Root = () => {
 
   return (
     <div>
-      <div>
-        <p>
-          {geoLocation
-            ? `Current location: ${geoLocation.lat}, ${geoLocation.lng}`
-            : 'Getting Current Location...'}
-        </p>
-      </div>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={user!}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>

@@ -13,12 +13,12 @@ model User {
   name          String
   thumbnail     String?
   weight        Int?
-  createdRoutes BikeRoutes[]
-  reports       Report[]
   favAddresses  String[]
   homeAddress   String?
   location_lat  Float?
   location_lng  Float?
+  createdRoutes BikeRoutes[]
+  reports       Report[]
 }
 
 model Report {
@@ -53,9 +53,9 @@ model Comment {
 
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
-  origin      Decimal[]
-  destination Decimal[]
   createdAt   DateTime  @default(now())
   userId      Int
+  destination Decimal[]
+  origin      Decimal[]
   user        User      @relation(fields: [userId], references: [id])
 }

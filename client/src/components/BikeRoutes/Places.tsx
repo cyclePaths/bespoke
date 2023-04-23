@@ -4,7 +4,11 @@ import PlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
 } from 'react-places-autocomplete';
-import { InputLayout, DropdownLayout, RouteButton } from '../../StyledComp';
+import {
+  InputLayout,
+  DropdownLayout,
+  RouteButtonContainer,
+} from '../../StyledComp';
 
 // Starting Props //
 type PlaceProps = {
@@ -65,10 +69,15 @@ const Places = ({
                 className: 'location-search-input',
               })}
             />
-            <div>
-              <RouteButton onClick={handleRoute}>Track Route</RouteButton>
-              <RouteButton onClick={handleSave}>Save Create Route</RouteButton>
-            </div>
+            <RouteButtonContainer>
+              <button
+                style={{ marginRight: '5px', marginLeft: '5px' }}
+                onClick={handleRoute}
+              >
+                Track Route
+              </button>
+              <button onClick={handleSave}>Save Create Route</button>
+            </RouteButtonContainer>
 
             <DropdownLayout>
               {loading && <div>Loading...</div>}
@@ -84,6 +93,7 @@ const Places = ({
 
                 return (
                   <div
+                    style={{ borderColor: 'black' }}
                     {...getSuggestionItemProps(suggestion, {
                       className,
                       style,
