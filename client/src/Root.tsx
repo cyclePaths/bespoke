@@ -139,6 +139,7 @@ const Root = () => {
   };
 
   const getLocation = () => {
+    console.log("root.tsx getLocation")
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {
@@ -170,7 +171,7 @@ const Root = () => {
   };
 
   const updateUserLocation = () => {
-    console.log("attempting to update");
+    console.log("root.tsx attempting to update");
     const { id } = user;
     const updatedData = {
       location_lat: geoLocation.lat,
@@ -186,11 +187,12 @@ const Root = () => {
       });
   };
 
-  useEffect(() => {
-    if (user.id && geoLocation) {
-      updateUserLocation();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if(user && geoLocation){
+  //           updateUserLocation();
+
+  //   }
+  // }, [geoLocation]);
 
   useEffect(() => {
     getForecasts();

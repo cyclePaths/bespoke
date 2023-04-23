@@ -85,7 +85,7 @@ reportRouter.post('/', async (req, res) => {
 //     });
 //     res.status(201).json(newPost);
 //     console.log("Success")
-//   } catch (error) {
+//   } catch (error) { 
 //     console.error(error);
 //     res.status(500).json({ error: 'Server error' });
 //   }

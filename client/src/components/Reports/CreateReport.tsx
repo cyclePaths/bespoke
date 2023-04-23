@@ -4,6 +4,7 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import ReportsMap from './ReportsMap';
+import Reports from './Reports';
 
 // define report object
 interface Report {
@@ -122,9 +123,11 @@ const CreateReport = () => {
 
   return (
     <div>
+      <h1>Reports</h1>
       <div style={{ height: '400px', width: '100%' }}>
         <ReportsMap />
       </div>
+      <h2>Make a Report</h2>
       <form onSubmit={handleSubmit}>
         <select id='report-type-input' onChange={handleTypeText}>
           <option value=''>Select a Report Type</option>

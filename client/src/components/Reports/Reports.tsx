@@ -13,17 +13,23 @@ const Reports: React.FC = () => {
         const filteredReports = response.data.filter((report) => {
           const reportCreatedAt = new Date(report.createdAt);
           const currentDate = new Date();
-          const monthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+          const monthAgo = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1,
+            currentDate.getDate()
+          );
           return reportCreatedAt >= monthAgo;
         });
+        // Sort the filteredReports array by createdAt in descending order
+        filteredReports.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setReports(filteredReports);
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchReports();
   }, []);
-
 
   return (
     <div>
@@ -31,16 +37,15 @@ const Reports: React.FC = () => {
       <h2>Reports:</h2>
       <div id='reports-container'>
         {reports.map((report) => (
-        <div key={report.id}>
-          <p>{report.title}</p>
-          <p>{report.type}</p>
-          <p>
-            Location: {report.location_lat}, {report.location_lng}
-          </p>
-        </div>
-      ))}
+          <div key={report.id}>
+            <h1>{report.type}</h1>
+            <p>{report.title}</p>
+            <p>
+              Location: {report.location_lat}, {report.location_lng}
+            </p>
+          </div>
+        ))}
       </div>
-
     </div>
   );
 };
