@@ -9,7 +9,7 @@ interface CreateUser {
   name: string;
   thumbnail?: string;
   weight?: number;
-  favAddresses
+  favAddresses;
   homeAddress?: string;
 }
 
