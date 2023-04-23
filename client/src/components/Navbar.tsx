@@ -10,12 +10,12 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
   return (
     <div>
       <div>
-        <Link to='/something'>Logo image link here</Link>
+        <Link style={{ fontSize: '50px' }} to='/home'>
+          Bespoke
+        </Link>
       </div>
 
       <nav>
-        <div>NavbarNavbarNavbar</div>
-
         <div
           id='navbar'
           style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
@@ -37,13 +37,13 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
               }}
             >
               <li style={{ margin: '0 10px' }}>
-                <Link to='/home'>Home</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/bikeRoutes'>Create Routes</Link>
+                <Link to='/bikeRoutes'>Create Bike Route</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
                 <Link to='/createReport'>Create Report</Link>
+              </li>
+              <li style={{ margin: '0 10px' }}>
+                <Link to='/weather'>Weather</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
                 <Link to='/bulletinBoard'>bulletinBoard</Link>

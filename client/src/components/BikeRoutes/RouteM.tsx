@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Map from './Map';
+import { RouteCreatorComponent } from '../../StyledComp';
 
 const RouteM: React.FC = () => {
   return (
-    <div>
-      <h1>Create your own routes here</h1>
+    <RouteCreatorComponent>
+      <h1>Route Creator</h1>
       <Map />
-    </div>
+    </RouteCreatorComponent>
   );
 };
 

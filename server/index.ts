@@ -1,11 +1,13 @@
 import path from 'path';
 import express from 'express';
 import session from 'express-session';
+// import pg from 'pg';
+// import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 import 'dotenv/config';
-import { SESSION_SECRET } from '../config';
+import { SESSION_SECRET, DATABASE_URL } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
@@ -22,6 +24,16 @@ interface User {
   // favAddresses?: number[] | undefined;
 }
 
+/// The commented out parts are for storing a session to be found later ///
+// const pgPool = new pg.Pool({
+//   connectionString: 'postgresql://postgres:GHexpert12!@localhost:5432/bespoke',
+// });
+
+// const pgSessionStore = new PgSimpleStore({
+//   pool: pgPool,
+//   tableName: 'session',
+// });
+
 //Authentication Imports
 import '../auth';
 const isLoggedIn = (req, res, next) => {
@@ -33,7 +45,14 @@ const app = express();
 
 //  Authentication Middleware
 app.use(
-  session({ secret: SESSION_SECRET, resave: true, saveUninitialized: true })
+  session({
+    secret: SESSION_SECRET,
+    // store: pgSessionStore, // This is for creating a session in the db to be referenced later if the server stops
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    rolling: true,
+  })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -87,8 +106,7 @@ app.get('/auth/user', (req, res) => {
   const user = req.user as User;
   prisma.user
     .findFirst({
-      // where: user!,
-      where: { email: user.email },
+      where: { id: user.id },
     })
     .then((result) => {
       res.status(200).send(result);
@@ -110,6 +128,7 @@ app.use('/weather', WeatherRoute);
 
 // Routes to be used
 app.use('/bikeRoutes', BikeRoutes);
+app.use('/createReport', reportRouter);
 app.use('/reports', reportRouter);
 app.use('/profile', profileRouter);
 
@@ -125,18 +144,16 @@ interface UpdateUserData extends User {
 }
 
 app.put('/home/user/:id', async (req, res) => {
-  console.log("index.ts attempting put")
+  console.log('index.ts attempting put');
   const { id } = req.params;
   console.log(req.params);
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
-  console.log(req.body);
   try {
     const updatedUser = await prisma.user.update({
       where: { id: parseInt(id) }, // use the ID of the authenticated user
       data: { location_lat, location_lng } as UpdateUserData,
     });
-
-    res.status(200).json(updatedUser);
+    res.status(200).send(updatedUser);
   } catch (error) {
     res.status(500).json({ error: 'Failed to update user data' });
   }

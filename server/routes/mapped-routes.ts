@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, User } from '@prisma/client';
 import axios from 'axios';
 
 // Request Handlers //
@@ -58,5 +58,20 @@ BikeRoutes.get('/routes/:id', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+// BikeRoutes.get('/center', (req, res) => {
+//   const { id } = req.user as User;
+//   prisma.user
+//     .findUnique({
+//       where: { id: id },
+//     })
+//     .then((user) => {
+//       res.status(300).send(user);
+//     })
+//     .catch((err) => {
+//       console.error('Failed GETting coordinates:', err);
+//       res.sendStatus(500);
+//     });
+// });
 
 export default BikeRoutes;
