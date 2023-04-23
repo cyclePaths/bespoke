@@ -7,6 +7,8 @@ CREATE TABLE "User" (
     "weight" INTEGER,
     "favAddresses" TEXT[],
     "homeAddress" TEXT,
+    "location_lat" DOUBLE PRECISION,
+    "location_lng" DOUBLE PRECISION,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -39,12 +41,23 @@ CREATE TABLE "Bulletin" (
 );
 
 -- CreateTable
+CREATE TABLE "Comment" (
+    "id" SERIAL NOT NULL,
+    "bulletinOrign" INTEGER NOT NULL,
+    "commentCreator" TEXT NOT NULL,
+    "commentText" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "BikeRoutes" (
     "id" SERIAL NOT NULL,
-    "origin" DECIMAL(65,30)[],
-    "destination" DECIMAL(65,30)[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" INTEGER NOT NULL,
+    "destination" DECIMAL(65,30)[],
+    "origin" DECIMAL(65,30)[],
 
     CONSTRAINT "BikeRoutes_pkey" PRIMARY KEY ("id")
 );
@@ -57,3 +70,4 @@ ALTER TABLE "Report" ADD CONSTRAINT "Report_userId_fkey" FOREIGN KEY ("userId") 
 
 -- AddForeignKey
 ALTER TABLE "BikeRoutes" ADD CONSTRAINT "BikeRoutes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
