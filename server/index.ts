@@ -20,7 +20,7 @@ interface User {
   weight: number;
   location_lat?: number;
   location_lng?: number;
-  //favAddresses?: number[] | undefined;
+  // favAddresses?: number[] | undefined;
 }
 
 //Authentication Imports
@@ -115,6 +115,8 @@ app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
+app.use('/reports', reportRouter);
+app.use('/profile', profileRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {
@@ -127,22 +129,23 @@ interface UpdateUserData extends User {
   location_lng?: number;
 }
 
-
 app.put('/home/user/:id', async (req, res) => {
+  console.log("index.ts attempting put")
   const { id } = req.params;
+  console.log(req.params);
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
-    try {
-      const updatedUser = await prisma.user.update({
-        where: {id: parseInt(id)}, // use the ID of the authenticated user
-        data: { location_lat, location_lng } as UpdateUserData
-      });
+  console.log(req.body);
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) }, // use the ID of the authenticated user
+      data: { location_lat, location_lng } as UpdateUserData,
+    });
 
-      res.status(200).json(updatedUser);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to update user data' });
-    }
-  });
-
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update user data' });
+  }
+});
 
 //Listening
 app.listen(PORT, () =>

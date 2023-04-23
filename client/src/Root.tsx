@@ -11,6 +11,7 @@ import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
+import ReportsMap from './components/Reports/ReportsMap';
 
 export interface CurrentWeather {
   temperature: number;
@@ -259,6 +260,7 @@ const Root = () => {
   };
 
   const getLocation = () => {
+    console.log("root.tsx getLocation")
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {
@@ -269,6 +271,7 @@ const Root = () => {
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log("ROOT: Attempting to get LOcation")
             const { latitude, longitude } = position.coords;
             setGeoLocation({ lat: latitude, lng: longitude });
             clearInterval(interval!);
@@ -289,12 +292,12 @@ const Root = () => {
   };
 
   const updateUserLocation = () => {
+    console.log("root.tsx attempting to update");
     const { id } = user;
     const updatedData = {
       location_lat: geoLocation.lat,
       location_lng: geoLocation.lng,
     };
-
     axios
       .put(`/home/user/${id}`, updatedData)
       .then((result) => {
@@ -306,13 +309,15 @@ const Root = () => {
   };
 
   useEffect(() => {
-    if (user.id && geoLocation) {
+    if(user.id && geoLocation){
       updateUserLocation();
     }
-  }, [user, geoLocation]);
+  }, [user])
+
 
   useEffect(() => {
     getForecasts();
+    getLocation();
     findContext();
   }, []);
 
@@ -357,6 +362,13 @@ const Root = () => {
 
   return (
     <div>
+      <div>
+        <p>
+          {geoLocation
+            ? `Current location: ${geoLocation.lat}, ${geoLocation.lng}`
+            : 'Getting Current Location...'}
+        </p>
+      </div>
       <UserContext.Provider value={user}>
         <BrowserRouter>
           <Routes>
@@ -400,7 +412,7 @@ const Root = () => {
               <Route path='profile' element={<Profile />} />
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reports' element={<Reports />} />
-
+              <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
             </Route>
           </Routes>
