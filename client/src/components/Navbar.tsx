@@ -46,7 +46,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
                 <Link to='/weather'>Weather</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
-                <Link to='/bulletinBoard'>bulletinBoard</Link>
+                <Link to='/bulletinBoard'>Bulletin Board</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
                 <Link to='/profile'>Profile</Link>

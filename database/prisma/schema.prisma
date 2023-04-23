@@ -13,12 +13,12 @@ model User {
   name          String
   thumbnail     String?
   weight        Int?
-  createdRoutes BikeRoutes[]
-  reports       Report[]
   favAddresses  String[]
   homeAddress   String?
   location_lat  Float?
   location_lng  Float?
+  createdRoutes BikeRoutes[]
+  reports       Report[]
 }
 
 model Report {
@@ -41,6 +41,14 @@ model Bulletin {
   creator   String
   text      String
   createdAt DateTime @default(now())
+}
+
+model Comment {
+  id             Int      @id @default(autoincrement())
+  bulletinOrign  Int
+  commentCreator String
+  commentText    String
+  createdAt      DateTime @default(now())
 }
 
 model BikeRoutes {
