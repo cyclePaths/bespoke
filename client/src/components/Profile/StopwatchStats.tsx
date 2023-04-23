@@ -34,7 +34,7 @@ const StopwatchStats = ({
 
   console.log(totalTime);
 
-  const submitSWStats = () => {
+  const workoutStats = () => {
     const { workout } = valueGroups;
     axios
       .get('/profile/workout', {
@@ -65,12 +65,15 @@ const StopwatchStats = ({
       <button
         type='button'
         onClick={() => {
-          submitSWStats();
+          workoutStats();
         }}
       >
         Get Stats
       </button>
     </div>
+    // <div>
+    //   <Stopwatch workoutStats={workoutStats}/>
+    // </div>
   );
 };
 

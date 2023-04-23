@@ -8,7 +8,6 @@ import {
   exiledRedHeadedStepChildrenValueGroups,
 } from '../../profile-assets';
 import StopwatchStats from '../components/Profile/StopwatchStats';
-// import { weight } from './Profile';
 
 export type StopwatchTime = {
   hours: number;
@@ -36,6 +35,8 @@ const Stopwatch = () => {
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [shouldDisplayStats, setShouldDisplayStats] = useState<boolean>(false);
+  const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
   const intervalRef = useRef<Subscription | null>(null);
 
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
@@ -68,6 +69,7 @@ const Stopwatch = () => {
 
   const startStopwatch = () => {
     setIsRunning(true);
+    setIsPickerVisible(false);
     intervalRef.current = interval(1000)
       .pipe(
         scan((acc) => {
@@ -91,6 +93,7 @@ const Stopwatch = () => {
     if (intervalRef.current) {
       intervalRef.current.unsubscribe();
     }
+    setIsPickerVisible(true);
   };
 
   const resetStopwatch = () => {
@@ -115,13 +118,19 @@ const Stopwatch = () => {
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
       <button onClick={resetStopwatch}>Reset</button>
-      <div>
-        <Picker
-          optionGroups={optionGroups}
-          valueGroups={valueGroups}
-          onChange={handleChange}
-        />
-      </div>
+
+      {isPickerVisible && (
+  <div>
+    <Picker
+      optionGroups={optionGroups}
+      valueGroups={valueGroups}
+      onChange={handleChange}
+    />
+    {/* <button type='button' onClick={() => workoutStats()}>
+      Get Stats
+    </button> */}
+  </div>
+)}
       <div>
         <StopwatchStats
         optionGroups={optionGroups}
