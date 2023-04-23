@@ -16,7 +16,10 @@ const ReportsMap: React.FC = () => {
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
   };
-
+  const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
   const user = useContext(UserContext);
 
   // const archiveReport = () => {
@@ -118,6 +121,8 @@ const ReportsMap: React.FC = () => {
   return (
     <div>
       <GoogleMap
+              options={options as google.maps.MapOptions}
+
         mapContainerStyle={{ height: '250px', width: '395px' }}
         center={center}
         zoom={15}
