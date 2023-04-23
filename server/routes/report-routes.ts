@@ -19,7 +19,7 @@ reportRouter.get('/', async (req, res) => {
 
 // GET BY ID
 reportRouter.get('/:id', async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   try {
     const post = await prisma.report.findUnique({
       where: {
@@ -40,16 +40,17 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 //  POST a new Report
 reportRouter.post('/', async (req, res) => {
   try {
-    const { id, body, type, title, location_lat, location_lng } = req.body;
-    const data: Omit<Report, "id"> = {
+    const { userId, createdAt, body, type, title, location_lat, location_lng } = req.body;
+    const data = {
       body,
       type,
       title,
-      createdAt: new Date(),
+      createdAt,
       updatedAt: new Date(),
       published: false,
       location_lat,
       location_lng,
+      userId,
     };
     const newPost = await prisma.report.create({
       data,
@@ -62,9 +63,33 @@ reportRouter.post('/', async (req, res) => {
   }
 });
 
+//  UPDATE report archived only
+reportRouter.put('/:id', async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { published } = req.body!;
+  try {
+    const post = await prisma.report.update({
+      where: {
+        id: id,
+      },
+      data: {
+        published: true,
+      }
+    });
+    if (post) {
+      res.status(201).json(post);
+    } else {
+      res.status(404).json({ error: 'Report not found!' });
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 //  DELETE a report by ID
 reportRouter.delete('/:id', async (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
   try {
     const deletedPost = await prisma.report.delete({
       where: {
