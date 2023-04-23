@@ -67,60 +67,24 @@ profileRouter.post('/workout2', async (req, res) => {
 });
 
 
-
-
-
-
-
-
-profileRouter.post('/calories', async (req, res) => {
-  console.log('Post Stats', req.body);
-
+profileRouter.get('/lastRide', async (req:Request, res:Response) => {
+  console.log(req.body)
   try {
-    const { activity, duration, weight, calories } = req.body;
-
-    const { id } = req.user as User;
-
-    const rideData: Rides = {
-      id,
-      activity,
-      duration,
-      weight,
-      calories,
-      userId: id,
-    };
-    const newRide = await prisma.rides.create({
-      data: {
-        activity,
-        duration,
-        weight,
-        calories,
+    const { id } = (req.user as User) || {};
+    const lastRide = await prisma.rides.findFirst({
+      where: {
         userId: id,
+      },
+      orderBy: {
+        id: 'desc',
       }
-    })
-    res.status(201).send(newRide);
+    });
+    res.status(200).send(lastRide);
   } catch (err) {
-    console.log('Failed to update ride', err);
+    console.log('Failed to get weight', err);
     res.sendStatus(500);
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
