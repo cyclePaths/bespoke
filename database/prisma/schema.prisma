@@ -16,6 +16,17 @@ model User {
   createdRoutes BikeRoutes[]
   favAddresses  String[]
   homeAddress   String?
+  location_lat  Decimal      @default(0)
+  location_lng  Decimal      @default(0)
+}
+
+// Working on persistence //
+model Session {
+  id        String   @id @default(cuid())
+  expires   DateTime
+  data      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Report {
@@ -40,11 +51,9 @@ model Bulletin {
 
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
-  origin      Decimal[]
-  destination Decimal[]
   createdAt   DateTime  @default(now())
   userId      Int
+  destination Decimal[]
+  origin      Decimal[]
   user        User      @relation(fields: [userId], references: [id])
 }
-
-

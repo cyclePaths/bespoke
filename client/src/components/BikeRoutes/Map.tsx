@@ -11,9 +11,12 @@ import {
   Marker,
   DirectionsRenderer,
   InfoWindow,
+  InfoBoxF,
   useJsApiLoader,
+  InfoBox,
 } from '@react-google-maps/api';
-import MAP_API_TOKEN from './Utils';
+import { StartRouteContainer } from '../../StyledComp';
+import { MAP_API_TOKEN, defaultMapContainerStyle } from './Utils';
 import Places from './Places';
 import FetchedRoutes from './FetchedRoutes';
 import axios from 'axios';
@@ -30,6 +33,11 @@ interface Coordinates {
   lng: number;
 }
 
+interface centerObj {
+  lat: string;
+  lng: string;
+}
+
 // Helpers in the component //
 type LatLngLiteral = google.maps.LatLngLiteral;
 type DirectionsResult = google.maps.DirectionsResult;
@@ -38,6 +46,9 @@ type MapOptions = google.maps.MapOptions;
 const geocoder = new google.maps.Geocoder();
 
 const Map: React.FC = () => {
+  // Pull context //
+  const user = useContext(UserContext);
+
   // Create some state components to render the locations, routes, markers, and selected markers //
   const [startingPoint, setStartingPoint] = useState<LatLngLiteral>();
   const [markers, setMarkers] = useState<any[]>([]);
@@ -46,14 +57,13 @@ const Map: React.FC = () => {
   const [address, setAddress] = useState<any>({});
   const [routeList, setRouteList] = useState<any>();
   const [reportsList, setReportsList] = useState<any>();
+  const [userCenter, setUserCenter] = useState<any>({
+    lat: 29.9511,
+    lng: -90.0715,
+  });
+  const [routeInfo, setRouteInfo] = useState<any>();
 
-  // Pull context //
-  const user = useContext(UserContext);
-
-  const center = useMemo<LatLngLiteral>(
-    () => ({ lat: 29.946949, lng: -90.0843514 }),
-    []
-  );
+  let center;
 
   // This is for creating routes //
   const fetchDirections = (position: LatLngLiteral) => {
@@ -75,7 +85,9 @@ const Map: React.FC = () => {
       },
       (result, status) => {
         if (status === 'OK' && result) {
+          const { distance, duration } = result.routes[0].legs[0];
           setDirections(result);
+          setMarkers([]);
         }
       }
     );
@@ -117,10 +129,10 @@ const Map: React.FC = () => {
         lng: event.latLng!.lng(),
       },
     ]);
-    setSelected({
-      lat: event.latLng!.lat(),
-      lng: event.latLng!.lng(),
-    });
+    // setSelected({
+    //   lat: event.latLng!.lat(),
+    //   lng: event.latLng!.lng(),
+    // });
   }, []);
   // End of click event of the map //
 
@@ -136,7 +148,8 @@ const Map: React.FC = () => {
       });
   };
 
-  const handleRoute = (): void => {
+  // For displaying a saved route //
+  const handleRouteClick = (): void => {
     // console.log(routeList[0].origin, routeList[0].destination);
     const originObj: Coordinates = {
       lat: parseFloat(routeList[0].origin[0]),
@@ -151,6 +164,26 @@ const Map: React.FC = () => {
     setMarkers((current) => [...current, destObj]);
   };
   // End of routes list //
+
+  // Render Distance and Duration //
+  const renderRouteInfo = () => {
+    if (!directions) return null;
+    return (
+      <InfoBox
+        position={
+          {
+            lat: routeInfo.centerLat,
+            lng: routeInfo.centerLng,
+          } as google.maps.LatLng
+        }
+      >
+        <div>
+          <p>Duration: {routeInfo.duration}</p>
+          <p>Distance: {routeInfo.distance}</p>
+        </div>
+      </InfoBox>
+    );
+  };
 
   // Set the starting point on the map //
   useEffect(() => {
@@ -176,17 +209,44 @@ const Map: React.FC = () => {
     }
   }, [selected]);
 
+  /// WORKING ON FINDING PERSON'S COORDINATES ON RENDER ///
+  // useEffect(() => {
+  //   axios
+  //     .get('bikeRoutes/center')
+  //     .then(({ data }) => {
+  //       const centerObj = {
+  //         lat: parseFloat(data.location_lat),
+  //         lng: parseFloat(data.location_lng),
+  //       };
+  //       setUserCenter(centerObj);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    if (routeList) {
-      handleRoute();
+    if (directions) {
+      const centeredLat = directions.routes[0].bounds.getCenter().lat();
+      const centeredLng = directions.routes[0].bounds.getCenter().lng();
+      const { distance, duration } = directions.routes[0].legs[0];
+
+      setRouteInfo({
+        distance: distance!.text,
+        duration: duration!.text,
+        centerLat: centeredLat,
+        centerLng: centeredLng,
+      });
     }
-  }, [routeList]);
+  }, [directions]);
+
+  center = useMemo<LatLngLiteral>(() => userCenter, [userCenter]);
 
   if (!isLoaded) return <div>Map is loading</div>;
   return (
     <div className='container'>
       {/* This is the address search bar */}
-      <div>
+      <StartRouteContainer>
         <Places
           setStartingPoint={(position) => {
             setStartingPoint(position);
@@ -196,14 +256,14 @@ const Map: React.FC = () => {
           fetchDirections={fetchDirections}
           selected={selected}
         />
-      </div>
+      </StartRouteContainer>
 
       {/* This is the map rendering on screen */}
       <GoogleMap
-        mapContainerStyle={{ height: '250px', width: '395px' }}
+        mapContainerStyle={defaultMapContainerStyle}
         options={options as google.maps.MapOptions}
         center={center}
-        zoom={13}
+        zoom={14}
         onLoad={onLoad}
         onClick={onMapClick}
       >
@@ -238,6 +298,7 @@ const Map: React.FC = () => {
             </div>
           </InfoWindow>
         ) : null}
+        {routeInfo ? renderRouteInfo() : <div></div>}
       </GoogleMap>
       <FetchedRoutes
         fetchMaps={fetchMaps}
