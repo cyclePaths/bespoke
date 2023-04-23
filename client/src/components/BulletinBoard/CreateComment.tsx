@@ -6,8 +6,9 @@ import axios from 'axios';
 
 
 
-const CreateComment = () => {
+const CreateComment = (props) => {
     const context = useContext(UserContext)
+    const { bulletinOrigin } = props.bulletinOrigin
 
     const [commentText, setCommentText] = useState('')
 
@@ -18,13 +19,14 @@ const CreateComment = () => {
     const handleCommentSubmission = () => {
        if (commentText) {
          axios.post('/comments', {
+            bulletinOrigin: bulletinOrigin,
             creator: context.name,
             commentText,
           })
           .then(() => {
             setCommentText('')
           })
-          .catch(() => alert('Unable to make Comment!'));
+          .catch(() => console.log('Unable to make Comment!'));
        } else {
          alert('Add text to Comment!')
         }
@@ -34,10 +36,11 @@ const CreateComment = () => {
 
 
     return (
-    <div style={{ textAlign: 'center', marginBottom: '45px' }}>
+    <div style={{ textAlign: 'right', marginBottom: '5px', maxHeight: '10px', minHeight: '10px' }}>
     <ThemeProvider theme={themeBulletin}>
-        <div id='commentTextField' style={{ display: 'inline-block '}}>
-        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px' }}
+        <div id='commentTextField' style={{ display: 'inline-block'}}>
+        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px',
+                                maxHeight: '20px', minHeight: '20px' }}
             multiline={false}
             rows='1'
             placeholder='enter comment'
@@ -53,7 +56,7 @@ const CreateComment = () => {
                           minWidth: '100px', minHeight: '25px', marginLeft: '15px'}}
           onClick={() => handleCommentSubmission()}
           >
-          <i>Add Comment</i>
+          <i>Comment</i>
           </Button>
         </div>
     </ThemeProvider>

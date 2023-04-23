@@ -42,8 +42,8 @@ const BulletinBoard = () => {
   return (
     <div>
       <CreateBulletin/>
-      {bulletins.map((bulletin, i) => (<div><Bulletin bulletinData={bulletin}
-      handleBulletinSelection={ handleBulletinSelection } class='bulletin' key={ i }/></div>))}
+      {bulletins.map((bulletin, i) => (<Bulletin bulletin={bulletin}
+      handleBulletinSelection={ handleBulletinSelection } key={ i }/>))}
     </div>
   );
 };

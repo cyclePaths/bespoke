@@ -39,10 +39,11 @@ model Bulletin {
 }
 
 model Comment {
-  id          Int      @id @default(autoincrement())
-  creator     String
-  commentText String
-  createdAt   DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  bulletinOrign Int
+  creator       String
+  commentText   String
+  createdAt     DateTime @default(now())
 }
 
 model BikeRoutes {
