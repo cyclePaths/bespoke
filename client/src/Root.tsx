@@ -10,6 +10,15 @@ import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
+// import { RideStats } from './components/Profile/Profile';
+
+// export interface RideStats {
+//   activity: string;
+//   duration: number;
+//   weight: number;
+//   calories: number;
+// }
+
 
 export interface CurrentWeather {
   temperature: number;
@@ -75,7 +84,7 @@ export interface User {
 
 export const UserContext = createContext<User>(Object());
 
-const Root = () => {
+const Root = ({ rideStats }) => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>({});
   const [geoLocation, setGeoLocation] = useState<any>();

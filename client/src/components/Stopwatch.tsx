@@ -35,7 +35,6 @@ const Stopwatch = () => {
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [shouldDisplayStats, setShouldDisplayStats] = useState<boolean>(false);
   const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
   const intervalRef = useRef<Subscription | null>(null);
 
@@ -159,6 +158,7 @@ const Stopwatch = () => {
         seconds={seconds}
         isPickerVisible={isPickerVisible}
         setIsPickerVisible={setIsPickerVisible}
+        setValueGroups={setValueGroups}
         />
       </div>
     </div>

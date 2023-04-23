@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import {
+  exiledRedHeadedStepChildrenValueGroups,
+} from '../../../profile-assets';
 
 const StopwatchStats = ({
   optionGroups,
@@ -10,10 +13,12 @@ const StopwatchStats = ({
   seconds,
   isPickerVisible,
   setIsPickerVisible,
+  setValueGroups,
 }) => {
   const user = useContext(UserContext);
-
   const { weight } = user;
+
+
 
   let totalTime = 0;
 
@@ -23,8 +28,6 @@ const StopwatchStats = ({
     totalTime = hours * 60 + (minutes + 1);
   }
 
-  console.log(totalTime);
-
   const workoutStats = () => {
     const { workout } = valueGroups;
     axios
@@ -32,7 +35,7 @@ const StopwatchStats = ({
         params: {
           activity: `${workout}`,
           duration: totalTime,
-          weight: weight
+          weight: weight,
         },
       })
       .then((response) => {
@@ -63,7 +66,8 @@ const StopwatchStats = ({
             type='button'
             onClick={() => {
               workoutStats();
-              setIsPickerVisible(false)
+              setIsPickerVisible(false);
+              setValueGroups(exiledRedHeadedStepChildrenValueGroups);
             }}
           >
             Get Stats

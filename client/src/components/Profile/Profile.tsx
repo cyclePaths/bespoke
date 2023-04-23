@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
+import Home from '../Home';
+import Root from '../../Root';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 import { UserContext } from '../../Root';
@@ -27,7 +29,7 @@ export interface ValueGroup {
   [key: string]: string;
 }
 
-interface RideStats {
+export interface RideStats {
   activity: string;
   duration: number;
   weight: number;
@@ -99,7 +101,7 @@ const Profile: React.FC = () => {
           calories: total_calories,
         });
         axios
-          .post('profile/workout2', {
+          .post('profile/workout', {
             activity: `${valueGroups.workout}`,
             duration: totalTime,
             weight: weight,
@@ -196,6 +198,10 @@ const Profile: React.FC = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
+   {/* <Home rideStats={rideStats}/>
+   <Root rideStats={rideStats}/> */}
+    <div>
+    <div>ET Phone Home</div>
       <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
           <li style={{ listStyleType: 'none' }}>
@@ -223,6 +229,7 @@ const Profile: React.FC = () => {
           {/* {`Let's ride some more!`} */}
         </ul>
       </div>
+    </div>
       <div style={{ position: 'relative', marginTop: 100 }}>
         <Picker
           optionGroups={optionGroups}

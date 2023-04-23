@@ -97,7 +97,17 @@ console.log(data, 'Please')
       onSelect={handleSelect}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <div>
+        <div id='address'
+        className='address'
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: 100,
+          left: 0,
+          right: 0,
+        }}>
           <input id='address-input'
             {...getInputProps({
               placeholder: 'Search Places ...',
@@ -125,16 +135,20 @@ console.log(data, 'Please')
                 </div>
               );
             })}
+            <div>{selectedAddress}</div>
+               <div>
+      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
+    </div>
           </div>
         </div>
       )}
     </PlacesAutocomplete>
 
-    <div>{selectedAddress}</div>
+    {/* <div>{selectedAddress}</div> */}
 
-    <div>
+    {/* <div>
       <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div>
+    </div> */}
 
     </div>
   );

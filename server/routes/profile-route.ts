@@ -34,7 +34,7 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
     });
 });
 
-profileRouter.post('/workout2', async (req, res) => {
+profileRouter.post('/workout', async (req, res) => {
   console.log('Post Workout', req.body);
 
   try {
@@ -57,8 +57,8 @@ profileRouter.post('/workout2', async (req, res) => {
         weight,
         calories,
         userId: id,
-      }
-    })
+      },
+    });
     res.status(201).send(newRide);
   } catch (err) {
     console.log('Failed to update ride', err);
@@ -66,9 +66,8 @@ profileRouter.post('/workout2', async (req, res) => {
   }
 });
 
-
-profileRouter.get('/lastRide', async (req:Request, res:Response) => {
-  console.log(req.body)
+profileRouter.get('/lastRide', async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const { id } = (req.user as User) || {};
     const lastRide = await prisma.rides.findFirst({
@@ -77,7 +76,7 @@ profileRouter.get('/lastRide', async (req:Request, res:Response) => {
       },
       orderBy: {
         id: 'desc',
-      }
+      },
     });
     res.status(200).send(lastRide);
   } catch (err) {
@@ -85,12 +84,6 @@ profileRouter.get('/lastRide', async (req:Request, res:Response) => {
     res.sendStatus(500);
   }
 });
-
-
-
-
-
-
 
 // Creates new user weight with POST. Updates any current weight value //
 profileRouter.post('/weight', async (req: Request, res: Response) => {
