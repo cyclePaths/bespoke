@@ -5,6 +5,12 @@ import React from 'react';
 
 const Bulletin = (props) => {
    const { topic, creator, text, createdAt } = props.bulletinData
+
+const dateFormatter = (createdAt) => {
+
+
+}
+
    return (
     <div className='bulletin' style={{ backgroundColor: '#94edd7'}}>
       <h1 className='bulletinTopic'><i>{topic}</i> --{creator} at {createdAt}</h1>

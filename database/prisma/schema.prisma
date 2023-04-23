@@ -38,6 +38,13 @@ model Bulletin {
   createdAt DateTime @default(now())
 }
 
+model Comment {
+  id          Int      @id @default(autoincrement())
+  creator     String
+  commentText String
+  createdAt   DateTime @default(now())
+}
+
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
   origin      Decimal[]
@@ -46,5 +53,3 @@ model BikeRoutes {
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
 }
-
-

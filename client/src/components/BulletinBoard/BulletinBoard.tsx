@@ -41,7 +41,6 @@ const BulletinBoard = () => {
 
   return (
     <div>
-    <div>Bulletins:</div>
       <CreateBulletin/>
       {bulletins.map((bulletin, i) => (<div><Bulletin bulletinData={bulletin}
       handleBulletinSelection={ handleBulletinSelection } class='bulletin' key={ i }/></div>))}

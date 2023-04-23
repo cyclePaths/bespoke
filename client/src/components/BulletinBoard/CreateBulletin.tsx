@@ -41,7 +41,7 @@ const CreateBulletin = () => {
 
 
     return (
-    <div>
+    <div style={{ textAlign: 'center', marginBottom: '45px' }}>
     <ThemeProvider theme={themeBulletin}>
         <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
