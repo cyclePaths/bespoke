@@ -107,6 +107,7 @@ const Stopwatch = () => {
   const resetStopwatch = () => {
     setIsRunning(false);
     setTime({ hours: 1, minutes: 5, seconds: 0 });
+    setValueGroups(exiledRedHeadedStepChildrenValueGroups);
     if (intervalRef.current) {
       intervalRef.current.unsubscribe();
     }
