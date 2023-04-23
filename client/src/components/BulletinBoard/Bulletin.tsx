@@ -15,7 +15,9 @@ const dateFormatter = (createdAt) => {
    return (
     <div className='bulletin' style={{ backgroundColor: '#94edd7'}}>
       <h3 className='bulletinTopic'><i>{topic}</i> --{creator} at {createdAt}</h3>
-      <div style={{ display: 'flex' }} className='bulletinText'>{text}</div><CreateComment bulletinOrigin={ id }/>
+      <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
+      <CreateComment bulletinOrigin={ id } style={{ display: 'flex'}}/>
+      </div>
     </div>
    )
 };
