@@ -3,7 +3,6 @@ import axios from 'axios';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 import { UserContext } from '../../Root';
-// import StopwatchStats from './StopwatchStats';
 import {
   exiledRedHeadedStepChildrenOptionGroups,
   exiledRedHeadedStepChildrenValueGroups,
@@ -14,12 +13,6 @@ export type Address = string;
 export type SelectedAddress = string;
 export type HomeAddress = string;
 export type Weight = number;
-// export type ValueGroup = {
-//   [key: string]: string;
-// }
-
-// const optionGroups = {};
-// const valueGroups = {};
 
 interface Option {
   value: string;
@@ -109,10 +102,7 @@ const Profile: React.FC = () => {
 
   const user = useContext(UserContext);
 
-  // console.log(user)
-
   let userGreeting = `Hello ${user.name}`;
-  // console.log(userGreeting)
 
   useEffect(() => {
     axios.get('/profile/weight').then(({ data }) => {
@@ -120,7 +110,6 @@ const Profile: React.FC = () => {
       console.log(data.weight, 'HEYYYYY');
     });
 
-    // setWeight(weight)
   }, []);
 
   return (
@@ -136,10 +125,7 @@ const Profile: React.FC = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
-      <div
-      // className='profile-container' onScroll={handleScroll}
-      >
-        {/* <div className='average-speed'>Average Speed</div> */}
+      <div>
         <Picker
           optionGroups={optionGroups}
           valueGroups={valueGroups}
@@ -149,12 +135,6 @@ const Profile: React.FC = () => {
           <button type='button'>Submit</button>
         </div>
       </div>
-      {/* <div>
-        <StopwatchStats
-            //  optionGroups={optionGroups}
-             valueGroups={valueGroups}
-             onChange={handleChange} />
-      </div> */}
       <div>Weight: {weight} lbs</div>
       <div>
         <input
@@ -171,7 +151,6 @@ const Profile: React.FC = () => {
           Enter
         </button>
       </div>
-      {/* <Stopwatch weight={weight} /> */}
     </div>
   );
 };

@@ -1,3 +1,7 @@
+/*
+These are the banished red-headed step children that used to be written all in Profile.tsx, but because they were so long and unwieldy, were moved here, sort of like Cinderella, so as not to be a nuisance to their wicked step-mother and software programmers.
+*/
+
 export const exiledRedHeadedStepChildrenValueGroups = {
   workout: '',
   durationHours: '',

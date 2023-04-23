@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
-import Addresses from './Addresses';
-import Picker from 'react-scrollable-picker';
 import { UserContext } from '../../Root';
-import Stopwatch, { StopwatchTime } from '../Stopwatch';
-// import { ValueGroup } from './Profile';
-import {
-  exiledStopwatchStatsRedHeadedStepChildrenOptionGroups,
-  exiledRedHeadedStepChildrenValueGroups,
-} from '../../../profile-assets';
 
 const StopwatchStats = ({
   optionGroups,
@@ -16,13 +8,11 @@ const StopwatchStats = ({
   hours,
   minutes,
   seconds,
+  isPickerVisible,
 }) => {
   const user = useContext(UserContext);
+
   const { weight } = user;
-
-  console.log(valueGroups, 'ANCHORS');
-
-  // console.log(seconds, 'TIME')
 
   let totalTime = 0;
 
@@ -62,18 +52,19 @@ const StopwatchStats = ({
 
   return (
     <div>
-      <button
-        type='button'
-        onClick={() => {
-          workoutStats();
-        }}
-      >
-        Get Stats
-      </button>
+      {isPickerVisible && (
+        <div>
+          <button
+            type='button'
+            onClick={() => {
+              workoutStats();
+            }}
+          >
+            Get Stats
+          </button>
+        </div>
+      )}
     </div>
-    // <div>
-    //   <Stopwatch workoutStats={workoutStats}/>
-    // </div>
   );
 };
 

@@ -138,7 +138,7 @@ const Stopwatch = () => {
         hours={hours}
         minutes={minutes}
         seconds={seconds}
-
+        isPickerVisible={isPickerVisible}
         />
       </div>
     </div>

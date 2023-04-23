@@ -3,7 +3,6 @@ import axios from 'axios';
 import { PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
 import { CALORIES_BURNED_API } from '../../config';
-import session from 'express-session';
 
 const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
@@ -12,7 +11,6 @@ let calories = 0;
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
   const { activity, duration, weight } = req.query;
-  // console.log(req)
 
   const options = {
     method: 'GET',
@@ -37,48 +35,36 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
-  console.log('Post Workout', req.body)
+  console.log('Post Workout', req.body);
 
-    try {
-      const { activity, duration, weight, calories } = req.body;
+  try {
+    const { activity, duration, weight, calories } = req.body;
 
-      const { id } = req.user as User;
+    const { id } = req.user as User;
 
-      const rideData: Rides = {
-        id,
+    const rideData: Rides = {
+      id,
+      activity,
+      duration,
+      weight,
+      calories,
+      userId: id,
+    };
+
+    const newRide = await prisma.rides.create({
+      data: {
         activity,
         duration,
         weight,
         calories,
-        userId: id
-      };
-
-      const updateRide = await prisma.rides.upsert({
-        where: {
-          id: id
-        },
-        update: {
-          activity: activity,
-          duration: duration,
-          weight: weight,
-          calories: calories,
-          userId: id
-        },
-        create: {
-          activity: activity,
-          duration: duration,
-          weight: weight,
-          calories: calories,
-          User: { connect: { id: id } }
-        }
-      })
-      res.status(201).send(updateRide);
-    } catch (err) {
-      console.log('Failed to update ride', err);
-      res.sendStatus(500);
-    }
-
-
+        userId: id,
+      }
+    })
+    res.status(201).send(newRide);
+  } catch (err) {
+    console.log('Failed to update ride', err);
+    res.sendStatus(500);
+  }
 });
 
 // Creates new user weight with POST. Updates any current weight value //
@@ -122,7 +108,6 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
 
   try {
     const { id } = (req.user as User) || {};
-    // const { id, email, name, thumbnail } = (req.user as User) || {};
     const weightValue = await prisma.user.findUnique({
       where: {
         id: id,
@@ -176,7 +161,6 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
 
   try {
     const { id } = (req.user as User) || {};
-    // const { id, email, name, thumbnail } = (req.user as User) || {};
     const address = await prisma.user.findUnique({
       where: {
         id: id,
