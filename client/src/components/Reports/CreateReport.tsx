@@ -83,7 +83,7 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
-      navigate('/reports');
+      // navigate('/reports');
     } catch (error: any) {
       console.error(error);
       setError(error.message);
