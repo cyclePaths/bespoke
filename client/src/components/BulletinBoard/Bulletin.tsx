@@ -15,9 +15,9 @@ const dateFormatter = (createdAt) => {
 
 // Function to retrieve all comments
 const getAllComments = () => {
-   axios.get('/bulletin')
-   .then((bulletinData) => {
-     setComments(bulletinData.data);
+   axios.get('/comment')
+   .then((commentData) => {
+     setComments(commentData.data.filter((comment) => commentData.data.id === id))
    })
    .catch((error) => {
      console.error(error);
