@@ -107,12 +107,12 @@ app.use(express.json());
 const PORT = 8080;
 
 //routes from individual files
-//app.use('/weather', WeatherRoute);
+app.use('/weather', WeatherRoute);
 
 // Routes to be used
-//app.use('/bikeRoutes', BikeRoutes);
-//app.use('/createReport', reportRouter);
-//app.use('/profile', profileRouter)
+app.use('/bikeRoutes', BikeRoutes);
+app.use('/createReport', reportRouter);
+app.use('/profile', profileRouter)
 app.use('/bulletin', bulletinRouter)
 
 // Render All Pages

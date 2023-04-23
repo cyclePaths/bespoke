@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+
 
 const bulletinRouter = Router()
 const prisma = new PrismaClient()
@@ -14,7 +14,7 @@ interface CreateBulletin {
 
 
 // GET bulletins from database - BulletinBoard.tsx
-bulletinRouter.get('/bulletin', (req, res) => {
+bulletinRouter.get('/', (req, res) => {
     prisma.bulletin.findMany()
     .then((bulletins) => res.status(200).send(bulletins))
     .catch(() => {
