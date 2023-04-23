@@ -32,9 +32,9 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       name,
       thumbnail,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      homeAddress,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -93,10 +93,10 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       name,
       thumbnail,
       favAddresses,
-      homeAddress,
-      weight,
       location_lat,
       location_lng,
+      homeAddress,
+      weight,
     } = (req.user as User) || {};
 
     const userData: User = {

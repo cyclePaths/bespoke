@@ -33,6 +33,13 @@ const ForecastRowContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+const ForecastEntry = styled.div`
+  border-style: solid;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(84, 191, 165);
+`;
+
 const WeatherIcon = styled.img`
   display: flex;
   height: 100px;
@@ -42,6 +49,8 @@ const WeatherIcon = styled.img`
 const ForecastBit = styled.div`
   display: flex;
   align-items: center;
+  height: 50px;
+  width: 200px;
 `;
 
 const ForecastText = styled.p`
@@ -62,6 +71,7 @@ export {
   DropdownLayout,
   RouteButtonContainer,
   ForecastRowContainer,
+  ForecastEntry,
   WeatherIcon,
   StartRouteContainer,
   RouteCreatorComponent,

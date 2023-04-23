@@ -11,7 +11,6 @@ import {
   Marker,
   DirectionsRenderer,
   InfoWindow,
-  InfoBoxF,
   useJsApiLoader,
   InfoBox,
 } from '@react-google-maps/api';
@@ -169,7 +168,7 @@ const Map: React.FC = () => {
   const renderRouteInfo = () => {
     if (!directions) return null;
     return (
-      <InfoBox
+      <InfoWindow
         position={
           {
             lat: routeInfo.centerLat,
@@ -181,7 +180,7 @@ const Map: React.FC = () => {
           <p>Duration: {routeInfo.duration}</p>
           <p>Distance: {routeInfo.distance}</p>
         </div>
-      </InfoBox>
+      </InfoWindow>
     );
   };
 

@@ -1,6 +1,10 @@
 import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import { useNavigate } from 'react-router-dom';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import ReportsMap from './ReportsMap';
+import Reports from './Reports';
 
 // define report object
 interface Report {
@@ -12,11 +16,12 @@ interface Report {
   published: boolean;
   location_lat?: number;
   location_lng?: number;
-  author: number;
+  userId: number;
 }
 
 const CreateReport = () => {
-  // reports must be array of Report objects
+  const navigate = useNavigate();
+
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -26,11 +31,12 @@ const CreateReport = () => {
     lat: number;
     lng: number;
   } | null>(null);
+  const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const user = useContext(UserContext);
 
-  const handleTypeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypeText = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value);
   };
 
@@ -61,7 +67,6 @@ const CreateReport = () => {
       if (image) {
         formData.append('image', image);
       }
-      console.log(user);
       const reportData: Omit<Report, 'id'> = {
         body,
         type,
@@ -71,13 +76,14 @@ const CreateReport = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         published: false,
-        author: user.id!,
+        userId: user.id!,
       };
       const response = await axios.post('/reports', reportData);
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
+      // navigate('/reports');
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -123,20 +129,19 @@ const CreateReport = () => {
 
   return (
     <div>
-      <div>
-        <p>
-          {currentLocation
-            ? `Current location: ${currentLocation.lat}, ${currentLocation.lng}`
-            : 'Getting Current Location...'}
-        </p>
+      <h1>Reports</h1>
+      <div style={{ height: '400px', width: '100%' }}>
+        <ReportsMap />
       </div>
+      <h2>Make a Report</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          id='report-type-input'
-          type='text'
-          placeholder='Report Type'
-          onChange={handleTypeText}
-        />
+        <select id='report-type-input' onChange={handleTypeText}>
+          <option value=''>Select a Report Type</option>
+          <option value='Road Hazard'>Road Hazard</option>
+          <option value='Theft Alert'>Theft Alert</option>
+          <option value='Collision'>Collision</option>
+          <option value='Point of Interest'>Point of Interest</option>
+        </select>
         <input
           id='report-title-input'
           type='text'
