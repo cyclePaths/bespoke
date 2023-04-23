@@ -145,7 +145,7 @@ const Profile: React.FC = () => {
           onChange={handleChange}
         />
         <div>
-          <button type='button' onClick={() => workoutStatsRequest()}>
+          <button type='button' onClick={() => {workoutStatsRequest(), setValueGroups(exiledRedHeadedStepChildrenValueGroups);}}>
             Submit
           </button>
         </div>
