@@ -32,10 +32,11 @@ const Reports: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div >
       <ReportsMap />
+      <div id='reports-container' >
       <h2>Reports:</h2>
-      <div id='reports-container'>
+
         {reports.map((report) => (
           <div key={report.id}>
             <h1>{report.type}</h1>

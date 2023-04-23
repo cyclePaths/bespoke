@@ -17,7 +17,4 @@
   opacity: 0;
 } */
 
-#reports-container {
-  height: calc(100vh - 400px); /* replace 400px with the height of your ReportsMap */
-  overflow-y: scroll; /* add scrollbars if content exceeds the height of the container */
-}
+
