@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../Root';
 import { ThemeProvider, Typography, OutlinedInput, Button} from'@mui/material'
 import themeBulletin from './ThemeBulletin'
+import axios from 'axios';
 
 
 
@@ -25,8 +26,22 @@ const CreateBulletin = () => {
     }
 
     const handleBulletinSubmission = (e) => {
-
+       if (topic && text) {
+         axios.post('/bulletin', {
+            creator: context.name,
+            topic,
+            text,
+          })
+          .then(() => {
+            setTopic('');
+            setText('')
+          })
+          .catch(() => alert('Unable to make Bulletin!'));
+       } else {
+         alert('Add topic and text to Bulletin!')
+        }
     }
+
 
 
 
