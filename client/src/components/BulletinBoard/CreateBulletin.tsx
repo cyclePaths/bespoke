@@ -6,11 +6,6 @@ import axios from 'axios';
 
 
 
-
-
-
-
-
 const CreateBulletin = () => {
     const context = useContext(UserContext)
 
@@ -25,7 +20,7 @@ const CreateBulletin = () => {
       setText(e.target.value)
     }
 
-    const handleBulletinSubmission = (e) => {
+    const handleBulletinSubmission = () => {
        if (topic && text) {
          axios.post('/bulletin', {
             creator: context.name,
@@ -48,13 +43,38 @@ const CreateBulletin = () => {
     return (
     <div>
     <ThemeProvider theme={themeBulletin}>
-        <div id='topic'>
+        <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
-            style={{ backgroundColor: 'white', marginTop: '30px' }}
+            style={{ backgroundColor: '#94edd7', marginTop: '30px' }}
             multiline={false}
             rows='1'
             placeholder='enter topic'
+            inputProps={{
+              maxLength: 100,
+              onChange: (e) => handleTopic(e),
+              value: topic,
+            }}
             />
+        </div>
+        <div id='textField' style={{ display: 'inline-block '}}>
+        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px' }}
+            multiline={false}
+            rows='1'
+            placeholder='enter bulletin message'
+            inputProps={{
+              maxLength: 1000,
+              onChange: (e) => handleText(e),
+              value: text,
+            }}
+            />
+        </div>
+        <div id="submitButton" style={{ display: 'inline-block '}}>
+         <Button style={{ maxWidth: '200px', maxHeight: '50px', backgroundColor: '#17332c',
+                          minWidth: '200px', minHeight: '50px', marginLeft: '15px'}}
+          onClick={() => handleBulletinSubmission()}
+          >
+          <i>Submit Bulletin</i>
+          </Button>
         </div>
     </ThemeProvider>
     </div>

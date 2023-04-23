@@ -14,7 +14,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
       </div>
 
       <nav>
-        <div>NavbarNavbarNavbar</div>
+        <div>BESPOKE</div>
 
         <div
           id='navbar'
@@ -49,7 +49,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
                 <Link to='/reports'>Reports</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
-                <Link to='/bulletinBoard'>bulletinBoard</Link>
+                <Link to='/bulletinBoard'>Bulletins</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
                 <Link to='/profile'>Profile</Link>
