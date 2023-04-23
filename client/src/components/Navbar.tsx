@@ -10,7 +10,9 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
   return (
     <div>
       <div>
-        <Link to='/home'>Logo image link here</Link>
+        <Link style={{ fontSize: '50px' }} to='/home'>
+          Bespoke
+        </Link>
       </div>
 
       <nav>
