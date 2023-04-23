@@ -38,7 +38,7 @@ passport.use(
             homeAddress: undefined,
           };
           const newUser = await prisma.user.create({
-            data: newUserData as Prisma.UserCreateInput,
+            data: newUserData
           });
           return done(null, newUser);
         }
