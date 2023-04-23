@@ -30,6 +30,7 @@ WeatherRoute.get('/forecast', (req, res) => {
         time: data.current_weather.time,
       };
       const hourly = new Array(24).fill(0).map(() => ({
+        displayIcon: true,
         time: new Date(),
         temperature: 0,
         humidity: 0,
@@ -75,12 +76,8 @@ WeatherRoute.get('/forecast', (req, res) => {
           }
         });
       }
-      console.log('this should be the sunrise date: ', data.daily.sunrise[0]);
-      console.log('this should be the sunset date: ', data.daily.sunset[0]);
       let sunriseHour = new Date(data.daily.sunrise[0]).getHours();
       let sunsetHour = new Date(data.daily.sunset[0]).getHours();
-      console.log('this should be the sunrise hour: ', sunriseHour);
-      console.log('this should be the sunset hour: ', sunsetHour);
       const responseObj = {
         currentWeather: currentWeather,
         hourly: hourly,

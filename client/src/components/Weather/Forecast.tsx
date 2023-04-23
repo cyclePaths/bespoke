@@ -13,14 +13,20 @@ interface ForecastProps extends Hourly {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
-  sunriseHour: number;
-  sunsetHour: number;
+  prepareWeatherIcon: (
+    weather: string,
+    isDay: boolean,
+    hour: number,
+    chanceOfRain: number,
+    rainfall: number,
+    snowfall: number
+  ) => string;
 }
 
 const Forecast = ({
+  displayIcon,
   time,
-  sunriseHour,
-  sunsetHour,
+  prepareWeatherIcon,
   temperature,
   humidity,
   apparentTemperature,
@@ -71,92 +77,14 @@ const Forecast = ({
     displayTime = (hour - 12).toString() + ':00PM';
   }
 
-  //setting weather icon
-  const prepareWeatherIcon = (weather: string) => {
-    //setting time of day
-    let timeOfDay = 'generic';
-    if (isDay === true) {
-      timeOfDay = 'day';
-    } else if (isDay === false) {
-      timeOfDay = 'night';
-    }
-    let weatherIcon = weatherIcons.day.clear;
-    if (weather === 'Clear Sky' || weather === 'Mainly Clear') {
-      weatherIcon = weatherIcons[timeOfDay].clear;
-    } else if (weather === 'Partly Cloudy') {
-      weatherIcon = weatherIcons[timeOfDay].partlyCloudy.base;
-    } else if (weather === 'Overcast') {
-      weatherIcon = weatherIcons[timeOfDay].overcast;
-    } else if (weather === 'Fog') {
-      weatherIcon = weatherIcons[timeOfDay].fog;
-    } else if (weather === 'Depositing Rime Fog') {
-      weatherIcon = weatherIcons[timeOfDay].haze;
-    } else if (
-      weather === 'Light Drizzle' ||
-      weather === 'Moderate Drizzle' ||
-      weather === 'Dense Drizzle'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].drizzle;
-    } else if (
-      weather === 'Light Freezing Drizzle' ||
-      weather === 'Dense Freezing Drizzle'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].sleet;
-    } else if (
-      weather === 'Light Rain' ||
-      weather === 'Moderate Rain' ||
-      weather === 'Heavy Rain' ||
-      weather === 'Light Showers' ||
-      weather === 'Moderate Showers' ||
-      weather === 'Violent Showers'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].rain;
-    } else if (
-      weather === 'Moderate Snow' ||
-      weather === 'Heavy Snow' ||
-      weather === 'Snow Grains' ||
-      weather === 'Light Snow Showers' ||
-      weather === 'Heavy Snow Showers'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].snow;
-    } else if (weather === 'Thunderstorm') {
-      if (precipitationProbability >= 50) {
-        if (rain > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        } else if (snowfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        }
-      } else {
-        weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
-      }
-    } else if (
-      weather === 'Thunderstorm With Light Hail' ||
-      weather === 'Thunderstorm With Heavy Hail'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-    }
-    //control for sunrise/sunset (these are almost certainly wrong - there's something off with the 'isDay' data from the weather API)
-    const moonriseHour = sunsetHour + 1;
-    const moonsetHour = sunriseHour - 1;
-    const pertinentWeather = !(
-      weather === 'Clear Sky' ||
-      weather === 'Mainly Clear' ||
-      weather === 'Fog' ||
-      weather === 'Partly Cloudy'
-    );
-    if (hour === sunriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunrise;
-    } else if (hour === sunsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunset;
-    } else if (hour === moonriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonrise;
-    } else if (hour === moonsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonset;
-    }
-    return weatherIcon;
-  };
-
-  let weatherIcon = prepareWeatherIcon(weatherDescription);
+  let weatherIcon = prepareWeatherIcon(
+    weatherDescription,
+    isDay,
+    hour,
+    precipitationProbability,
+    rain,
+    snowfall
+  );
 
   return (
     <ForecastEntry>

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
+import { weatherIcons } from '../assets';
 import App from './components/App';
 import Home from './components/Home';
 import BulletinBoard from './components/BulletinBoard/BulletinBoard';
@@ -29,6 +30,7 @@ export interface MeasurementUnits {
 }
 
 export interface Hourly {
+  displayIcon: boolean;
   time: Date;
   temperature: number;
   humidity: number;
@@ -43,7 +45,7 @@ export interface Hourly {
   weatherDescription: string;
   snowDepth: number;
   visibility: number;
-  isDay: Boolean;
+  isDay: boolean;
 }
 
 export interface RootPropsToWeather {
@@ -53,11 +55,34 @@ export interface RootPropsToWeather {
   sunriseHour: number;
   sunsetHour: number;
   hourlyForecasts: Hourly[];
+  prepareWeatherIcon: (
+    weather: string,
+    isDay: boolean,
+    hour: number,
+    chanceOfRain: number,
+    rainfall: number,
+    snowfall: number
+  ) => string;
   setHourlyForecasts?: (unit: Hourly[]) => void;
   setWindSpeedMeasurementUnit?: (unit: string) => void;
   setTemperatureMeasurementUnit?: (unit: string) => void;
   setPrecipitationMeasurementUnit?: (unit: string) => void;
   getForecasts?: () => void;
+}
+
+export interface RootPropsToHome {
+  homeForecasts: Hourly[];
+  windSpeedMeasurementUnit: string;
+  temperatureMeasurementUnit: string;
+  precipitationMeasurementUnit: string;
+  prepareWeatherIcon: (
+    weather: string,
+    isDay: boolean,
+    hour: number,
+    chanceOfRain: number,
+    rainfall: number,
+    snowfall: number
+  ) => string;
 }
 export interface StopwatchTime {
   hours: number;
@@ -130,6 +155,98 @@ const Root = () => {
       );
   };
 
+  const prepareWeatherIcon = (
+    weather: string,
+    isDay: boolean,
+    hour: number,
+    chanceOfRain: number,
+    rainfall: number,
+    snowfall: number
+  ) => {
+    //setting time of day
+    let timeOfDay = 'generic';
+    if (isDay === true) {
+      timeOfDay = 'day';
+    } else if (isDay === false) {
+      timeOfDay = 'night';
+    }
+    //setting weather icon
+    let weatherIcon = weatherIcons.day.clear;
+    if (weather === 'Clear Sky' || weather === 'Mainly Clear') {
+      weatherIcon = weatherIcons[timeOfDay].clear;
+    } else if (weather === 'Partly Cloudy') {
+      weatherIcon = weatherIcons[timeOfDay].partlyCloudy.base;
+    } else if (weather === 'Overcast') {
+      weatherIcon = weatherIcons[timeOfDay].overcast;
+    } else if (weather === 'Fog') {
+      weatherIcon = weatherIcons[timeOfDay].fog;
+    } else if (weather === 'Depositing Rime Fog') {
+      weatherIcon = weatherIcons[timeOfDay].haze;
+    } else if (
+      weather === 'Light Drizzle' ||
+      weather === 'Moderate Drizzle' ||
+      weather === 'Dense Drizzle'
+    ) {
+      weatherIcon = weatherIcons[timeOfDay].drizzle;
+    } else if (
+      weather === 'Light Freezing Drizzle' ||
+      weather === 'Dense Freezing Drizzle'
+    ) {
+      weatherIcon = weatherIcons[timeOfDay].sleet;
+    } else if (
+      weather === 'Light Rain' ||
+      weather === 'Moderate Rain' ||
+      weather === 'Heavy Rain' ||
+      weather === 'Light Showers' ||
+      weather === 'Moderate Showers' ||
+      weather === 'Violent Showers'
+    ) {
+      weatherIcon = weatherIcons[timeOfDay].rain;
+    } else if (
+      weather === 'Moderate Snow' ||
+      weather === 'Heavy Snow' ||
+      weather === 'Snow Grains' ||
+      weather === 'Light Snow Showers' ||
+      weather === 'Heavy Snow Showers'
+    ) {
+      weatherIcon = weatherIcons[timeOfDay].snow;
+    } else if (weather === 'Thunderstorm') {
+      if (chanceOfRain >= 50) {
+        if (rainfall > 0) {
+          weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
+        } else if (snowfall > 0) {
+          weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
+        }
+      } else {
+        weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
+      }
+    } else if (
+      weather === 'Thunderstorm With Light Hail' ||
+      weather === 'Thunderstorm With Heavy Hail'
+    ) {
+      weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
+    }
+    //control for sunrise/sunset
+    const moonriseHour = sunsetHour + 1;
+    const moonsetHour = sunriseHour - 1;
+    const pertinentWeather = !(
+      weather === 'Clear Sky' ||
+      weather === 'Mainly Clear' ||
+      weather === 'Fog' ||
+      weather === 'Partly Cloudy'
+    );
+    if (hour === sunriseHour && !pertinentWeather) {
+      weatherIcon = weatherIcons.day.sunrise;
+    } else if (hour === sunsetHour && !pertinentWeather) {
+      weatherIcon = weatherIcons.day.sunset;
+    } else if (hour === moonriseHour && !pertinentWeather) {
+      weatherIcon = weatherIcons.night.moonrise;
+    } else if (hour === moonsetHour && !pertinentWeather) {
+      weatherIcon = weatherIcons.night.moonset;
+    }
+    return weatherIcon;
+  };
+
   const findContext = () => {
     axios
       .get('auth/user')
@@ -199,13 +316,63 @@ const Root = () => {
     findContext();
   }, []);
 
+  let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
+    displayIcon: true,
+    time: new Date(),
+    temperature: 0,
+    humidity: 0,
+    apparentTemperature: 0,
+    cloudcover: 0,
+    windspeed: 0,
+    precipitation: 0,
+    snowfall: 0,
+    precipitationProbability: 0,
+    rain: 0,
+    showers: 0,
+    weatherDescription: '',
+    snowDepth: 0,
+    visibility: 0,
+    isDay: true,
+  }));
+
+  let found = false;
+  let countIndex = 0;
+  hourlyForecasts.forEach((ele, index) => {
+    if (found === true && countIndex < 4) {
+      homeForecasts[countIndex] = ele;
+      countIndex++;
+    }
+    if (ele.time === currentWeather.time) {
+      found = true;
+      homeForecasts[countIndex] = ele;
+      countIndex++;
+    }
+  });
+
+  homeForecasts.forEach((ele, i) => {
+    if (i !== 0) {
+      ele.displayIcon = false;
+    }
+  });
+
   return (
     <div>
       <UserContext.Provider value={user}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
-              <Route path='/home' element={<Home />} />
+              <Route
+                path='/home'
+                element={
+                  <Home
+                    homeForecasts={homeForecasts}
+                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                    temperatureMeasurementUnit={temperatureMeasurementUnit}
+                    precipitationMeasurementUnit={precipitationMeasurementUnit}
+                    prepareWeatherIcon={prepareWeatherIcon}
+                  />
+                }
+              />
               <Route path='bulletinBoard' element={<BulletinBoard />} />
               <Route path='bikeRoutes' element={<RouteM />} />
               <Route
@@ -218,6 +385,7 @@ const Root = () => {
                     sunriseHour={sunriseHour}
                     sunsetHour={sunsetHour}
                     hourlyForecasts={hourlyForecasts}
+                    prepareWeatherIcon={prepareWeatherIcon}
                     setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
                     setTemperatureMeasurementUnit={
                       setTemperatureMeasurementUnit

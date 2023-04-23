@@ -22,6 +22,8 @@ const ForecastRowContainer = styled.div`
 
 const ForecastEntry = styled.div`
   border-style: solid;
+  justify-content: center;
+  align-items: center;
   background-color: rgb(84, 191, 165);
 `;
 

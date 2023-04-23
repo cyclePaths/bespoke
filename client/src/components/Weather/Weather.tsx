@@ -7,9 +7,8 @@ const Weather = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
-  sunriseHour,
-  sunsetHour,
   hourlyForecasts,
+  prepareWeatherIcon,
   setWindSpeedMeasurementUnit,
   setTemperatureMeasurementUnit,
   setPrecipitationMeasurementUnit,
@@ -31,14 +30,8 @@ const Weather = ({
   });
   forecastRowArrays.push(forecastArray);
 
-  const clickTest = () => {
-    console.log('this is the sunrise hour: ', sunriseHour);
-    console.log('this is the sunset hour: ', sunsetHour);
-  };
-
   return (
     <div>
-      <button onClick={clickTest}>Sunrise and Sunset times</button>
       {forecastRowArrays.map((weatherRow, i) => {
         return (
           <ForecastRow
@@ -46,8 +39,7 @@ const Weather = ({
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
-            sunriseHour={sunriseHour}
-            sunsetHour={sunsetHour}
+            prepareWeatherIcon={prepareWeatherIcon}
             rowData={weatherRow}
           />
         );
