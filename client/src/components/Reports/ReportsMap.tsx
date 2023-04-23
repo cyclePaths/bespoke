@@ -1,15 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
+import { UserContext } from '../../Root';
+import { User } from '@prisma/client';
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
   const [center, setCenter] = useState<google.maps.LatLng>();
   const [reports, setReports] = useState<Report[]>([]);
+  const [buttonClicked, setButtonClicked] = useState(false);
+
+
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
+  };
+
+  const user = useContext(UserContext);
+
+  // const archiveReport = () => {
+  //   console.log("attempting to update");
+  //   const { id } = user;
+  //   const updatedData = {
+  //     archived: true
+  //   };
+  //   axios
+  //     .put(`/home/user/${id}`, updatedData)
+  //     .then((result) => {
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // };
+
+  const handleButtonClick = () => {
+    setButtonClicked(true);
   };
 
   useEffect(() => {
@@ -45,6 +71,8 @@ const ReportsMap: React.FC = () => {
             <p>${report.title}</p>
             <p>${report.body}</p>
             <p>Reported: ${report.createdAt}</p>
+            <button onClick=${handleButtonClick}>Archive Report</button>
+      ${buttonClicked ? '<p>Button clicked</p>' : ''}
           </div>`,
         });
 

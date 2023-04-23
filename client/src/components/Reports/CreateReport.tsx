@@ -66,7 +66,6 @@ const CreateReport = () => {
       if (image) {
         formData.append('image', image);
       }
-      console.log(user);
       const reportData: Omit<Report, 'id'> = {
         body,
         type,
@@ -123,10 +122,8 @@ const CreateReport = () => {
 
   return (
     <div>
-      <div>
-        <p>
-          {currentLocation ? <ReportsMap /> : 'Getting Current Location...'}
-        </p>
+      <div style={{ height: '400px', width: '100%' }}>
+        <ReportsMap />
       </div>
       <form onSubmit={handleSubmit}>
         <select id='report-type-input' onChange={handleTypeText}>
