@@ -20,8 +20,6 @@ interface StopwatchStatsProps {
   isPickerVisible: boolean;
   setIsPickerVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setValueGroups: React.Dispatch<React.SetStateAction<any>>;
-  // setRideStats: React.Dispatch<React.SetStateAction<RideStats>>;
-  // rideStats: RideStats;
 }
 
 const StopwatchStats = ({
@@ -33,25 +31,10 @@ const StopwatchStats = ({
   isPickerVisible,
   setIsPickerVisible,
   setValueGroups,
-  // rideStats,
-  // setRideStats,
 }) => {
   const user = useContext(UserContext);
 
   let weight = user?.weight ?? 0;
-
-
-  const [stopwatchActivity, setStopwatchActivity] = useState('');
-  const [stopwatchDuration, setStopwatchDuration] = useState(0);
-  const [stopwatchCalories, setStopwatchCalories] = useState(0);
-
-// const propsToProfile: PropsToProfile = {
-//   stopwatchActivity: stopwatchActivity,
-//   stopwatchDuration: stopwatchDuration,
-//   stopwatchCalories: stopwatchCalories,
-
-// }
-
 
   let totalTime = 0;
 
@@ -75,10 +58,6 @@ const StopwatchStats = ({
       })
       .then((response) => {
         const { total_calories } = response.data;
-
-        setStopwatchActivity(`${workout}`);
-        setStopwatchDuration(totalTime);
-        setStopwatchCalories(total_calories)
 
         navigate('/Profile', {state:{
           stopwatchActivity: `${workout}`,
@@ -110,13 +89,6 @@ const StopwatchStats = ({
 
   return (
     <div>
-      {/* <Profile propsToProfile={propsToProfile} /> */}
-      {/* <Routes>
-      <Route
-      path='/Profile'
-      element={<Profile propsToProfile={propsToProfile} />}
-      />
-      </Routes> */}
     <div>
       {isPickerVisible && (
         <div>
@@ -132,9 +104,6 @@ const StopwatchStats = ({
           </button>
         </div>
       )}
-    </div>
-    <div>
-      {/* <Profile stopwatchActivity={stopwatchActivity} stopwatchDuration={stopwatchDuration} stopwatchCalories={stopwatchCalories}/> */}
     </div>
     </div>
   );

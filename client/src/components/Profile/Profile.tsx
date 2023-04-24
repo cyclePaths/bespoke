@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
-// import Root, { StopwatchStatsProps } from '../../Root';
 import StopwatchStats from './StopwatchStats';
 
 import Addresses from './Addresses';
@@ -18,18 +17,6 @@ export type Address = string;
 export type SelectedAddress = string;
 export type HomeAddress = string;
 export type Weight = number;
-
-// export type PropsToProfile = {
-//   stopwatchActivity: string;
-//   stopwatchDuration: number;
-//   stopwatchCalories: number;
-// }
-
-// interface StopwatchStatsProps {
-//   stopwatchActivity: StopwatchActivity;
-//   stopwatchDuration: StopwatchDuration;
-//   stopwatchCalories: StopwatchCalories;
-// }
 
 interface Option {
   value: string;
@@ -62,10 +49,6 @@ export interface RideStats {
 //   weight: number;
 // }
 const Profile = () => {
-// const Profile = (props: StopwatchStatsProps) => {
-//   const { stopwatchActivity, stopwatchDuration, stopwatchCalories } = props;
-  //setting state with hooks
-  // const [user, setUser] = useState<User>()
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -169,7 +152,7 @@ const Profile = () => {
           valueGroups.workout = 'Mountain Biking';
         }
 
-        // setRideStats(data)
+        setRideStats(data)
 
         setRideStats({
           activity: `${valueGroups.workout}`,
@@ -273,9 +256,9 @@ const Profile = () => {
   return (
     <div>
       <div>{greeting}</div>
-      {/* <img
+      <img
       style={{borderRadius: '50%', width: '100px', height: '100px'}}
-      src={user.thumbnail} alt='avatar'/> */}
+      src={user.thumbnail} alt='avatar'/>
       <div>
         <Addresses
           address={address}
@@ -286,11 +269,7 @@ const Profile = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
-      <div>
-        {/* < StopwatchStats optionGroups={optionGroups}valueGroups={valueGroups} rideStats={rideStats} isPickerVisible={isPickerVisible}/> */}
-      </div>
-   {/* <Home rideStats={rideStats}/>
-   <Root rideStats={rideStats}/> */}
+
     <div>
 
       <div style={{ position: 'absolute', marginTop: 20 }}>
