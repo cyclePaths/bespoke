@@ -134,7 +134,7 @@ const CreateReport = () => {
         <ReportsMap />
       </div>
       <h2>Make a Report</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{marginBottom: '100px'}}>
         <select id='report-type-input' onChange={handleTypeText}>
           <option value=''>Select a Report Type</option>
           <option value='Road Hazard'>Road Hazard</option>
