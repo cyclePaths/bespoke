@@ -91,6 +91,12 @@ export interface StopwatchTime {
   seconds: number;
 }
 
+export interface StopwatchStatsProps {
+  stopwatchActivity: string;
+  stopwatchDuration: number;
+  stopwatchCalories: number;
+}
+
 export interface User {
   email?: string;
   id?: number;
@@ -109,7 +115,7 @@ export interface geoLocation {
 
 export const UserContext = createContext<User>(Object());
 
-const Root = () => {
+const Root = ({ stopwatchActivity, stopwatchDuration, stopwatchCalories  }) => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>();
   const [geoLocation, setGeoLocation] = useState<any>();
@@ -268,6 +274,7 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
+        console.log(user)
       })
       .catch((err) => {
         console.error(err);
@@ -428,3 +435,5 @@ const Root = () => {
 };
 
 export default Root;
+
+// stopwatchActivity={stopwatchActivity} stopwatchDuration={stopwatchDuration} stopwatchCalories={stopwatchCalories}

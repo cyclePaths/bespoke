@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import axios from 'axios';
 import Home from '../Home';
-import Root from '../../Root';
+// import Root, { StopwatchStatsProps } from '../../Root';
+import StopwatchStats from './StopwatchStats';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 import { UserContext } from '../../Root';
@@ -15,6 +16,18 @@ export type Address = string;
 export type SelectedAddress = string;
 export type HomeAddress = string;
 export type Weight = number;
+
+// export type PropsToProfile = {
+//   stopwatchActivity: string;
+//   stopwatchDuration: number;
+//   stopwatchCalories: number;
+// }
+
+// interface StopwatchStatsProps {
+//   stopwatchActivity: StopwatchActivity;
+//   stopwatchDuration: StopwatchDuration;
+//   stopwatchCalories: StopwatchCalories;
+// }
 
 interface Option {
   value: string;
@@ -46,8 +59,9 @@ export interface RideStats {
 //   thumbnail: string;
 //   weight: number;
 // }
-
-const Profile: React.FC = () => {
+const Profile = () => {
+// const Profile = (props: StopwatchStatsProps) => {
+//   const { stopwatchActivity, stopwatchDuration, stopwatchCalories } = props;
   //setting state with hooks
   // const [user, setUser] = useState<User>()
   const [greeting, setGreeting] = useState('');
@@ -56,7 +70,12 @@ const Profile: React.FC = () => {
   const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [rideStats, setRideStats] = useState<RideStats>();
+  const [rideStats, setRideStats] = useState<RideStats>({
+    activity: '',
+    duration: 0,
+    weight: 0,
+    calories: 0,
+});
 
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledRedHeadedStepChildrenOptionGroups
@@ -70,6 +89,13 @@ const Profile: React.FC = () => {
   // console.log(user)
 
   // let userGreeting = `Hello ${user.name}`;
+
+  // if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
+  //   rideStats.activity = stopwatchActivity;
+  //   rideStats.duration = stopwatchDuration;
+  //   rideStats.weight = weight;
+  //   rideStats.calories = stopwatchCalories;
+  // };
 
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
@@ -214,6 +240,9 @@ const Profile: React.FC = () => {
   return (
     <div>
       <div>{greeting}</div>
+      {/* <img
+      style={{borderRadius: '50%', width: '100px', height: '100px'}}
+      src={user.thumbnail} alt='avatar'/> */}
       <div>
         <Addresses
           address={address}
@@ -224,10 +253,13 @@ const Profile: React.FC = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
+      <div>
+        {/* < StopwatchStats optionGroups={optionGroups}valueGroups={valueGroups} rideStats={rideStats} isPickerVisible={isPickerVisible}/> */}
+      </div>
    {/* <Home rideStats={rideStats}/>
    <Root rideStats={rideStats}/> */}
     <div>
-    <div>ET Phone Home</div>
+
       <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
           <li style={{ listStyleType: 'none' }}>

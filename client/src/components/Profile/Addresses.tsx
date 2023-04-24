@@ -62,7 +62,7 @@ function Addresses(props: AddressesProps) {
         .then(() => {
           // if (selectedAddress !== null) {
             console.log(selectedAddress, 'ADDRESS')
-            setHomeAddress(`My home is ${selectedAddress}`);
+            setHomeAddress(`Your home is ${selectedAddress}`);
             setSelectedAddress('');
           // }
 
@@ -78,7 +78,7 @@ function Addresses(props: AddressesProps) {
           if (data.homeAddress === null) {
             setHomeAddress('');
           } else {
-            setHomeAddress(`My home is ${data.homeAddress}`);
+            setHomeAddress(`Your home is ${data.homeAddress}`);
           }
 
 console.log(data, 'Please')
@@ -100,13 +100,13 @@ console.log(data, 'Please')
         <div id='address'
         className='address'
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
+          // display: 'flex',
+          // flexDirection: 'row',
+          // justifyContent: 'center',
           position: 'fixed',
           bottom: 100,
-          left: 0,
-          right: 0,
+          // left: 0,
+          // right: 0,
         }}>
           <input id='address-input'
             {...getInputProps({

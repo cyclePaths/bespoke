@@ -47,7 +47,7 @@ passport.use(
           const newUserData: CreateUser = {
             email: profile.email,
             name: profile.displayName,
-            thumbnail: undefined,
+            thumbnail: profile._json.picture,
             weight: undefined,
             favAddresses: undefined,
             homeAddress: undefined,
