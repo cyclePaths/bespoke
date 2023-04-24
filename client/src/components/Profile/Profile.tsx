@@ -38,16 +38,6 @@ export interface RideStats {
   calories: number;
 }
 
-// interface User {
-//   email: string;
-//   homeAddress: string;
-//   id: number;
-//   location_lat: number;
-//   location_lng: number;
-//   name: string;
-//   thumbnail: string;
-//   weight: number;
-// }
 const Profile = () => {
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
@@ -80,9 +70,6 @@ const Profile = () => {
   console.log(stopwatchDuration)
   console.log(stopwatchCalories)
 
-  // console.log(user)
-
-  // let userGreeting = `Hello ${user.name}`;
 
   if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
     if (stopwatchActivity === 'leisure bicycling') {
@@ -213,9 +200,7 @@ const Profile = () => {
   }, [user]);
 
 
-  // let filteredActivity = '';
   useEffect(() => {
-    // setUser(user);
     setGreeting( `Hello ${user.name}`);
 
     axios.get('/profile/weight').then(({ data }) => {
@@ -224,7 +209,6 @@ const Profile = () => {
     });
     axios.get('/profile/lastRide').then(({ data }) => {
       console.log('DATA', data);
-      // const { activity, duration, weight, calories } = data;
       if (data.activity === 'leisure bicycling') {
         data.activity = 'Average Speed <10 mph';
       }
@@ -246,7 +230,6 @@ const Profile = () => {
       if (data.activity === 'mountain bike') {
         data.activity = 'Mountain Biking';
       }
-      // data.duration = Math.floor(data.duration / 60) + (data.duration % 1)
 
       setRideStats(data);
     });
@@ -296,7 +279,6 @@ const Profile = () => {
               </>
             )}
           </li>
-          {/* {`Let's ride some more!`} */}
         </ul>
       </div>
     </div>
