@@ -154,7 +154,6 @@ const CreateReport = () => {
           placeholder='Comments'
           onChange={handleBodyText}
         />
-        <input type='file' accept='image/*' onChange={handleImage} />
         <input type='submit' value='submit' />
       </form>
     </div>
