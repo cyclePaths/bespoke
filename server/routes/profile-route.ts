@@ -59,6 +59,7 @@ profileRouter.post('/workout', async (req, res) => {
         userId: id,
       },
     });
+    // console.log('hell yeah', newRide)
     res.status(201).send(newRide);
   } catch (err) {
     console.log('Failed to update ride', err);
@@ -67,7 +68,7 @@ profileRouter.post('/workout', async (req, res) => {
 });
 
 profileRouter.get('/lastRide', async (req: Request, res: Response) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const { id } = (req.user as User) || {};
     const lastRide = await prisma.rides.findFirst({

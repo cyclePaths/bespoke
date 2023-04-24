@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Profile, { RideStats } from './Profile';
 import Root, { UserContext } from '../../Root';
@@ -61,6 +61,8 @@ const StopwatchStats = ({
     totalTime = hours * 60 + (minutes + 1);
   }
 
+  const navigate = useNavigate();
+
   const workoutStats = () => {
     const { workout } = valueGroups;
     axios
@@ -78,6 +80,15 @@ const StopwatchStats = ({
         setStopwatchDuration(totalTime);
         setStopwatchCalories(total_calories)
 
+        navigate('/Profile', {state:{
+          stopwatchActivity: `${workout}`,
+          stopwatchDuration: totalTime,
+          stopwatchCalories: total_calories
+        }
+
+        })
+
+
         console.log(response);
         axios
           .post('profile/workout', {
@@ -86,7 +97,8 @@ const StopwatchStats = ({
             weight: weight,
             calories: total_calories,
           })
-          .then(() => {})
+          .then(() => {
+          })
           .catch((err) => {
             console.log('Could not post stats', err);
           });

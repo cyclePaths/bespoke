@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 // import Root, { StopwatchStatsProps } from '../../Root';
 import StopwatchStats from './StopwatchStats';
+
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 import { UserContext } from '../../Root';
@@ -86,16 +88,47 @@ const Profile = () => {
   );
 
   const user = useContext(UserContext);
+
+  const location = useLocation();
+  let stopwatchActivity = location.state && location.state.stopwatchActivity;
+  const stopwatchDuration = location.state && location.state.stopwatchDuration;
+  const stopwatchCalories = location.state && location.state.stopwatchCalories;
+  console.log('Is this activity?', stopwatchActivity)
+  console.log(stopwatchDuration)
+  console.log(stopwatchCalories)
+
   // console.log(user)
 
   // let userGreeting = `Hello ${user.name}`;
 
-  // if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
-  //   rideStats.activity = stopwatchActivity;
-  //   rideStats.duration = stopwatchDuration;
-  //   rideStats.weight = weight;
-  //   rideStats.calories = stopwatchCalories;
-  // };
+  if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
+    if (stopwatchActivity === 'leisure bicycling') {
+      stopwatchActivity = 'Average Speed <10 mph';
+    }
+    if (stopwatchActivity === 'mph, light') {
+      stopwatchActivity = 'Average Speed 10-12 mph';
+    }
+    if (stopwatchActivity === '13.9 mph, moderate') {
+      stopwatchActivity = 'Average Speed 12-14 mph';
+    }
+    if (stopwatchActivity === '15.9 mph, vigorous') {
+      stopwatchActivity = 'Average Speed 14-16 mph';
+    }
+    if (stopwatchActivity === 'very fast, racing') {
+      stopwatchActivity = 'Average Speed 16-19 mph';
+    }
+    if (stopwatchActivity === '>20 mph, racing') {
+      stopwatchActivity = 'Average Speed 20+ mph';
+    }
+    if (stopwatchActivity === 'mountain bike') {
+      stopwatchActivity = 'Mountain Biking';
+    }
+    rideStats.activity = stopwatchActivity;
+    rideStats.duration = stopwatchDuration;
+    rideStats.weight = weight;
+    rideStats.calories = stopwatchCalories;
+  };
+  console.log('RideStats', rideStats)
 
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
@@ -151,7 +184,10 @@ const Profile = () => {
             weight: weight,
             calories: total_calories,
           })
-          .then(() => {})
+          .then(({ data }) => {
+            console.log('Am I HERE?', data)
+
+          })
           .catch((err) => {
             console.log('Could not post stats', err);
           });
@@ -233,9 +269,6 @@ const Profile = () => {
     });
   }, []);
 
-  // useEffect(() => {
-
-  // }, [])
 
   return (
     <div>
