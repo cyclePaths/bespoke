@@ -45,7 +45,7 @@ model Bulletin {
 
 model Comment {
   id             Int      @id @default(autoincrement())
-  bulletinOrign  Int
+  bulletinOrigin Int
   commentCreator String
   commentText    String
   createdAt      DateTime @default(now())
@@ -54,8 +54,12 @@ model Comment {
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
+  name        String
   userId      Int
   destination Decimal[]
   origin      Decimal[]
+  category    String?
+  likes       Int?      @default(0)
+  isPrivate   Boolean   @default(false)
   user        User      @relation(fields: [userId], references: [id])
 }

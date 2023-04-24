@@ -9,6 +9,8 @@ import {
   DropdownLayout,
   RouteButtonContainer,
 } from '../../StyledComp';
+import Popup from './Popup';
+import SaveForm from './SaveForm';
 
 // Starting Props //
 type PlaceProps = {
@@ -25,6 +27,7 @@ const Places = ({
   selected,
 }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
 
   // Handle the input box //
   const handleChange = (value: string): void => {
@@ -62,13 +65,6 @@ const Places = ({
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <InputLayout
-              id='address-input'
-              {...getInputProps({
-                placeholder: 'Set Staring Location ...',
-                className: 'location-search-input',
-              })}
-            />
             <RouteButtonContainer>
               <button
                 style={{ marginRight: '5px', marginLeft: '5px' }}
@@ -78,6 +74,14 @@ const Places = ({
               </button>
               <button onClick={handleSave}>Save Create Route</button>
             </RouteButtonContainer>
+
+            <InputLayout
+              id='address-input'
+              {...getInputProps({
+                placeholder: 'Set Staring Location ...',
+                className: 'location-search-input',
+              })}
+            />
 
             <DropdownLayout>
               {loading && <div>Loading...</div>}
@@ -93,7 +97,6 @@ const Places = ({
 
                 return (
                   <div
-                    style={{ borderColor: 'black' }}
                     {...getSuggestionItemProps(suggestion, {
                       className,
                       style,
@@ -108,6 +111,9 @@ const Places = ({
           </div>
         )}
       </PlacesAutocomplete>
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <SaveForm />
+      </Popup>
     </div>
   );
 };
