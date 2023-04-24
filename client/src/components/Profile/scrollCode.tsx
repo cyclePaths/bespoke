@@ -73,3 +73,88 @@
 //     </div>
 //   );
 // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// type StopwatchTime = {
+//   hours: number;
+//   minutes: number;
+//   seconds: number;
+// };
+
+// const Stopwatch = () => {
+//   const [time, setTime] = useState<StopwatchTime>({ hours: 0, minutes: 0, seconds: 0 });
+//   const [isRunning, setIsRunning] = useState<boolean>(false);
+//   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+//   const startStopwatch = () => {
+//     setIsRunning(true);
+//     intervalRef.current = setInterval(() => {
+//       setTime((prevTime) => {
+//         const nextSeconds = prevTime.seconds + 1;
+//         const nextMinutes = prevTime.minutes + Math.floor(nextSeconds / 60);
+//         const nextHours = prevTime.hours + Math.floor(nextMinutes / 60);
+//         return {
+//           hours: nextHours,
+//           minutes: nextMinutes,
+//           seconds: nextSeconds % 60,
+//         };
+//       });
+//     }, 1000);
+//   };
+
+//   const stopStopwatch = () => {
+//     setIsRunning(false);
+//     if (intervalRef.current) clearInterval(intervalRef.current);
+//   };
+
+//   const resetStopwatch = () => {
+//     setIsRunning(false);
+//     setTime({ hours: 0, minutes: 0, seconds: 0 });
+//     if (intervalRef.current) clearInterval(intervalRef.current);
+//   };
+
+//   const { hours, minutes, seconds } = time;
+
+//   return (
+//     <div>
+//       <h1>
+//       {String(hours).padStart(2, "0")} : {String(minutes).padStart(2, "0")} : {String(seconds).padStart(2, "0")}
+//       </h1>
+//       {!isRunning && (
+//         <button onClick={startStopwatch}>Start</button>
+//       )}
+//       {isRunning && (
+//         <button onClick={stopStopwatch}>Stop</button>
+//       )}
+//       <button onClick={resetStopwatch}>Reset</button>
+//     </div>
+//   );
+// };
+
+// export default Stopwatch;
+

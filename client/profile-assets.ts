@@ -1,3 +1,7 @@
+/*
+These are the banished red-headed step children that used to be written all in Profile.tsx, but because they were so long and unwieldy, were moved here, sort of like Cinderella, so as not to be a nuisance to their wicked step-mother and software programmers.
+*/
+
 export const exiledRedHeadedStepChildrenValueGroups = {
   workout: '',
   durationHours: '',
@@ -103,5 +107,20 @@ export const exiledRedHeadedStepChildrenOptionGroups = {
     { value: '57', label: '57' },
     { value: '58', label: '58' },
     { value: '59', label: '59' },
+  ],
+};
+
+
+
+export const exiledStopwatchStatsRedHeadedStepChildrenOptionGroups = {
+  workout: [
+    { value: '', label: 'Average Speed' },
+    { value: 'leisure bicycling', label: '<10 mph' },
+    { value: 'mph, light', label: '10-12 mph' },
+    { value: '13.9 mph, moderate', label: '12-14 mph' },
+    { value: '15.9 mph, vigorous', label: '14-16 mph' },
+    { value: 'very fast, racing', label: '16-19 mph' },
+    { value: '>20 mph, racing', label: '20+ mph' },
+    { value: 'mountain bike', label: 'Mountain Biking' },
   ],
 };

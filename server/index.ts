@@ -7,7 +7,7 @@ import passport from 'passport';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 import 'dotenv/config';
-import { SESSION_SECRET, DATABASE_URL } from '../config';
+import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
@@ -20,6 +20,7 @@ interface User {
   name: string;
   thumbnail: string;
   weight: number;
+  // favAddresses?: string[];
   location_lat?: number;
   location_lng?: number;
   // favAddresses?: number[] | undefined;
@@ -146,6 +147,7 @@ app.get('*', (req, res) => {
 interface UpdateUserData extends User {
   location_lat?: number;
   location_lng?: number;
+  // favAddresses?: string[];
 }
 
 app.put('/home/user/:id', async (req, res) => {

@@ -37,7 +37,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
               }}
             >
               <li style={{ margin: '0 10px' }}>
-                <Link to='/bikeRoutes'>Create Bike Route</Link>
+                <Link to='/bikeRoutes'>Create Route</Link>
               </li>
               <li style={{ margin: '0 10px' }}>
                 <Link to='/createReport'>Create Report</Link>
