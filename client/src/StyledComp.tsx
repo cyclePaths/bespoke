@@ -6,6 +6,11 @@ const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
 
+const PopoutSaveForm = styled.form`
+  display: block;
+  text-align: center;
+`;
+
 const InputLayout = styled.input`
   height: 25px;
   width: 75%;
@@ -76,4 +81,5 @@ export {
   WeatherIcon,
   StartRouteContainer,
   RouteCreatorComponent,
+  PopoutSaveForm,
 };

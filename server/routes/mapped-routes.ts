@@ -19,7 +19,7 @@ type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
 /// Only good for point A to point B ///
 BikeRoutes.post('/newRoute', (req, res) => {
   const { directions, user } = req.body;
-  const { id } = user;
+  const id = user.id;
   const originLat: number = directions.request.origin.location.lat;
   const originLng: number = directions.request.origin.location.lng;
   const destinationLat: number = directions.request.destination.location.lat;
@@ -59,19 +59,20 @@ BikeRoutes.get('/routes/:id', (req, res) => {
     });
 });
 
-// BikeRoutes.get('/center', (req, res) => {
-//   const { id } = req.user as User;
-//   prisma.user
-//     .findUnique({
-//       where: { id: id },
-//     })
-//     .then((user) => {
-//       res.status(300).send(user);
-//     })
-//     .catch((err) => {
-//       console.error('Failed GETting coordinates:', err);
-//       res.sendStatus(500);
-//     });
-// });
+BikeRoutes.get('/center/:id', (req, res) => {
+  console.log(req.session);
+  // const { id } = req.user as User;
+  // prisma.user
+  //   .findUnique({
+  //     where: { id: id },
+  //   })
+  //   .then((user) => {
+  //     res.status(200).send(user);
+  //   })
+  //   .catch((err) => {
+  //     console.error('Failed GETting coordinates:', err);
+  //     res.sendStatus(500);
+  //   });
+});
 
 export default BikeRoutes;

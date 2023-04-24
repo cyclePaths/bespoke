@@ -1,8 +1,7 @@
 import path from 'path';
 import express from 'express';
 import session from 'express-session';
-// import pg from 'pg';
-// import PgSimpleStore from 'connect-pg-simple';
+import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
@@ -25,15 +24,7 @@ interface User {
   // favAddresses?: number[] | undefined;
 }
 
-/// The commented out parts are for storing a session to be found later ///
-// const pgPool = new pg.Pool({
-//   connectionString: 'postgresql://postgres:GHexpert12!@localhost:5432/bespoke',
-// });
-
-// const pgSessionStore = new PgSimpleStore({
-//   pool: pgPool,
-//   tableName: 'session',
-// });
+const store = new (PgSimpleStore(session))({ createTableIfMissing: true });
 
 //Authentication Imports
 import '../auth';
@@ -48,7 +39,7 @@ const app = express();
 app.use(
   session({
     secret: SESSION_SECRET,
-    // store: pgSessionStore, // This is for creating a session in the db to be referenced later if the server stops
+    store: store, // This is for creating a session in the db to be referenced later if the server stops
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
@@ -135,8 +126,6 @@ app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
 app.use('/reports', reportRouter);
 
-
-
 // Render All Pages
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('client', 'dist', 'index.html'));
@@ -149,9 +138,9 @@ interface UpdateUserData extends User {
 }
 
 app.put('/home/user/:id', async (req, res) => {
-  console.log('index.ts attempting put');
+  // console.log('index.ts attempting put');
   const { id } = req.params;
-  console.log(req.params);
+  // console.log(req.params);
   const { location_lat, location_lng } = req.body!; // extract the updated data from the request body
   try {
     const updatedUser = await prisma.user.update({

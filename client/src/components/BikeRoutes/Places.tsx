@@ -18,6 +18,7 @@ type PlaceProps = {
   saveRoute: () => void;
   fetchDirections: (position: google.maps.LatLngLiteral) => void;
   selected: google.maps.LatLngLiteral | undefined;
+  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Places = ({
@@ -25,9 +26,9 @@ const Places = ({
   saveRoute,
   fetchDirections,
   selected,
+  setOpenPopup,
 }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
-  const [openPopup, setOpenPopup] = useState<boolean>(false);
 
   // Handle the input box //
   const handleChange = (value: string): void => {
@@ -72,7 +73,9 @@ const Places = ({
               >
                 Track Route
               </button>
-              <button onClick={handleSave}>Save Create Route</button>
+              <button onClick={() => setOpenPopup(true)}>
+                Save Create Route
+              </button>
             </RouteButtonContainer>
 
             <InputLayout
@@ -111,9 +114,6 @@ const Places = ({
           </div>
         )}
       </PlacesAutocomplete>
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <SaveForm />
-      </Popup>
     </div>
   );
 };

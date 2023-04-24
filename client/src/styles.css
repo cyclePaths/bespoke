@@ -17,4 +17,16 @@
   opacity: 0;
 } */
 
+.centered-header {
+  text-align: center;
+}
 
+.route-saver-header{
+  text-align: center;
+  font-size: xx-large;
+  margin-top: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+}

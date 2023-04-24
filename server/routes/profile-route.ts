@@ -35,6 +35,9 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       location_lat,
       location_lng,
       homeAddress,
+      totalMiles,
+      totalLikes,
+      totalPosts,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -47,6 +50,9 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       homeAddress,
       location_lat,
       location_lng,
+      totalMiles,
+      totalLikes,
+      totalPosts,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -97,6 +103,9 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       location_lng,
       homeAddress,
       weight,
+      totalLikes,
+      totalMiles,
+      totalPosts,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -109,6 +118,9 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       homeAddress,
       location_lat,
       location_lng,
+      totalLikes,
+      totalMiles,
+      totalPosts,
     };
 
     const updateAddress = await prisma.user.upsert({

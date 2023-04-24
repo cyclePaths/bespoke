@@ -9,9 +9,9 @@ interface SaveProps {
 
 const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
   return (
-    <Dialog open>
+    <Dialog open={openPopup}>
       <DialogTitle>
-        <div>Content here</div>
+        <header className='route-saver-header'>Save Route</header>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>

@@ -21,6 +21,8 @@ import FetchedRoutes from './FetchedRoutes';
 import PopupForm from './Popup';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import Popup from './Popup';
+import SaveForm from './SaveForm';
 
 // Sets the map to not be google styled //
 const options = {
@@ -47,7 +49,7 @@ const geocoder = new google.maps.Geocoder();
 
 const Map: React.FC = () => {
   // Pull context //
-  const user = useContext(UserContext);
+  const { user, geoLocation } = useContext(UserContext);
 
   // Create some state components to render the locations, routes, markers, and selected markers //
   const [startingPoint, setStartingPoint] = useState<LatLngLiteral>();
@@ -62,8 +64,7 @@ const Map: React.FC = () => {
     lng: -90.0715,
   });
   const [routeInfo, setRouteInfo] = useState<any>();
-
-  let center;
+  const [openPopup, setOpenPopup] = useState<boolean>(false);
 
   // This is for creating routes //
   const fetchDirections = (position: LatLngLiteral) => {
@@ -209,22 +210,6 @@ const Map: React.FC = () => {
     }
   }, [selected]);
 
-  /// WORKING ON FINDING PERSON'S COORDINATES ON RENDER ///
-  // useEffect(() => {
-  //   axios
-  //     .get('bikeRoutes/center')
-  //     .then(({ data }) => {
-  //       const centerObj = {
-  //         lat: parseFloat(data.location_lat),
-  //         lng: parseFloat(data.location_lng),
-  //       };
-  //       setUserCenter(centerObj);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // }, []);
-
   useEffect(() => {
     if (directions) {
       const centeredLat = directions.routes[0].bounds.getCenter().lat();
@@ -240,7 +225,11 @@ const Map: React.FC = () => {
     }
   }, [directions]);
 
-  center = useMemo<LatLngLiteral>(() => userCenter, [userCenter]);
+  useEffect(() => {
+    if (geoLocation) {
+      setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
+    }
+  }, [geoLocation]);
 
   if (!isLoaded) return <div>Map is loading</div>;
   return (
@@ -255,6 +244,7 @@ const Map: React.FC = () => {
           saveRoute={saveRoute}
           fetchDirections={fetchDirections}
           selected={selected}
+          setOpenPopup={setOpenPopup}
         />
       </StartRouteContainer>
 
@@ -262,7 +252,7 @@ const Map: React.FC = () => {
       <GoogleMap
         mapContainerStyle={defaultMapContainerStyle}
         options={options as google.maps.MapOptions}
-        center={center}
+        center={userCenter}
         zoom={14}
         onLoad={onLoad}
         onClick={onMapClick}
@@ -307,6 +297,9 @@ const Map: React.FC = () => {
         reportsList={reportsList}
         setReportsList={setReportsList}
       />
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <SaveForm />
+      </Popup>
     </div>
   );
 };

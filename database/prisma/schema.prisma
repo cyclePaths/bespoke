@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+}
+
 model User {
   id            Int          @id @default(autoincrement())
   email         String       @unique
@@ -19,46 +27,64 @@ model User {
   location_lng  Float?
   createdRoutes BikeRoutes[]
   reports       Report[]
+  totalMiles    Int          @default(0)
+  totalLikes    Int          @default(0)
+  totalPosts    Int          @default(0)
 }
 
 model Report {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   title        String?
   body         String?
   type         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  published    Boolean  @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  published    Boolean   @default(false)
   location_lat Float?
   location_lng Float?
   userId       Int
-  author       User     @relation(fields: [userId], references: [id])
+  author       User      @relation(fields: [userId], references: [id])
+  imgUrl       String?
+  comments     Comment[]
 }
 
 model Bulletin {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   topic     String
   creator   String
   text      String
-  createdAt DateTime @default(now())
+  createdAt DateTime    @default(now())
+  equipment Equipment[]
+  comments  Comment[]
+}
+
+model Equipment {
+  id            Int       @id @default(autoincrement())
+  equipmentType String
+  imgUrl        String[]
+  bulletin      Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId    Int
 }
 
 model Comment {
-  id             Int      @id @default(autoincrement())
-  bulletinOrigin Int
+  id             Int       @id @default(autoincrement())
+  bulletinOrigin Int?
   commentCreator String
   commentText    String
-  createdAt      DateTime @default(now())
+  createdAt      DateTime  @default(now())
+  report         Report?   @relation(fields: [reportId], references: [id])
+  reportId       String?
+  bulletin       Bulletin? @relation(fields: [bulletinOrigin], references: [id])
 }
 
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
+  name        String?
+  category    String?
   createdAt   DateTime  @default(now())
-  name        String
   userId      Int
   destination Decimal[]
   origin      Decimal[]
-  category    String?
   likes       Int?      @default(0)
   isPrivate   Boolean   @default(false)
   user        User      @relation(fields: [userId], references: [id])
