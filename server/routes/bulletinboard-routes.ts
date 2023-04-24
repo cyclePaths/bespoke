@@ -50,7 +50,7 @@ bulletinRouter.post('/', (req, res) => {
 
 //POST comment to database - CreateComment.tsx
 commentRouter.post('/', (req, res) => {
-    const { bulletinOrigin, commentCreator, commentText } = req.body
+    const { bulletinOrigin, commentCreator, commentText } = req.body;
     const newComment: CreateComment = {
         bulletinOrigin: bulletinOrigin,
         commentCreator: commentCreator,

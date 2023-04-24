@@ -43,7 +43,7 @@ CREATE TABLE "Bulletin" (
 -- CreateTable
 CREATE TABLE "Comment" (
     "id" SERIAL NOT NULL,
-    "bulletinOrign" INTEGER NOT NULL,
+    "bulletinOrigin" INTEGER NOT NULL,
     "commentCreator" TEXT NOT NULL,
     "commentText" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
