@@ -18,7 +18,10 @@ const ReportsMap: React.FC = () => {
   };
 
   const user = useContext(UserContext);
-
+  const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
   // const archiveReport = () => {
   //   console.log("attempting to update");
   //   const { id } = user;
@@ -122,6 +125,8 @@ const ReportsMap: React.FC = () => {
         center={center}
         zoom={15}
         onLoad={onLoad}
+        options={options as google.maps.MapOptions}
+
       />
     </div>
   );
