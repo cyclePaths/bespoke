@@ -23,42 +23,62 @@ model User {
 }
 
 model Report {
-  id              String   @id @default(uuid())
-  title           String?
-  body            String?
-  type            String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  published       Boolean  @default(false)
-  location_lat    Float?
-  location_lng    Float?
-  userId          Int
-  author          User     @relation(fields: [userId], references: [id])
+  id           String    @id @default(uuid())
+  title        String?
+  body         String?
+  type         String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  published    Boolean   @default(false)
+  location_lat Float?
+  location_lng Float?
+  userId       Int
+  author       User      @relation(fields: [userId], references: [id])
+  imgUrl       String?
+  comments     Comment[]
 }
 
 model Bulletin {
-  id              Int      @id @default(autoincrement())
-  topic           String
-  creator         String
-  text            String
-  createdAt       DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  topic     String
+  creator   String
+  text      String
+  createdAt DateTime @default(now())
+  equipment Equipment[]
+  comments Comment[]
+}
+
+model Equipment {
+  id           Int      @id @default(autoincrement())
+  equipmentType String
+  imgUrl        String[]
+  bulletin Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId Int
 }
 
 model Comment {
-  id              Int      @id @default(autoincrement())
-  bulletinOrigin  Int
-  commentCreator  String
-  commentText     String
-  createdAt       DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  bulletinOrigin Int?
+  commentCreator String
+  commentText    String
+  createdAt      DateTime @default(now())
+  report         Report?  @relation(fields: [reportId], references: [id])
+  reportId       String?
+  bulletin Bulletin? @relation(fields: [bulletinOrigin], references: [id])
+
+
 }
 
 model BikeRoutes {
-  id              Int       @id @default(autoincrement())
-  createdAt       DateTime  @default(now())
-  userId          Int
-  destination     Decimal[]
-  origin          Decimal[]
-  user            User      @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  category    String
+  createdAt   DateTime  @default(now())
+  userId      Int
+  destination Decimal[]
+  origin      Decimal[]
+  user        User      @relation(fields: [userId], references: [id])
+  likes       Int       @default(0)
 }
 
 model Rides {

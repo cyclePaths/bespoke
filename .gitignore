@@ -5,4 +5,3 @@ client/dist/bundle.js.LICENSE.txt
 client/src/components/BikeRoutes/Utils.ts
 .TODO
 migration_lock.toml
-!/node_modules/react-scrollabe-picker

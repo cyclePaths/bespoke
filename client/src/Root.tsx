@@ -115,7 +115,7 @@ export interface geoLocation {
 
 export const UserContext = createContext<User>(Object());
 
-const Root = ({ stopwatchActivity, stopwatchDuration, stopwatchCalories  }) => {
+const Root = () => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>();
   const [geoLocation, setGeoLocation] = useState<any>();
