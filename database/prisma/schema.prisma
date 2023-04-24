@@ -19,20 +19,25 @@ model User {
   location_lng  Float?
   createdRoutes BikeRoutes[]
   reports       Report[]
+  totalMiles    Int          @default(0)
+  totalLikes    Int          @default(0)
+  totalPosts    Int          @default(0)
 }
 
 model Report {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   title        String?
   body         String?
   type         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  published    Boolean  @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  published    Boolean   @default(false)
   location_lat Float?
   location_lng Float?
   userId       Int
-  author       User     @relation(fields: [userId], references: [id])
+  author       User      @relation(fields: [userId], references: [id])
+  imgUrl       String?
+  comments     Comment[]
 }
 
 model Bulletin {
@@ -41,21 +46,39 @@ model Bulletin {
   creator   String
   text      String
   createdAt DateTime @default(now())
+  equipment Equipment[]
+  comments Comment[]
+}
+
+model Equipment {
+  id           Int      @id @default(autoincrement())
+  equipmentType String
+  imgUrl        String[]
+  bulletin Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId Int
 }
 
 model Comment {
   id             Int      @id @default(autoincrement())
-  bulletinOrigin Int
+  bulletinOrigin Int?
   commentCreator String
   commentText    String
   createdAt      DateTime @default(now())
+  report         Report?  @relation(fields: [reportId], references: [id])
+  reportId       String?
+  bulletin Bulletin? @relation(fields: [bulletinOrigin], references: [id])
+
+
 }
 
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
+  name        String
+  category    String
   createdAt   DateTime  @default(now())
   userId      Int
   destination Decimal[]
   origin      Decimal[]
   user        User      @relation(fields: [userId], references: [id])
+  likes       Int       @default(0)
 }
