@@ -40,10 +40,8 @@ const Reports: React.FC = () => {
         {reports.map((report) => (
           <div key={report.id}>
             <h1>{report.type}</h1>
-            <p>{report.title}</p>
-            <p>
-              Location: {report.location_lat}, {report.location_lng}
-            </p>
+            <p>   {report.title}</p>
+            <p>   {report.body}</p>
           </div>
         ))}
       </div>
