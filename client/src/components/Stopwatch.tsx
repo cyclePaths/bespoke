@@ -47,7 +47,9 @@ const Stopwatch = () => {
   );
 
   const user = useContext(UserContext);
-  const { weight } = user;
+  if (user) {
+    const { weight } = user;
+     }
 
   console.log(user, 'WADUP?');
 

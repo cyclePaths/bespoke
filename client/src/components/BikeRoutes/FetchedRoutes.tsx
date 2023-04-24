@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { RouteButton } from '../../StyledComp';
+// import { RouteButton } from '../../StyledComp';
 import { UserContext } from '../../Root';
 
 interface Props {
@@ -21,9 +21,14 @@ const FetchedRoutes = ({
 
   return (
     <div>
-      <RouteButton onClick={() => fetchMaps(user!.id)}>
-        Fetch Routes
-      </RouteButton>
+      <button onClick={() => fetchMaps(user!.id)}>Fetch Routes</button>
+      {routeList ? (
+        routeList.map((route) => (
+          <p key={route.id}>Created At: {route.createdAt}</p>
+        ))
+      ) : (
+        <p>Routes display here</p>
+      )}
     </div>
   );
 };

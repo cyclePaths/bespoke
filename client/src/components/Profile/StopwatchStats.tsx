@@ -16,7 +16,12 @@ const StopwatchStats = ({
   setValueGroups,
 }) => {
   const user = useContext(UserContext);
-  const { weight } = user;
+
+  let weight = user?.weight ?? 0;
+
+ 
+
+
 
 
 

@@ -14,13 +14,16 @@ model User {
   thumbnail     String?
   weight        Int?
   createdRoutes BikeRoutes[]
+  reports       Report[]
   favAddresses  String[]
   homeAddress   String?
   rides         Rides[]
+  location_lat  Float?
+  location_lng  Float?
 }
 
 model Report {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   title        String?
   body         String?
   type         String?
@@ -29,6 +32,8 @@ model Report {
   published    Boolean  @default(false)
   location_lat Float?
   location_lng Float?
+  userId       Int
+  author       User     @relation(fields: [userId], references: [id])
 }
 
 model Bulletin {
@@ -41,10 +46,10 @@ model Bulletin {
 
 model BikeRoutes {
   id          Int       @id @default(autoincrement())
-  origin      Decimal[]
-  destination Decimal[]
   createdAt   DateTime  @default(now())
   userId      Int
+  destination Decimal[]
+  origin      Decimal[]
   user        User      @relation(fields: [userId], references: [id])
 }
 

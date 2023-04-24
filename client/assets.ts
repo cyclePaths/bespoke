@@ -10,6 +10,16 @@ export const weatherIcons = {
       'https://basmilius.github.io/weather-icons/production/fill/all/overcast-day.svg',
     dust: 'https://basmilius.github.io/weather-icons/production/fill/all/dust-day.svg',
     fog: 'https://basmilius.github.io/weather-icons/production/fill/all/fog-day.svg',
+    drizzle:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-drizzle.svg',
+    hail: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-hail.svg',
+    rain: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-rain.svg',
+    sleet:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-sleet.svg',
+    snow: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-snow.svg',
+    smoke:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-smoke.svg',
+    haze: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-haze.svg',
     thunderstorm: {
       base: 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-day.svg',
       rain: 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-day-rain.svg',
@@ -17,17 +27,7 @@ export const weatherIcons = {
     },
     partlyCloudy: {
       base: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day.svg',
-      drizzle:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-drizzle.svg',
-      hail: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-hail.svg',
-      rain: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-rain.svg',
-      sleet:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-sleet.svg',
-      snow: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-snow.svg',
-      smoke:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-smoke.svg',
       fog: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-fog.svg',
-      haze: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-day-haze.svg',
     },
   },
   night: {
@@ -45,6 +45,16 @@ export const weatherIcons = {
       'https://basmilius.github.io/weather-icons/production/fill/all/overcast-night.svg',
     dust: 'https://basmilius.github.io/weather-icons/production/fill/all/dust-night.svg',
     fog: 'https://basmilius.github.io/weather-icons/production/fill/all/fog-night.svg',
+    drizzle:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-drizzle.svg',
+    hail: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-hail.svg',
+    rain: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-rain.svg',
+    sleet:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-sleet.svg',
+    snow: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-snow.svg',
+    smoke:
+      'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-smoke.svg',
+    haze: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-haze.svg',
     thunderstorm: {
       base: 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-night.svg',
       rain: 'https://basmilius.github.io/weather-icons/production/fill/all/thunderstorms-night-rain.svg',
@@ -52,17 +62,7 @@ export const weatherIcons = {
     },
     partlyCloudy: {
       base: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night.svg',
-      drizzle:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-drizzle.svg',
-      hail: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-hail.svg',
-      rain: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-rain.svg',
-      sleet:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-sleet.svg',
-      snow: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-snow.svg',
-      smoke:
-        'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-smoke.svg',
       fog: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-fog.svg',
-      haze: 'https://basmilius.github.io/weather-icons/production/fill/all/partly-cloudy-night-haze.svg',
     },
     moonPhase: {
       new: 'https://basmilius.github.io/weather-icons/production/fill/all/moon-new.svg',
@@ -90,7 +90,14 @@ export const weatherIcons = {
       'https://basmilius.github.io/weather-icons/production/fill/all/cloudy.svg',
     overcast:
       'https://basmilius.github.io/weather-icons/production/fill/all/overcast.svg',
+    drizzle:
+      'https://basmilius.github.io/weather-icons/production/fill/all/drizzle.svg',
+    rain: 'https://basmilius.github.io/weather-icons/production/fill/all/rain.svg',
+    hail: 'https://basmilius.github.io/weather-icons/production/fill/all/hail.svg',
+    sleet:
+      'https://basmilius.github.io/weather-icons/production/fill/all/sleet.svg',
     mist: 'https://basmilius.github.io/weather-icons/production/fill/all/mist.svg',
+    snow: 'https://basmilius.github.io/weather-icons/production/fill/all/snow.svg',
     hurricane:
       'https://basmilius.github.io/weather-icons/production/fill/all/hurricane.svg',
     tornado:

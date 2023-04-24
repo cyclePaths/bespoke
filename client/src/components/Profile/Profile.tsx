@@ -36,8 +36,21 @@ export interface RideStats {
   calories: number;
 }
 
+// interface User {
+//   email: string;
+//   homeAddress: string;
+//   id: number;
+//   location_lat: number;
+//   location_lng: number;
+//   name: string;
+//   thumbnail: string;
+//   weight: number;
+// }
+
 const Profile: React.FC = () => {
   //setting state with hooks
+  // const [user, setUser] = useState<User>()
+  const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
   const [homeAddress, setHomeAddress] = useState('');
@@ -52,6 +65,11 @@ const Profile: React.FC = () => {
   const [valueGroups, setValueGroups] = useState<ValueGroup>(
     exiledRedHeadedStepChildrenValueGroups
   );
+
+  const user = useContext(UserContext);
+  // console.log(user)
+
+  // let userGreeting = `Hello ${user.name}`;
 
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
@@ -141,12 +159,20 @@ const Profile: React.FC = () => {
       });
   };
 
-  const user = useContext(UserContext);
 
-  let userGreeting = `Hello ${user.name}`;
+  useEffect(() => {
+    if (user && user.name) {
+      setGreeting(`Hello ${user.name}`);
+    }
+    // ...
+  }, [user]);
+
 
   // let filteredActivity = '';
   useEffect(() => {
+    // setUser(user);
+    setGreeting( `Hello ${user.name}`);
+
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);
       console.log(data.weight, 'HEYYYYY');
@@ -187,7 +213,7 @@ const Profile: React.FC = () => {
 
   return (
     <div>
-      <div>{userGreeting}</div>
+      <div>{greeting}</div>
       <div>
         <Addresses
           address={address}
@@ -261,7 +287,7 @@ const Profile: React.FC = () => {
           right: 0,
         }}
       >
-        <div style={{ marginRight: 10 }}>Weight: {weight} lbs</div>
+        {/* <div style={{ marginRight: 10 }}>Weight: {weight} lbs</div> */}
         <div>
           <input
             id='weight-input'

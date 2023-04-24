@@ -1,9 +1,22 @@
 import styled from 'styled-components';
 
+const RouteCreatorComponent = styled.div`
+  display: block;
+  margin-top: 100px;
+  text-align: center;
+`;
+
 const InputLayout = styled.input`
-  border-color: black;
-  align-items: center;
+  height: 25px;
+  width: 75%;
   margin-bottom: 10px;
+`;
+
+const StartRouteContainer = styled.div`
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
 `;
 
 const DropdownLayout = styled.div`
@@ -11,13 +24,20 @@ const DropdownLayout = styled.div`
   margin-bottom: 10px;
 `;
 
-const RouteButton = styled.button`
-  margin-left: 10px;
+const RouteButtonContainer = styled.div`
+  display: block;
 `;
 
 const ForecastRowContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+`;
+
+const ForecastEntry = styled.div`
+  border-style: solid;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(84, 191, 165);
 `;
 
 const WeatherIcon = styled.img`
@@ -29,6 +49,8 @@ const WeatherIcon = styled.img`
 const ForecastBit = styled.div`
   display: flex;
   align-items: center;
+  height: 50px;
+  width: 200px;
 `;
 
 const ForecastText = styled.p`
@@ -47,7 +69,10 @@ export {
   ForecastHelperIcon,
   InputLayout,
   DropdownLayout,
-  RouteButton,
+  RouteButtonContainer,
   ForecastRowContainer,
+  ForecastEntry,
   WeatherIcon,
+  StartRouteContainer,
+  RouteCreatorComponent,
 };
