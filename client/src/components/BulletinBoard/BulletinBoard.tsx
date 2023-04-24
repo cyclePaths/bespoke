@@ -1,18 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-//import { UserContext } from '../../index';
+import { UserContext } from '../../Root';
 //Components
 import Bulletin from './Bulletin'
+import CreateBulletin from './CreateBulletin';
 
 
 
 const BulletinBoard = () => {
-  //const context = useContext(UserContext);
+  const context = useContext(UserContext);
   const [bulletins, setBulletins] = useState([]);
 
   // Function to retrieve all bulletins
   const getAllBulletins = () => {
-    axios.get('/api/bulletins')
+    axios.get('/bulletin')
     .then((bulletinData) => {
       setBulletins(bulletinData.data);
     })
@@ -23,7 +24,7 @@ const BulletinBoard = () => {
 
   //Function to display only the bulletin with ID matching the ID of click-selected bulletin
   const handleBulletinSelection = (e) => {
-    axios.get('/api/bulletins')
+    axios.get('/bulletin')
     .then((bulletinData) => {
       setBulletins(bulletinData.data.filter((selected) => e.bulletinID === selected.bulletinID));
     })
@@ -36,13 +37,13 @@ const BulletinBoard = () => {
     //useEffect hook populates with bulletins
     useEffect(() => {
     getAllBulletins();
-  }, [])
+  }, [context])
 
   return (
     <div>
-      <div>Bulletins</div>
-      {bulletins.map((bulletin, i) => (<Bulletin bulletinData={bulletin}
-      handleBulletinSelection={ handleBulletinSelection } class='bulletin'/>))}
+      <CreateBulletin/>
+      {bulletins.map((bulletin, i) => (<Bulletin bulletin={bulletin}
+      handleBulletinSelection={ handleBulletinSelection } key={ i }/>))}
     </div>
   );
 };
