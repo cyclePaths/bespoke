@@ -31,6 +31,9 @@ const config: Configuration = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx'],
+    alias: {
+      "@emotion/react": path.resolve(__dirname, "node_modules/@emotion/react"),
+    },
   },
   output: {
     path: path.resolve(__dirname, 'client', 'dist'),

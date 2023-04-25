@@ -1,25 +1,89 @@
 import express, { Router } from 'express';
-import { PrismaClient, User } from '@prisma/client';
+import axios from 'axios';
+import { PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
-import session from 'express-session';
+import { CALORIES_BURNED_API } from '../../config';
 
 const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
 
-profileRouter.get('/user', async (req: Request, res: Response) => {
-  // console.log(req.body.user, ' hello');
-  // res.send('hello world');
-  // try {
-  //   const userName = await prisma.user.findUnique({
-  //     where: {
-  //       email:
-  //     }
-  //   })
-  // }
+let calories = 0;
+
+profileRouter.get('/workout', (req: Request, res: Response) => {
+  const { activity, duration, weight } = req.query;
+
+  const options = {
+    method: 'GET',
+    url: 'https://api.api-ninjas.com/v1/caloriesburned',
+    params: { activity: activity, duration: duration, weight: weight },
+    headers: {
+      'X-Api-Key': CALORIES_BURNED_API,
+    },
+    test: console.log('GET test'),
+  };
+
+  axios
+    .request(options)
+    .then(function ({ data }) {
+      calories = data[0].total_calories;
+      res.status(200).send(data[0]);
+    })
+    .catch(function (error) {
+      console.error('EMOTIONAL DAAAAMAGE');
+      res.sendStatus(500);
+    });
 });
 
-profileRouter.get('/calories', (req, res) => {
-  // console.log(req.body)
+profileRouter.post('/workout', async (req, res) => {
+  console.log('Post Workout', req.body);
+
+  try {
+    const { activity, duration, weight, calories } = req.body;
+
+    const { id } = req.user as User;
+
+    const rideData: Rides = {
+      id,
+      activity,
+      duration,
+      weight,
+      calories,
+      userId: id,
+    };
+    const newRide = await prisma.rides.create({
+      data: {
+        activity,
+        duration,
+        weight,
+        calories,
+        userId: id,
+      },
+    });
+    // console.log('hell yeah', newRide)
+    res.status(201).send(newRide);
+  } catch (err) {
+    console.log('Failed to update ride', err);
+    res.sendStatus(500);
+  }
+});
+
+profileRouter.get('/lastRide', async (req: Request, res: Response) => {
+  // console.log(req.body);
+  try {
+    const { id } = (req.user as User) || {};
+    const lastRide = await prisma.rides.findFirst({
+      where: {
+        userId: id,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    res.status(200).send(lastRide);
+  } catch (err) {
+    console.log('Failed to get weight', err);
+    res.sendStatus(500);
+  }
 });
 
 // Creates new user weight with POST. Updates any current weight value //
@@ -75,9 +139,10 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/weight', async (req: Request, res: Response) => {
+  console.log(req.user);
+
   try {
     const { id } = (req.user as User) || {};
-    // const { id, email, name, thumbnail } = (req.user as User) || {};
     const weightValue = await prisma.user.findUnique({
       where: {
         id: id,
@@ -91,6 +156,7 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.post('/address', async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const { address } = req.body;
     const {
@@ -143,9 +209,10 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/address', async (req: Request, res: Response) => {
+  console.log(req.user);
+
   try {
     const { id } = (req.user as User) || {};
-    // const { id, email, name, thumbnail } = (req.user as User) || {};
     const address = await prisma.user.findUnique({
       where: {
         id: id,

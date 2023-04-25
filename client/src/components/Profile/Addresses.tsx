@@ -60,9 +60,12 @@ function Addresses(props: AddressesProps) {
       })
 
         .then(() => {
-          console.log(selectedAddress, 'ADDRESS')
-          setHomeAddress(`My home is ${selectedAddress}`);
-          setSelectedAddress('');
+          // if (selectedAddress !== null) {
+            console.log(selectedAddress, 'ADDRESS')
+            setHomeAddress(`Your home is ${selectedAddress}`);
+            setSelectedAddress('');
+          // }
+
         })
         .catch((err) => {
           console.log('Failed to post address', err);
@@ -72,7 +75,12 @@ function Addresses(props: AddressesProps) {
     useEffect(() => {
       axios.get('/profile/address')
         .then(({ data }) => {
-          setHomeAddress(`My home is ${data.homeAddress}`);
+          if (data.homeAddress === null) {
+            setHomeAddress('');
+          } else {
+            setHomeAddress(`Your home is ${data.homeAddress}`);
+          }
+
 console.log(data, 'Please')
 
         })
@@ -89,7 +97,17 @@ console.log(data, 'Please')
       onSelect={handleSelect}
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <div>
+        <div id='address'
+        className='address'
+        style={{
+          // display: 'flex',
+          // flexDirection: 'row',
+          // justifyContent: 'center',
+          position: 'fixed',
+          bottom: 100,
+          // left: 0,
+          // right: 0,
+        }}>
           <input id='address-input'
             {...getInputProps({
               placeholder: 'Search Places ...',
@@ -117,16 +135,20 @@ console.log(data, 'Please')
                 </div>
               );
             })}
+            <div>{selectedAddress}</div>
+               <div>
+      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
+    </div>
           </div>
         </div>
       )}
     </PlacesAutocomplete>
 
-    <div>{selectedAddress}</div>
+    {/* <div>{selectedAddress}</div> */}
 
-    <div>
+    {/* <div>
       <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div>
+    </div> */}
 
     </div>
   );
