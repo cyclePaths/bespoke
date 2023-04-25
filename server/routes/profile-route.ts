@@ -9,6 +9,22 @@ const profileRouter: Router = express.Router();
 
 let calories = 0;
 
+profileRouter.get('/user', async (req: Request, res: Response) => {
+  console.log(req.user, "query")
+  try {
+    const { id } = (req.user as User) || {};
+    const nameValue = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send(nameValue);
+  } catch (err) {
+    console.log('Failed to get weight', err);
+    res.sendStatus(500);
+  }
+});
+
 profileRouter.get('/workout', (req: Request, res: Response) => {
   const { activity, duration, weight } = req.query;
 
@@ -19,7 +35,6 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
     headers: {
       'X-Api-Key': CALORIES_BURNED_API,
     },
-    test: console.log('GET test'),
   };
 
   axios
@@ -35,8 +50,6 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
-  console.log('Post Workout', req.body);
-
   try {
     const { activity, duration, weight, calories } = req.body;
 
@@ -59,7 +72,6 @@ profileRouter.post('/workout', async (req, res) => {
         userId: id,
       },
     });
-    // console.log('hell yeah', newRide)
     res.status(201).send(newRide);
   } catch (err) {
     console.log('Failed to update ride', err);
@@ -68,7 +80,6 @@ profileRouter.post('/workout', async (req, res) => {
 });
 
 profileRouter.get('/lastRide', async (req: Request, res: Response) => {
-  // console.log(req.body);
   try {
     const { id } = (req.user as User) || {};
     const lastRide = await prisma.rides.findFirst({
@@ -139,8 +150,6 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/weight', async (req: Request, res: Response) => {
-  console.log(req.user);
-
   try {
     const { id } = (req.user as User) || {};
     const weightValue = await prisma.user.findUnique({
@@ -156,7 +165,6 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.post('/address', async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
     const { address } = req.body;
     const {
@@ -209,8 +217,6 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/address', async (req: Request, res: Response) => {
-  console.log(req.user);
-
   try {
     const { id } = (req.user as User) || {};
     const address = await prisma.user.findUnique({

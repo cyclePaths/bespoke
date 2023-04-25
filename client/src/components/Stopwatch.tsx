@@ -51,8 +51,6 @@ const Stopwatch = () => {
     const { weight } = user;
      }
 
-  console.log(user, 'WADUP?');
-
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
       ...prevValueGroups,

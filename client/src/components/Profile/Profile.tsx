@@ -3,9 +3,8 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
-import { ThemeButton } from 'styled-components';
-import { ThemeContext, ThemeProvider } from './ThemeContext';
 import styled from 'styled-components';
+import { ThemeContext } from './ThemeContext';
 
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
@@ -44,6 +43,7 @@ export interface RideStats {
 
 const Profile = () => {
   const { theme, toggleTheme } = React.useContext(ThemeContext);
+  const [user, setUser] = useState('');
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -65,21 +65,13 @@ const Profile = () => {
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  const user = useContext(UserContext);
-
-  const handleToggleTheme = () => {
-    toggleTheme();
-  };
+  // const user = useContext(UserContext);
+  // console.log(user)
 
   const location = useLocation();
   let stopwatchActivity = location.state && location.state.stopwatchActivity;
   const stopwatchDuration = location.state && location.state.stopwatchDuration;
   const stopwatchCalories = location.state && location.state.stopwatchCalories;
-  console.log('Is this activity?', stopwatchActivity)
-  console.log(stopwatchDuration)
-  console.log(stopwatchCalories)
-
-
 
   if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
     if (stopwatchActivity === 'leisure bicycling') {
@@ -108,7 +100,6 @@ const Profile = () => {
     rideStats.weight = weight;
     rideStats.calories = stopwatchCalories;
   };
-  console.log('RideStats', rideStats)
 
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
@@ -123,10 +114,8 @@ const Profile = () => {
           weight: weight,
         },
       })
-      // console.log('Successful GET of Calories');
       .then(({ data }) => {
         const { total_calories } = data;
-        console.log('WHAT IS THE DATA?', data);
         if (`${valueGroups.workout}` === 'leisure bicycling') {
           valueGroups.workout = 'Average Speed <10 mph';
         }
@@ -164,10 +153,7 @@ const Profile = () => {
             weight: weight,
             calories: total_calories,
           })
-          .then(({ data }) => {
-            console.log('Am I HERE?', data)
-
-          })
+          .then(({ data }) => {})
           .catch((err) => {
             console.log('Could not post stats', err);
           });
@@ -202,23 +188,27 @@ const Profile = () => {
   };
 
 
-  useEffect(() => {
-    if (user && user.name) {
-      setGreeting(`Hello ${user.name}`);
-    }
-    // ...
-  }, [user]);
+  // useEffect(() => {
+  //   if (user && user.name) {
+  //     setGreeting(`Hello ${user.name}`);
+  //   }
+  //   // ...
+  // }, [user]);
 
+  // setGreeting( `Hello ${user}`);
 
   useEffect(() => {
-    setGreeting( `Hello ${user.name}`);
+    axios.get('/profile/user').then(({ data }) => {
+      let splitNames = data.name.split(' ')
+      setUser(splitNames[0]);
+
+    })
+    // setGreeting( `Hello ${user}`);
 
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);
-      console.log(data.weight, 'HEYYYYY');
     });
     axios.get('/profile/lastRide').then(({ data }) => {
-      console.log('DATA', data);
       if (data.activity === 'leisure bicycling') {
         data.activity = 'Average Speed <10 mph';
       }
@@ -247,12 +237,11 @@ const Profile = () => {
 
 
   return (
-    <ThemeProvider theme={theme}>
     <div>
-      <div>{greeting}</div>
-      <img
+      <div>{`Hello ${user}!`}</div>
+      {/* <img
       style={{borderRadius: '50%', width: '100px', height: '100px'}}
-      src={user.thumbnail} alt='avatar'/>
+      src={user.thumbnail} alt='avatar'/> */}
       <div>
         <Addresses
           address={address}
@@ -263,13 +252,7 @@ const Profile = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
-      <div>
-      <ThemeButton onClick={handleToggleTheme}>Toggle Theme</ThemeButton>
-      <h1 style={{ color: theme.text }}>Hello World!</h1>
-      <p style={{ color: theme.text }}>
-        This is an example of styled components with themes.
-      </p>
-    </div>
+
     <div>
 
       <div style={{ position: 'absolute', marginTop: 20 }}>
@@ -348,7 +331,6 @@ const Profile = () => {
         </div>
       </div>
     </div>
-    </ThemeProvider>
   );
 };
 
