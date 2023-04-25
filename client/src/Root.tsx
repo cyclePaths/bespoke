@@ -12,6 +12,8 @@ import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
+// import { GlobalStyle } from './StyledComp';
+import { ThemeContext, ThemeProvider } from './components/Profile/ThemeContext';
 
 export interface CurrentWeather {
   temperature: number;
@@ -116,6 +118,8 @@ export interface geoLocation {
 export const UserContext = createContext<User>(Object());
 
 const Root = () => {
+  const { theme, toggleTheme } = React.useContext(ThemeContext);
+
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>();
   const [geoLocation, setGeoLocation] = useState<any>();
@@ -274,7 +278,7 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(user)
+        console.log(user);
       })
       .catch((err) => {
         console.error(err);
@@ -379,7 +383,8 @@ const Root = () => {
   });
 
   return (
-    <div>
+    <ThemeProvider theme={theme as { background: string; text: string }}>
+      <GlobalStyle />
       <UserContext.Provider value={user!}>
         <BrowserRouter>
           <Routes>
@@ -430,7 +435,7 @@ const Root = () => {
           <Stopwatch />
         </BrowserRouter>
       </UserContext.Provider>
-    </div>
+    </ThemeProvider>
   );
 };
 

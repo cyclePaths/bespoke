@@ -3,6 +3,9 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
+import { ThemeButton } from 'styled-components';
+import { ThemeContext, ThemeProvider } from './ThemeContext';
+import styled from 'styled-components';
 
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
@@ -40,6 +43,7 @@ export interface RideStats {
 }
 
 const Profile = () => {
+  const { theme, toggleTheme } = React.useContext(ThemeContext);
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -63,6 +67,10 @@ const Profile = () => {
 
   const user = useContext(UserContext);
 
+  const handleToggleTheme = () => {
+    toggleTheme();
+  };
+
   const location = useLocation();
   let stopwatchActivity = location.state && location.state.stopwatchActivity;
   const stopwatchDuration = location.state && location.state.stopwatchDuration;
@@ -70,6 +78,7 @@ const Profile = () => {
   console.log('Is this activity?', stopwatchActivity)
   console.log(stopwatchDuration)
   console.log(stopwatchCalories)
+
 
 
   if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
@@ -238,6 +247,7 @@ const Profile = () => {
 
 
   return (
+    <ThemeProvider theme={theme}>
     <div>
       <div>{greeting}</div>
       <img
@@ -253,7 +263,13 @@ const Profile = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
-
+      <div>
+      <ThemeButton onClick={handleToggleTheme}>Toggle Theme</ThemeButton>
+      <h1 style={{ color: theme.text }}>Hello World!</h1>
+      <p style={{ color: theme.text }}>
+        This is an example of styled components with themes.
+      </p>
+    </div>
     <div>
 
       <div style={{ position: 'absolute', marginTop: 20 }}>
@@ -332,6 +348,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    </ThemeProvider>
   );
 };
 

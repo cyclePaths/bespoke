@@ -1,4 +1,28 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyleDark = createGlobalStyle`
+  html, body {
+    background-color: #333;
+    color: #fff;
+  }
+`;
+
+const GlobalStyleLight = createGlobalStyle`
+  html, body {
+    background-color: #fff;
+    color: #333;
+  }
+`;
+
+const Button = styled.button`
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: 16px;
+`;
 
 const RouteCreatorComponent = styled.div`
   display: block;
@@ -64,6 +88,8 @@ const ForecastHelperIcon = styled.img`
 `;
 
 export {
+  GlobalStyleDark,
+  GlobalStyleLight,
   ForecastBit,
   ForecastText,
   ForecastHelperIcon,
