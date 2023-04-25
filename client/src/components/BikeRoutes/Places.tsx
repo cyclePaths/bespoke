@@ -15,7 +15,6 @@ import SaveForm from './SaveForm';
 // Starting Props //
 type PlaceProps = {
   setStartingPoint: (position: google.maps.LatLngLiteral) => void;
-  saveRoute: () => void;
   fetchDirections: (position: google.maps.LatLngLiteral) => void;
   selected: google.maps.LatLngLiteral | undefined;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +22,6 @@ type PlaceProps = {
 
 const Places = ({
   setStartingPoint,
-  saveRoute,
   fetchDirections,
   selected,
   setOpenPopup,
@@ -49,16 +47,12 @@ const Places = ({
   };
   // End of the input handlers //
 
-  const handleSave = (): void => {
-    saveRoute();
-  };
-
   const handleRoute = (): void => {
     fetchDirections(selected!);
   };
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <PlacesAutocomplete
         value={currAdd}
         onChange={handleChange}
@@ -86,31 +80,33 @@ const Places = ({
               })}
             />
 
-            <DropdownLayout>
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                const key = suggestion.placeId;
+            {suggestions.length > 0 && (
+              <DropdownLayout>
+                {loading && <div>Loading...</div>}
+                {suggestions.map((suggestion) => {
+                  const className = suggestion.active
+                    ? 'suggestion-item--active'
+                    : 'suggestion-item';
+                  // inline style for demonstration purpose
+                  const style = suggestion.active
+                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                  const key = suggestion.placeId;
 
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                    key={key}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </DropdownLayout>
+                  return (
+                    <div
+                      {...getSuggestionItemProps(suggestion, {
+                        className,
+                        style,
+                      })}
+                      key={key}
+                    >
+                      <span>{suggestion.description}</span>
+                    </div>
+                  );
+                })}
+              </DropdownLayout>
+            )}
           </div>
         )}
       </PlacesAutocomplete>

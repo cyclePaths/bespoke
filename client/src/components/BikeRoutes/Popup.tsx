@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import '../../styles.css';
 
 interface SaveProps {
   children;
@@ -11,7 +12,7 @@ const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
   return (
     <Dialog open={openPopup}>
       <DialogTitle>
-        <header className='route-saver-header'>Save Route</header>
+        <header className='centered-header-Save'>Save Route</header>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>

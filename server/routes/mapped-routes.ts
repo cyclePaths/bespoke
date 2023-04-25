@@ -18,7 +18,7 @@ type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
 // Creates new bike route with POST //
 /// Only good for point A to point B ///
 BikeRoutes.post('/newRoute', (req, res) => {
-  const { directions, user } = req.body;
+  const { directions, user, name, category, privacy } = req.body;
   const id = user.id;
   const originLat: number = directions.request.origin.location.lat;
   const originLng: number = directions.request.origin.location.lng;
@@ -29,11 +29,15 @@ BikeRoutes.post('/newRoute', (req, res) => {
     origin: [originLat, originLng],
     destination: [destinationLat, destinationLng],
     user: { connect: { id: id } },
+    name: name,
+    category: category,
+    isPrivate: privacy,
+    createdAt: new Date(),
   };
 
   prisma.bikeRoutes
     .create({ data: newBikeRoute })
-    .then(() => {
+    .then((result) => {
       res.sendStatus(201);
     })
     .catch((err) => {

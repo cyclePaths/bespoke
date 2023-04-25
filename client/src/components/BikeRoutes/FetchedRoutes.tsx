@@ -1,6 +1,16 @@
 import React, { useContext } from 'react';
-// import { RouteButton } from '../../StyledComp';
+import { CategorySelector } from '../../StyledComp';
 import { UserContext } from '../../Root';
+import {
+  InputLabel,
+  MenuItem,
+  FormControl,
+  NativeSelect,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+} from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface Props {
   fetchMaps: (user_id: number | undefined) => void;
@@ -8,6 +18,9 @@ interface Props {
   setRouteList: React.Dispatch<any>;
   reportsList: any;
   setReportsList: React.Dispatch<any>;
+  setIsPrivate: React.Dispatch<React.SetStateAction<boolean>>;
+  isPrivate: boolean;
+  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FetchedRoutes = ({
@@ -16,19 +29,37 @@ const FetchedRoutes = ({
   setRouteList,
   reportsList,
   setReportsList,
+  setIsPrivate,
+  isPrivate,
+  setOpenSearch,
 }: Props) => {
   const user = useContext(UserContext);
 
   return (
-    <div style={{ marginTop: '10px' }}>
-      <button onClick={() => fetchMaps(user!.id)}>Fetch Routes</button>
-      {routeList ? (
-        routeList.map((route) => (
-          <p key={route.id}>Created At: {route.createdAt}</p>
-        ))
-      ) : (
-        <p>Routes display here</p>
-      )}
+    <div>
+      <FormControl sx={{ m: 1, width: 100 }} size='small'>
+        <InputLabel
+          id='Search-by-category'
+          variant='standard'
+          htmlFor='uncontrolled-native'
+        >
+          Category
+        </InputLabel>
+        <NativeSelect
+          defaultValue='Category'
+          inputProps={{ name: 'category', id: 'uncontrolled-native' }}
+        >
+          <option value='Casual'>Casual</option>
+          <option value='Speedy'>Speedy</option>
+          <option value='Scenic'>Scenic</option>
+        </NativeSelect>
+      </FormControl>
+      <FormControlLabel
+        control={<Switch />}
+        label='Show Private'
+        onClick={() => setIsPrivate(!!isPrivate)}
+      />
+      <button onClick={() => setOpenSearch(false)}>Exit</button>
     </div>
   );
 };

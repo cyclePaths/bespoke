@@ -23,11 +23,13 @@ import axios from 'axios';
 import { UserContext } from '../../Root';
 import Popup from './Popup';
 import SaveForm from './SaveForm';
+import RoutesListPopup from './RoutesListPopup';
+import { Button } from '@mui/material';
 
 // Sets the map to not be google styled //
 const options = {
   disableDefaultUI: true,
-  zoomControl: true,
+  zoomControl: false,
 };
 
 interface Coordinates {
@@ -64,7 +66,13 @@ const Map: React.FC = () => {
     lng: -90.0715,
   });
   const [routeInfo, setRouteInfo] = useState<any>();
+
+  // For Popup Route Save Action //
   const [openPopup, setOpenPopup] = useState<boolean>(false);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
+  const [routeName, setRouteName] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
+  const [isPrivate, setIsPrivate] = useState<boolean>(false);
 
   // This is for creating routes //
   const fetchDirections = (position: LatLngLiteral) => {
@@ -96,10 +104,20 @@ const Map: React.FC = () => {
   // End of created routes //
 
   // Passed down to Places to save routes to the database //
-  const saveRoute = (): void => {
+  const saveRoute = (
+    name: string,
+    category: string,
+    privacy: boolean
+  ): void => {
     if (directions) {
       axios
-        .post('/bikeRoutes/newRoute', { directions, user })
+        .post('/bikeRoutes/newRoute', {
+          directions,
+          user,
+          name,
+          category,
+          privacy,
+        })
         .then(() => {
           console.log('Route saved to db');
         })
@@ -130,10 +148,6 @@ const Map: React.FC = () => {
         lng: event.latLng!.lng(),
       },
     ]);
-    // setSelected({
-    //   lat: event.latLng!.lat(),
-    //   lng: event.latLng!.lng(),
-    // });
   }, []);
   // End of click event of the map //
 
@@ -210,6 +224,7 @@ const Map: React.FC = () => {
     }
   }, [selected]);
 
+  // Renders the directions and info window for the user's route when directions is populated //
   useEffect(() => {
     if (directions) {
       const centeredLat = directions.routes[0].bounds.getCenter().lat();
@@ -225,12 +240,14 @@ const Map: React.FC = () => {
     }
   }, [directions]);
 
+  // Sets the center of the map upon page loading //
   useEffect(() => {
     if (geoLocation) {
       setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
   }, [geoLocation]);
 
+  // Conditional to load something else if the map is not ready to load //
   if (!isLoaded) return <div>Map is loading</div>;
   return (
     <div className='container'>
@@ -241,7 +258,6 @@ const Map: React.FC = () => {
             setStartingPoint(position);
             mapRef.current?.panTo(position);
           }}
-          saveRoute={saveRoute}
           fetchDirections={fetchDirections}
           selected={selected}
           setOpenPopup={setOpenPopup}
@@ -253,10 +269,11 @@ const Map: React.FC = () => {
         mapContainerStyle={defaultMapContainerStyle}
         options={options as google.maps.MapOptions}
         center={userCenter}
-        zoom={14}
+        zoom={13}
         onLoad={onLoad}
         onClick={onMapClick}
       >
+        {/* This renders the directions on screen */}
         {directions && <DirectionsRenderer directions={directions} />}
 
         {/* This is the markers that will be placed on the screen on render */}
@@ -269,13 +286,11 @@ const Map: React.FC = () => {
                 lat: event.latLng!.lat(),
                 lng: event.latLng!.lng(),
               });
-              // fetchDirections(selected!);
             }}
           />
         ))}
 
         {/* This is the info window of a marker on the screen */}
-
         {selected ? (
           <InfoWindow
             position={{ lat: selected.lat, lng: selected.lng }}
@@ -290,16 +305,41 @@ const Map: React.FC = () => {
         ) : null}
         {routeInfo ? renderRouteInfo() : <div></div>}
       </GoogleMap>
-      <FetchedRoutes
-        fetchMaps={fetchMaps}
-        routeList={routeList}
-        setRouteList={setRouteList}
-        reportsList={reportsList}
-        setReportsList={setReportsList}
-      />
+
+      <Button
+        variant='contained'
+        sx={{ marginTop: 2 }}
+        onClick={() => setOpenSearch(true)}
+      >
+        Search Routes
+      </Button>
+      {/* These are popup windows that will display when the Save Created Route button is click or the Find Route Button is clicked */}
       <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <SaveForm />
+        <SaveForm
+          routeName={routeName}
+          setRouteName={setRouteName}
+          category={category}
+          setCategory={setCategory}
+          isPrivate={isPrivate}
+          setIsPrivate={setIsPrivate}
+          setOpenPopup={setOpenPopup}
+          directions={directions}
+          saveRoute={saveRoute}
+        />
       </Popup>
+      <RoutesListPopup openSearch={openSearch} setOpenSearch={setOpenSearch}>
+        <FetchedRoutes
+          fetchMaps={fetchMaps}
+          routeList={routeList}
+          setRouteList={setRouteList}
+          reportsList={reportsList}
+          setReportsList={setReportsList}
+          setIsPrivate={setIsPrivate}
+          isPrivate={isPrivate}
+          setOpenSearch={setOpenSearch}
+        />
+      </RoutesListPopup>
+      {/* The end of those Popups */}
     </div>
   );
 };
