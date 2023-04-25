@@ -186,28 +186,18 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
       });
   };
 
+///////////////////////////////////////////////////////////
+/*
+Elements that should render on loading the page
+Name, Weight, Thumbnail, Theme Preference, Most recent Ride
+*/
   useEffect(() => {
     axios.get('/profile/user').then(({ data }) => {
-      console.log('Dark?', isDark)
       let splitNames = data.name.split(' ')
       setUser(splitNames[0]);
       setPhoto(data.thumbnail);
       setTheme(data.theme);
-      console.log('Dark?', isDark)
-
-      // navigate('/Root', {state:{
-      //   savedTheme: theme,
-      // }})
-
-      // navigate('/Profile', {state:{
-      //   savedTheme: theme,
-      // }})
-
     })
-
-    // navigate('/Root', {state:{
-    //     savedTheme: theme,
-    //   }})
 
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);
@@ -238,6 +228,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
       setRideStats(data);
     });
   }, []);
+  //..................................................
 
   return (
     <div>
