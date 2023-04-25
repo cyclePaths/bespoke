@@ -45,7 +45,8 @@ const CreateBulletin = () => {
     <ThemeProvider theme={themeBulletin}>
         <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
-            style={{ backgroundColor: '#94edd7', marginTop: '30px' }}
+            style={{ backgroundColor: '#94edd7', marginTop: '30px',
+                     maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
             placeholder='enter topic'
@@ -57,10 +58,11 @@ const CreateBulletin = () => {
             />
         </div>
         <div id='textField' style={{ display: 'inline-block '}}>
-        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px' }}
+        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px',
+                               maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
-            placeholder='enter bulletin message'
+            placeholder='bulletin message'
             inputProps={{
               maxLength: 1000,
               onChange: (e) => handleText(e),
@@ -69,11 +71,11 @@ const CreateBulletin = () => {
             />
         </div>
         <div id="submitButton" style={{ display: 'inline-block '}}>
-         <Button style={{ maxWidth: '200px', maxHeight: '50px', backgroundColor: '#17332c',
-                          minWidth: '200px', minHeight: '50px', marginLeft: '15px'}}
+         <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
+                          minWidth: '75px', minHeight: '25px', marginLeft: '15px'}}
           onClick={() => handleBulletinSubmission()}
           >
-          <i>Submit Bulletin</i>
+          <i>Submit</i>
           </Button>
         </div>
     </ThemeProvider>
