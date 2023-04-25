@@ -149,8 +149,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: 30.0,
-          longitude: -90.17,
+          latitude: geoLocation.lat,
+          longitude: geoLocation.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -274,7 +274,7 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(user)
+        console.log(user);
       })
       .catch((err) => {
         console.error(err);
@@ -333,9 +333,9 @@ const Root = () => {
   }, [geoLocation]);
 
   useEffect(() => {
-    getForecasts();
     getLocation();
     findContext();
+    getForecasts();
   }, []);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
@@ -359,7 +359,7 @@ const Root = () => {
 
   let found = false;
   let countIndex = 0;
-  hourlyForecasts.forEach((ele, index) => {
+  hourlyForecasts.forEach((ele) => {
     if (found === true && countIndex < 4) {
       homeForecasts[countIndex] = ele;
       countIndex++;
