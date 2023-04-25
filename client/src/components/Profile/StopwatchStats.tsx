@@ -47,7 +47,9 @@ const StopwatchStats = ({
   const navigate = useNavigate();
 
   const workoutStats = () => {
-    const { workout } = valueGroups;
+    // const { workout } = valueGroups;
+    let workout = valueGroups.workout;
+
     axios
       .get('/profile/workout', {
         params: {
@@ -59,8 +61,30 @@ const StopwatchStats = ({
       .then((response) => {
         const { total_calories } = response.data;
 
+        if (workout === 'leisure bicycling') {
+          workout = 'Average Speed <10 mph';
+        }
+        if (workout === 'mph, light') {
+          workout = 'Average Speed 10-12 mph';
+        }
+        if (`${workout}` === '13.9 mph, moderate') {
+          workout = 'Average Speed 12-14 mph';
+        }
+        if (`${workout}`=== '15.9 mph, vigorous') {
+          workout = 'Average Speed 14-16 mph';
+        }
+        if (`${workout}` === 'very fast, racing') {
+          workout = 'Average Speed 16-19 mph';
+        }
+        if (`${workout}` === '>20 mph, racing') {
+          workout = 'Average Speed 20+ mph';
+        }
+        if (`${workout}` === 'mountain bike') {
+          workout = 'Mountain Biking';
+        }
+
         navigate('/Profile', {state:{
-          stopwatchActivity: `${workout}`,
+          stopwatchActivity: workout,
           stopwatchDuration: totalTime,
           stopwatchCalories: total_calories
         }

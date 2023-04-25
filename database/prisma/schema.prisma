@@ -31,6 +31,7 @@ model User {
   totalLikes    Int?         @default(0)
   totalMiles    Int?         @default(0)
   totalPosts    Int?         @default(0)
+  theme         Boolean      @default(false)
 }
 
 model Report {

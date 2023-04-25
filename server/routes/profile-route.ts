@@ -9,6 +9,61 @@ const profileRouter: Router = express.Router();
 
 let calories = 0;
 
+profileRouter.post('/theme', async (req: Request, res: Response) => {
+  console.log(req.body)
+  try {
+    const { theme } = req.body;
+    const {
+      id,
+      email,
+      name,
+      thumbnail,
+      weight,
+      favAddresses,
+      location_lat,
+      location_lng,
+      homeAddress,
+      totalMiles,
+      totalLikes,
+      totalPosts,
+
+    } = (req.user as User) || {};
+
+    const userData: User = {
+      id,
+      email,
+      name,
+      thumbnail,
+      weight,
+      favAddresses,
+      homeAddress,
+      location_lat,
+      location_lng,
+      totalMiles,
+      totalLikes,
+      totalPosts,
+      theme
+    };
+
+    const updateTheme = await prisma.user.upsert({
+      where: {
+        id: id,
+      },
+      update: {
+        theme: theme,
+      },
+      create: {
+        ...userData,
+        theme: theme,
+      },
+    });
+    res.status(201).send(updateTheme);
+  } catch (err) {
+    console.log('Failed to update weight', err);
+    res.sendStatus(500);
+  }
+})
+
 profileRouter.get('/user', async (req: Request, res: Response) => {
   console.log(req.user, "query")
   try {
@@ -113,6 +168,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       totalMiles,
       totalLikes,
       totalPosts,
+      theme,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -128,6 +184,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       totalMiles,
       totalLikes,
       totalPosts,
+      theme,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -180,6 +237,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       totalLikes,
       totalMiles,
       totalPosts,
+      theme,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -195,6 +253,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       totalLikes,
       totalMiles,
       totalPosts,
+      theme,
     };
 
     const updateAddress = await prisma.user.upsert({

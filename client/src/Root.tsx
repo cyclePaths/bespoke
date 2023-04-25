@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { weatherIcons } from '../assets';
 import App from './components/App';
@@ -120,10 +120,14 @@ export const UserContext = createContext<any>(Object());
 const Root = () => {
 
   /////////// LIGHT/DARK MODE///////////////
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
+
+  // const location = useLocation();
+  // let savedTheme = location.state && location.state.savedTheme;
+  // setIsDark(savedTheme);
   };
   //.........................................
 
@@ -285,6 +289,8 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
+        console.log(data.theme)
+        setIsDark(!data.theme);
       })
       .catch((err) => {
         console.error(err);
@@ -439,6 +445,7 @@ const Root = () => {
                 <Route path='profile' element={<Profile
                 handleToggleStyle={handleToggleStyle}
                 isDark={isDark}
+                setIsDark={setIsDark}
                 />}
                 />
                 <Route path='createReport' element={<CreateReport />} />

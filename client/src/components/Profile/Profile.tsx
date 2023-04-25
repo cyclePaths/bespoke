@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
@@ -42,10 +42,11 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = ({ handleToggleStyle, isDark }) => {
-  // const { theme, toggleTheme } = props;
-  // const { theme, toggleTheme } = React.useContext(ThemeContext);
-  const [user, setUser] = useState('');
+const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
+
+  //State values with useState hook.
+  const [user, setUser] = useState(true);
+  const [theme, setTheme] = useState()
   const [photo, setPhoto] = useState('');
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
@@ -59,51 +60,45 @@ const Profile = ({ handleToggleStyle, isDark }) => {
     weight: 0,
     calories: 0,
 });
-
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledRedHeadedStepChildrenOptionGroups
   );
-
   const [valueGroups, setValueGroups] = useState<ValueGroup>(
     exiledRedHeadedStepChildrenValueGroups
   );
 
 
-  // const { theme, toggleTheme } = useTheme();
+  const saveTheme = () => {
+    axios.post('/profile/theme', {
+      theme: isDark
+    })
+  }
 
+  // const navigate = useNavigate();
+
+
+ /////////////////////////////////////////////////////////////////////////
+ ////// This function grabs ride stats from StopwatchStats.tsx////////////
   const location = useLocation();
   let stopwatchActivity = location.state && location.state.stopwatchActivity;
   const stopwatchDuration = location.state && location.state.stopwatchDuration;
   const stopwatchCalories = location.state && location.state.stopwatchCalories;
 
   if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
-    if (stopwatchActivity === 'leisure bicycling') {
-      stopwatchActivity = 'Average Speed <10 mph';
-    }
-    if (stopwatchActivity === 'mph, light') {
-      stopwatchActivity = 'Average Speed 10-12 mph';
-    }
-    if (stopwatchActivity === '13.9 mph, moderate') {
-      stopwatchActivity = 'Average Speed 12-14 mph';
-    }
-    if (stopwatchActivity === '15.9 mph, vigorous') {
-      stopwatchActivity = 'Average Speed 14-16 mph';
-    }
-    if (stopwatchActivity === 'very fast, racing') {
-      stopwatchActivity = 'Average Speed 16-19 mph';
-    }
-    if (stopwatchActivity === '>20 mph, racing') {
-      stopwatchActivity = 'Average Speed 20+ mph';
-    }
-    if (stopwatchActivity === 'mountain bike') {
-      stopwatchActivity = 'Mountain Biking';
-    }
     rideStats.activity = stopwatchActivity;
     rideStats.duration = stopwatchDuration;
     rideStats.weight = weight;
     rideStats.calories = stopwatchCalories;
   };
+  //.................................................
 
+
+ /////////////////////////////////////////////////////////////////////////
+ /*
+ This function makes an API request to get calories stats. It then posts
+ those stats to the database and then the server sends back the stats
+ to display on the page.
+ */
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
     const numberHours = Number(durationHours);
@@ -142,7 +137,6 @@ const Profile = ({ handleToggleStyle, isDark }) => {
         }
 
         setRideStats(data)
-
         setRideStats({
           activity: `${valueGroups.workout}`,
           duration: totalTime,
@@ -165,6 +159,8 @@ const Profile = ({ handleToggleStyle, isDark }) => {
         console.log('Failed to GET Calories', err);
       });
   };
+//........................................................
+
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -190,25 +186,28 @@ const Profile = ({ handleToggleStyle, isDark }) => {
       });
   };
 
-
-  // useEffect(() => {
-  //   if (user && user.name) {
-  //     setGreeting(`Hello ${user.name}`);
-  //   }
-  //   // ...
-  // }, [user]);
-
-  // setGreeting( `Hello ${user}`);
-
   useEffect(() => {
     axios.get('/profile/user').then(({ data }) => {
+      console.log('Dark?', isDark)
       let splitNames = data.name.split(' ')
       setUser(splitNames[0]);
-
       setPhoto(data.thumbnail);
+      setTheme(data.theme);
+      console.log('Dark?', isDark)
+
+      // navigate('/Root', {state:{
+      //   savedTheme: theme,
+      // }})
+
+      // navigate('/Profile', {state:{
+      //   savedTheme: theme,
+      // }})
 
     })
-    // setGreeting( `Hello ${user}`);
+
+    // navigate('/Root', {state:{
+    //     savedTheme: theme,
+    //   }})
 
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);
@@ -240,7 +239,6 @@ const Profile = ({ handleToggleStyle, isDark }) => {
     });
   }, []);
 
-
   return (
     <div>
       <div>{`Hello ${user}!`}</div>
@@ -258,7 +256,11 @@ const Profile = ({ handleToggleStyle, isDark }) => {
         />
       </div>
       <div className="profile">
-      <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button>
+      <button onClick={() => {
+        handleToggleStyle(),
+        saveTheme()
+        }
+        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button>
       {/* {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />} */}
     </div>
 
