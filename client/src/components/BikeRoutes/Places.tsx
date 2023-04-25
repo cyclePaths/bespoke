@@ -9,6 +9,8 @@ import {
   DropdownLayout,
   RouteButtonContainer,
 } from '../../StyledComp';
+import Popup from './Popup';
+import SaveForm from './SaveForm';
 
 // Starting Props //
 type PlaceProps = {
@@ -16,6 +18,7 @@ type PlaceProps = {
   saveRoute: () => void;
   fetchDirections: (position: google.maps.LatLngLiteral) => void;
   selected: google.maps.LatLngLiteral | undefined;
+  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Places = ({
@@ -23,6 +26,7 @@ const Places = ({
   saveRoute,
   fetchDirections,
   selected,
+  setOpenPopup,
 }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
@@ -62,13 +66,6 @@ const Places = ({
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <InputLayout
-              id='address-input'
-              {...getInputProps({
-                placeholder: 'Set Staring Location ...',
-                className: 'location-search-input',
-              })}
-            />
             <RouteButtonContainer>
               <button
                 style={{ marginRight: '5px', marginLeft: '5px' }}
@@ -76,8 +73,18 @@ const Places = ({
               >
                 Track Route
               </button>
-              <button onClick={handleSave}>Save Create Route</button>
+              <button onClick={() => setOpenPopup(true)}>
+                Save Create Route
+              </button>
             </RouteButtonContainer>
+
+            <InputLayout
+              id='address-input'
+              {...getInputProps({
+                placeholder: 'Set Staring Location ...',
+                className: 'location-search-input',
+              })}
+            />
 
             <DropdownLayout>
               {loading && <div>Loading...</div>}
@@ -93,7 +100,6 @@ const Places = ({
 
                 return (
                   <div
-                    style={{ borderColor: 'black' }}
                     {...getSuggestionItemProps(suggestion, {
                       className,
                       style,

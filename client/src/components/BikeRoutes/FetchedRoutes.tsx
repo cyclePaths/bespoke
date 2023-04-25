@@ -20,7 +20,7 @@ const FetchedRoutes = ({
   const user = useContext(UserContext);
 
   return (
-    <div>
+    <div style={{ marginTop: '10px' }}>
       <button onClick={() => fetchMaps(user!.id)}>Fetch Routes</button>
       {routeList ? (
         routeList.map((route) => (
