@@ -4,7 +4,8 @@ import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
 import styled from 'styled-components';
-import { ThemeContext } from './ThemeContext';
+import { useTheme } from './ThemeContext';
+import { GlobalStyleLight, GlobalStyleDark } from '../../StyledComp';
 
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
@@ -41,9 +42,11 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = () => {
-  const { theme, toggleTheme } = React.useContext(ThemeContext);
+const Profile = ({ handleToggleStyle, isDark }) => {
+  // const { theme, toggleTheme } = props;
+  // const { theme, toggleTheme } = React.useContext(ThemeContext);
   const [user, setUser] = useState('');
+  const [photo, setPhoto] = useState('');
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -65,8 +68,8 @@ const Profile = () => {
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  // const user = useContext(UserContext);
-  // console.log(user)
+
+  // const { theme, toggleTheme } = useTheme();
 
   const location = useLocation();
   let stopwatchActivity = location.state && location.state.stopwatchActivity;
@@ -202,6 +205,8 @@ const Profile = () => {
       let splitNames = data.name.split(' ')
       setUser(splitNames[0]);
 
+      setPhoto(data.thumbnail);
+
     })
     // setGreeting( `Hello ${user}`);
 
@@ -239,9 +244,9 @@ const Profile = () => {
   return (
     <div>
       <div>{`Hello ${user}!`}</div>
-      {/* <img
+      <img
       style={{borderRadius: '50%', width: '100px', height: '100px'}}
-      src={user.thumbnail} alt='avatar'/> */}
+      src={photo} alt='avatar'/>
       <div>
         <Addresses
           address={address}
@@ -252,6 +257,10 @@ const Profile = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
+      <div className="profile">
+      <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button>
+      {/* {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />} */}
+    </div>
 
     <div>
 
