@@ -115,13 +115,13 @@ export interface geoLocation {
   lng: number;
 }
 
-export const UserContext = createContext<User>(Object());
+export const UserContext = createContext<any>(Object());
 
 const Root = () => {
   const { theme, toggleTheme } = React.useContext(ThemeContext);
 
   // Created User Info and Geolocation for context //
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -297,7 +297,6 @@ const Root = () => {
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            console.log('ROOT: Attempting to get LOcation');
             const { latitude, longitude } = position.coords;
             setGeoLocation({ lat: latitude, lng: longitude });
             clearInterval(interval!);
@@ -383,9 +382,11 @@ const Root = () => {
   });
 
   return (
-    <ThemeProvider theme={theme as { background: string; text: string }}>
-      <GlobalStyle />
-      <UserContext.Provider value={user!}>
+    <div>
+         <ThemeProvider theme={theme as { background: string; text: string }}>
+      {/* <GlobalStyle /> */}
+      <UserContext.Provider value={user!}></UserContext.Provider>
+      <UserContext.Provider value={{ user, geoLocation }}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
@@ -435,10 +436,11 @@ const Root = () => {
           <Stopwatch />
         </BrowserRouter>
       </UserContext.Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+</div>
   );
 };
 
 export default Root;
 
-// stopwatchActivity={stopwatchActivity} stopwatchDuration={stopwatchDuration} stopwatchCalories={stopwatchCalories}
+{/* // stopwatchActivity={stopwatchActivity} stopwatchDuration={stopwatchDuration} stopwatchCalories={stopwatchCalories} */}

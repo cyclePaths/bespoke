@@ -26,14 +26,19 @@ const Button = styled.button`
 
 const RouteCreatorComponent = styled.div`
   display: block;
-  margin-top: 100px;
+  margin-top: 25px;
+  text-align: center;
+`;
+
+const PopoutSaveForm = styled.form`
+  display: block;
   text-align: center;
 `;
 
 const InputLayout = styled.input`
   height: 25px;
   width: 75%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const StartRouteContainer = styled.div`
@@ -44,12 +49,13 @@ const StartRouteContainer = styled.div`
 `;
 
 const DropdownLayout = styled.div`
-  box-shadow: black;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 `;
 
 const RouteButtonContainer = styled.div`
   display: block;
+  margin-bottom: 5px;
 `;
 
 const ForecastRowContainer = styled.div`
@@ -101,4 +107,5 @@ export {
   WeatherIcon,
   StartRouteContainer,
   RouteCreatorComponent,
+  PopoutSaveForm,
 };
