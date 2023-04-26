@@ -315,7 +315,6 @@ const Root = () => {
   };
 
   const getLocation = () => {
-    console.log('root.tsx getLocation');
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {

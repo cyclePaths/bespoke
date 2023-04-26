@@ -22,6 +22,19 @@ const PopoutSaveForm = styled.form`
   text-align: center;
 `;
 
+const CategorySelector = styled.select`
+  border-color: black;
+  margin-right: 10px;
+`;
+
+const OptionsDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 const InputLayout = styled.input`
   height: 25px;
   width: 75%;
@@ -35,14 +48,29 @@ const StartRouteContainer = styled.div`
   text-align: center;
 `;
 
-const DropdownLayout = styled.div`
-  margin-bottom: 5px;
-  margin-top: 5px;
+const AutoCompleteDropdownLayout = styled.div`
+  text-align: center;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  background-color: #ffffff;
+  transform: translateX(-50%);
+  z-index: 1000;
+  border: 1px solid #d3d3d3;
+  border-top: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
 `;
 
 const RouteButtonContainer = styled.div`
   display: block;
   margin-bottom: 5px;
+`;
+
+const RouteListOptions = styled.div`
+  display: block;
 `;
 
 const ForecastRowContainer = styled.div`
@@ -135,7 +163,7 @@ export {
   ForecastText,
   ForecastHelperIcon,
   InputLayout,
-  DropdownLayout,
+  AutoCompleteDropdownLayout,
   RouteButtonContainer,
   ForecastRowContainer,
   ForecastEntry,
@@ -144,4 +172,7 @@ export {
   RouteCreatorComponent,
   PopoutSaveForm,
   // ToggleSwitch,
+  CategorySelector,
+  OptionsDiv,
+  RouteListOptions,
 };

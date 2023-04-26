@@ -17,11 +17,25 @@
   opacity: 0;
 } */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .centered-header {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 
-.route-saver-header{
+.centered-header-Save {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 10px;
+  font-size: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.route-saver-headers{
   text-align: center;
   font-size: xx-large;
   margin-top: 10px;
@@ -29,4 +43,25 @@
   padding-right: 25px;
   margin-left: 25px;
   margin-right: 25px;
+}
+
+.list{
+  text-align: center;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.search-form {
+  display: grid;
+  align-content: stretch;
+  justify-content: center;
+  justify-items: stretch;
+}
+
+#set-private{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 17px;
 }
