@@ -5,7 +5,9 @@ import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
 import styled from 'styled-components';
 import { useTheme } from './ThemeContext';
-import { GlobalStyleLight, GlobalStyleDark } from '../../StyledComp';
+// import { ToggleSwitch } from '../../StyledComp';
+import { ToggleSwitch } from '../../ThemeStyles';
+// import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
@@ -247,12 +249,20 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         />
       </div>
       <div className="profile">
-      <button onClick={() => {
+      {/* <button onClick={() => {
         handleToggleStyle(),
         saveTheme()
         }
-        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button>
-      {/* {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />} */}
+        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
+ <ToggleSwitch >
+      <input type="checkbox"   onChange={() => {handleToggleStyle(), saveTheme()}}/>
+      <span />
+    </ToggleSwitch>
+    {/* <div className='toggle-switch'>
+      <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
+      <span />
+    </div> */}
+
     </div>
 
     <div>
