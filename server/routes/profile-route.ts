@@ -9,6 +9,115 @@ const profileRouter: Router = express.Router();
 
 let calories = 0;
 
+profileRouter.post('/theme', async (req: Request, res: Response) => {
+  console.log(req.body)
+  try {
+    const { theme } = req.body;
+    const {
+      id,
+      email,
+      name,
+      thumbnail,
+      weight,
+      favAddresses,
+      location_lat,
+      location_lng,
+      homeAddress,
+      totalMiles,
+      totalPosts,
+      joinDate,
+      profileComplete,
+      firstRideCity,
+      firstRideCountry,
+      monthlyMiles,
+      mostMonthlyMiles,
+      totalBadWeatherMiles,
+      totalGoodWeatherMiles,
+      totalCaloriesBurned,
+      totalMinutesAboveTime,
+      highestRideStreak,
+      mostWeeklyRides,
+      ridesThisWeek,
+      totalRides,
+      totalReports,
+      totalDownvotedReports,
+      monthlyDownvotedReports,
+      totalRoutes,
+      totalLikesGiven,
+      totalLikesReceived,
+
+    } = (req.user as User) || {};
+
+    const userData: User = {
+      id,
+      email,
+      name,
+      thumbnail,
+      weight,
+      favAddresses,
+      homeAddress,
+      location_lat,
+      location_lng,
+      totalMiles,
+      totalPosts,
+      theme,
+      joinDate,
+      profileComplete,
+      firstRideCity,
+      firstRideCountry,
+      monthlyMiles,
+      mostMonthlyMiles,
+      totalBadWeatherMiles,
+      totalGoodWeatherMiles,
+      totalCaloriesBurned,
+      totalMinutesAboveTime,
+      highestRideStreak,
+      mostWeeklyRides,
+      ridesThisWeek,
+      totalRides,
+      totalReports,
+      totalDownvotedReports,
+      monthlyDownvotedReports,
+      totalRoutes,
+      totalLikesGiven,
+      totalLikesReceived,
+    };
+
+    const updateTheme = await prisma.user.upsert({
+      where: {
+        id: id,
+      },
+      update: {
+        theme: theme,
+      },
+      create: {
+        ...userData,
+        theme: theme,
+      },
+    });
+    res.status(201).send(updateTheme);
+  } catch (err) {
+    console.log('Failed to update weight', err);
+    res.sendStatus(500);
+  }
+})
+
+profileRouter.get('/user', async (req: Request, res: Response) => {
+  console.log(req.user, "query")
+  try {
+    const { id } = (req.user as User) || {};
+    const nameValue = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send(nameValue);
+  } catch (err) {
+    console.log('Failed to get weight', err);
+    res.sendStatus(500);
+  }
+});
+
 profileRouter.get('/workout', (req: Request, res: Response) => {
   const { activity, duration, weight } = req.query;
 
@@ -19,7 +128,6 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
     headers: {
       'X-Api-Key': CALORIES_BURNED_API,
     },
-    test: console.log('GET test'),
   };
 
   axios
@@ -35,8 +143,6 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
-  console.log('Post Workout', req.body);
-
   try {
     const { activity, duration, weight, calories } = req.body;
 
@@ -59,7 +165,6 @@ profileRouter.post('/workout', async (req, res) => {
         userId: id,
       },
     });
-    // console.log('hell yeah', newRide)
     res.status(201).send(newRide);
   } catch (err) {
     console.log('Failed to update ride', err);
@@ -68,7 +173,6 @@ profileRouter.post('/workout', async (req, res) => {
 });
 
 profileRouter.get('/lastRide', async (req: Request, res: Response) => {
-  // console.log(req.body);
   try {
     const { id } = (req.user as User) || {};
     const lastRide = await prisma.rides.findFirst({
@@ -115,6 +219,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
+      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -149,6 +254,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
+      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -177,8 +283,6 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/weight', async (req: Request, res: Response) => {
-  console.log(req.user);
-
   try {
     const { id } = (req.user as User) || {};
     const weightValue = await prisma.user.findUnique({
@@ -194,7 +298,6 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
 });
 
 profileRouter.post('/address', async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
     const { address } = req.body;
     const {
@@ -223,6 +326,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
+      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -257,6 +361,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
+      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -285,8 +390,6 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/address', async (req: Request, res: Response) => {
-  console.log(req.user);
-
   try {
     const { id } = (req.user as User) || {};
     const address = await prisma.user.findUnique({

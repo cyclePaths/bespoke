@@ -49,7 +49,7 @@ const Stopwatch = () => {
   const user = useContext(UserContext);
   if (user) {
     const { weight } = user;
-  }
+     }
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({

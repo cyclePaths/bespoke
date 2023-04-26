@@ -51,6 +51,7 @@ passport.use(
           const newUserData: CreateUser = {
             email: profile.email,
             name: profile.displayName,
+            thumbnail: profile._json.picture,
           };
           const newUser = await prisma.user.create({
             data: newUserData,
