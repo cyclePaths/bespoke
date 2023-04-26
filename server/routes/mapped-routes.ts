@@ -18,7 +18,7 @@ type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
 // Creates new bike route with POST //
 /// Only good for point A to point B ///
 BikeRoutes.post('/newRoute', (req, res) => {
-  const { directions, user } = req.body;
+  const { directions, user, name, category, privacy } = req.body;
   const id = user.id;
   const originLat: number = directions.request.origin.location.lat;
   const originLng: number = directions.request.origin.location.lng;
@@ -29,11 +29,15 @@ BikeRoutes.post('/newRoute', (req, res) => {
     origin: [originLat, originLng],
     destination: [destinationLat, destinationLng],
     user: { connect: { id: id } },
+    name: name,
+    category: category,
+    isPrivate: privacy,
+    createdAt: new Date(),
   };
 
   prisma.bikeRoutes
     .create({ data: newBikeRoute })
-    .then(() => {
+    .then((result) => {
       res.sendStatus(201);
     })
     .catch((err) => {
@@ -59,20 +63,69 @@ BikeRoutes.get('/routes/:id', (req, res) => {
     });
 });
 
-BikeRoutes.get('/center/:id', (req, res) => {
-  console.log(req.session);
-  // const { id } = req.user as User;
-  // prisma.user
-  //   .findUnique({
-  //     where: { id: id },
-  //   })
-  //   .then((user) => {
-  //     res.status(200).send(user);
-  //   })
-  //   .catch((err) => {
-  //     console.error('Failed GETting coordinates:', err);
-  //     res.sendStatus(500);
-  //   });
+// Retrieve the reports from the server
+BikeRoutes.get('/reports', async (req, res) => {
+  const { lat, lng } = req.query;
+
+  try {
+    const reportsList = await prisma.report.findMany({
+      where: {
+        location_lat: {
+          gte: parseFloat(lat as string) - 0.01,
+          lte: parseFloat(lat as string) + 0.01,
+        },
+        location_lng: {
+          gte: parseFloat(lng as string) - 0.01,
+          lte: parseFloat(lng as string) + 0.01,
+        },
+      },
+      include: {
+        comments: true,
+      },
+    });
+
+    if (reportsList.length < 1) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).send(reportsList);
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+BikeRoutes.get('/routes', async (req, res) => {
+  const { privacy, category } = req.query;
+  const { id } = req.user as User;
+
+  if (privacy === 'false') {
+    try {
+      const publicRoutes = await prisma.bikeRoutes.findMany({
+        where: {
+          category: category as string,
+          isPrivate: JSON.parse(privacy),
+        },
+      });
+      console.log(publicRoutes);
+    } catch (err) {
+      console.error(err);
+    }
+  } else if (privacy === 'true') {
+    try {
+      const userRoutes = await prisma.user.findMany({
+        where: {
+          id: id,
+        },
+        include: {
+          createdRoutes: true,
+        },
+      });
+      console.log(userRoutes[0].createdRoutes);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 });
 
 export default BikeRoutes;

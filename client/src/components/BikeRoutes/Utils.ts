@@ -1,7 +1,7 @@
 const MAP_API_TOKEN: string = 'AIzaSyBw9jUKL3GiJ1E-0znc4IJiU1xd2ieqZ0E';
 
 const defaultMapContainerStyle = {
-  height: '300px',
+  height: '40vh',
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
