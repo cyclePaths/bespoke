@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
+import styled from 'styled-components';
+import { useTheme } from './ThemeContext';
+// import { ToggleSwitch } from '../../StyledComp';
+import { ToggleSwitch } from '../../ThemeStyles';
+// import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
@@ -39,7 +44,12 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = () => {
+const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
+
+  //State values with useState hook.
+  const [user, setUser] = useState(true);
+  const [theme, setTheme] = useState()
+  const [photo, setPhoto] = useState('');
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -52,55 +62,45 @@ const Profile = () => {
     weight: 0,
     calories: 0,
 });
-
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledRedHeadedStepChildrenOptionGroups
   );
-
   const [valueGroups, setValueGroups] = useState<ValueGroup>(
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  const user = useContext(UserContext);
 
+  const saveTheme = () => {
+    axios.post('/profile/theme', {
+      theme: isDark
+    })
+  }
+
+  // const navigate = useNavigate();
+
+
+ /////////////////////////////////////////////////////////////////////////
+ ////// This function grabs ride stats from StopwatchStats.tsx////////////
   const location = useLocation();
   let stopwatchActivity = location.state && location.state.stopwatchActivity;
   const stopwatchDuration = location.state && location.state.stopwatchDuration;
   const stopwatchCalories = location.state && location.state.stopwatchCalories;
-  console.log('Is this activity?', stopwatchActivity)
-  console.log(stopwatchDuration)
-  console.log(stopwatchCalories)
-
 
   if (stopwatchActivity !== '' && stopwatchDuration > 0 && stopwatchCalories > 0) {
-    if (stopwatchActivity === 'leisure bicycling') {
-      stopwatchActivity = 'Average Speed <10 mph';
-    }
-    if (stopwatchActivity === 'mph, light') {
-      stopwatchActivity = 'Average Speed 10-12 mph';
-    }
-    if (stopwatchActivity === '13.9 mph, moderate') {
-      stopwatchActivity = 'Average Speed 12-14 mph';
-    }
-    if (stopwatchActivity === '15.9 mph, vigorous') {
-      stopwatchActivity = 'Average Speed 14-16 mph';
-    }
-    if (stopwatchActivity === 'very fast, racing') {
-      stopwatchActivity = 'Average Speed 16-19 mph';
-    }
-    if (stopwatchActivity === '>20 mph, racing') {
-      stopwatchActivity = 'Average Speed 20+ mph';
-    }
-    if (stopwatchActivity === 'mountain bike') {
-      stopwatchActivity = 'Mountain Biking';
-    }
     rideStats.activity = stopwatchActivity;
     rideStats.duration = stopwatchDuration;
     rideStats.weight = weight;
     rideStats.calories = stopwatchCalories;
   };
-  console.log('RideStats', rideStats)
+  //.................................................
 
+
+ /////////////////////////////////////////////////////////////////////////
+ /*
+ This function makes an API request to get calories stats. It then posts
+ those stats to the database and then the server sends back the stats
+ to display on the page.
+ */
   const workoutStatsRequest = () => {
     const { durationHours, durationMinutes } = valueGroups;
     const numberHours = Number(durationHours);
@@ -114,10 +114,8 @@ const Profile = () => {
           weight: weight,
         },
       })
-      // console.log('Successful GET of Calories');
       .then(({ data }) => {
         const { total_calories } = data;
-        console.log('WHAT IS THE DATA?', data);
         if (`${valueGroups.workout}` === 'leisure bicycling') {
           valueGroups.workout = 'Average Speed <10 mph';
         }
@@ -141,7 +139,6 @@ const Profile = () => {
         }
 
         setRideStats(data)
-
         setRideStats({
           activity: `${valueGroups.workout}`,
           duration: totalTime,
@@ -155,10 +152,7 @@ const Profile = () => {
             weight: weight,
             calories: total_calories,
           })
-          .then(({ data }) => {
-            console.log('Am I HERE?', data)
-
-          })
+          .then(({ data }) => {})
           .catch((err) => {
             console.log('Could not post stats', err);
           });
@@ -167,6 +161,8 @@ const Profile = () => {
         console.log('Failed to GET Calories', err);
       });
   };
+//........................................................
+
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -192,24 +188,23 @@ const Profile = () => {
       });
   };
 
-
+///////////////////////////////////////////////////////////
+/*
+Elements that should render on loading the page
+Name, Weight, Thumbnail, Theme Preference, Most recent Ride
+*/
   useEffect(() => {
-    if (user && user.name) {
-      setGreeting(`Hello ${user.name}`);
-    }
-    // ...
-  }, [user]);
-
-
-  useEffect(() => {
-    setGreeting( `Hello ${user.name}`);
+    axios.get('/profile/user').then(({ data }) => {
+      let splitNames = data.name.split(' ')
+      setUser(splitNames[0]);
+      setPhoto(data.thumbnail);
+      setTheme(data.theme);
+    })
 
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);
-      console.log(data.weight, 'HEYYYYY');
     });
     axios.get('/profile/lastRide').then(({ data }) => {
-      console.log('DATA', data);
       if (data.activity === 'leisure bicycling') {
         data.activity = 'Average Speed <10 mph';
       }
@@ -235,14 +230,14 @@ const Profile = () => {
       setRideStats(data);
     });
   }, []);
-
+  //..................................................
 
   return (
     <div>
-      <div>{greeting}</div>
+      <div>{`Hello ${user}!`}</div>
       <img
       style={{borderRadius: '50%', width: '100px', height: '100px'}}
-      src={user.thumbnail} alt='avatar'/>
+      src={photo} alt='avatar'/>
       <div>
         <Addresses
           address={address}
@@ -253,6 +248,22 @@ const Profile = () => {
           setHomeAddress={setHomeAddress}
         />
       </div>
+      <div className="profile">
+      {/* <button onClick={() => {
+        handleToggleStyle(),
+        saveTheme()
+        }
+        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
+ <ToggleSwitch >
+      <input type="checkbox"   onChange={() => {handleToggleStyle(), saveTheme()}}/>
+      <span />
+    </ToggleSwitch>
+    {/* <div className='toggle-switch'>
+      <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
+      <span />
+    </div> */}
+
+    </div>
 
     <div>
 

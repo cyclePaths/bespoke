@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { weatherIcons } from '../assets';
 import App from './components/App';
@@ -12,6 +12,8 @@ import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
+import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
+import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 
 export interface CurrentWeather {
   temperature: number;
@@ -116,6 +118,19 @@ export interface geoLocation {
 export const UserContext = createContext<any>(Object());
 
 const Root = () => {
+
+  /////////// LIGHT/DARK MODE///////////////
+  const [isDark, setIsDark] = useState(true);
+
+  const handleToggleStyle = () => {
+    setIsDark((prevIsDark) => !prevIsDark);
+
+  // const location = useLocation();
+  // let savedTheme = location.state && location.state.savedTheme;
+  // setIsDark(savedTheme);
+  };
+  //.........................................
+
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
@@ -291,6 +306,8 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
+        console.log(data.theme)
+        setIsDark(!data.theme);
       })
       .catch((err) => {
         console.error(err);
@@ -393,63 +410,74 @@ const Root = () => {
   });
 
   return (
-    <div>
-      <UserContext.Provider
-        value={{ user, geoLocation, updateUserModelCounter }}
-      >
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route
-                path='/home'
-                element={
-                  <Home
-                    homeForecasts={homeForecasts}
-                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                    temperatureMeasurementUnit={temperatureMeasurementUnit}
-                    precipitationMeasurementUnit={precipitationMeasurementUnit}
-                    prepareWeatherIcon={prepareWeatherIcon}
-                  />
-                }
-              />
-              <Route path='bulletinBoard' element={<BulletinBoard />} />
-              <Route path='bikeRoutes' element={<RouteM />} />
-              <Route
-                path='weather'
-                element={
-                  <Weather
-                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                    temperatureMeasurementUnit={temperatureMeasurementUnit}
-                    precipitationMeasurementUnit={precipitationMeasurementUnit}
-                    sunriseHour={sunriseHour}
-                    sunsetHour={sunsetHour}
-                    hourlyForecasts={hourlyForecasts}
-                    prepareWeatherIcon={prepareWeatherIcon}
-                    setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
-                    setTemperatureMeasurementUnit={
-                      setTemperatureMeasurementUnit
-                    }
-                    setPrecipitationMeasurementUnit={
-                      setPrecipitationMeasurementUnit
-                    }
-                    getForecasts={getForecasts}
-                  />
-                }
-              />
-              <Route path='profile' element={<Profile />} />
-              <Route path='createReport' element={<CreateReport />} />
-              <Route path='reports' element={<Reports />} />
-              <Route path='reportsMap' element={<ReportsMap />} />
-              <Route path='stopwatch' element={<Stopwatch />} />
-            </Route>
-          </Routes>
-          <Stopwatch />
-        </BrowserRouter>
-      </UserContext.Provider>
-    </div>
+    //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
+    // <>
+      <div className={isDark ? "dark" : "light"}>
+        <UserContext.Provider value={user!}></UserContext.Provider>
+        <UserContext.Provider value={{ user, geoLocation }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route
+                  path='/home'
+                  element={
+                    <Home
+                      homeForecasts={homeForecasts}
+                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                      temperatureMeasurementUnit={temperatureMeasurementUnit}
+                      precipitationMeasurementUnit={
+                        precipitationMeasurementUnit
+                      }
+                      prepareWeatherIcon={prepareWeatherIcon}
+                    />
+                  }
+                />
+                <Route path='bulletinBoard' element={<BulletinBoard />} />
+                <Route path='bikeRoutes' element={<RouteM />} />
+                <Route
+                  path='weather'
+                  element={
+                    <Weather
+                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                      temperatureMeasurementUnit={temperatureMeasurementUnit}
+                      precipitationMeasurementUnit={
+                        precipitationMeasurementUnit
+                      }
+                      sunriseHour={sunriseHour}
+                      sunsetHour={sunsetHour}
+                      hourlyForecasts={hourlyForecasts}
+                      prepareWeatherIcon={prepareWeatherIcon}
+                      setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
+                      setTemperatureMeasurementUnit={
+                        setTemperatureMeasurementUnit
+                      }
+                      setPrecipitationMeasurementUnit={
+                        setPrecipitationMeasurementUnit
+                      }
+                      getForecasts={getForecasts}
+                    />
+                  }
+                />
+                <Route path='profile' element={<Profile
+                handleToggleStyle={handleToggleStyle}
+                isDark={isDark}
+                setIsDark={setIsDark}
+                />}
+                />
+                <Route path='createReport' element={<CreateReport />} />
+                <Route path='reports' element={<Reports />} />
+                <Route path='reportsMap' element={<ReportsMap />} />
+                <Route path='stopwatch' element={<Stopwatch />} />
+              </Route>
+            </Routes>
+            {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
+            {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
+            <Stopwatch />
+          </BrowserRouter>
+        </UserContext.Provider>
+      </div>
+    // </>
   );
 };
 
 export default Root;
-
-// stopwatchActivity={stopwatchActivity} stopwatchDuration={stopwatchDuration} stopwatchCalories={stopwatchCalories}

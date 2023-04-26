@@ -28,6 +28,7 @@ model User {
   location_lng            Float?
   createdRoutes           BikeRoutes[]
   reports                 Report[]
+  theme                   Boolean         @default(false)
   favoriteRoutes          RouteLike[]
   joinDate                DateTime        @default(now())
   profileComplete         Boolean         @default(false)

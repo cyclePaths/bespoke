@@ -60,12 +60,8 @@ function Addresses(props: AddressesProps) {
       })
 
         .then(() => {
-          // if (selectedAddress !== null) {
-            console.log(selectedAddress, 'ADDRESS')
             setHomeAddress(`Your home is ${selectedAddress}`);
             setSelectedAddress('');
-          // }
-
         })
         .catch((err) => {
           console.log('Failed to post address', err);
@@ -80,9 +76,6 @@ function Addresses(props: AddressesProps) {
           } else {
             setHomeAddress(`Your home is ${data.homeAddress}`);
           }
-
-console.log(data, 'Please')
-
         })
     }, [homeAddress])
 

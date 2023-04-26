@@ -1,4 +1,15 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+
+const Button = styled.button`
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-bottom: 16px;
+`;
 
 const RouteCreatorComponent = styled.div`
   display: block;
@@ -97,6 +108,56 @@ const ForecastHelperIcon = styled.img`
   width: 46px;
 `;
 
+// const ToggleSwitch = styled.label`
+//   position: relative;
+//   display: inline-block;
+//   width: 60px;
+//   height: 34px;
+
+//   input {
+//     opacity: 0;
+//     width: 0;
+//     height: 0;
+//   }
+
+//   span {
+//     position: absolute;
+//     cursor: pointer;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background-color: #ccc;
+//     transition: background-color 0.2s;
+//     border-radius: 34px;
+
+//     &:before {
+//       position: absolute;
+//       content: "";
+//       height: 26px;
+//       width: 26px;
+//       left: 4px;
+//       bottom: 4px;
+//       background-color: white;
+//       transition: transform 0.2s;
+//       border-radius: 50%;
+//     }
+//   }
+
+//   input:checked + span {
+//     background-color: #2196F3;
+//   }
+
+//   input:focus + span {
+//     box-shadow: 0 0 1px #2196F3;
+//   }
+
+//   input:checked + span:before {
+//     transform: translateX(26px);
+//   }
+// `;
+
+
 export {
   ForecastBit,
   ForecastText,
@@ -110,6 +171,7 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
+  // ToggleSwitch,
   CategorySelector,
   OptionsDiv,
   RouteListOptions,
