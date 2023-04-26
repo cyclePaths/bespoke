@@ -12,6 +12,7 @@ import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
 import { bulletinRouter, commentRouter } from './routes/bulletinboard-routes';
+import { badgeRouter } from './routes/badge-routes';
 
 interface User {
   id: number;
@@ -126,6 +127,7 @@ app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
 app.use('/reports', reportRouter);
+app.use('/badges', badgeRouter);
 
 // Render All Pages
 app.get('*', (req, res) => {

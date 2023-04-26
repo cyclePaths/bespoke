@@ -260,6 +260,23 @@ const Root = () => {
     return weatherIcon;
   };
 
+  const updateUserModelCounter = (userId, key, increase = true) => {
+    const change = increase ? 1 : -1;
+    axios
+      .patch('/badges', {
+        userId: userId,
+        key: key,
+        change: change,
+      })
+      .then()
+      .catch((err) =>
+        console.error(
+          `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
+          err
+        )
+      );
+  };
+
   const findContext = () => {
     axios
       .get('auth/user')
@@ -357,7 +374,7 @@ const Root = () => {
 
   let found = false;
   let countIndex = 0;
-  hourlyForecasts.forEach((ele, index) => {
+  hourlyForecasts.forEach((ele) => {
     if (found === true && countIndex < 4) {
       homeForecasts[countIndex] = ele;
       countIndex++;
@@ -377,7 +394,9 @@ const Root = () => {
 
   return (
     <div>
-      <UserContext.Provider value={{ user, geoLocation }}>
+      <UserContext.Provider
+        value={{ user, geoLocation, updateUserModelCounter }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
