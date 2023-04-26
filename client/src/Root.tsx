@@ -164,8 +164,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: 30.0,
-          longitude: -90.17,
+          latitude: geoLocation.lat,
+          longitude: geoLocation.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -275,6 +275,23 @@ const Root = () => {
     return weatherIcon;
   };
 
+  const updateUserModelCounter = (userId, key, increase = true) => {
+    const change = increase ? 1 : -1;
+    axios
+      .patch('/badges', {
+        userId: userId,
+        key: key,
+        change: change,
+      })
+      .then()
+      .catch((err) =>
+        console.error(
+          `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
+          err
+        )
+      );
+  };
+
   const findContext = () => {
     axios
       .get('auth/user')
@@ -345,11 +362,11 @@ const Root = () => {
   useEffect(() => {
     if (geoLocation) {
       updateUserLocation(geoLocation);
+      getForecasts();
     }
   }, [geoLocation]);
 
   useEffect(() => {
-    getForecasts();
     getLocation();
     findContext();
   }, []);
@@ -375,7 +392,7 @@ const Root = () => {
 
   let found = false;
   let countIndex = 0;
-  hourlyForecasts.forEach((ele, index) => {
+  hourlyForecasts.forEach((ele) => {
     if (found === true && countIndex < 4) {
       homeForecasts[countIndex] = ele;
       countIndex++;
