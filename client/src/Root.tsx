@@ -346,13 +346,13 @@ const Root = () => {
   useEffect(() => {
     if (geoLocation) {
       updateUserLocation(geoLocation);
+      getForecasts();
     }
   }, [geoLocation]);
 
   useEffect(() => {
     getLocation();
     findContext();
-    getForecasts();
   }, []);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
