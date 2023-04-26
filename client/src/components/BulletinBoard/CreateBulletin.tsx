@@ -41,11 +41,11 @@ const CreateBulletin = () => {
 
 
     return (
-    <div style={{ textAlign: 'center', marginBottom: '45px' }}>
+    <div style={{ textAlign: 'center' }}>
     <ThemeProvider theme={themeBulletin}>
         <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
-            style={{ backgroundColor: '#94edd7', marginTop: '30px',
+            style={{ backgroundColor: '#94edd7', marginTop: '10px',
                      maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
@@ -58,7 +58,7 @@ const CreateBulletin = () => {
             />
         </div>
         <div id='textField' style={{ display: 'inline-block '}}>
-        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px',
+        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '5px',
                                maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'

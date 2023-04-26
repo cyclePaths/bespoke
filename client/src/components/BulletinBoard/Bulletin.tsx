@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import CreateComment from './CreateComment';
 import axios from 'axios';
 import Comment from './Comment';
+//Styling
+import Card from '@mui/material/Card';
 
 
 
@@ -31,8 +33,8 @@ const getAllComments = () => {
 
 
    return (
-    <div className='bulletin' style={{ backgroundColor: '#94edd7'}}>
-      <h3 className='bulletinTopic'><i>{topic}</i> --{creator} at {createdAt}</h3>
+    <div  className='bulletin' style={{ backgroundColor: '#94edd7', fontFamily: 'roboto'}}>
+      <h4 className='bulletinTopic'><i>{topic}</i> --{creator} at {createdAt}</h4>
       <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
       <CreateComment bulletinOrigin={ id } style={{ display: 'flex'}}/>
       </div>

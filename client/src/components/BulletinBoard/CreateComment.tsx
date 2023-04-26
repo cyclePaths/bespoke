@@ -20,7 +20,7 @@ const CreateComment = (props) => {
        if (commentText) {
          axios.post('/comments', {
             bulletinOrigin: bulletinOrigin,
-            commentCreatorr: context.name,
+            commentCreator: context.name,
             commentText,
           })
           .then(() => {
@@ -53,7 +53,7 @@ const CreateComment = (props) => {
         </div>
         <div id="submitCommentButton" style={{ display: 'inline-block '}}>
          <Button style={{ maxWidth: '100px', maxHeight: '25px', backgroundColor: '#17332c',
-                          minWidth: '100px', minHeight: '25px', marginLeft: '15px'}}
+                          minWidth: '100px', minHeight: '25px', }}
           onClick={() => handleCommentSubmission()}
           >
           <i>Comment</i>

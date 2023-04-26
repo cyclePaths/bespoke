@@ -102,7 +102,7 @@ model Equipment {
   id                   Int       @id @default(autoincrement())
   equipmentDescription String
   equipmentType        String
-  imgUrl               String[]
+  imgUrl               String?
   bulletin             Bulletin? @relation(fields: [bulletinId], references: [id])
   bulletinId           Int
 }

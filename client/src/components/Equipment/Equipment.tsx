@@ -2,11 +2,11 @@ import React from 'react';
 
 
 const Equipment = (props) => {
-    const { equipmentDescription, equipmentType } = props.bulletin
+    const { equipmentDescription, equipmentType } = props.equipment
     return (
         <div>
-          <p>{equipmentDescription}:</p>
-          <p><i>{equipmentType}</i></p>
+          <div>{equipmentDescription}</div>
+          <div><i>{equipmentType}</i></div>
         </div>
     )
 }

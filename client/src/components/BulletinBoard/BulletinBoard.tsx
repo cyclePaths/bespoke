@@ -4,6 +4,9 @@ import { UserContext } from '../../Root';
 //Components
 import Bulletin from './Bulletin'
 import CreateBulletin from './CreateBulletin';
+import EquipmentPool from '../Equipment/EquipmentPool';
+//Styling
+import Card from '@mui/material/Card';
 
 
 
@@ -41,10 +44,12 @@ const BulletinBoard = () => {
 
   return (
     <div>
-      <CreateBulletin/>
+      <Card style={{ backgroundColor: '#5555556e', borderRadius: '5px'}}><EquipmentPool/><CreateBulletin/>
       {bulletins.map((bulletin, i) => (<Bulletin bulletin={bulletin}
       handleBulletinSelection={ handleBulletinSelection } key={ i }/>))}
+      </Card>
     </div>
+
   );
 };
 

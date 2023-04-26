@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import Card from '@mui/material/Card';
 import Equipment from './Equipment';
 
 
@@ -11,8 +12,8 @@ const EquipmentPool = () => {
     // Function to retrieve the equipment
   const getAllEquipment = () => {
     axios.get('/equipment')
-    .then((bulletinData) => {
-      setEquipment(bulletinData.data);
+    .then((equipmentData) => {
+      setEquipment(equipmentData.data);
     })
     .catch((error) => {
       console.error(error);
@@ -25,7 +26,10 @@ const EquipmentPool = () => {
 
   return (
     <div>
-      {equipment.map((bulletin, i) => (<Equipment equipment={equipment} key={ i }/>))}
+      <Card style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div>EQUIPMENT POOL:
+      {equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
+      </div>
+      </Card>
     </div>
   );
 };

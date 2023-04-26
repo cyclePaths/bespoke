@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 interface CreateEquipment {
     equipmentDescription: string,
     equipmentType: string;
-    imgUrl: string;
+    imgUrl?: string;
     bulletinId: number;
 }
 
@@ -22,7 +22,7 @@ equipmentRouter.get('/', (req, res) => {
   });
 
   equipmentRouter.post('/', (req, res) => {
-    const { equipmentDescription, equipmentType, imgUrl, bulletinId } = req.body;
+    const { equipmentDescription, equipmentType, bulletinId, imgUrl } = req.body;
     const newEquipment: CreateEquipment = {
       equipmentDescription: equipmentDescription,
       equipmentType: equipmentType,
@@ -33,8 +33,10 @@ equipmentRouter.get('/', (req, res) => {
       .create({ data: newEquipment })
       .then((equipment) => res.status(201).send(equipment))
       .catch(() => {
-        console.log('Failed to POST new BULLETIN');
+        console.log('Failed to POST new EQUIPMENT');
         res.sendStatus(500);
       });
   });
+
+  export default equipmentRouter
 

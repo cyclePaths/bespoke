@@ -13,6 +13,7 @@ import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
 import bulletinRouter from './routes/bulletinboard-routes';
 import commentRouter  from './routes/comment-routes';
+import equipmentRouter from './routes/equipment-routes'
 import { badgeRouter } from './routes/badge-routes';
 
 interface User {
@@ -127,8 +128,7 @@ app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
-app.use('/reports', reportRouter);
-app.use('/reports', reportRouter);
+app.use('/equipment', equipmentRouter);
 app.use('/reports', reportRouter);
 app.use('/badges', badgeRouter);
 
