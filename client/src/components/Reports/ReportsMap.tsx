@@ -4,6 +4,10 @@ import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
+import {fill} from "@cloudinary/url-gen/actions/resize";
+import {CloudinaryImage} from '@cloudinary/url-gen';
+import { AdvancedImage } from '@cloudinary/react';
+
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
@@ -13,6 +17,7 @@ const ReportsMap: React.FC = () => {
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
+  const myImage = new CloudinaryImage('sample', {cloudName: 'dcecaxmxv'}).resize(fill().width(100).height(150));
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
@@ -23,20 +28,6 @@ const ReportsMap: React.FC = () => {
     disableDefaultUI: true,
     zoomControl: true,
   };
-
-  // const archiveReport = (id: string) => {
-  //   console.log("attempting to update");
-  //   axios
-  //     .put(`/reports/${id}`, { published: false })
-  //     .then((result) => {
-  //       // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
-  //       // fetchReports();
-  //       setButtonClicked(false);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
 
 
   const handleButtonClick = async (id: string) => {
@@ -105,8 +96,8 @@ const ReportsMap: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const filteredReports = selectedType
-        ? reports.filter((report) => report.type === selectedType)
-        : reports;
+      ? reports.filter((report) => report.type === selectedType && report.published === true)
+      : reports.filter((report) => report.published === true);
 
       const newMarkers = filteredReports.map((report) => {
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
@@ -115,18 +106,33 @@ const ReportsMap: React.FC = () => {
           map,
         });
 
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<div>
-          <p>${report.id}</p>
-
-            <p>${report.type}</p>
-            <p>${report.title}</p>
-            <p>${report.body}</p>
-            <p>Reported: ${report.createdAt}</p>
-            <button onClick=${handleButtonClick(report.id)}>Archive Report</button>
-      ${buttonClicked ? '<p>Button clicked</p>' : ''}
-          </div>`,
-        });
+        const infoWindow = new google.maps.InfoWindow();
+        const contentDiv = document.createElement('div');
+        const idParagraph = document.createElement('p');
+        idParagraph.textContent = report.id;
+        const typeParagraph = document.createElement('p');
+        typeParagraph.textContent = report.type;
+        const titleParagraph = document.createElement('p');
+        titleParagraph.textContent = report.title;
+        const bodyParagraph = document.createElement('p');
+        bodyParagraph.textContent = report.body;
+        const createdAtParagraph = document.createElement('p');
+        createdAtParagraph.textContent = `Reported: ${report.createdAt}`;
+        const button = document.createElement('button');
+        button.textContent = 'Archive Report';
+        button.onclick = () => handleButtonClick(report.id);
+        const buttonClickedParagraph = document.createElement('p');
+        if (buttonClicked) {
+          buttonClickedParagraph.textContent = 'Button clicked';
+        }
+        contentDiv.appendChild(idParagraph);
+        contentDiv.appendChild(typeParagraph);
+        contentDiv.appendChild(titleParagraph);
+        contentDiv.appendChild(bodyParagraph);
+        contentDiv.appendChild(createdAtParagraph);
+        contentDiv.appendChild(button);
+        contentDiv.appendChild(buttonClickedParagraph);
+        infoWindow.setContent(contentDiv);
 
         marker.addListener('click', () => {
           infoWindow.open(map, marker);
@@ -150,7 +156,58 @@ const ReportsMap: React.FC = () => {
       });
       map.fitBounds(bounds);
     }
-  }, [map, reports, selectedType]);
+  }, [map, reports, selectedType, buttonClicked]);
+
+
+  // useEffect(() => {
+  //   if (map && reports) {
+  //     const filteredReports = selectedType
+  //     ? reports.filter((report) => report.type === selectedType && report.published === true)
+  //     : reports.filter((report) => report.published === true);
+
+  //     const newMarkers = filteredReports.map((report) => {
+  //       const latLng = { lat: report.location_lat!, lng: report.location_lng! };
+  //       const marker = new google.maps.Marker({
+  //         position: latLng,
+  //         map,
+  //       });
+
+  //       const infoWindow = new google.maps.InfoWindow({
+  //         content: `<div>
+  //         <p>${report.id}</p>
+
+  //           <p>${report.type}</p>
+  //           <p>${report.title}</p>
+  //           <p>${report.body}</p>
+  //           <p>Reported: ${report.createdAt}</p>
+  //           <button onClick=${() => handleButtonClick(report.id)}>Archive Report</button>
+  //           ${buttonClicked ? '<p>Button clicked</p>' : ''}
+  //         </div>`,
+  //       });
+
+  //       marker.addListener('click', () => {
+  //         infoWindow.open(map, marker);
+  //       });
+
+  //       return marker;
+  //     });
+
+  //     markers.forEach((marker) => {
+  //       marker.setMap(null);
+  //     });
+
+  //     setMarkers(newMarkers);
+
+  //     const bounds = new google.maps.LatLngBounds();
+  //     newMarkers.forEach((marker) => {
+  //       const position = marker.getPosition();
+  //       if (position) {
+  //         bounds.extend(position);
+  //       }
+  //     });
+  //     map.fitBounds(bounds);
+  //   }
+  // }, [map, reports, selectedType, buttonClicked]);
 
   useEffect(() => {
     if (map) {

@@ -38,24 +38,27 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 });
 
 //  POST a new Report
-reportRouter.post('/', async (req, res) => {
+// reportRouter.post('/', async (req, res) => {
+//   try {
+//     const data = req.body;
+//     const newPost = await prisma.report.create({
+//       data,
+//     });
+//     res.status(201).json(newPost);
+//     console.log("Success")
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+reportRouter.post('/createMany', async (req, res) => {
   try {
-    const { userId, createdAt, body, type, title, location_lat, location_lng } = req.body;
-    const data = {
-      body,
-      type,
-      title,
-      createdAt,
-      updatedAt: new Date(),
-      published: false,
-      location_lat,
-      location_lng,
-      userId,
-    };
-    const newPost = await prisma.report.create({
+    const data = req.body;
+    const newPosts = await prisma.report.createMany({
       data,
     });
-    res.status(201).json(newPost);
+    res.status(201).json(newPosts);
     console.log("Success")
   } catch (error) {
     console.error(error);
@@ -63,9 +66,10 @@ reportRouter.post('/', async (req, res) => {
   }
 });
 
+
 //  UPDATE report archived only
 reportRouter.patch('/:id', async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const { published } = req.body!;
   try {
     const post = await prisma.report.update({
@@ -73,7 +77,7 @@ reportRouter.patch('/:id', async (req: Request, res: Response) => {
         id: id,
       },
       data: {
-        published: false,
+        published: published,
       }
     });
     if (post) {
@@ -87,24 +91,54 @@ reportRouter.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
+// reportRouter.patch('/publish', async (req: Request, res: Response) => {
+
+//   try {
+//     const updatedReports = await prisma.report.updateMany({
+//       where: {
+//         userId: 1,
+//       },
+//       data: {
+//         published: true,
+//       },
+//     });
+//     res.status(200).json({ message: `${updatedReports.count} reports updated` });
+//   } catch (error: any) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+
 //  DELETE a report by ID
-reportRouter.delete('/:id', async (req, res) => {
-  const id = req.params.id;
+// reportRouter.delete('/:id', async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const deletedPost = await prisma.report.delete({
+//       where: {
+//         id: id,
+//       },
+//     });
+//     if (deletedPost) {
+//       res.status(200).json({ message: `Post: ${id} deleted` });
+//     } else {
+//       res.status(404).json({ error: `Post: ${id} not found` });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Server Error' });
+//   }
+// });
+
+reportRouter.delete('/deleteAll', async (req, res) => {
   try {
-    const deletedPost = await prisma.report.delete({
-      where: {
-        id: id,
-      },
-    });
-    if (deletedPost) {
-      res.status(200).json({ message: `Post: ${id} deleted` });
-    } else {
-      res.status(404).json({ error: `Post: ${id} not found` });
-    }
+    await prisma.report.deleteMany({});
+    res.status(200).json({ message: 'All reports deleted' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server Error' });
   }
 });
+
 
 export default reportRouter;

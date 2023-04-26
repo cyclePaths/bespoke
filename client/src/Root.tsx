@@ -10,7 +10,7 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-import Reports from './components/Reports/Reports';
+// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
@@ -465,7 +465,6 @@ const Root = () => {
                 />}
                 />
                 <Route path='createReport' element={<CreateReport />} />
-                <Route path='reports' element={<Reports />} />
                 <Route path='reportsMap' element={<ReportsMap />} />
                 <Route path='stopwatch' element={<Stopwatch />} />
               </Route>
