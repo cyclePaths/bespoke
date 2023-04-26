@@ -4,7 +4,7 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import ReportsMap from './ReportsMap';
-import Reports from './Reports';
+// import Reports from './Reports';
 
 // define report object
 interface Report {
@@ -33,7 +33,6 @@ const CreateReport = () => {
   } | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
-
 
   const user = useContext(UserContext);
 
@@ -84,7 +83,7 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
-      navigate('/reports');
+      // navigate('/reports');
     } catch (error: any) {
       console.error(error);
       setError(error.message);
@@ -135,7 +134,7 @@ const CreateReport = () => {
         <ReportsMap />
       </div>
       <h2>Make a Report</h2>
-      <form onSubmit={handleSubmit} style={{marginBottom:"100px"}}>
+      <form onSubmit={handleSubmit}>
         <select id='report-type-input' onChange={handleTypeText}>
           <option value=''>Select a Report Type</option>
           <option value='Road Hazard'>Road Hazard</option>

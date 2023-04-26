@@ -10,7 +10,8 @@ const ReportsMap: React.FC = () => {
   const [center, setCenter] = useState<google.maps.LatLng>();
   const [reports, setReports] = useState<Report[]>([]);
   const [buttonClicked, setButtonClicked] = useState(false);
-
+  const [selectedType, setSelectedType] = useState('');
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
 
   const onLoad = (map: google.maps.Map) => {
@@ -22,6 +23,7 @@ const ReportsMap: React.FC = () => {
     disableDefaultUI: true,
     zoomControl: true,
   };
+
   // const archiveReport = () => {
   //   console.log("attempting to update");
   //   const { id } = user;
@@ -40,15 +42,25 @@ const ReportsMap: React.FC = () => {
   const handleButtonClick = () => {
     setButtonClicked(true);
   };
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
+    console.log(event.target.value);
+    console.log("selectedType:", selectedType);
+  };
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
         const response = await axios.get('/reports');
+        console.log(response.data);
         const filteredReports = response.data.filter((report) => {
           const reportCreatedAt = new Date(report.createdAt);
           const currentDate = new Date();
-          const monthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
+          const monthAgo = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1,
+            currentDate.getDate()
+          );
           return reportCreatedAt >= monthAgo;
         });
         setReports(filteredReports);
@@ -61,7 +73,11 @@ const ReportsMap: React.FC = () => {
 
   useEffect(() => {
     if (map && reports) {
-      const markers = reports.map((report) => {
+      const filteredReports = selectedType
+        ? reports.filter((report) => report.type === selectedType)
+        : reports;
+
+      const newMarkers = filteredReports.map((report) => {
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
         const marker = new google.maps.Marker({
           position: latLng,
@@ -86,8 +102,14 @@ const ReportsMap: React.FC = () => {
         return marker;
       });
 
-      const bounds = new google.maps.LatLngBounds();
       markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+
+      setMarkers(newMarkers);
+
+      const bounds = new google.maps.LatLngBounds();
+      newMarkers.forEach((marker) => {
         const position = marker.getPosition();
         if (position) {
           bounds.extend(position);
@@ -95,7 +117,7 @@ const ReportsMap: React.FC = () => {
       });
       map.fitBounds(bounds);
     }
-  }, [map, reports]);
+  }, [map, reports, selectedType]);
 
   useEffect(() => {
     if (map) {
@@ -120,13 +142,20 @@ const ReportsMap: React.FC = () => {
 
   return (
     <div>
+      <select value={selectedType} onChange={handleTypeChange}>
+        <option value=''>All Reports</option>
+        <option value='Road Hazard'>Road Hazard</option>
+        <option value='Theft Alert'>Theft Alert</option>
+        <option value='Collision'>Collision</option>
+        <option value='Point of Interest'>Point of Interest</option>
+      </select>
+      {selectedType && <p>Selected type: {selectedType}</p>}
       <GoogleMap
         mapContainerStyle={{ height: '250px', width: '395px' }}
         center={center}
         zoom={15}
         onLoad={onLoad}
         options={options as google.maps.MapOptions}
-
       />
     </div>
   );
