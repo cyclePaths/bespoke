@@ -10,7 +10,7 @@ const profileRouter: Router = express.Router();
 let calories = 0;
 
 profileRouter.post('/theme', async (req: Request, res: Response) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     const { theme } = req.body;
     const {
@@ -45,7 +45,6 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       totalRoutes,
       totalLikesGiven,
       totalLikesReceived,
-
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -60,7 +59,6 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       location_lng,
       totalMiles,
       totalPosts,
-      theme,
       joinDate,
       profileComplete,
       firstRideCity,
@@ -100,10 +98,10 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
     console.log('Failed to update weight', err);
     res.sendStatus(500);
   }
-})
+});
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  console.log(req.user, "query")
+  console.log(req.user, 'query');
   try {
     const { id } = (req.user as User) || {};
     const nameValue = await prisma.user.findUnique({
@@ -219,7 +217,6 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
-      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -254,7 +251,6 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       ridesThisWeek,
       totalRides,
       totalPosts,
-      theme,
       totalReports,
       totalDownvotedReports,
       monthlyDownvotedReports,
@@ -325,13 +321,6 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       mostWeeklyRides,
       ridesThisWeek,
       totalRides,
-      totalPosts,
-      theme,
-      totalReports,
-      totalDownvotedReports,
-      monthlyDownvotedReports,
-      totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     } = (req.user as User) || {};
 
