@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
+import Equipment from './Equipment';
 
 
 const EquipmentPool = () => {
@@ -18,7 +19,19 @@ const EquipmentPool = () => {
     });
   };
 
+  useEffect(() => {
+    getAllEquipment();
+  }, [context])
+
+  return (
+    <div>
+      {equipment.map((bulletin, i) => (<Equipment equipment={equipment} key={ i }/>))}
+    </div>
+  );
+};
+
+export default EquipmentPool;
 
 
 
-}
+
