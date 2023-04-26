@@ -12,6 +12,7 @@ import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
+import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 
@@ -467,6 +468,7 @@ const Root = () => {
                 <Route path='createReport' element={<CreateReport />} />
                 <Route path='reports' element={<Reports />} />
                 <Route path='reportsMap' element={<ReportsMap />} />
+                <Route path='directMessages' element={<DirectMessages />} />
                 <Route path='stopwatch' element={<Stopwatch />} />
               </Route>
             </Routes>

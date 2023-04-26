@@ -29,6 +29,8 @@ model User {
   createdRoutes           BikeRoutes[]
   reports                 Report[]
   theme                   Boolean         @default(false)
+  sentMessages            DirectMessages[] @relation("SentMessages")
+  receivedMessages        DirectMessages[] @relation("ReceivedMessages")
   favoriteRoutes          RouteLike[]
   joinDate                DateTime        @default(now())
   profileComplete         Boolean         @default(false)
@@ -53,6 +55,17 @@ model User {
   totalLikesGiven         Int             @default(0)
   totalLikesReceived      Int             @default(0)
   badges                  BadgesOnUsers[]
+}
+
+model DirectMessages {
+  id           Int      @id @default(autoincrement())
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id])
+  senderId     Int
+  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId   Int
+  content      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model BadgesOnUsers {
