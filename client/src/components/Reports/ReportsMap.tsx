@@ -24,35 +24,66 @@ const ReportsMap: React.FC = () => {
     zoomControl: true,
   };
 
-  // const archiveReport = () => {
+  // const archiveReport = (id: string) => {
   //   console.log("attempting to update");
-  //   const { id } = user;
-  //   const updatedData = {
-  //     archived: true
-  //   };
   //   axios
-  //     .put(`/home/user/${id}`, updatedData)
+  //     .put(`/reports/${id}`, { published: false })
   //     .then((result) => {
+  //       // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
+  //       // fetchReports();
+  //       setButtonClicked(false);
   //     })
   //     .catch((err) => {
   //       console.error(err);
   //     });
   // };
 
-  const handleButtonClick = () => {
+
+  const handleButtonClick = async (id: string) => {
+    console.log(id);
     setButtonClicked(true);
+    try {
+      await axios.patch(`/reports/${id}`, { published: false});
+      // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
+      // fetchReports();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setButtonClicked(false);
+    }
   };
+
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
-    console.log(event.target.value);
-    console.log("selectedType:", selectedType);
   };
+
+  // const fetchReports = async () => {
+  //   try {
+  //     const response = await axios.get('/reports');
+  //     const filteredReports = response.data.filter((report) => {
+  //       const reportCreatedAt = new Date(report.createdAt);
+  //       const currentDate = new Date();
+  //       const monthAgo = new Date(
+  //         currentDate.getFullYear(),
+  //         currentDate.getMonth() - 1,
+  //         currentDate.getDate()
+  //       );
+  //       return reportCreatedAt >= monthAgo;
+  //     });
+  //     setReports(filteredReports);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchReports();
+  // }, [])
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
         const response = await axios.get('/reports');
-        console.log(response.data);
         const filteredReports = response.data.filter((report) => {
           const reportCreatedAt = new Date(report.createdAt);
           const currentDate = new Date();
@@ -86,11 +117,13 @@ const ReportsMap: React.FC = () => {
 
         const infoWindow = new google.maps.InfoWindow({
           content: `<div>
+          <p>${report.id}</p>
+
             <p>${report.type}</p>
             <p>${report.title}</p>
             <p>${report.body}</p>
             <p>Reported: ${report.createdAt}</p>
-            <button onClick=${handleButtonClick}>Archive Report</button>
+            <button onClick=${handleButtonClick(report.id)}>Archive Report</button>
       ${buttonClicked ? '<p>Button clicked</p>' : ''}
           </div>`,
         });

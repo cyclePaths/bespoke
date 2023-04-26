@@ -64,7 +64,7 @@ reportRouter.post('/', async (req, res) => {
 });
 
 //  UPDATE report archived only
-reportRouter.put('/:id', async (req: Request, res: Response) => {
+reportRouter.patch('/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
   const { published } = req.body!;
   try {
@@ -73,7 +73,7 @@ reportRouter.put('/:id', async (req: Request, res: Response) => {
         id: id,
       },
       data: {
-        published: true,
+        published: false,
       }
     });
     if (post) {
