@@ -149,8 +149,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: 30.0,
-          longitude: -90.17,
+          latitude: geoLocation.lat,
+          longitude: geoLocation.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -260,6 +260,23 @@ const Root = () => {
     return weatherIcon;
   };
 
+  const updateUserModelCounter = (userId, key, increase = true) => {
+    const change = increase ? 1 : -1;
+    axios
+      .patch('/badges', {
+        userId: userId,
+        key: key,
+        change: change,
+      })
+      .then()
+      .catch((err) =>
+        console.error(
+          `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
+          err
+        )
+      );
+  };
+
   const findContext = () => {
     axios
       .get('auth/user')
@@ -274,7 +291,7 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(user)
+        console.log(user);
       })
       .catch((err) => {
         console.error(err);
@@ -329,11 +346,11 @@ const Root = () => {
   useEffect(() => {
     if (geoLocation) {
       updateUserLocation(geoLocation);
+      getForecasts();
     }
   }, [geoLocation]);
 
   useEffect(() => {
-    getForecasts();
     getLocation();
     findContext();
   }, []);
@@ -359,7 +376,7 @@ const Root = () => {
 
   let found = false;
   let countIndex = 0;
-  hourlyForecasts.forEach((ele, index) => {
+  hourlyForecasts.forEach((ele) => {
     if (found === true && countIndex < 4) {
       homeForecasts[countIndex] = ele;
       countIndex++;
@@ -379,7 +396,9 @@ const Root = () => {
 
   return (
     <div>
-      <UserContext.Provider value={{ user, geoLocation }}>
+      <UserContext.Provider
+        value={{ user, geoLocation, updateUserModelCounter }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
