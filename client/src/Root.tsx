@@ -15,6 +15,7 @@ import ReportsMap from './components/Reports/ReportsMap';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
