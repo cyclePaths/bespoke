@@ -9,7 +9,7 @@ const EquipmentPool = () => {
 
     // Function to retrieve the equipment
   const getAllEquipment = () => {
-    axios.get('/bulletin')
+    axios.get('/equipment')
     .then((bulletinData) => {
       setEquipment(bulletinData.data);
     })

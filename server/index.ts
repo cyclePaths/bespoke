@@ -11,7 +11,8 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
-import { bulletinRouter, commentRouter } from './routes/bulletinboard-routes';
+import bulletinRouter from './routes/bulletinboard-routes';
+import commentRouter  from './routes/comment-routes';
 
 interface User {
   id: number;
@@ -125,6 +126,7 @@ app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
+app.use('/reports', reportRouter);
 app.use('/reports', reportRouter);
 
 // Render All Pages

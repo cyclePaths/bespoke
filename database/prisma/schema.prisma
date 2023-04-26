@@ -60,11 +60,12 @@ model Bulletin {
 }
 
 model Equipment {
-  id            Int       @id @default(autoincrement())
-  equipmentType String
-  imgUrl        String[]
-  bulletin      Bulletin? @relation(fields: [bulletinId], references: [id])
-  bulletinId    Int
+  id                    Int       @id @default(autoincrement())
+  equipmenteDescription String
+  equipmentType         String
+  imgUrl                String[]
+  bulletin              Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId            Int
 }
 
 model Comment {
