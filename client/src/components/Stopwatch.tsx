@@ -49,9 +49,7 @@ const Stopwatch = () => {
   const user = useContext(UserContext);
   if (user) {
     const { weight } = user;
-     }
-
-  console.log(user, 'WADUP?');
+  }
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -119,7 +117,7 @@ const Stopwatch = () => {
       pauseStopwatch();
     } else {
       resetStopwatch();
-      setIsPickerVisible(false)
+      setIsPickerVisible(false);
     }
   };
 
@@ -140,27 +138,27 @@ const Stopwatch = () => {
       {/* <button onClick={resetStopwatch}>{isRunning ? 'Reset' : 'Clear'}</button> */}
 
       {isPickerVisible && (
-  <div>
-    <Picker
-      optionGroups={optionGroups}
-      valueGroups={valueGroups}
-      onChange={handleChange}
-    />
-    {/* <button type='button' onClick={() => workoutStats()}>
+        <div>
+          <Picker
+            optionGroups={optionGroups}
+            valueGroups={valueGroups}
+            onChange={handleChange}
+          />
+          {/* <button type='button' onClick={() => workoutStats()}>
       Get Stats
     </button> */}
-  </div>
-)}
+        </div>
+      )}
       <div>
         <StopwatchStats
-        optionGroups={optionGroups}
-        valueGroups={valueGroups}
-        hours={hours}
-        minutes={minutes}
-        seconds={seconds}
-        isPickerVisible={isPickerVisible}
-        setIsPickerVisible={setIsPickerVisible}
-        setValueGroups={setValueGroups}
+          optionGroups={optionGroups}
+          valueGroups={valueGroups}
+          hours={hours}
+          minutes={minutes}
+          seconds={seconds}
+          isPickerVisible={isPickerVisible}
+          setIsPickerVisible={setIsPickerVisible}
+          setValueGroups={setValueGroups}
         />
       </div>
     </div>

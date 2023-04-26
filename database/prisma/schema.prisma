@@ -28,6 +28,7 @@ model User {
   location_lng            Float?
   createdRoutes           BikeRoutes[]
   reports                 Report[]
+  favoriteRoutes          RouteLike[]
   joinDate                DateTime        @default(now())
   profileComplete         Boolean         @default(false)
   firstRideCity           String          @default("")
@@ -116,16 +117,26 @@ model Comment {
 }
 
 model BikeRoutes {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String?
   category    String?
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime    @default(now())
   userId      Int
   destination Decimal[]
   origin      Decimal[]
-  likes       Int?      @default(0)
-  isPrivate   Boolean   @default(false)
-  user        User      @relation(fields: [userId], references: [id])
+  likes       Int?        @default(0)
+  isPrivate   Boolean     @default(false)
+  user        User        @relation(fields: [userId], references: [id])
+  userLikes   RouteLike[]
+}
+
+model RouteLike {
+  id          Int        @id @default(autoincrement())
+  createAt    DateTime   @default(now())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  bikeRoutes  BikeRoutes @relation(fields: [bikeRouteId], references: [id])
+  bikeRouteId Int
 }
 
 model Rides {
