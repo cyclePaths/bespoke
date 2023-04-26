@@ -6,11 +6,9 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import {
   InputLayout,
-  DropdownLayout,
+  AutoCompleteDropdownLayout,
   RouteButtonContainer,
 } from '../../StyledComp';
-import Popup from './Popup';
-import SaveForm from './SaveForm';
 
 // Starting Props //
 type PlaceProps = {
@@ -81,7 +79,7 @@ const Places = ({
             />
 
             {suggestions.length > 0 && (
-              <DropdownLayout>
+              <AutoCompleteDropdownLayout>
                 {loading && <div>Loading...</div>}
                 {suggestions.map((suggestion) => {
                   const className = suggestion.active
@@ -105,7 +103,7 @@ const Places = ({
                     </div>
                   );
                 })}
-              </DropdownLayout>
+              </AutoCompleteDropdownLayout>
             )}
           </div>
         )}

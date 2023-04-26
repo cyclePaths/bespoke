@@ -37,7 +37,7 @@ const StartRouteContainer = styled.div`
   text-align: center;
 `;
 
-const DropdownLayout = styled.div`
+const AutoCompleteDropdownLayout = styled.div`
   text-align: center;
   position: absolute;
   top: 100%;
@@ -56,6 +56,10 @@ const DropdownLayout = styled.div`
 const RouteButtonContainer = styled.div`
   display: block;
   margin-bottom: 5px;
+`;
+
+const RouteListOptions = styled.div`
+  display: block;
 `;
 
 const ForecastRowContainer = styled.div`
@@ -98,7 +102,7 @@ export {
   ForecastText,
   ForecastHelperIcon,
   InputLayout,
-  DropdownLayout,
+  AutoCompleteDropdownLayout,
   RouteButtonContainer,
   ForecastRowContainer,
   ForecastEntry,
@@ -108,4 +112,5 @@ export {
   PopoutSaveForm,
   CategorySelector,
   OptionsDiv,
+  RouteListOptions,
 };

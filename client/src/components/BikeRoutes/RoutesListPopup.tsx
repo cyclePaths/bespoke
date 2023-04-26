@@ -16,7 +16,7 @@ const RoutesListPopup = ({
   return (
     <Dialog open={openSearch}>
       <DialogTitle>
-        <header className='centered-header-Save'>Route Selector</header>
+        <header className='list'>Find By:</header>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>

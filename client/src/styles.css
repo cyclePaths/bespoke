@@ -45,6 +45,21 @@
   margin-right: 25px;
 }
 
+.list{
+  text-align: center;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.search-form {
+  display: grid;
+  align-content: stretch;
+  justify-content: center;
+  justify-items: stretch;
+}
+
 #set-private{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;

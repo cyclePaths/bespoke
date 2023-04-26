@@ -274,7 +274,6 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(user)
       })
       .catch((err) => {
         console.error(err);
@@ -282,7 +281,6 @@ const Root = () => {
   };
 
   const getLocation = () => {
-    console.log('root.tsx getLocation');
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {

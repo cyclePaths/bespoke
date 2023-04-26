@@ -25,6 +25,7 @@ import Popup from './Popup';
 import SaveForm from './SaveForm';
 import RoutesListPopup from './RoutesListPopup';
 import { Button } from '@mui/material';
+import { ThemeContext } from '@emotion/react';
 
 // Sets the map to not be google styled //
 const options = {
@@ -59,8 +60,8 @@ const Map: React.FC = () => {
   const [selected, setSelected] = useState<LatLngLiteral>();
   const [directions, setDirections] = useState<DirectionsResult>();
   const [address, setAddress] = useState<any>({});
-  const [routeList, setRouteList] = useState<any>();
-  const [reportsList, setReportsList] = useState<any>();
+  const [routeList, setRouteList] = useState<any[]>([]);
+  const [reportsList, setReportsList] = useState<any[]>([]);
   const [userCenter, setUserCenter] = useState<any>({
     lat: 29.9511,
     lng: -90.0715,
@@ -152,9 +153,11 @@ const Map: React.FC = () => {
   // End of click event of the map //
 
   // Fetching maps and handling loading a route on the page //
-  const fetchMaps = (user_id: number | undefined): void => {
+  const fetchRoutes = (privacy: boolean, type: string): void => {
     axios
-      .get(`bikeRoutes/routes/${user_id}`)
+      .get(`bikeRoutes/routes`, {
+        params: { privacy: privacy, category: type },
+      })
       .then(({ data }) => {
         setRouteList(data);
       })
@@ -164,20 +167,20 @@ const Map: React.FC = () => {
   };
 
   // For displaying a saved route //
-  const handleRouteClick = (): void => {
-    // console.log(routeList[0].origin, routeList[0].destination);
-    const originObj: Coordinates = {
-      lat: parseFloat(routeList[0].origin[0]),
-      lng: parseFloat(routeList[0].origin[1]),
-    };
-    const destObj: Coordinates = {
-      lat: parseFloat(routeList[0].destination[0]),
-      lng: parseFloat(routeList[0].destination[1]),
-    };
+  // const handleRouteClick = (): void => {
+  //   // console.log(routeList[0].origin, routeList[0].destination);
+  //   const originObj: Coordinates = {
+  //     lat: parseFloat(routeList[0].origin[0]),
+  //     lng: parseFloat(routeList[0].origin[1]),
+  //   };
+  //   const destObj: Coordinates = {
+  //     lat: parseFloat(routeList[0].destination[0]),
+  //     lng: parseFloat(routeList[0].destination[1]),
+  //   };
 
-    setStartingPoint(originObj);
-    setMarkers((current) => [...current, destObj]);
-  };
+  //   setStartingPoint(originObj);
+  //   setMarkers((current) => [...current, destObj]);
+  // };
   // End of routes list //
 
   // Render Distance and Duration //
@@ -198,6 +201,20 @@ const Map: React.FC = () => {
         </div>
       </InfoWindow>
     );
+  };
+
+  const fetchReports = () => {
+    if (geoLocation) {
+      const { lat, lng } = geoLocation;
+      axios
+        .get('bikeRoutes/reports/', { params: { lat, lng } })
+        .then(({ data }) => {
+          setReportsList(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   // Set the starting point on the map //
@@ -247,6 +264,10 @@ const Map: React.FC = () => {
     }
   }, [geoLocation]);
 
+  useEffect(() => {
+    fetchReports();
+  }, [userCenter]);
+
   // Conditional to load something else if the map is not ready to load //
   if (!isLoaded) return <div>Map is loading</div>;
   return (
@@ -275,6 +296,16 @@ const Map: React.FC = () => {
       >
         {/* This renders the directions on screen */}
         {directions && <DirectionsRenderer directions={directions} />}
+
+        {/* {reportsList.map((report) => {
+          <Marker
+            key={report.id}
+            position={{
+              lat: parseFloat(report.lat),
+              lng: parseFloat(report.lng),
+            }}
+          />;
+        })} */}
 
         {/* This is the markers that will be placed on the screen on render */}
         {markers.map((marker) => (
@@ -329,14 +360,14 @@ const Map: React.FC = () => {
       </Popup>
       <RoutesListPopup openSearch={openSearch} setOpenSearch={setOpenSearch}>
         <FetchedRoutes
-          fetchMaps={fetchMaps}
+          fetchRoutes={fetchRoutes}
           routeList={routeList}
           setRouteList={setRouteList}
-          reportsList={reportsList}
-          setReportsList={setReportsList}
           setIsPrivate={setIsPrivate}
           isPrivate={isPrivate}
           setOpenSearch={setOpenSearch}
+          category={category}
+          setCategory={setCategory}
         />
       </RoutesListPopup>
       {/* The end of those Popups */}
