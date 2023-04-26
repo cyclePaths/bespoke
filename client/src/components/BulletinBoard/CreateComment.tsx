@@ -18,15 +18,15 @@ const CreateComment = (props) => {
 
     const handleCommentSubmission = () => {
        if (commentText) {
-         axios.post('/comments', {
-            bulletinOrigin: bulletinOrigin,
+         axios.post('/comment', {
+            //bulletinOrigin: bulletinOrigin,
             commentCreator: context.name,
-            commentText,
+            commentText: commentText
           })
           .then(() => {
             setCommentText('')
           })
-          .catch(() => console.log('Unable to make Comment!'));
+          .catch(() => alert('Unable to make Comment!'));
        } else {
          alert('Add text to Comment!')
         }

@@ -5,8 +5,8 @@ const Equipment = (props) => {
     const { equipmentDescription, equipmentType } = props.equipment
     return (
         <div>
-          <div>{equipmentDescription}</div>
-          <div><i>{equipmentType}</i></div>
+          <i>{equipmentDescription}</i>
+          <b>{equipmentType}</b>
         </div>
     )
 }
