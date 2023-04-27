@@ -2,20 +2,12 @@ import express, { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const bulletinRouter = Router();
-const commentRouter = Router();
 const prisma = new PrismaClient();
 
 interface CreateBulletin {
   topic: string;
   creator: string;
   text: string;
-  createdAt: Date;
-}
-
-interface CreateComment {
-  bulletinOrigin: number;
-  commentCreator: string;
-  commentText: string;
   createdAt: Date;
 }
 
@@ -48,22 +40,6 @@ bulletinRouter.post('/', (req, res) => {
     });
 });
 
-//POST comment to database - CreateComment.tsx
-commentRouter.post('/', (req, res) => {
-  const { bulletinOrigin, commentCreator, commentText } = req.body;
-  const newComment: CreateComment = {
-    bulletinOrigin: bulletinOrigin,
-    commentCreator: commentCreator,
-    commentText: commentText,
-    createdAt: new Date(),
-  };
-  prisma.comment
-    .create({ data: newComment })
-    .then((comment) => res.status(201).send(comment))
-    .catch(() => {
-      console.log('Failed to POST new COMMENT');
-      res.sendStatus(500);
-    });
-});
+export default bulletinRouter;
 
-export { bulletinRouter, commentRouter };
+

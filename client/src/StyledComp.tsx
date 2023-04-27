@@ -1,6 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-
 const Button = styled.button`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
@@ -71,6 +70,13 @@ const RouteButtonContainer = styled.div`
 
 const RouteListOptions = styled.div`
   display: block;
+`;
+
+const RouteList = styled.div`
+  display: flex;
+  border: 1px inset black;
+  justify-content: space-evenly;
+  align-content: space-between;
 `;
 
 const ForecastRowContainer = styled.div`
@@ -157,7 +163,6 @@ const ForecastHelperIcon = styled.img`
 //   }
 // `;
 
-
 export {
   ForecastBit,
   ForecastText,
@@ -175,4 +180,5 @@ export {
   CategorySelector,
   OptionsDiv,
   RouteListOptions,
+  RouteList,
 };

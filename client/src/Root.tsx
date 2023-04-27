@@ -10,10 +10,11 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-import Reports from './components/Reports/Reports';
+// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
+import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 
 export interface CurrentWeather {
   temperature: number;
@@ -313,7 +314,6 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(data.theme);
         setIsDark(!data.theme);
       })
       .catch((err) => {
@@ -421,7 +421,7 @@ const Root = () => {
     // <>
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
-      <UserContext.Provider value={{ user, geoLocation, tickBadgeCounter }}>
+      <UserContext.Provider value={{ user, geoLocation }}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
@@ -472,7 +472,6 @@ const Root = () => {
                 }
               />
               <Route path='createReport' element={<CreateReport />} />
-              <Route path='reports' element={<Reports />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
             </Route>

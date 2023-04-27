@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import '../../styles.css';
 
-interface SaveProps {
+export interface SaveProps {
   children;
   openSearch: boolean;
   setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +16,12 @@ const RoutesListPopup = ({
   return (
     <Dialog open={openSearch}>
       <DialogTitle>
-        <header className='list'>Find By:</header>
+        <header id='list' style={{ display: '' }}>
+          Find By:
+        </header>
+        <header id='results' style={{ display: 'none' }}>
+          Results
+        </header>
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
     </Dialog>
