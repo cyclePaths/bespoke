@@ -362,12 +362,12 @@ const Map: React.FC = () => {
         <FetchedRoutes
           fetchRoutes={fetchRoutes}
           routeList={routeList}
-          setRouteList={setRouteList}
           setIsPrivate={setIsPrivate}
           isPrivate={isPrivate}
           setOpenSearch={setOpenSearch}
           category={category}
           setCategory={setCategory}
+          setRouteList={setRouteList}
         />
       </RoutesListPopup>
       {/* The end of those Popups */}

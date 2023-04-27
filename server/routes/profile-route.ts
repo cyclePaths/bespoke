@@ -10,7 +10,6 @@ const profileRouter: Router = express.Router();
 let calories = 0;
 
 profileRouter.post('/theme', async (req: Request, res: Response) => {
-  console.log(req.body)
   try {
     const { theme } = req.body;
     const {
@@ -45,7 +44,6 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       totalRoutes,
       totalLikesGiven,
       totalLikesReceived,
-
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -100,10 +98,10 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
     console.log('Failed to update weight', err);
     res.sendStatus(500);
   }
-})
+});
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  console.log(req.user, "query")
+  // console.log(req.user, 'query');
   try {
     const { id } = (req.user as User) || {};
     const nameValue = await prisma.user.findUnique({

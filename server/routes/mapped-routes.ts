@@ -95,6 +95,7 @@ BikeRoutes.get('/reports', async (req, res) => {
   }
 });
 
+// Handler to fetch all the public routes or the user's routes //
 BikeRoutes.get('/routes', async (req, res) => {
   const { privacy, category } = req.query;
   const { id } = req.user as User;
@@ -107,9 +108,10 @@ BikeRoutes.get('/routes', async (req, res) => {
           isPrivate: JSON.parse(privacy),
         },
       });
-      console.log(publicRoutes);
+      res.status(200).send(publicRoutes);
     } catch (err) {
       console.error(err);
+      res.sendStatus(500);
     }
   } else if (privacy === 'true') {
     try {
@@ -121,11 +123,14 @@ BikeRoutes.get('/routes', async (req, res) => {
           createdRoutes: true,
         },
       });
-      console.log(userRoutes[0].createdRoutes);
+      res.status(200).send(userRoutes[0].createdRoutes);
     } catch (err) {
       console.error(err);
+      res.sendStatus(500);
     }
   }
 });
+
+BikeRoutes.get('/likes', (req, res) => {});
 
 export default BikeRoutes;
