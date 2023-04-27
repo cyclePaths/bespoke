@@ -91,7 +91,7 @@ model Report {
   type         String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  published    Boolean   @default(false)
+  published    Boolean   @default(true)
   location_lat Float?
   location_lng Float?
   userId       Int
@@ -111,11 +111,12 @@ model Bulletin {
 }
 
 model Equipment {
-  id            Int       @id @default(autoincrement())
-  equipmentType String
-  imgUrl        String[]
-  bulletin      Bulletin? @relation(fields: [bulletinId], references: [id])
-  bulletinId    Int
+  id                   Int       @id @default(autoincrement())
+  equipmentDescription String
+  equipmentType        String
+  imgUrl               String?
+  bulletin             Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId           Int
 }
 
 model Comment {
