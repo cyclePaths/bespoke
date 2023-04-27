@@ -79,7 +79,7 @@ model Report {
   type         String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  published    Boolean   @default(false)
+  published    Boolean   @default(true)
   location_lat Float?
   location_lng Float?
   userId       Int
