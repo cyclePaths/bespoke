@@ -31,7 +31,7 @@ function DirectMessages() {
     const newMessage: Message = { id: 0, text: messageInput, fromMe: true };
 
     axios.post('/dms/message', {
-      message: messageInput,
+      message: newMessage,
     })
       .then((response) => {
         console.log(response);

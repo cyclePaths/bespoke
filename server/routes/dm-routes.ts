@@ -7,7 +7,24 @@ const prisma = new PrismaClient();
 const dmRouter: Router = express.Router();
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
-  console.log(req);
+  console.log(req.body);
+  // try {
+  //   const { content, fromMe } = req.body.message;
+
+  //   const { id } = req.user as User;
+
+  //   const messageData: DirectMessages = {
+  //     id,
+  //     senderId: id,
+  //     // receiverId,
+  //     content,
+  //     // createdAt,
+  //     // updatedAt,
+
+  //   }
+
+
+  // } catch {}
 })
 
 
