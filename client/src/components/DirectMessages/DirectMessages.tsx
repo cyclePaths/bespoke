@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from './DMStyles';
+import SearchUsers, { Users } from './SearchUsers';
 
 interface Message {
   id: number;
@@ -26,12 +27,15 @@ function DirectMessages() {
   const [messageInput, setMessageInput] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<readonly Users[]>([]);
+  const loading = open && options.length === 0;
 
   const handleSendMessage = () => {
     const newMessage: Message = { id: 0, text: messageInput, fromMe: true };
 
     axios.post('/dms/message', {
-      message: newMessage,
+      message: messageInput,
     })
       .then((response) => {
         console.log(response);
@@ -43,12 +47,22 @@ function DirectMessages() {
 
     setMessages([...messages, newMessage]);
     setMessageInput('');
-     if (inputRef.current) {
-    inputRef.current.focus();
-     }
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   return (
+    <div>
+         {/* <div className={classes.search}> */}
+      <SearchUsers
+        open={open}
+        setOpen={setOpen}
+        options={options}
+        setOptions={setOptions}
+        loading={loading}
+        ></SearchUsers>
+      {/* </div> */}
     <Paper className={classes.root}>
       <div className={classes.messagesContainer}>
         {messages.map((message) => (
@@ -70,7 +84,9 @@ function DirectMessages() {
           Send
         </Button>
       </div>
+
     </Paper>
+    </div>
   );
 }
 

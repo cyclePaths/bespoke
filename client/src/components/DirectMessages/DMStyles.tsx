@@ -44,5 +44,17 @@ export const useStyles = makeStyles((theme: Theme) =>
       flex: 1,
       resize: 'none',
     },
+    search: {
+      margin: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-evenly',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      width: '100%',
+      marginTop: theme.spacing(10),
+    }
   })
 );
