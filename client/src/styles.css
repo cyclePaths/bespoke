@@ -66,6 +66,12 @@
   justify-items: stretch;
 }
 
+.route-name {
+  color: rgb(57, 57, 177);
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+
 #set-private{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;

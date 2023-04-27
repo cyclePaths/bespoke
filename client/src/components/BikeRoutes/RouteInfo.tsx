@@ -46,7 +46,9 @@ const RouteInfo = ({ route }) => {
         }}
       >
         <div style={{ marginTop: '10px' }}>{date}:</div>
-        <div style={{ marginTop: '10px' }}>{route.name}</div>
+        <div className='route-name' style={{ marginTop: '10px' }}>
+          {route.name}
+        </div>
         <div style={{ marginTop: '10px' }}>Likes:{route.likes}</div>
         <IconButton>
           {like ? (
