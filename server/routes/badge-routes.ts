@@ -8,7 +8,7 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
   try {
     const { userId, key, change } = req.body;
     let dataObj = {};
-    dataObj[key] = change;
+    dataObj[key] = change; //this should actually be 'current value' + change; need add a method to find the current value of this key!
     const updateCounter = await prisma.user.update({
       where: {
         id: userId,

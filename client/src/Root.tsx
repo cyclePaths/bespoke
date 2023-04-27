@@ -277,6 +277,9 @@ const Root = () => {
     return weatherIcon;
   };
 
+  //function to add or remove (or update?) badges for users
+  const updateBadges = () => {};
+
   //function to increment or decrement values on the User table used for achievements/badges
   //increments by default, pass 'false' as third argument to decrement
   const tickBadgeCounter = (userId, key, increase = true) => {
