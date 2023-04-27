@@ -136,6 +136,7 @@ const Root = () => {
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
 
+  //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
   const [temperatureMeasurementUnit, setTemperatureMeasurementUnit] =
@@ -151,6 +152,7 @@ const Root = () => {
     time: new Date(),
   }); //note: currentWeather is only going to be used on the home screen - everything else will just use the hourly breakdown
 
+  //stately variables for the 24 hourly forecasts in a given day as well as that day's sunrise and sunset times
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
@@ -183,6 +185,7 @@ const Root = () => {
       );
   };
 
+  //function to set the weather icon based on the weather for the hour in question
   const prepareWeatherIcon = (
     weather: string,
     isDay: boolean,
@@ -275,15 +278,20 @@ const Root = () => {
     return weatherIcon;
   };
 
-  const updateUserModelCounter = (userId, key, increase = true) => {
+  //function to add or remove (or update?) badges for users
+  const updateBadges = () => {};
+
+  //function to increment or decrement values on the User table used for achievements/badges
+  //increments by default, pass 'false' as third argument to decrement
+  const tickBadgeCounter = (userId, key, increase = true) => {
     const change = increase ? 1 : -1;
     axios
-      .patch('/badges', {
+      .patch('/badges/counter', {
         userId: userId,
         key: key,
         change: change,
       })
-      .then()
+      .then(() => console.log(`successfully updated ${key}`))
       .catch((err) =>
         console.error(
           `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
