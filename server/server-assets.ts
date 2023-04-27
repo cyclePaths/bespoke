@@ -38,11 +38,27 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Monthly Trekker',
+    name: 'Monthly Trekker5',
     badgeIcon: 'url',
   },
   {
-    name: 'Dedicated Ride',
+    name: 'Monthly Trekker25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Monthly Trekker50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Dedicated Rider5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Dedicated Rider25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Dedicated Rider50',
     badgeIcon: 'url',
   },
   {
@@ -70,27 +86,75 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Road Warrior',
+    name: 'Road Warrior5',
     badgeIcon: 'url',
   },
   {
-    name: 'Lean Machine',
+    name: 'Road Warrior25',
     badgeIcon: 'url',
   },
   {
-    name: 'Community Enthusiast',
+    name: 'Road Warrior50',
     badgeIcon: 'url',
   },
   {
-    name: 'Wheelie Popular',
+    name: 'Lean Machine5',
     badgeIcon: 'url',
   },
   {
-    name: 'Storm Chaser',
+    name: 'Lean Machine25',
     badgeIcon: 'url',
   },
   {
-    name: 'Fairweather Friend',
+    name: 'Lean Machine50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Community Enthusiast5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Community Enthusiast25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Community Enthusiast50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Wheelie Popular5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Wheelie Popular25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Wheelie Popular50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Storm Chaser5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Storm Chaser25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Storm Chaser50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Fairweather Friend5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Fairweather Friend25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Fairweather Friend50',
     badgeIcon: 'url',
   },
   {
@@ -98,7 +162,15 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Speedster',
+    name: 'Speedster5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Speedster25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Speedster50',
     badgeIcon: 'url',
   },
   {
@@ -106,15 +178,39 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Social Butterfly',
+    name: 'Social Butterfly5',
     badgeIcon: 'url',
   },
   {
-    name: 'Explorer',
+    name: 'Social Butterfly25',
     badgeIcon: 'url',
   },
   {
-    name: 'Tour Guide',
+    name: 'Social Butterfly50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Explorer5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Explorer25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Explorer50',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Tour Guide5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Tour Guide25',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Tour Guide50',
     badgeIcon: 'url',
   },
   {
@@ -122,7 +218,27 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Disciplined',
+    name: 'Disciplined2',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Disciplined3',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Disciplined4',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Disciplined5',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Disciplined6',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Disciplined7',
     badgeIcon: 'url',
   },
   {
@@ -130,27 +246,75 @@ export const badgesSeed = [
     badgeIcon: 'url',
   },
   {
-    name: 'Lean Legend',
+    name: 'Lean Legend1',
     badgeIcon: 'url',
   },
   {
-    name: 'Community Legend',
+    name: 'Lean Legend2',
     badgeIcon: 'url',
   },
   {
-    name: 'Traveling Legend',
+    name: 'Lean Legend3',
     badgeIcon: 'url',
   },
   {
-    name: 'Likable Legend',
+    name: 'Community Legend1',
     badgeIcon: 'url',
   },
   {
-    name: 'Legendary Warden',
+    name: 'Community Legend2',
     badgeIcon: 'url',
   },
   {
-    name: 'Legendary Explorer',
+    name: 'Community Legend3',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Traveling Legend1',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Traveling Legend2',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Traveling Legend3',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Likable Legend1',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Likable Legend2',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Likable Legend3',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Warden1',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Warden2',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Warden3',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Explorer1',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Explorer2',
+    badgeIcon: 'url',
+  },
+  {
+    name: 'Legendary Explorer3',
     badgeIcon: 'url',
   },
 ];
