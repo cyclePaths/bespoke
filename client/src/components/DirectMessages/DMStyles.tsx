@@ -54,7 +54,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       width: '100%',
-      marginTop: theme.spacing(10),
+      marginTop: theme.spacing(12),
     }
   })
 );

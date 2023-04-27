@@ -58,7 +58,7 @@ function sleep(delay = 0) {
     <Autocomplete
 
       id="asynchronous"
-      sx={{ width: 300 }}
+      // sx={{ width: 300 }}
       open={open}
       onOpen={() => {
         setOpen(true);
