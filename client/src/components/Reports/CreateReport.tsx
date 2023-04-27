@@ -2,22 +2,25 @@ import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
-import { GoogleMap, Marker } from '@react-google-maps/api';
 import ReportsMap from './ReportsMap';
-// import Reports from './Reports';
+import { v4 as uuidv4 } from 'uuid';
+import { fill } from '@cloudinary/url-gen/actions/resize';
+import { CloudinaryImage } from '@cloudinary/url-gen';
+import { Report } from '@prisma/client';
 
 // define report object
-interface Report {
-  body?: string;
-  type?: string;
-  title?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  published: boolean;
-  location_lat?: number;
-  location_lng?: number;
-  userId: number;
-}
+// interface Report {
+//   body?: string;
+//   type?: string;
+//   title?: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   published: boolean;
+//   location_lat?: number;
+//   location_lng?: number;
+//   imgUrl?: string;
+//   userId: number;
+// }
 
 const CreateReport = () => {
   const navigate = useNavigate();
@@ -52,43 +55,97 @@ const CreateReport = () => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     try {
       if (!currentLocation) {
         throw new Error('Current location not available');
       }
+
       const formData = new FormData();
       formData.append('body', body);
       formData.append('type', type);
       formData.append('title', title);
       formData.append('latitude', currentLocation.lat.toString());
       formData.append('longitude', currentLocation.lng.toString());
-      if (image) {
-        formData.append('image', image);
-      }
-      const reportData: Omit<Report, 'id'> = {
-        body,
-        type,
-        title,
-        location_lat: currentLocation!.lat,
-        location_lng: currentLocation!.lng,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        published: false,
-        userId: user.id!,
-      };
-      const response = await axios.post('/reports', reportData);
+      formData.append('file', image ?? '');
+
+      const response = await axios.post<Report>('/reports', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
-      // navigate('/reports');
     } catch (error: any) {
       console.error(error);
       setError(error.message);
     }
   };
+
+
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   console.log("handleSubmit hit");
+  //   event.preventDefault();
+  //   try {
+  //     if (!currentLocation) {
+  //       throw new Error('Current location not available');
+  //     }
+  //     const formData = new FormData();
+  //     formData.append('body', body);
+  //     formData.append('type', type);
+  //     formData.append('title', title);
+  //     formData.append('latitude', currentLocation.lat.toString());
+  //     formData.append('longitude', currentLocation.lng.toString());
+  //     let imageUrl: string | undefined;
+  //     if (image) {
+  //       // Upload image to Cloudinary
+  //       const uniqueFilename = uuidv4(); // Generate a unique filename for the image
+  //       const formDataWithImage = new FormData();
+  //       formDataWithImage.append('file', image);
+  //       formDataWithImage.append(
+  //         'preset',
+  //         '<your_cloudinary_upload_preset>'
+  //       );
+  //       formDataWithImage.append('public_id', uniqueFilename);
+  //       const response = await axios.post(
+  //         'https://api.cloudinary.com/v1_1/<your_cloudinary_cloud_name>/image/upload',
+  //         formDataWithImage
+  //       );
+  //       imageUrl = response.data.secure_url || null;
+  //     };
+
+  //     // Add the image URL to the report data if it is defined
+  //     if (imageUrl) {
+  //       formData.append('image', imageUrl);
+  //     }
+
+  //     const reportData: Omit<Report, 'id'> = {
+  //       body,
+  //       type,
+  //       title,
+  //       location_lat: currentLocation!.lat,
+  //       location_lng: currentLocation!.lng,
+  //       createdAt: new Date(),
+  //       updatedAt: new Date(),
+  //       published: true,
+  //       userId: user.id!,
+  //       imgUrl: imageUrl ?? null, // Add the image URL to the report data
+  //     };
+  //     const response = await axios.post('/reports', reportData);
+  //     setReports([...reports, response.data]);
+  //     setBody('');
+  //     setType('');
+  //     setImage(null);
+  //     // navigate('/reports');
+  //   } catch (error: any) {
+  //     console.error(error);
+  //     setError(error.message);
+  //   }
+  // };
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {

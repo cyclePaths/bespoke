@@ -5,6 +5,7 @@ import { PrismaClient, Report } from '@prisma/client';
 const prisma = new PrismaClient();
 import axios from 'axios';
 import { Request, Response } from 'express';
+const cloudinary = require('cloudinary').v2;
 
 // GET ALL REPORTS
 reportRouter.get('/', async (req, res) => {
@@ -38,33 +39,86 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 });
 
 //  POST a new Report
-// reportRouter.post('/', async (req, res) => {
-//   try {
-//     const data = req.body;
-//     const newPost = await prisma.report.create({
-//       data,
-//     });
-//     res.status(201).json(newPost);
-//     console.log("Success")
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
-
-reportRouter.post('/createMany', async (req, res) => {
+reportRouter.post('/', async (req, res) => {
   try {
     const data = req.body;
-    const newPosts = await prisma.report.createMany({
+    const newPost = await prisma.report.create({
       data,
     });
-    res.status(201).json(newPosts);
+    res.status(201).json(newPost);
     console.log("Success")
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// reportRouter.post('/reports', async (req, res) => {
+//   console.log("res:", res);
+  // try {
+  //   const { body, type, title, latitude, longitude, image } = req.body;
+
+  //   const formData = new FormData();
+  //   formData.append('body', body);
+  //   formData.append('type', type);
+  //   formData.append('title', title);
+  //   formData.append('latitude', latitude);
+  //   formData.append('longitude', longitude);
+
+  //   let imageUrl: string | undefined;
+  //   if (image) {
+  //     // Upload image to Cloudinary
+  //     const uniqueFilename = uuidv4();
+  //     const formDataWithImage = new FormData();
+  //     formDataWithImage.append('file', image);
+  //     formDataWithImage.append('upload_preset', '<your_cloudinary_upload_preset>');
+  //     formDataWithImage.append('public_id', uniqueFilename);
+  //     const response = await axios.post(
+  //       'https://api.cloudinary.com/v1_1/<your_cloudinary_cloud_name>/image/upload',
+  //       formDataWithImage,
+  //     );
+  //     imageUrl = response.data.secure_url;
+  //   } else {
+  //     imageUrl = undefined;
+  //   }
+
+  //   const reportData: Omit<Report, 'id'> = {
+  //     body,
+  //     type,
+  //     title,
+  //     location_lat: Number(latitude),
+  //     location_lng: Number(longitude),
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //     published: true,
+  //     userId: req.user.id,
+  //     imgUrl: imageUrl,
+  //   };
+
+  //   // Save report data to database using Prisma
+  //   const newReport = await prisma.report.create({ data: reportData });
+
+  //   res.json(newReport);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ error: 'An error occurred while saving the report.' });
+  // }
+// });
+
+
+// reportRouter.post('/createMany', async (req, res) => {
+//   try {
+//     const data = req.body;
+//     const newPosts = await prisma.report.createMany({
+//       data,
+//     });
+//     res.status(201).json(newPosts);
+//     console.log("Success")
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
 
 
 //  UPDATE report archived only
