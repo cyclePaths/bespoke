@@ -12,6 +12,7 @@ import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 // import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
+import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
