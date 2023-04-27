@@ -11,6 +11,7 @@ import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
+import LeaderBoard from './routes/leaderboard-routes';
 import { bulletinRouter, commentRouter } from './routes/bulletinboard-routes';
 import { badgeRouter } from './routes/badge-routes';
 
@@ -128,6 +129,7 @@ app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
 app.use('/reports', reportRouter);
 app.use('/badges', badgeRouter);
+app.use('/leaderboard', LeaderBoard);
 
 // Render All Pages
 app.get('*', (req, res) => {
@@ -156,6 +158,14 @@ app.put('/home/user/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update user data' });
   }
 });
+
+/////// SEEDER FOR USERS ///////
+
+// app.post('/user', async (req, res) => {
+//   const user = req.body;
+//   const newUser = await prisma.user.create({ data: user });
+//   res.sendStatus(201);
+// });
 
 //Listening
 app.listen(PORT, () =>
