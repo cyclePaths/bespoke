@@ -43,7 +43,6 @@ const CreateComment = (props) => {
                                 maxHeight: '20px', minHeight: '20px' }}
             multiline={false}
             rows='1'
-            placeholder="this will get moved"
             inputProps={{
               maxLength: 1000,
               onChange: (e) => handleCommentText(e),
