@@ -12,7 +12,9 @@ import { WeatherRoute } from './routes/weather-routes';
 import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
 import LeaderBoard from './routes/leaderboard-routes';
-import { bulletinRouter, commentRouter } from './routes/bulletinboard-routes';
+import bulletinRouter from './routes/bulletinboard-routes';
+import commentRouter  from './routes/comment-routes';
+import equipmentRouter from './routes/equipment-routes'
 import { badgeRouter } from './routes/badge-routes';
 
 interface User {
@@ -127,9 +129,11 @@ app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
+app.use('/equipment', equipmentRouter);
 app.use('/reports', reportRouter);
 app.use('/badges', badgeRouter);
 app.use('/leaderboard', LeaderBoard);
+
 
 // Render All Pages
 app.get('*', (req, res) => {
