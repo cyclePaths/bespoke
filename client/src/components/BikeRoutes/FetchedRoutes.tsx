@@ -14,41 +14,70 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import SearchIcon from '@mui/icons-material/Search';
 import { RouteListOptions } from '../../StyledComp';
+import RouteInfo from './RouteInfo';
 
 interface Props {
   fetchRoutes: (privacy: boolean, category: string) => void;
-  routeList: any;
-  setRouteList: React.Dispatch<any>;
-  // reportsList: any;
-  // setReportsList: React.Dispatch<any>;
+  routeList: any[];
   setIsPrivate: React.Dispatch<React.SetStateAction<boolean>>;
   isPrivate: boolean;
   setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+export interface Route {
+  category: string;
+  createdAt: Date;
+  userId: number;
+  destination: string[];
+  origin: string[];
+  likes: number;
+  isPrivate: boolean;
 }
 
 const FetchedRoutes = ({
   fetchRoutes,
   routeList,
-  setRouteList,
-  // reportsList,
-  // setReportsList,
   setIsPrivate,
   isPrivate,
   setOpenSearch,
   category,
   setCategory,
+  setRouteList,
 }: Props) => {
   const user = useContext(UserContext);
 
   const handleNewRoutes = () => {
+    const searchBar = document.getElementById('route-searcher');
+    const findHeader = document.getElementById('list');
+    const resultHeader = document.getElementById('results');
+
     fetchRoutes(isPrivate, category);
+    findHeader!.style.display = 'none';
+    searchBar!.style.display = 'none';
+    resultHeader!.style.display = '';
+  };
+
+  const exitListForm = () => {
+    const searchBar = document.getElementById('route-searcher');
+    const findHeader = document.getElementById('list');
+    const resultHeader = document.getElementById('results');
+
+    setOpenSearch(false);
+    setCategory('');
+    setIsPrivate(false);
+
+    findHeader!.style.display = 'none';
+    searchBar!.style.display = 'none';
+    resultHeader!.style.display = '';
+    setRouteList([]);
   };
 
   return (
     <div className='search-form'>
-      <RouteListOptions>
+      <RouteListOptions id='route-searcher' style={{ display: '' }}>
         <FormControl>
           <div>
             <InputLabel
@@ -79,7 +108,10 @@ const FetchedRoutes = ({
           label='User Routes Only'
         />
       </RouteListOptions>
-      <button onClick={() => setOpenSearch(false)}>Exit</button>
+      {routeList.map((route, i) => (
+        <RouteInfo key={i} route={route} />
+      ))}
+      <button onClick={() => exitListForm()}>Exit</button>
     </div>
   );
 };
