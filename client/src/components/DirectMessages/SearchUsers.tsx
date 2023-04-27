@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useStyles } from './DMStyles';
+import axios from 'axios';
 
 export interface Users {
   id: number;
@@ -23,35 +24,36 @@ function sleep(delay = 0) {
   });
 }
 
-  function SearchUsers({open, setOpen, options, setOptions, loading}) {
+  function SearchUsers({open, setOpen, options, setOptions, loading, selectedUser, setSelectedUser, getUser }) {
+
+    const [findUser, setFindUser] = useState('');
+
     const classes = useStyles();
 
 
   useEffect(() => {
     let active = true;
 
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      await sleep(1e3); // For demo purposes.
-
-      if (active) {
-        setOptions([...dbUsers]);
+    const getUsers = async () => {
+      try {
+        const response = await axios.get('/dms/findUsers');
+        console.log(response)
+        if (active) {
+          setOptions([...response.data]);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    })();
+    };
+
+    if (!loading) {
+      getUsers();
+    }
 
     return () => {
       active = false;
     };
   }, [loading]);
-
-  useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
 
   return (
     <div className={classes.search}>
@@ -66,8 +68,12 @@ function sleep(delay = 0) {
       onClose={() => {
         setOpen(false);
       }}
+
+
+
       isOptionEqualToValue={(option: Users, value) => option.name === value.name}
       getOptionLabel={(option) => option.name}
+      onChange={(event, newValue) => setSelectedUser(newValue?.name)}
       options={options}
       loading={loading}
       renderInput={(params) => (
