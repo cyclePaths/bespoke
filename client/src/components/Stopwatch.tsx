@@ -30,8 +30,8 @@ interface ValueGroup {
 
 const Stopwatch = () => {
   const [time, setTime] = useState<StopwatchTime>({
-    hours: 1,
-    minutes: 5,
+    hours: 0,
+    minutes: 0,
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -49,7 +49,7 @@ const Stopwatch = () => {
   const user = useContext(UserContext);
   if (user) {
     const { weight } = user;
-     }
+  }
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -105,7 +105,7 @@ const Stopwatch = () => {
 
   const resetStopwatch = () => {
     setIsRunning(false);
-    setTime({ hours: 1, minutes: 5, seconds: 0 });
+    setTime({ hours: 0, minutes: 0, seconds: 0 });
     setValueGroups(exiledRedHeadedStepChildrenValueGroups);
     if (intervalRef.current) {
       intervalRef.current.unsubscribe();

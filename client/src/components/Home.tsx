@@ -16,9 +16,13 @@ const Home = ({
   const navigate = useNavigate();
   const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
 
+  const handleLeaderBoard = () => {
+    setOpenLeaderBoard(false);
+  };
+
   return (
     <div>
-      <div>ET Phone Home</div>
+      <button onClick={() => setOpenLeaderBoard(true)}>Show LeaderBoard</button>
       {/* <button type='button'  onClick={() => navigate('/stopwatch')}>Stopwatch</button> */}
       <div>
         <ForecastRow
@@ -29,14 +33,12 @@ const Home = ({
           precipitationMeasurementUnit={precipitationMeasurementUnit}
         />
 
-        <button onClick={() => setOpenLeaderBoard(true)}>
-          Show LeaderBoard
-        </button>
         <LeaderBoardPopout
           openLeaderBoard={openLeaderBoard}
           setOpenLeaderBoard={setOpenLeaderBoard}
         >
           <LeaderBoard />
+          <button onClick={() => handleLeaderBoard()}>Exit</button>
         </LeaderBoardPopout>
       </div>
     </div>
