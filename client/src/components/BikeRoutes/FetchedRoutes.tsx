@@ -60,21 +60,6 @@ const FetchedRoutes = ({
     resultHeader!.style.display = '';
   };
 
-  const exitListForm = () => {
-    const searchBar = document.getElementById('route-searcher');
-    const findHeader = document.getElementById('list');
-    const resultHeader = document.getElementById('results');
-
-    setOpenSearch(false);
-    setCategory('');
-    setIsPrivate(false);
-
-    findHeader!.style.display = 'none';
-    searchBar!.style.display = 'none';
-    resultHeader!.style.display = '';
-    setRouteList([]);
-  };
-
   return (
     <div className='search-form'>
       <RouteListOptions id='route-searcher' style={{ display: '' }}>
@@ -111,7 +96,6 @@ const FetchedRoutes = ({
       {routeList.map((route, i) => (
         <RouteInfo key={i} route={route} />
       ))}
-      <button onClick={() => exitListForm()}>Exit</button>
     </div>
   );
 };
