@@ -113,10 +113,10 @@ BikeRoutes.get('/routes', async (req, res) => {
       .then((routeList) => {
         const radiusRoutes: BikeRoutes[] = [];
         routeList.forEach((route) => {
-          const gteLat = location_lat! - 0.01;
-          const lteLat = location_lat! + 0.01;
-          const gteLng = location_lng! - 0.01;
-          const lteLng = location_lng! + 0.01;
+          const gteLat = location_lat! - 0.1;
+          const lteLat = location_lat! + 0.1;
+          const gteLng = location_lng! - 0.1;
+          const lteLng = location_lng! + 0.1;
 
           if (
             (route.origin[0] as unknown as number) >= gteLat &&
