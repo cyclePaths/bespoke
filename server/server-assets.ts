@@ -28,7 +28,7 @@ export const weatherCodes = {
   99: 'Thunderstorm with Heavy Hail',
 };
 
-export const badgesSeed = [
+let badgesSeed = [
   {
     name: 'Certified',
     badgeIcon: 'https://cdn-icons-png.flaticon.com/512/10552/10552271.png',
@@ -430,3 +430,5 @@ Bronze/Gold Compass (3 styles): https://www.flaticon.com/free-icon/compass_21448
 
 
 */
+
+export { badgesSeed };
