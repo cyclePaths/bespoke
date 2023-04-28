@@ -8,10 +8,9 @@ const dateFormatter = (createdAt) => {
 }
 
   return (
-    <div className='bulletin' style={{ backgroundColor: '#17332c'}}>
-      <h3 className='bulletinTopic'><i>{commentCreator}</i> at {createdAt}:</h3>
-      <div style={{ display: 'inline-block' }} className='commentText'>{commentText}
-      </div>
+    <div className='bulletin' style={{ backgroundColor: '#2b6355'}}>
+      <p className='bulletinTopic'><i>{commentCreator}</i> at {createdAt}:</p>
+      <p style={{ display: 'inline-block' }} className='commentText'>{commentText}</p>
     </div>
   );
 };

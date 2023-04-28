@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../Root';
 import { ThemeProvider, Typography, OutlinedInput, Button} from'@mui/material'
 import themeBulletin from './ThemeBulletin'
+import AddEquipment from '../Equipment/AddEquipment'
 import axios from 'axios';
 
 
@@ -23,9 +24,9 @@ const CreateBulletin = () => {
     const handleBulletinSubmission = () => {
        if (topic && text) {
          axios.post('/bulletin', {
-            creator: context.name,
+            creator: context.user.name,
             topic,
-            text,
+            text
           })
           .then(() => {
             setTopic('');
@@ -70,6 +71,7 @@ const CreateBulletin = () => {
             }}
             />
         </div>
+        <AddEquipment/>
         <div id="submitButton" style={{ display: 'inline-block '}}>
          <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
                           minWidth: '75px', minHeight: '25px', marginLeft: '15px'}}

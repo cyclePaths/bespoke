@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const CreateComment = (props) => {
     const context = useContext(UserContext)
-    const { bulletinOrigin } = props.bulletinOrigin
+    const bulletinOrigin = props.bulletinOrigin
 
     const [commentText, setCommentText] = useState('')
 
@@ -19,8 +19,8 @@ const CreateComment = (props) => {
     const handleCommentSubmission = () => {
        if (commentText) {
          axios.post('/comment', {
-            //bulletinOrigin: bulletinOrigin,
-            commentCreator: context.name,
+            bulletinOrigin: bulletinOrigin,
+            commentCreator: context.user.name,
             commentText: commentText
           })
           .then(() => {
@@ -31,8 +31,6 @@ const CreateComment = (props) => {
          alert('Add text to Comment!')
         }
     }
-
-
 
 
     return (

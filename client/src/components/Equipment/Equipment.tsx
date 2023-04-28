@@ -5,7 +5,7 @@ const Equipment = (props) => {
     const { equipmentDescription, equipmentType } = props.equipment
     return (
         <div>
-          <i>{equipmentDescription}</i>
+          <i>{equipmentDescription} -- </i>
           <b>{equipmentType}</b>
         </div>
     )

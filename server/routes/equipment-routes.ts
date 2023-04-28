@@ -12,7 +12,7 @@ interface CreateEquipment {
 }
 
 equipmentRouter.get('/', (req, res) => {
-    prisma.bulletin
+    prisma.equipment
       .findMany()
       .then((equipment) => res.status(200).send(equipment))
       .catch(() => {

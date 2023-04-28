@@ -11,12 +11,17 @@ import Card from '@mui/material/Card';
 const Bulletin = (props) => {
    const context = useContext(UserContext);
    const { id, topic, creator, text, createdAt } = props.bulletin
-   const [comments, setComments] = useState([])
+   //below formats the comments so only a bulletin's comments show
+   const comments = props.comments
+   const filteredComments = comments.filter((comment) => (comment.bulletinOrigin === id))
 
-const dateFormatter = (createdAt) => {
-
+   const dateFormatter = (createdAt) => {
+    let formattedString = `${createdAt.slice(6,7)}`
 }
 
+useEffect(() => {
+}, [context])
+console.log(comments)
  //(<Comment comment={comment} key={ i }/>))}
    return (
     <div  className='bulletin' style={{ backgroundColor: '#94edd7', fontFamily: 'roboto'}}>
@@ -24,7 +29,7 @@ const dateFormatter = (createdAt) => {
       <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
       <CreateComment bulletinOrigin={ id } style={{ display: 'flex'}}/>
       </div>
-      {comments.map((comment, i) => <div>tester!!!!!</div>)}
+      {filteredComments.map((comment, i) => (<Comment comment={comment} key={ i }/>))}
     </div>
    )
 };

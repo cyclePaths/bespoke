@@ -42,7 +42,6 @@ const getAllComments = () => {
   axios.get('/comment')
   .then((commentData) => {
     setComments(commentData.data)
-   //  .filter((comment) => commentData.data.id === id))
   })
   .catch((error) => {
     console.error(error);
