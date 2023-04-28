@@ -14,18 +14,15 @@ const Bulletin = (props) => {
    //below formats the comments so only a bulletin's comments show
    const comments = props.comments
    const filteredComments = comments.filter((comment) => (comment.bulletinOrigin === id))
+   const formattedDate = `${createdAt.slice(6,10)}-${createdAt.slice(2, 4)} at ${createdAt.slice(11, 16)}`
 
-   const dateFormatter = (createdAt) => {
-    let formattedString = `${createdAt.slice(6,7)}`
-}
 
 useEffect(() => {
 }, [context])
-console.log(comments)
- //(<Comment comment={comment} key={ i }/>))}
+
    return (
     <div  className='bulletin' style={{ backgroundColor: '#94edd7', fontFamily: 'roboto'}}>
-      <h4 className='bulletinTopic'><i>{topic}</i> --{creator} at {createdAt}</h4>
+      <h4 className='bulletinTopic'>{topic} -- <i>{creator} -- {formattedDate}</i></h4>
       <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
       <CreateComment bulletinOrigin={ id } style={{ display: 'flex'}}/>
       </div>
