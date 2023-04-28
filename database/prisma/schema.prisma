@@ -39,6 +39,11 @@ model User {
   monthlyMiles            Int              @default(0)
   ridesThisWeek           Int              @default(0)
   monthlyDownvotedReports Int              @default(0)
+  totalRoutes             Int              @default(0)
+  totalReports            Int              @default(0)
+  totalPosts              Int              @default(0)
+  totalMiles              Int              @default(0)
+  totalLikesReceived      Int              @default(0)
   badges                  BadgesOnUsers[]
 }
 
