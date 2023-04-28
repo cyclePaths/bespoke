@@ -475,6 +475,7 @@ const Root = () => {
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
+              <Route path='directMessages' element={<DirectMessages />} />
             </Route>
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
