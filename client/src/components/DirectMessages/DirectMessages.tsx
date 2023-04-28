@@ -87,13 +87,17 @@ function DirectMessages() {
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
   const [receiver, setReceiver] = useState<SelectedUser>();
+  const [name, setName] = useState(true);
+  const [ messageThread, setMessageThread] = useState<Message[]>([]);
 
   useEffect(() => {
     axios
       .get('/profile/user')
       .then(({ data }) => {
-        const { id } = data.id
+        const { id, name } = data
+        console.log(id)
         setUserId(id);
+        setName(name);
       })
       .catch((err) => {
         console.log(err);
@@ -105,6 +109,35 @@ function DirectMessages() {
       console.log(receiver);
     }
   }, [receiver]);
+
+
+  const loadMessages = async () => {
+
+      try{
+        const thread = await axios.get('/dms/retrieveMessages', {
+          params: { receiverId: receiverId }
+        })
+        console.log('Thread', thread);
+        const { data } = thread;
+        console.log('Big thread', thread)
+
+        data.forEach((message) => {
+          console.log(message.text);
+          // setMessageThread((pevMessages) => [...pevMessages, message.text] as Message[])
+          setMessages((prevMessages) => [...prevMessages,  message]);
+        })
+
+      } catch (err) {
+        console.log(err);
+      }
+  };
+
+console.log('check thread', messages)
+  useEffect(() => {
+    if (receiverId !== 0) {
+      loadMessages();
+    }
+  }, [receiverId]);
 
   const handleSendMessage = () => {
     const newMessage: Message = {
@@ -134,6 +167,7 @@ function DirectMessages() {
 
   return (
     <div>
+      <div>{`Hello ${name}!`}</div>
       <SearchUsers
         open={open}
         setOpen={setOpen}
@@ -142,6 +176,8 @@ function DirectMessages() {
         loading={loading}
         receiver={receiver}
         setReceiver={setReceiver}
+        // setReceiverId={setReceiverId}
+        loadMessages={loadMessages}
       ></SearchUsers>
 
       <Paper className={classes.root}>

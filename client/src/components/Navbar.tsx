@@ -51,6 +51,9 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
               <li style={{ margin: '0 10px' }}>
                 <Link to='/profile'>Profile</Link>
               </li>
+              <li style={{ margin: '0 10px' }}>
+                <Link to='/directMessages'>Messages</Link>
+              </li>
             </ul>
           </div>
         </div>
