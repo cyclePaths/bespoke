@@ -4,10 +4,10 @@ import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
-import {fill} from "@cloudinary/url-gen/actions/resize";
-import {CloudinaryImage} from '@cloudinary/url-gen';
+import { fill } from '@cloudinary/url-gen/actions/resize';
+import { CloudinaryImage } from '@cloudinary/url-gen';
 import { AdvancedImage } from '@cloudinary/react';
-
+import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
@@ -17,7 +17,9 @@ const ReportsMap: React.FC = () => {
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
-  const myImage = new CloudinaryImage('sample', {cloudName: 'dcecaxmxv'}).resize(fill().width(100).height(150));
+  const myImage = new CloudinaryImage('sample', {
+    cloudName: 'dcecaxmxv',
+  }).resize(fill().width(100).height(150));
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
@@ -29,12 +31,11 @@ const ReportsMap: React.FC = () => {
     zoomControl: true,
   };
 
-
   const handleButtonClick = async (id: string) => {
     console.log(id);
     setButtonClicked(true);
     try {
-      await axios.patch(`/reports/${id}`, { published: false});
+      await axios.patch(`/reports/${id}`, { published: false });
       // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
       // fetchReports();
     } catch (error) {
@@ -96,8 +97,11 @@ const ReportsMap: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const filteredReports = selectedType
-      ? reports.filter((report) => report.type === selectedType && report.published === true)
-      : reports.filter((report) => report.published === true);
+        ? reports.filter(
+            (report) =>
+              report.type === selectedType && report.published === true
+          )
+        : reports.filter((report) => report.published === true);
 
       const newMarkers = filteredReports.map((report) => {
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
@@ -157,7 +161,6 @@ const ReportsMap: React.FC = () => {
       map.fitBounds(bounds);
     }
   }, [map, reports, selectedType, buttonClicked]);
-
 
   // useEffect(() => {
   //   if (map && reports) {
@@ -241,12 +244,15 @@ const ReportsMap: React.FC = () => {
       </select>
       {selectedType && <p>Selected type: {selectedType}</p>}
       <GoogleMap
-        mapContainerStyle={{ height: '250px', width: '395px' }}
+        mapContainerStyle={defaultMapContainerStyle}
         center={center}
         zoom={15}
         onLoad={onLoad}
         options={options as google.maps.MapOptions}
       />
+{reports.map(report => (
+  <img key={report.id} src={report.imgUrl ?? undefined} />
+))}
     </div>
   );
 };

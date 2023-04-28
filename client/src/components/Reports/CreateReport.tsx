@@ -5,23 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
 
-// define report object
-// interface Report {
-//   body?: string;
-//   type?: string;
-//   title?: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   published: boolean;
-//   location_lat?: number;
-//   location_lng?: number;
-//   imgUrl?: string;
-//   userId: number;
-// }
-
 const CreateReport = () => {
-  const navigate = useNavigate();
 
+  // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -58,17 +44,18 @@ const CreateReport = () => {
       if (!currentLocation) {
         throw new Error('Current location not available');
       }
-      const {id} = user.id;
+      const { email, id } = user;
       const formData = new FormData();
-      formData.append('id', id);
+      formData.append('userId', id);
+      formData.append('userEmail', email);
       formData.append('body', body);
       formData.append('type', type);
       formData.append('title', title);
       formData.append('latitude', currentLocation.lat.toString());
       formData.append('longitude', currentLocation.lng.toString());
-      formData.append('file', image ?? '');
+      image && formData.append('file', image);
 
-
+      console.log(formData);
       const response = await axios.post<Report>('/reports', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -84,9 +71,6 @@ const CreateReport = () => {
     }
   };
 
-
-
-
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
@@ -99,7 +83,7 @@ const CreateReport = () => {
         }
         var geoOps = {
           enableHighAccuracy: false,
-          timeout: 10000 
+          timeout: 10000
         }
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -124,14 +108,11 @@ const CreateReport = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log('currentLocation is now available:', currentLocation);
-  // }, [currentLocation]);
 
   return (
     <div>
       <h1>Reports</h1>
-      <div style={{ height: '400px', width: '100%' }}>
+      <div>
         <ReportsMap />
       </div>
       <h2>Make a Report</h2>
@@ -155,9 +136,10 @@ const CreateReport = () => {
           placeholder='Comments'
           onChange={handleBodyText}
         />
-        <input type='file' accept='image/*' onChange={handleImage} />
+        <input id="file" type='file' name="file" accept='image/*' onChange={handleImage} />
         <input type='submit' value='submit' />
       </form>
+
     </div>
   );
 };

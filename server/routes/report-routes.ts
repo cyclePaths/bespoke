@@ -10,14 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
 const path = require('path');
 
-
-
 //  cloudinary credentials
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
-})
+});
 
 // GET ALL REPORTS
 reportRouter.get('/', async (req, res) => {
@@ -53,29 +51,113 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
 //  create file storage "engine"
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./images")
+    cb(null, './images');
   },
   filename: (req, file, cb) => {
     console.log();
-    cb(null, Date.now() + "-" + (file.originalname))
-  }
-})
-
-const upload = multer({storage: storage});
-
-
-
-reportRouter.post('/', upload.single("image"), async (req, res) => {
-  try {
-    const result = await cloudinary.uploader.upload(req.file?.path);
-
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
-  }
+    cb(null, Date.now() + '-' + file.originalname);
+  },
 });
 
+const upload = multer({ storage: storage });
+
+reportRouter.post(
+  '/',
+  (req, res, next) => {
+    upload.single('file')(req, res, (err) => {
+      if (err) {
+        console.error('Multer Error: ', err);
+        return res
+          .status(400)
+          .json({ error: 'An error occurred while uploading the image.' });
+      }
+      next();
+    });
+  },
+  async (req, res) => {
+    // console.log(req);
+    try {
+      const {
+
+        userEmail,
+        body,
+        type,
+        title,
+        latitude,
+        longitude,
+        image,
+      } = req.body;
+      let imageUrl: string | undefined;
+
+      const result = await cloudinary.uploader.upload(req.file?.path);
+      if (result) {
+        imageUrl = result.secure_url;
+        console.log(req.body, imageUrl);
+      }
+      const { id } = req.user as User;
+      console.log("userId: ", id);
+      // Save report data to database using Prisma
+      const newReport = await prisma.report.create({
+        data: {
+          body: body,
+          type: type,
+          title: title,
+          location_lat: Number(latitude),
+          location_lng: Number(longitude),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          published: true,
+          author: {
+            connect: {
+              id: id,
+            },
+          },
+          imgUrl: imageUrl ?? null,
+        },
+      });
+      res.sendStatus(201);
+    } catch (error) {
+      console.error('Report Post Error: ', error);
+      res
+        .status(500)
+        .json({ error: 'An error occurred while saving the report.' });
+    }
+  }
+);
+
+// reportRouter.post('/', upload.single('image'), async (req, res) => {
+//   try {
+//     const { id, body, type, title, latitude, longitude, image } = req.body;
+// let imageUrl: string | undefined;
+
+//   const result = await cloudinary.uploader.upload(req.file?.path);
+//     console.log("CLOUDINARY RESULT: ", result);
+//     imageUrl = result.secure_url;
+// res.sendStatus(201);
+
+//       } catch (error) {
+//         console.error("Report Post Error: ", error);
+//         res.status(500).json({ error: 'An error occurred while saving the report.' });
+//       }
+//     });
+
+// const reportData: Report = {
+//   id: id,
+//   body: body,
+//   type: type,
+//   title: title,
+//   location_lat: Number(latitude),
+//   location_lng: Number(longitude),
+//   createdAt: new Date(),
+//   updatedAt: new Date(),
+//   published: true,
+//   userId: id,
+//   imgUrl: imageUrl ?? null,
+// };
+
+// // Save report data to database using Prisma
+// const newReport = await prisma.report.create({ data: reportData });
+// res.json(newReport);
 
 // reportRouter.post('/', async (req, res) => {
 //   // console.log("res:", res);
@@ -102,7 +184,7 @@ reportRouter.post('/', upload.single("image"), async (req, res) => {
 //         'https://api.cloudinary.com/v1_1/dcecaxmxv/image/upload',
 //         formDataWithImage,
 //       );
-//       imageUrl = response.data.secure_url;
+//       imageUrl = result.secure_url;
 //     } else {
 //       imageUrl = undefined;
 //     }
@@ -130,7 +212,6 @@ reportRouter.post('/', upload.single("image"), async (req, res) => {
 //   }
 // });
 
-
 // reportRouter.post('/createMany', async (req, res) => {
 //   try {
 //     const data = req.body;
@@ -145,7 +226,6 @@ reportRouter.post('/', upload.single("image"), async (req, res) => {
 //   }
 // });
 
-
 //  UPDATE report archived only
 reportRouter.patch('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -157,7 +237,7 @@ reportRouter.patch('/:id', async (req: Request, res: Response) => {
       },
       data: {
         published: published,
-      }
+      },
     });
     if (post) {
       res.status(201).json(post);
@@ -188,7 +268,6 @@ reportRouter.patch('/:id', async (req: Request, res: Response) => {
 //   }
 // });
 
-
 //  DELETE a report by ID
 // reportRouter.delete('/:id', async (req, res) => {
 //   const id = req.params.id;
@@ -218,6 +297,5 @@ reportRouter.delete('/deleteAll', async (req, res) => {
     res.status(500).json({ error: 'Server Error' });
   }
 });
-
 
 export default reportRouter;
