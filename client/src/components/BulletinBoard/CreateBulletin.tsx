@@ -71,15 +71,13 @@ const CreateBulletin = () => {
             }}
             />
         </div>
-        <AddEquipment/>
-        <div id="submitButton" style={{ display: 'inline-block '}}>
-         <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
+        <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
                           minWidth: '75px', minHeight: '25px', marginLeft: '15px'}}
           onClick={() => handleBulletinSubmission()}
           >
           <i>Submit</i>
           </Button>
-        </div>
+          <AddEquipment/>
     </ThemeProvider>
     </div>
   );
