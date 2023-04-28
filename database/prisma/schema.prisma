@@ -163,3 +163,5 @@ model Rides {
   User     User?  @relation(fields: [userId], references: [id])
   userId   Int?
 }
+
+
