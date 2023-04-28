@@ -5,14 +5,15 @@ const equipmentRouter = Router();
 const prisma = new PrismaClient();
 
 interface CreateEquipment {
+    equipmentOrigin: string,
     equipmentDescription: string,
     equipmentType: string;
     imgUrl?: string;
-    bulletinId: number;
+    bulletinId?: number;
 }
 
 equipmentRouter.get('/', (req, res) => {
-    prisma.bulletin
+    prisma.equipment
       .findMany()
       .then((equipment) => res.status(200).send(equipment))
       .catch(() => {
@@ -22,8 +23,9 @@ equipmentRouter.get('/', (req, res) => {
   });
 
   equipmentRouter.post('/', (req, res) => {
-    const { equipmentDescription, equipmentType, bulletinId, imgUrl } = req.body;
+    const { equipmentOrigin, equipmentDescription, equipmentType, bulletinId, imgUrl } = req.body;
     const newEquipment: CreateEquipment = {
+      equipmentOrigin: equipmentOrigin,
       equipmentDescription: equipmentDescription,
       equipmentType: equipmentType,
       imgUrl: imgUrl,

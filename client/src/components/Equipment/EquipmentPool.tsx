@@ -26,7 +26,7 @@ const EquipmentPool = () => {
 
   return (
     <div>
-      <Card style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div>EQUIPMENT POOL:
+      <Card style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div><b>EQUIPMENT POOL:</b>
       {equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
       </div>
       </Card>

@@ -15,7 +15,7 @@ import dmRouter from './routes/dm-routes';
 import LeaderBoard from './routes/leaderboard-routes';
 import bulletinRouter from './routes/bulletinboard-routes';
 import commentRouter  from './routes/comment-routes';
-import equipmentRouter from './routes/equipment-routes'
+import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
 
 interface User {
