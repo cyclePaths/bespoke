@@ -1,22 +1,3 @@
-/*
-.profile-container {
-  position: relative;
-}
-
-.average-speed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-}
-
-.profile-container.scrolled .average-speed {
-  opacity: 0;
-} */
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .centered-header {
@@ -55,6 +36,8 @@
 
 #results {
   text-align: center;
+  background-color: aliceblue;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .search-form {
@@ -64,8 +47,52 @@
   justify-items: stretch;
 }
 
+.route-name {
+  color: rgb(57, 57, 177);
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+}
+
 #set-private{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 17px;
+}
+
+[class^="leaderboard-view"],
+[class*=" leaderboard-view"] {
+  display: flex;
+  justify-content: center;
+}
+
+.place-lb {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  margin-left: 7px;
+  text-align: center;
+}
+
+.place-10 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  margin-left: 4px;
+  text-align: center;
+}
+
+.leaderList {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.place-leaderboard {
+  display: contents;
+}
+
+.ten-List {
+  margin-bottom: 10px;
+}
+
+.leaderboard-value {
+  margin-right: 15px;
 }

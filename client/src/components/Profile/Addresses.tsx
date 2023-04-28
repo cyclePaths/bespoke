@@ -22,7 +22,7 @@ interface AddressesProps {
   homeAddress: HomeAddress;
   setHomeAddress: React.Dispatch<React.SetStateAction<HomeAddress>>;
 }
-//bringing over props from Profile.tsx
+// bringing over props from Profile.tsx
 // interface AddressesProps {
 //   selectedAddress: SelectedAddress;
 //   setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;

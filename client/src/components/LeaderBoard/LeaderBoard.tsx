@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import LeaderBoardList from './LeaderBoardList';
+import { useKeenSlider } from 'keen-slider/react';
+import 'keen-slider/keen-slider.min.css';
 
 export interface UserandValue {
   name: string;
@@ -16,8 +18,18 @@ const LeaderBoard = () => {
   const [top10CreatedRoutes, setTop10CreatedRoutes] = useState<UserandValue[]>(
     []
   );
-
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const user = useContext(UserContext);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+  });
 
   const fetchUserByTotalLikes = () => {
     axios
@@ -83,13 +95,72 @@ const LeaderBoard = () => {
   }, []);
 
   return (
-    <div id='leaderboard-view'>
-      <div>
-        {top10Likes.map((user, i) => (
-          <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
-        ))}
+    <>
+      <div className='navigation-wrapper'>
+        <div ref={sliderRef} className='keen-slider'>
+          <div className='keen-slider__slide'>
+            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
+              Liked Users
+            </h2>
+            <div
+              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
+            >
+              {top10Likes.map((user, i) => (
+                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+              ))}
+            </div>
+          </div>
+          <div className='keen-slider__slide'>
+            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
+              Top Travelers
+            </h2>
+            <div
+              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
+            >
+              {top10Miles.map((user, i) => (
+                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+              ))}
+            </div>
+          </div>
+          <div className='keen-slider__slide'>
+            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
+              Topic Chasers
+            </h2>
+            <div
+              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
+            >
+              {top10Post.map((user, i) => (
+                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+              ))}
+            </div>
+          </div>
+          <div className='keen-slider__slide'>
+            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
+              Good Samaritans
+            </h2>
+            <div
+              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
+            >
+              {top10Reports.map((user, i) => (
+                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+              ))}
+            </div>
+          </div>
+          <div className='keen-slider__slide'>
+            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
+              Reliable Routers
+            </h2>
+            <div
+              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
+            >
+              {top10CreatedRoutes.map((user, i) => (
+                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

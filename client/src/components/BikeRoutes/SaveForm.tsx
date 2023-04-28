@@ -45,6 +45,8 @@ const SaveForm = ({
         <InputLayout
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
+          type='text'
+          maxLength='10'
         />
         <h2 className='centered-header'>Select Ride Options:</h2>
         <OptionsDiv>
@@ -54,7 +56,7 @@ const SaveForm = ({
             <option>Scenic</option>
           </CategorySelector>
           <div>
-            <strong id='set-private'>Set Private?</strong>
+            <strong id='set-private'>Private?</strong>
             <input
               type='checkbox'
               onClick={() => (setIsPrivate(true), console.log(isPrivate))}
