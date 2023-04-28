@@ -188,7 +188,7 @@ console.log('check thread', messages)
               senderId={message.senderId}
               receiverId={message.receiverId}
               text={message.text}
-              fromMe={message.fromMe}
+              fromMe={message.senderId === userId}
             />
           ))}
         </div>
