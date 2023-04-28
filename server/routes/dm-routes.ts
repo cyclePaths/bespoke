@@ -43,7 +43,7 @@ dmRouter.get(`/:`, (req: Request, res: Response) => {
 })
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
-  console.log(req.body);
+  console.log(req);
   // try {
   //   const { content, fromMe } = req.body.message;
 

@@ -200,6 +200,9 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       setPhoto(data.thumbnail);
       setTheme(data.theme);
     })
+      .catch((err) => {
+        console.log(err);
+      })
 
     axios.get('/profile/weight').then(({ data }) => {
       setWeight(data.weight);

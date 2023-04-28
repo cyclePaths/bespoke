@@ -24,12 +24,19 @@ function sleep(delay = 0) {
   });
 }
 
-  function SearchUsers({open, setOpen, options, setOptions, loading, selectedUser, setSelectedUser, getUser }) {
+function SearchUsers({
+  open,
+  setOpen,
+  options,
+  setOptions,
+  loading,
+  receiver,
+  setReceiver,
 
-    const [findUser, setFindUser] = useState('');
+}) {
+  const [findUser, setFindUser] = useState('');
 
-    const classes = useStyles();
-
+  const classes = useStyles();
 
   useEffect(() => {
     let active = true;
@@ -37,7 +44,7 @@ function sleep(delay = 0) {
     const getUsers = async () => {
       try {
         const response = await axios.get('/dms/findUsers');
-        console.log(response)
+        console.log(response);
         if (active) {
           setOptions([...response.data]);
         }
@@ -57,41 +64,41 @@ function sleep(delay = 0) {
 
   return (
     <div className={classes.search}>
-    <Autocomplete
-
-      id="asynchronous"
-      // sx={{ width: 300 }}
-      open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-
-
-
-      isOptionEqualToValue={(option: Users, value) => option.name === value.name}
-      getOptionLabel={(option) => option.name}
-      onChange={(event, newValue) => setSelectedUser(newValue?.name)}
-      options={options}
-      loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Search Bikers"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
-    />
+      <Autocomplete
+        id='asynchronous'
+        // sx={{ width: 300 }}
+        open={open}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        isOptionEqualToValue={(option: Users, value) =>
+          option.name === value.name
+        }
+        getOptionLabel={(option) => option.name}
+        onChange={(event, newValue) => setReceiver(newValue)}
+        options={options}
+        loading={loading}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label='Search Bikers'
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? (
+                    <CircularProgress color='inherit' size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+      />
     </div>
   );
 }
@@ -102,7 +109,6 @@ const dbUsers = [
   { id: 3, name: 'Ernest Quiambao' },
   { id: 4, name: 'Marcus Ager' },
   { id: 5, name: 'Brendan Carmichael' },
-
 ];
 
 export default SearchUsers;
