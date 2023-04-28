@@ -122,7 +122,7 @@ export const UserContext = createContext<any>(Object());
 
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
@@ -510,6 +510,7 @@ const Root = () => {
                   />
                 }
               />
+              <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
