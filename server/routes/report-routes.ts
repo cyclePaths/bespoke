@@ -4,13 +4,13 @@ const reportRouter = express.Router();
 import { PrismaClient, Report, User } from '@prisma/client';
 const prisma = new PrismaClient();
 import axios from 'axios';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 const cloudinary = require('cloudinary').v2;
 import { v4 as uuidv4 } from 'uuid';
-// import multer from 'multer';
+import multer from 'multer';
+const path = require('path');
 
 
-// const upload = multer({ dest: 'uploads/' });
 
 //  cloudinary credentials
 cloudinary.config({
@@ -50,36 +50,32 @@ reportRouter.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+//  create file storage "engine"
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./images")
+  },
+  filename: (req, file, cb) => {
+    console.log();
+    cb(null, Date.now() + "-" + (file.originalname))
+  }
+})
 
-reportRouter.post('/',  async (req, res) => {
+const upload = multer({storage: storage});
+
+
+
+reportRouter.post('/', upload.single("image"), async (req, res) => {
   try {
-    const {image} = req.body;
-    let imageUrl = null;
-    console.log("req.body:", req.body);
-    //  if image was sent, cloudinary
-    if(image){
-      console.log("image was sent")
+    const result = await cloudinary.uploader.upload(req.file?.path);
 
-      const response = await axios.post(
-                'https://api.cloudinary.com/v1_1/dcecaxmxv/image/upload',
-                image,
-              );
-        if (response){
-          imageUrl = response.data.secure_url;
-          console.log(imageUrl);
-        }
-      //  pass response to report creation
-    }
-  //   const newPost = await prisma.report.create({
-  //     data,
-  //   });
-  //   res.status(201).json(newPost);
-    console.log("Success")
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 // reportRouter.post('/', async (req, res) => {
 //   // console.log("res:", res);
