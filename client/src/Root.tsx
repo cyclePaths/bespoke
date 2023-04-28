@@ -319,14 +319,18 @@ const Root = () => {
 
   //function to increment or decrement values on the User table used for achievements/badges
   //increments by default, pass '-1' as third argument to decrement
-  const tickBadgeCounter = (userId, key, change = 1) => {
+  const tickBadgeCounter = (userId, badgeId, change = 1) => {
     axios
       .patch('/badges/counter', {
         userId: userId,
-        key: key,
+        badgeId: badgeId,
         change: change,
       })
-      .then(() => console.log(`successfully updated ${key}`))
+      .then(() =>
+        console.log(
+          `successfully updated badge with ID ${badgeId} on user with id ${userId}`
+        )
+      )
       .catch((err) =>
         console.error(
           `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,

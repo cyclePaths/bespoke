@@ -121,27 +121,43 @@ badgeRouter.post('/add', async (req, res) => {
 
 badgeRouter.patch('/counter', async (req: Request, res: Response) => {
   try {
-    const { userId, key, change } = req.body;
+    const { userId, badgeId, change } = req.body;
     let user: User | null = await prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
-    let currentValue = 0;
     if (!user) {
       console.error('an error occurred trying to find user with id ', userId);
-    } else {
-      currentValue = user[key];
+      res.sendStatus(500);
     }
-    let dataObj = {};
-    dataObj[key] = currentValue + change; //this should actually be 'current value' + change; need add a method to find the current value of this key!
-    const updateCounter = await prisma.user.update({
+    const badgeOnUser = await prisma.badgesOnUsers.findUnique({
       where: {
-        id: userId,
+        userId_badgeId: { userId, badgeId },
       },
-      data: dataObj,
     });
-    res.status(200).send(updateCounter);
+    if (!badgeOnUser) {
+      if (change) {
+        await prisma.badgesOnUsers.create({
+          data: {
+            user: { connect: { id: userId } },
+            badge: { connect: { id: badgeId } },
+            counter: change,
+          },
+        });
+      }
+    } else {
+      let currentValue = badgeOnUser.counter;
+      const updateCounter = await prisma.badgesOnUsers.update({
+        where: {
+          userId_badgeId: { userId, badgeId },
+        },
+        data: {
+          counter: currentValue! + 1,
+        },
+      });
+      res.status(200).send(updateCounter);
+    }
   } catch (err) {
     console.error(
       `an error occurred when attempting to update ${req.body.key}`,
@@ -154,9 +170,14 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
 //seeder function
 
 async function seedBadges() {
+  try {
+    await prisma.badge.deleteMany({});
+  } catch (err) {
+    console.error('there was an error deleting old badges ', err);
+  }
   for (let i = 0; i < badgesSeed.length; i++) {
     try {
-      const badge = await prisma.badge.create({
+      await prisma.badge.create({
         data: {
           name: badgesSeed[i].name,
           badgeIcon: badgesSeed[i].badgeIcon,

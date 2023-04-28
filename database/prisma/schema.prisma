@@ -33,27 +33,12 @@ model User {
   receivedMessages        DirectMessages[] @relation("ReceivedMessages")
   favoriteRoutes          RouteLike[]
   joinDate                DateTime         @default(now())
-  profileComplete         Boolean          @default(false)
+  lastLoginDate           DateTime         @default(now())
   firstRideCity           String           @default("")
   firstRideCountry        String           @default("")
   monthlyMiles            Int              @default(0)
-  mostMonthlyMiles        Int              @default(0)
-  totalMiles              Int              @default(0)
-  totalBadWeatherMiles    Int              @default(0)
-  totalGoodWeatherMiles   Int              @default(0)
-  totalCaloriesBurned     Int              @default(0)
-  totalMinutesAboveTime   Int              @default(0)
-  highestRideStreak       Int              @default(0)
-  mostWeeklyRides         Int              @default(0)
   ridesThisWeek           Int              @default(0)
-  totalRides              Int              @default(0)
-  totalPosts              Int              @default(0)
-  totalReports            Int              @default(0)
-  totalDownvotedReports   Int              @default(0)
   monthlyDownvotedReports Int              @default(0)
-  totalRoutes             Int              @default(0)
-  totalLikesGiven         Int              @default(0)
-  totalLikesReceived      Int              @default(0)
   badges                  BadgesOnUsers[]
 }
 
