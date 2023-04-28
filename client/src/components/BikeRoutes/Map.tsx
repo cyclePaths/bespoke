@@ -257,6 +257,21 @@ const Map: React.FC = () => {
     }
   }, [directions]);
 
+  const exitListForm = () => {
+    const searchBar = document.getElementById('route-searcher');
+    const findHeader = document.getElementById('list');
+    const resultHeader = document.getElementById('results');
+
+    setOpenSearch(false);
+    setCategory('');
+    setIsPrivate(false);
+
+    findHeader!.style.display = 'none';
+    searchBar!.style.display = 'none';
+    resultHeader!.style.display = '';
+    setRouteList([]);
+  };
+
   // Sets the center of the map upon page loading //
   useEffect(() => {
     if (geoLocation) {
@@ -282,6 +297,7 @@ const Map: React.FC = () => {
           fetchDirections={fetchDirections}
           selected={selected}
           setOpenPopup={setOpenPopup}
+          directions={directions}
         />
       </StartRouteContainer>
 
@@ -369,6 +385,7 @@ const Map: React.FC = () => {
           setCategory={setCategory}
           setRouteList={setRouteList}
         />
+        <button onClick={() => exitListForm()}>Exit</button>
       </RoutesListPopup>
       {/* The end of those Popups */}
     </div>

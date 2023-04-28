@@ -16,6 +16,7 @@ type PlaceProps = {
   fetchDirections: (position: google.maps.LatLngLiteral) => void;
   selected: google.maps.LatLngLiteral | undefined;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  directions: google.maps.DirectionsResult | undefined;
 };
 
 const Places = ({
@@ -23,6 +24,7 @@ const Places = ({
   fetchDirections,
   selected,
   setOpenPopup,
+  directions,
 }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
@@ -65,7 +67,13 @@ const Places = ({
               >
                 Track Route
               </button>
-              <button onClick={() => setOpenPopup(true)}>
+              <button
+                onClick={() => {
+                  if (directions) {
+                    setOpenPopup(true);
+                  }
+                }}
+              >
                 Save Create Route
               </button>
             </RouteButtonContainer>
