@@ -44,23 +44,24 @@ dmRouter.get(`/:`, (req: Request, res: Response) => {
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
   console.log(req);
-  // try {
-  //   const { content, fromMe } = req.body.message;
+  try {
+    const { receiverId, text, fromMe } = req.body.message;
 
-  //   const { id } = req.user as User;
-
-  //   const messageData: DirectMessages = {
-  //     id,
-  //     senderId: id,
-  //     // receiverId,
-  //     content,
-  //     // createdAt,
-  //     // updatedAt,
-
-  //   }
+    const { id } = req.user as User;
 
 
-  // } catch {}
+
+    const newMessage = await prisma.directMessages.create({
+      data: {
+        senderId: id,
+        receiverId: receiverId,
+        text: text,
+        fromMe: fromMe,
+      }
+    })
+
+
+  } catch {}
 })
 
 

@@ -146,14 +146,14 @@ profileRouter.post('/workout', async (req, res) => {
 
     const { id } = req.user as User;
 
-    const rideData: Rides = {
-      id,
-      activity,
-      duration,
-      weight,
-      calories,
-      userId: id,
-    };
+    // const rideData: Rides = {
+    //   id,
+    //   activity,
+    //   duration,
+    //   weight,
+    //   calories,
+    //   userId: id,
+    // };
     const newRide = await prisma.rides.create({
       data: {
         activity,

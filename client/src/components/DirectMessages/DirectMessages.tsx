@@ -85,6 +85,7 @@ function DirectMessages() {
   const [options, setOptions] = useState<readonly Users[]>([]);
   const loading = open && options.length === 0;
   const [userId, setUserId] = useState(0);
+  const [receiverId, setReceiverId] = useState(0);
   const [receiver, setReceiver] = useState<SelectedUser>();
 
   useEffect(() => {
@@ -99,6 +100,7 @@ function DirectMessages() {
       });
 
     if (receiver) {
+      setReceiverId(receiver.id)
       console.log(options);
       console.log(receiver);
     }
