@@ -1,11 +1,6 @@
 import path from 'path';
 import express from 'express';
-
-import http from 'http';
-
 import { Server } from 'socket.io';
-
-
 import session from 'express-session';
 import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
@@ -23,7 +18,6 @@ import commentRouter  from './routes/comment-routes';
 import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
 import reportRouter from './routes/report-routes';
-
 
 
 
@@ -49,8 +43,7 @@ const isLoggedIn = (req, res, next) => {
 //
 
 const app = express();
-const httpServer = http.createServer(app);
-const io = new Server(httpServer);
+const io = new Server(8081);
 export { io };
 
 //  Authentication Middleware
@@ -179,7 +172,6 @@ app.put('/home/user/:id', async (req, res) => {
 
 /////////SOCKET IO/////////
 io.on('connection', (socket) => {
-  // console.log(`Socket ${socket.id} connected`);
 
   socket.on('message', (message) => {
     console.log(`Received message: ${message}`);
@@ -210,7 +202,7 @@ app.post('/user', async (req, res) => {
 // );
 
 
-httpServer.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
