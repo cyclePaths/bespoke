@@ -4,6 +4,7 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
+import ReportsList from './ReportsList';
 
 const CreateReport = () => {
 
