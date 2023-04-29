@@ -522,7 +522,7 @@ const Root = () => {
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          <Stopwatch />
+          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>

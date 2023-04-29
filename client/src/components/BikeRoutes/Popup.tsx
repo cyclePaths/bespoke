@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import '../../styles.css';
 
 interface SaveProps {
@@ -11,6 +12,7 @@ interface SaveProps {
 const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
   return (
     <Dialog open={openPopup}>
+      <CloseIcon onClick={() => setOpenPopup(false)} />
       <DialogTitle>
         <header className='centered-header-Save'>Save Route</header>
       </DialogTitle>

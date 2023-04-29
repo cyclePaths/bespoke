@@ -14,7 +14,7 @@ import {
   useJsApiLoader,
   InfoBox,
 } from '@react-google-maps/api';
-import { StartRouteContainer } from '../../StyledComp';
+import { RouteButtonContainer, StartRouteContainer } from '../../StyledComp';
 import { MAP_API_TOKEN, defaultMapContainerStyle } from './Utils';
 import Places from './Places';
 import FetchedRoutes from './FetchedRoutes';
@@ -25,7 +25,9 @@ import Popup from './Popup';
 import SaveForm from './SaveForm';
 import RoutesListPopup from './RoutesListPopup';
 import { Button } from '@mui/material';
-import { ThemeContext } from '@emotion/react';
+import NavigationIcon from '@mui/icons-material/Navigation';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import SearchIcon from '@mui/icons-material/Search';
 
 // Sets the map to not be google styled //
 const options = {
@@ -66,6 +68,7 @@ const Map: React.FC = () => {
     lat: 29.9511,
     lng: -90.0715,
   });
+  // const [userCenter, setUserCenter] = useState<any>(geoLocation);
   const [routeInfo, setRouteInfo] = useState<any>();
 
   // For Popup Route Save Action //
@@ -300,6 +303,7 @@ const Map: React.FC = () => {
           selected={selected}
           setOpenPopup={setOpenPopup}
           directions={directions}
+          setOpenSearch={setOpenSearch}
         />
       </StartRouteContainer>
 
@@ -355,13 +359,33 @@ const Map: React.FC = () => {
         {routeInfo ? renderRouteInfo() : <div></div>}
       </GoogleMap>
 
-      <Button
-        variant='contained'
-        sx={{ marginTop: 2 }}
-        onClick={() => setOpenSearch(true)}
-      >
-        Search Routes
-      </Button>
+      <RouteButtonContainer>
+        <Button
+          variant='contained'
+          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          onClick={fetchDirections}
+        >
+          <NavigationIcon />
+        </Button>
+        <Button
+          variant='contained'
+          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          onClick={() => {
+            if (directions) {
+              setOpenPopup(true);
+            }
+          }}
+        >
+          <SaveAltIcon />
+        </Button>
+        <Button
+          variant='contained'
+          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          onClick={() => setOpenSearch(true)}
+        >
+          <SearchIcon />
+        </Button>
+      </RouteButtonContainer>
       {/* These are popup windows that will display when the Save Created Route button is click or the Find Route Button is clicked */}
       <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
         <SaveForm

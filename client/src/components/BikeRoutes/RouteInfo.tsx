@@ -62,25 +62,6 @@ const RouteInfo = ({
     setLike(result);
   }, []);
 
-  // useEffect(() => {
-  //   axios
-  //     .get('/bikeRoutes/likesValue', { params: { routeId: route.id } })
-  //     .then(({ data }) => {
-  //       setLike(data.likeBool);
-  //     })
-  //     .catch((err) => {
-  //       console.error('Failed to GET like value:', err);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   if (count === 0) {
-  //     setCount(count + 1);
-  //   } else {
-  //     updateLikes();
-  //   }
-  // }, [like]);
-
   return (
     <div style={{ width: '100%' }}>
       <Box

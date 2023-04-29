@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
 import ForecastRow from './Weather/ForecastRow';
-import { ForecastEntry } from '../StyledComp';
+import { BandAid, ForecastEntry } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 
@@ -18,7 +18,7 @@ const Home = ({
   return (
     <div>
       {/* <button type='button'  onClick={() => navigate('/stopwatch')}>Stopwatch</button> */}
-      <div>
+      <BandAid>
         <ForecastRow
           rowData={homeForecasts}
           prepareWeatherIcon={prepareWeatherIcon}
@@ -26,7 +26,7 @@ const Home = ({
           temperatureMeasurementUnit={temperatureMeasurementUnit}
           precipitationMeasurementUnit={precipitationMeasurementUnit}
         />
-      </div>
+      </BandAid>
     </div>
   );
 };

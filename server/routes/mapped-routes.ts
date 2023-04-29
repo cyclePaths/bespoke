@@ -120,10 +120,10 @@ BikeRoutes.get('/routes', async (req, res) => {
         const radiusRoutes: BikeRoutes[] = [];
         const likeList: any[] = [];
         routeList.forEach((route) => {
-          const gteLat = location_lat! - 0.1;
-          const lteLat = location_lat! + 0.1;
-          const gteLng = location_lng! - 0.1;
-          const lteLng = location_lng! + 0.1;
+          const gteLat = location_lat! - 0.4;
+          const lteLat = location_lat! + 0.4;
+          const gteLng = location_lng! - 0.4;
+          const lteLng = location_lng! + 0.4;
 
           if (
             (route.origin[0] as unknown as number) >= gteLat &&
@@ -142,17 +142,39 @@ BikeRoutes.get('/routes', async (req, res) => {
       });
   } else if (privacy === 'true') {
     prisma.user
-      .findMany({
+      .findUnique({
         where: {
           id: id,
         },
         include: {
-          createdRoutes: true,
+          createdRoutes: {
+            include: {
+              userLikes: true,
+            },
+          },
         },
       })
       .then((user) => {
-        const list = user[0].createdRoutes;
-        res.status(200).send(list);
+        console.log(user);
+        const radiusRoutes: BikeRoutes[] = [];
+        const likeList: any[] = [];
+        user!.createdRoutes.forEach((route) => {
+          const gteLat = location_lat! - 0.4;
+          const lteLat = location_lat! + 0.4;
+          const gteLng = location_lng! - 0.4;
+          const lteLng = location_lng! + 0.4;
+
+          if (
+            (route.origin[0] as unknown as number) >= gteLat &&
+            (route.origin[0] as unknown as number) <= lteLat &&
+            (route.origin[1] as unknown as number) >= gteLng &&
+            (route.origin[1] as unknown as number) <= lteLng
+          ) {
+            radiusRoutes.push(route);
+            likeList.push(route.userLikes);
+          }
+        });
+        res.status(200).send([radiusRoutes, likeList]);
       })
       .catch((err) => {
         console.error(err);

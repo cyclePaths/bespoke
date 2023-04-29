@@ -1,6 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { AppProps } from './App';
+import { UserContext } from '../Root';
+import StopwatchPopout from './StopwatchPopout';
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -17,6 +19,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import Stopwatch from './Stopwatch';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
+import { NavBarTop } from '../StyledComp';
 
 export interface NavbarProps {
   appPropsObj: AppProps;
@@ -24,20 +27,30 @@ export interface NavbarProps {
 
 const Navbar = ({ appPropsObj }: NavbarProps) => {
   const [value, setValue] = useState<number>(0);
-
   const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+  const { user } = useContext(UserContext);
+  const [userProfilePic, setUserProfilePic] = useState<any>(
+    <AccountCircleIcon />
+  );
+  const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
 
   const handleLeaderBoard = () => {
     setOpenLeaderBoard(true);
   };
 
+  useEffect(() => {
+    if (user) {
+      setUserProfilePic(<img src={user.thumbnail} id='profilePic' />);
+    }
+  }, [user]);
+
   return (
     <div>
-      <div>
-        <Link style={{ fontSize: '50px' }} to='/home'>
+      <NavBarTop>
+        <Link style={{ fontSize: '35px' }} to='/home'>
           Bespoke
         </Link>
-        <div>
+        <span style={{ display: 'contents' }}>
           <IconButton onClick={() => handleLeaderBoard()}>
             <LeaderboardIcon />
           </IconButton>
@@ -45,11 +58,20 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           <IconButton>
             <MessageIcon />
           </IconButton>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              if (openStopWatch) {
+                setOpenStopWatch(false);
+              } else {
+                setOpenStopWatch(true);
+              }
+            }}
+          >
             <TimerIcon />
           </IconButton>
-        </div>
-      </div>
+        </span>
+      </NavBarTop>
+
       <div
         id='navbar'
         style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
@@ -59,7 +81,12 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
-          // style={{ backgroundColor: '#25acda' }}
+          style={{
+            backgroundColor: '#dadcda',
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            zIndex: 1000,
+          }}
         >
           <BottomNavigationAction
             label='Navigate'
@@ -92,7 +119,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           <BottomNavigationAction
             label='Profile'
             style={{ minWidth: '0px' }}
-            icon={<AccountCircleIcon />}
+            icon={userProfilePic}
             component={Link}
             to='/profile'
           />
@@ -104,6 +131,12 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
       >
         <LeaderBoard />
       </LeaderBoardPopout>
+      {/* <StopwatchPopout
+        openStopwatch={openStopwatch}
+        setOpenStopWatch={setOpenStopWatch}
+      > */}
+      <Stopwatch openStopWatch={openStopWatch} />
+      {/* </StopwatchPopout> */}
       <Outlet />
     </div>
   );

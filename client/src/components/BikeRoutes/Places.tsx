@@ -9,6 +9,10 @@ import {
   AutoCompleteDropdownLayout,
   RouteButtonContainer,
 } from '../../StyledComp';
+import { Button } from '@mui/material';
+// import NavigationIcon from '@mui/icons-material/Navigation';
+// import SaveAltIcon from '@mui/icons-material/SaveAlt';
+// import SearchIcon from '@mui/icons-material/Search';
 
 // Starting Props //
 type PlaceProps = {
@@ -17,6 +21,7 @@ type PlaceProps = {
   selected: google.maps.LatLngLiteral | undefined;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
   directions: google.maps.DirectionsResult | undefined;
+  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Places = ({
@@ -25,6 +30,7 @@ const Places = ({
   selected,
   setOpenPopup,
   directions,
+  setOpenSearch,
 }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
@@ -60,23 +66,33 @@ const Places = ({
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <RouteButtonContainer>
-              <button
-                style={{ marginRight: '5px', marginLeft: '5px' }}
+            {/* <RouteButtonContainer>
+              <Button
+                variant='contained'
+                sx={{ marginRight: '5px', marginLeft: '5px' }}
                 onClick={handleRoute}
               >
-                Track Route
-              </button>
-              <button
+                <NavigationIcon />
+              </Button>
+              <Button
+                variant='contained'
+                sx={{ marginRight: '5px', marginLeft: '5px' }}
                 onClick={() => {
                   if (directions) {
                     setOpenPopup(true);
                   }
                 }}
               >
-                Save Create Route
-              </button>
-            </RouteButtonContainer>
+                <SaveAltIcon />
+              </Button>
+              <Button
+                variant='contained'
+                sx={{ marginRight: '5px', marginLeft: '5px' }}
+                onClick={() => setOpenSearch(true)}
+              >
+                <SearchIcon />
+              </Button>
+            </RouteButtonContainer> */}
 
             <InputLayout
               id='address-input'
