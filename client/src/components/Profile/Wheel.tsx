@@ -212,6 +212,8 @@ export default function Wheel(props: {
     mode: "free-snap",
   })
 
+  console.log(sliderState?.rel);
+
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(options.current)
 
   const [radius, setRadius] = React.useState(0)

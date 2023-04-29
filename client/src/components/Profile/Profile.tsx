@@ -327,13 +327,13 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }}
     >
       <div style={{ width: 70, height: 180 }}>
-        <Wheel initIdx={1} length={24} width={23} loop={true} />
+        <Wheel initIdx={0} length={24} width={0} loop={true} />
       </div>
       <div style={{ width: 70, height: 180 }}>
         <Wheel
-          initIdx={35}
+          initIdx={0}
           length={60}
-          width={23}
+          width={0}
           loop={true}
           perspective="left"
         />
