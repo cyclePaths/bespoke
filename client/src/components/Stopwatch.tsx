@@ -134,7 +134,7 @@ const Stopwatch = () => {
       {!isRunning && <button onClick={startStopwatch}>Start</button>}
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
-      <button onClick={toggleStopwatch}>{isRunning ? 'Pause' : 'Reset'}</button>
+      <button onClick={toggleStopwatch}>{isRunning ? 'Pause' : ' Reset '}</button>
       {/* <button onClick={resetStopwatch}>{isRunning ? 'Reset' : 'Clear'}</button> */}
 
       {isPickerVisible && (
