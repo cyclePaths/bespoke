@@ -12,6 +12,17 @@ interface CreateComment {
     createdAt: Date;
   }
 
+// GET comments from database - BulletinBoard.tsx
+commentRouter.get('/', (req, res) => {
+  prisma.comment
+    .findMany()
+    .then((comments) => res.status(200).send(comments))
+    .catch(() => {
+      console.log('Failed to GET COMMENTS');
+      res.sendStatus(500);
+    });
+});
+
 //POST comment to database - CreateComment.tsx
 commentRouter.post('/', (req, res) => {
     const { bulletinOrigin, commentCreator, commentText } = req.body;

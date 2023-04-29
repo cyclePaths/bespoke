@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import axios from 'axios';
-import { PrismaClient, User, DirectMessages } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { Request, Response } from 'express';
 import socketIO, { Server, Socket } from 'socket.io';
 import http, { IncomingMessage } from 'http';

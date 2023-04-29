@@ -15,14 +15,14 @@ import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
-import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
 import dmRouter from './routes/dm-routes';
 import LeaderBoard from './routes/leaderboard-routes';
 import bulletinRouter from './routes/bulletinboard-routes';
 import commentRouter  from './routes/comment-routes';
-import equipmentRouter from './routes/equipment-routes'
+import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
+import reportRouter from './routes/report-routes';
 
 
 
