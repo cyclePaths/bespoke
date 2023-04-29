@@ -1,5 +1,11 @@
 import path from 'path';
 import express from 'express';
+
+import http from 'http';
+
+import { Server } from 'socket.io';
+
+
 import session from 'express-session';
 import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
@@ -17,6 +23,9 @@ import bulletinRouter from './routes/bulletinboard-routes';
 import commentRouter  from './routes/comment-routes';
 import equipmentRouter from './routes/equipment-routes'
 import { badgeRouter } from './routes/badge-routes';
+
+
+
 
 interface User {
   id: number;
@@ -40,6 +49,9 @@ const isLoggedIn = (req, res, next) => {
 //
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+export { io };
 
 //  Authentication Middleware
 app.use(
@@ -165,15 +177,41 @@ app.put('/home/user/:id', async (req, res) => {
   }
 });
 
-/////// SEEDER FOR USERS ///////
+/////////SOCKET IO/////////
+io.on('connection', (socket) => {
+  // console.log(`Socket ${socket.id} connected`);
 
-// app.post('/user', async (req, res) => {
-//   const user = req.body;
-//   const newUser = await prisma.user.create({ data: user });
-//   res.sendStatus(201);
+  socket.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    io.emit('message', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`Socket ${socket.id} disconnected`);
+  });
+});
+
+// httpServer.listen(8080, () => {
+//   console.log('Server listening on port 8080');
 // });
 
+
+///// SEEDER FOR USERS ///////
+
+app.post('/user', async (req, res) => {
+  const user = req.body;
+  const newUser = await prisma.user.create({ data: user });
+  res.sendStatus(201);
+});
+
 //Listening
-app.listen(PORT, () =>
-  console.log(`App now listening for requests at: http://localhost:${PORT}`)
-);
+// app.listen(PORT, () =>
+//   console.log(`App now listening for requests at: http://localhost:${PORT}`)
+// );
+
+
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+

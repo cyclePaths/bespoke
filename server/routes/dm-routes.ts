@@ -2,9 +2,19 @@ import express, { Router } from 'express';
 import axios from 'axios';
 import { PrismaClient, User, DirectMessages } from '@prisma/client';
 import { Request, Response } from 'express';
+import socketIO, { Server, Socket } from 'socket.io';
+import http, { IncomingMessage } from 'http';
+import { io } from '../index';
 
 const prisma = new PrismaClient();
 const dmRouter: Router = express.Router();
+
+interface CustomSocket extends Socket {
+  request: IncomingMessage & {
+    user?: User;
+  };
+}
+
 
 dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
   // console.log(req.body);
@@ -20,7 +30,7 @@ dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
 });
 
 dmRouter.get('/retrieveMessages', async (req: Request, res: Response) => {
-  console.log(req);
+  // console.log(req);
   try {
     const { receiverId } = req.query;
     const { id } = req.user as { id: number };
@@ -43,6 +53,7 @@ dmRouter.get('/retrieveMessages', async (req: Request, res: Response) => {
   }
 });
 
+
 dmRouter.post('/message', async (req: Request, res: Response) => {
   // console.log(req);
   try {
@@ -58,7 +69,14 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
         fromMe: fromMe,
       },
     });
-    res.status(201).send(newMessage);
+      // Emit a 'message' event to all connected clients except the sender
+      const client = Array.from(io.sockets.sockets.values()).find(
+        (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
+      );
+      if (client) {
+        client.emit('message', newMessage);
+      }
+
   } catch {
     res.sendStatus(500);
   }
