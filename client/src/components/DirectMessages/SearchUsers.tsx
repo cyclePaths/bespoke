@@ -32,7 +32,7 @@ function SearchUsers({
   loading,
   receiver,
   setReceiver,
-
+  loadMessages,
 }) {
   const [findUser, setFindUser] = useState('');
 
