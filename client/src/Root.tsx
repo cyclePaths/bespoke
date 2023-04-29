@@ -16,7 +16,7 @@ import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
-
+import ReportsList from './components/Reports/ReportsList';
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -453,6 +453,7 @@ const Root = () => {
       ele.displayIcon = false;
     }
   });
+  const reports = [];
 
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
@@ -510,6 +511,7 @@ const Root = () => {
               />
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
+              <Route path='reportsList' element={<ReportsList reports={reports} />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
               <Route path='directMessages' element={<DirectMessages />} />
