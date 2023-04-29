@@ -16,8 +16,8 @@ model session {
 }
 
 model User {
-  id                      Int             @id @default(autoincrement())
-  email                   String          @unique
+  id                      Int              @id @default(autoincrement())
+  email                   String           @unique
   name                    String
   thumbnail               String?
   weight                  Int?
@@ -28,31 +28,33 @@ model User {
   location_lng            Float?
   createdRoutes           BikeRoutes[]
   reports                 Report[]
-  theme                   Boolean         @default(false)
+  theme                   Boolean          @default(false)
+  sentMessages            DirectMessages[] @relation("SentMessages")
+  receivedMessages        DirectMessages[] @relation("ReceivedMessages")
   favoriteRoutes          RouteLike[]
-  joinDate                DateTime        @default(now())
-  profileComplete         Boolean         @default(false)
-  firstRideCity           String          @default("")
-  firstRideCountry        String          @default("")
-  monthlyMiles            Int             @default(0)
-  mostMonthlyMiles        Int             @default(0)
-  totalMiles              Int             @default(0)
-  totalBadWeatherMiles    Int             @default(0)
-  totalGoodWeatherMiles   Int             @default(0)
-  totalCaloriesBurned     Int             @default(0)
-  totalMinutesAboveTime   Int             @default(0)
-  highestRideStreak       Int             @default(0)
-  mostWeeklyRides         Int             @default(0)
-  ridesThisWeek           Int             @default(0)
-  totalRides              Int             @default(0)
-  totalPosts              Int             @default(0)
-  totalReports            Int             @default(0)
-  totalDownvotedReports   Int             @default(0)
-  monthlyDownvotedReports Int             @default(0)
-  totalRoutes             Int             @default(0)
-  totalLikesGiven         Int             @default(0)
-  totalLikesReceived      Int             @default(0)
+  joinDate                DateTime         @default(now())
+  lastLoginDate           DateTime         @default(now())
+  firstRideCity           String           @default("")
+  firstRideCountry        String           @default("")
+  monthlyMiles            Int              @default(0)
+  ridesThisWeek           Int              @default(0)
+  monthlyDownvotedReports Int              @default(0)
+  totalRoutes             Int              @default(0)
+  totalReports            Int              @default(0)
+  totalPosts              Int              @default(0)
+  totalMiles              Int              @default(0)
+  totalLikesReceived      Int              @default(0)
   badges                  BadgesOnUsers[]
+}
+
+model DirectMessages {
+  id         Int      @id @default(autoincrement())
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId Int
+  text       String
+  createdAt  DateTime @default(now())
 }
 
 model BadgesOnUsers {
@@ -60,6 +62,7 @@ model BadgesOnUsers {
   userId     Int
   badge      Badge    @relation(fields: [badgeId], references: [id])
   badgeId    Int
+  counter    Int?
   assignedAt DateTime @default(now())
 
   @@id([userId, badgeId])
@@ -69,6 +72,7 @@ model Badge {
   id        Int             @id @default(autoincrement())
   name      String
   badgeIcon String
+  tier      Int?
   users     BadgesOnUsers[]
 }
 
@@ -79,7 +83,7 @@ model Report {
   type         String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  published    Boolean   @default(false)
+  published    Boolean   @default(true)
   location_lat Float?
   location_lng Float?
   userId       Int
@@ -99,11 +103,13 @@ model Bulletin {
 }
 
 model Equipment {
-  id            Int       @id @default(autoincrement())
-  equipmentType String
-  imgUrl        String[]
-  bulletin      Bulletin? @relation(fields: [bulletinId], references: [id])
-  bulletinId    Int
+  id                   Int       @id @default(autoincrement())
+  equipmentOrigin      String
+  equipmentDescription String
+  equipmentType        String
+  imgUrl               String?
+  bulletin             Bulletin? @relation(fields: [bulletinId], references: [id])
+  bulletinId           Int?
 }
 
 model Comment {

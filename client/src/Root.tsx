@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
 import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { weatherIcons } from '../assets';
+import { weatherIcons, standardTiers, weeklyTiers } from '../assets';
 import App from './components/App';
 import Home from './components/Home';
 import BulletinBoard from './components/BulletinBoard/BulletinBoard';
@@ -10,10 +10,13 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-import Reports from './components/Reports/Reports';
+// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
+import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
+import LeaderBoard from './components/LeaderBoard/LeaderBoard';
+import { Prisma } from '@prisma/client';
 
 
 export interface CurrentWeather {
@@ -119,16 +122,15 @@ export interface geoLocation {
 export const UserContext = createContext<any>(Object());
 
 const Root = () => {
-
   /////////// LIGHT/DARK MODE///////////////
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
 
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
 
-  // const location = useLocation();
-  // let savedTheme = location.state && location.state.savedTheme;
-  // setIsDark(savedTheme);
+    // const location = useLocation();
+    // let savedTheme = location.state && location.state.savedTheme;
+    // setIsDark(savedTheme);
   };
   //.........................................
 
@@ -137,6 +139,7 @@ const Root = () => {
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
 
+  //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
   const [temperatureMeasurementUnit, setTemperatureMeasurementUnit] =
@@ -152,6 +155,7 @@ const Root = () => {
     time: new Date(),
   }); //note: currentWeather is only going to be used on the home screen - everything else will just use the hourly breakdown
 
+  //stately variables for the 24 hourly forecasts in a given day as well as that day's sunrise and sunset times
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
@@ -184,6 +188,7 @@ const Root = () => {
       );
   };
 
+  //function to set the weather icon based on the weather for the hour in question
   const prepareWeatherIcon = (
     weather: string,
     isDay: boolean,
@@ -276,15 +281,57 @@ const Root = () => {
     return weatherIcon;
   };
 
-  const updateUserModelCounter = (userId, key, increase = true) => {
-    const change = increase ? 1 : -1;
+  //function to choose which badge displays alongside user's name
+  const chooseBadge = () => {
+    //placeholder for now - will complete later
+  };
+
+  const tierCheck = (badgeId, userId, tiersObj) => {
+    let config = {
+      badgeId: badgeId,
+      userId: userId,
+      tiers: {
+        ...tiersObj,
+      },
+    };
     axios
-      .patch('/badges', {
+      .post('/badges/tier', config)
+      .then() //log something to confirm execution?
+      .catch((err) =>
+        console.error('there was an error when checking/updating tiers')
+      );
+  };
+
+  //function to add or remove (or update?) badges for users
+  const addBadge = (userId: number, badgeId: number) => {
+    axios
+      .post('/badges/add', {
         userId: userId,
-        key: key,
+        badgeId: badgeId,
+      })
+      .then() //should update badge display, but this will need to be done later or possibly handled elsewhere?
+      .catch((err) =>
+        console.error(
+          `an error has occurred adding badge with ID ${badgeId} to user with id ${userId} `,
+          err
+        )
+      );
+  };
+
+  //function to increment or decrement values on the User table used for achievements/badges
+  //increments by default, pass '-1' as third argument to decrement
+  const tickBadgeCounter = (userId, badgeId, change = 1) => {
+    axios
+      .patch('/badges/counter', {
+        userId: userId,
+        badgeId: badgeId,
         change: change,
       })
-      .then()
+      .then(() =>
+        console.log(
+          `successfully updated badge with ID ${badgeId} on user with id ${userId}`
+        )
+      )
       .catch((err) =>
         console.error(
           `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
@@ -307,7 +354,6 @@ const Root = () => {
           location_lat: parseFloat(data.location_lat),
           location_lng: parseFloat(data.location_lng),
         });
-        console.log(data.theme)
         setIsDark(!data.theme);
       })
       .catch((err) => {
@@ -413,70 +459,71 @@ const Root = () => {
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
-      <div className={isDark ? "dark" : "light"}>
-        <UserContext.Provider value={user!}></UserContext.Provider>
-        <UserContext.Provider value={{ user, geoLocation }}>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<App />}>
-                <Route
-                  path='/home'
-                  element={
-                    <Home
-                      homeForecasts={homeForecasts}
-                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                      temperatureMeasurementUnit={temperatureMeasurementUnit}
-                      precipitationMeasurementUnit={
-                        precipitationMeasurementUnit
-                      }
-                      prepareWeatherIcon={prepareWeatherIcon}
-                    />
-                  }
-                />
-                <Route path='bulletinBoard' element={<BulletinBoard />} />
-                <Route path='bikeRoutes' element={<RouteM />} />
-                <Route
-                  path='weather'
-                  element={
-                    <Weather
-                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                      temperatureMeasurementUnit={temperatureMeasurementUnit}
-                      precipitationMeasurementUnit={
-                        precipitationMeasurementUnit
-                      }
-                      sunriseHour={sunriseHour}
-                      sunsetHour={sunsetHour}
-                      hourlyForecasts={hourlyForecasts}
-                      prepareWeatherIcon={prepareWeatherIcon}
-                      setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
-                      setTemperatureMeasurementUnit={
-                        setTemperatureMeasurementUnit
-                      }
-                      setPrecipitationMeasurementUnit={
-                        setPrecipitationMeasurementUnit
-                      }
-                      getForecasts={getForecasts}
-                    />
-                  }
-                />
-                <Route path='profile' element={<Profile
-                handleToggleStyle={handleToggleStyle}
-                isDark={isDark}
-                setIsDark={setIsDark}
-                />}
-                />
-                <Route path='createReport' element={<CreateReport />} />
-                <Route path='reports' element={<Reports />} />
-                <Route path='reportsMap' element={<ReportsMap />} />
-                <Route path='stopwatch' element={<Stopwatch />} />
-              </Route>
-            </Routes>
-            {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
-            {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-            <Stopwatch />
-          </BrowserRouter>
-        </UserContext.Provider>
-      </div>
+    <div className={isDark ? 'dark' : 'light'}>
+      <UserContext.Provider value={user!}></UserContext.Provider>
+      <UserContext.Provider value={{ user, geoLocation, tickBadgeCounter }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<App />}>
+              <Route
+                path='/home'
+                element={
+                  <Home
+                    homeForecasts={homeForecasts}
+                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                    temperatureMeasurementUnit={temperatureMeasurementUnit}
+                    precipitationMeasurementUnit={precipitationMeasurementUnit}
+                    prepareWeatherIcon={prepareWeatherIcon}
+                  />
+                }
+              />
+              <Route path='bulletinBoard' element={<BulletinBoard />} />
+              <Route path='bikeRoutes' element={<RouteM />} />
+              <Route
+                path='weather'
+                element={
+                  <Weather
+                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                    temperatureMeasurementUnit={temperatureMeasurementUnit}
+                    precipitationMeasurementUnit={precipitationMeasurementUnit}
+                    sunriseHour={sunriseHour}
+                    sunsetHour={sunsetHour}
+                    hourlyForecasts={hourlyForecasts}
+                    prepareWeatherIcon={prepareWeatherIcon}
+                    setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
+                    setTemperatureMeasurementUnit={
+                      setTemperatureMeasurementUnit
+                    }
+                    setPrecipitationMeasurementUnit={
+                      setPrecipitationMeasurementUnit
+                    }
+                    getForecasts={getForecasts}
+                  />
+                }
+              />
+              <Route
+                path='profile'
+                element={
+                  <Profile
+                    handleToggleStyle={handleToggleStyle}
+                    isDark={isDark}
+                    setIsDark={setIsDark}
+                  />
+                }
+              />
+              <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='createReport' element={<CreateReport />} />
+              <Route path='reportsMap' element={<ReportsMap />} />
+              <Route path='stopwatch' element={<Stopwatch />} />
+              <Route path='directMessages' element={<DirectMessages />} />
+            </Route>
+          </Routes>
+          {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
+          {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
+          <Stopwatch />
+        </BrowserRouter>
+      </UserContext.Provider>
+    </div>
     // </>
   );
 };

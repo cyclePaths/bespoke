@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import { PrismaClient, Prisma, User } from '@prisma/client';
+import { PrismaClient, Prisma, User, BikeRoutes } from '@prisma/client';
 import axios from 'axios';
+import { Decimal } from '@prisma/client/runtime';
+import { ThemeContext } from '@emotion/react';
 
 // Request Handlers //
 const BikeRoutes = Router();
@@ -95,37 +97,62 @@ BikeRoutes.get('/reports', async (req, res) => {
   }
 });
 
+// Handler to fetch all the public routes or the user's routes //
 BikeRoutes.get('/routes', async (req, res) => {
   const { privacy, category } = req.query;
-  const { id } = req.user as User;
+  const { id, location_lat, location_lng } = req.user as User;
 
   if (privacy === 'false') {
-    try {
-      const publicRoutes = await prisma.bikeRoutes.findMany({
+    prisma.bikeRoutes
+      .findMany({
         where: {
           category: category as string,
           isPrivate: JSON.parse(privacy),
         },
+      })
+      .then((routeList) => {
+        const radiusRoutes: BikeRoutes[] = [];
+        routeList.forEach((route) => {
+          const gteLat = location_lat! - 0.1;
+          const lteLat = location_lat! + 0.1;
+          const gteLng = location_lng! - 0.1;
+          const lteLng = location_lng! + 0.1;
+
+          if (
+            (route.origin[0] as unknown as number) >= gteLat &&
+            (route.origin[0] as unknown as number) <= lteLat &&
+            (route.origin[1] as unknown as number) >= gteLng &&
+            (route.origin[1] as unknown as number) <= lteLng
+          ) {
+            radiusRoutes.push(route);
+          }
+        });
+        res.status(200).send(radiusRoutes);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch: ', err);
       });
-      console.log(publicRoutes);
-    } catch (err) {
-      console.error(err);
-    }
   } else if (privacy === 'true') {
-    try {
-      const userRoutes = await prisma.user.findMany({
+    prisma.user
+      .findMany({
         where: {
           id: id,
         },
         include: {
           createdRoutes: true,
         },
+      })
+      .then((user) => {
+        const list = user[0].createdRoutes;
+        res.status(200).send(list);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
       });
-      console.log(userRoutes[0].createdRoutes);
-    } catch (err) {
-      console.error(err);
-    }
   }
 });
+
+BikeRoutes.get('/likes', (req, res) => {});
 
 export default BikeRoutes;

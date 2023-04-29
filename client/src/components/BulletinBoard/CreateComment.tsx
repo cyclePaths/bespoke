@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const CreateComment = (props) => {
     const context = useContext(UserContext)
-    const { bulletinOrigin } = props.bulletinOrigin
+    const bulletinOrigin = props.bulletinOrigin
 
     const [commentText, setCommentText] = useState('')
 
@@ -18,21 +18,19 @@ const CreateComment = (props) => {
 
     const handleCommentSubmission = () => {
        if (commentText) {
-         axios.post('/comments', {
+         axios.post('/comment', {
             bulletinOrigin: bulletinOrigin,
-            commentCreatorr: context.name,
-            commentText,
+            commentCreator: context.user.name,
+            commentText: commentText
           })
           .then(() => {
             setCommentText('')
           })
-          .catch(() => console.log('Unable to make Comment!'));
+          .catch(() => alert('Unable to make Comment!'));
        } else {
          alert('Add text to Comment!')
         }
     }
-
-
 
 
     return (
@@ -43,7 +41,6 @@ const CreateComment = (props) => {
                                 maxHeight: '20px', minHeight: '20px' }}
             multiline={false}
             rows='1'
-            placeholder="this will get moved"
             inputProps={{
               maxLength: 1000,
               onChange: (e) => handleCommentText(e),
@@ -53,7 +50,7 @@ const CreateComment = (props) => {
         </div>
         <div id="submitCommentButton" style={{ display: 'inline-block '}}>
          <Button style={{ maxWidth: '100px', maxHeight: '25px', backgroundColor: '#17332c',
-                          minWidth: '100px', minHeight: '25px', marginLeft: '15px'}}
+                          minWidth: '100px', minHeight: '25px', }}
           onClick={() => handleCommentSubmission()}
           >
           <i>Comment</i>

@@ -20,6 +20,7 @@ export default function Wheel(props: {
   const slides = props.length
   const slideDegree = 360 / wheelSize
   const slidesPerView = props.loop ? 9 : 1
+  // const slidesPerView = 3
   const [sliderState, setSliderState] = React.useState<TrackDetails | null>(
     null
   )
@@ -57,6 +58,14 @@ export default function Wheel(props: {
     mode: "free-snap",
   })
 
+
+
+
+  console.log(slides);
+
+
+
+
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(options.current)
 
   const [radius, setRadius] = React.useState(0)
@@ -87,6 +96,7 @@ export default function Wheel(props: {
         ? props.setValue(i, sliderState.abs + Math.round(distance))
         : i
       values.push({ style, value })
+      // console.log(values)
     }
     return values
   }
@@ -140,128 +150,3 @@ export default function Wheel(props: {
 
 
 
-
-// import React, { useRef } from 'react';
-// import 'keen-slider/keen-slider.min.css'
-// import { useKeenSlider,
-//   KeenSliderOptions,
-//   TrackDetails,
-// } from 'keen-slider/react'
-
-
-// export default function Wheel(props: {
-//   initIdx?: number
-//   label?: string
-//   length: number
-//   loop?: boolean
-//   perspective?: "left" | "right" | "center"
-//   setValue?: (relative: number, absolute: number) => string | number
-//   width: number
-// }) {
-//   const perspective = props.perspective || "center"
-//   const wheelSize = 20
-//   const slides = props.length
-//   const slideDegree = 360 / wheelSize
-//   const slidesPerView = props.loop ? 9 : 1
-//   const [sliderState, setSliderState] = React.useState<TrackDetails | null>(
-//     null
-//   )
-//   const size = useRef(0)
-//   const options = useRef<KeenSliderOptions>({
-//     slides: {
-//       number: slides,
-//       origin: props.loop ? "center" : "auto",
-//       perView: slidesPerView,
-//     },
-
-//     vertical: true,
-
-//     initial: props.initIdx || 0,
-//     loop: props.loop,
-//     dragSpeed: (val) => {
-//       const height = size.current
-//       return (
-//         val *
-//         (height /
-//           ((height / 2) * Math.tan(slideDegree * (Math.PI / 180))) /
-//           slidesPerView)
-//       )
-//     },
-//     created: (s) => {
-//       size.current = s.size
-//     },
-//     updated: (s) => {
-//       size.current = s.size
-//     },
-//     detailsChanged: (s) => {
-//       setSliderState(s.track.details)
-//     },
-//     rubberband: !props.loop,
-//     mode: "free-snap",
-//   })
-
-//   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(options.current)
-
-//   const [radius, setRadius] = React.useState(0)
-
-//   React.useEffect(() => {
-//     if (slider.current) setRadius(slider.current.size / 2)
-//   }, [slider])
-
-//   function slideValues() {
-//     if (!sliderState) return []
-//     const offset = props.loop ? 1 / 2 - 1 / slidesPerView / 2 : 0
-
-//     const values: { style: React.CSSProperties, value: string | number }[] = [];
-//     // const values = []
-//     for (let i = 0; i < slides; i++) {
-//       const distance = sliderState
-//         ? (sliderState.slides[i].distance - offset) * slidesPerView
-//         : 0
-//       const rotate =
-//         Math.abs(distance) > wheelSize / 2
-//           ? 180
-//           : distance * (360 / wheelSize) * -1
-//       const style = {
-//         transform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
-//         WebkitTransform: `rotateX(${rotate}deg) translateZ(${radius}px)`,
-//       }
-//       const value = props.setValue
-//         ? props.setValue(i, sliderState.abs + Math.round(distance))
-//         : i
-//       values.push({ style, value })
-//     }
-//     return values
-//   }
-
-// return (
-//   <div
-//     className={"wheel keen-slider wheel--perspective-" + perspective}
-//     ref={sliderRef}
-//   >
-//     <div
-//       className="wheel__shadow-top"
-//       style={{
-//         transform: `translateZ(${radius}px)`,
-//         WebkitTransform: `translateZ(${radius}px)`,
-//       }}
-//     />
-//     {slideValues().map((slideValue, idx) => (
-//       <div
-//         key={idx}
-//         className="wheel__slide"
-//         style={slideValue.style}
-//       >
-//         <div className="wheel__content">{slideValue.value}</div>
-//       </div>
-//     ))}
-//     <div
-//       className="wheel__shadow-bottom"
-//       style={{
-//         transform: `translateZ(${radius}px)`,
-//         WebkitTransform: `translateZ(${radius}px)`,
-//       }}
-//     />
-//   </div>
-// );
-// }

@@ -4,12 +4,16 @@ import { UserContext } from '../../Root';
 //Components
 import Bulletin from './Bulletin'
 import CreateBulletin from './CreateBulletin';
+import EquipmentPool from '../Equipment/EquipmentPool';
+//Styling
+import Card from '@mui/material/Card';
 
 
 
 const BulletinBoard = () => {
   const context = useContext(UserContext);
   const [bulletins, setBulletins] = useState([]);
+  const [comments, setComments] = useState([])
 
   // Function to retrieve all bulletins
   const getAllBulletins = () => {
@@ -33,18 +37,31 @@ const BulletinBoard = () => {
     });
   };
 
+  // Function to retrieve all comments
+const getAllComments = () => {
+  axios.get('/comment')
+  .then((commentData) => {
+    setComments(commentData.data)
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+};
 
     //useEffect hook populates with bulletins
     useEffect(() => {
     getAllBulletins();
+    getAllComments()
   }, [context])
 
   return (
     <div>
-      <CreateBulletin/>
-      {bulletins.map((bulletin, i) => (<Bulletin bulletin={bulletin}
+      <Card style={{ backgroundColor: '#5555556e', borderRadius: '5px'}}><EquipmentPool/><CreateBulletin/>
+      {bulletins.map((bulletin, i) => (<Bulletin bulletin={bulletin} comments={comments}
       handleBulletinSelection={ handleBulletinSelection } key={ i }/>))}
+      </Card>
     </div>
+
   );
 };
 

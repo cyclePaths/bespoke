@@ -199,3 +199,18 @@ export const weatherIcons = {
     },
   },
 };
+
+export const standardTiers = {
+  1: 5,
+  2: 25,
+  3: 50,
+};
+
+export const weeklyTiers = {
+  1: 2,
+  2: 3,
+  3: 4,
+  4: 5,
+  5: 6,
+  6: 7,
+};

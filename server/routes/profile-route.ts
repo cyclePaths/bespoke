@@ -10,9 +10,8 @@ const profileRouter: Router = express.Router();
 let calories = 0;
 
 profileRouter.post('/theme', async (req: Request, res: Response) => {
-  console.log(req.body)
   try {
-    const { theme } = req.body;
+    const newTheme = req.body.theme;
     const {
       id,
       email,
@@ -22,30 +21,20 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       favAddresses,
       location_lat,
       location_lng,
+      theme,
       homeAddress,
       totalMiles,
       totalPosts,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
-
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -55,31 +44,21 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       thumbnail,
       weight,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      theme,
+      homeAddress,
       totalMiles,
       totalPosts,
-      theme,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     };
 
@@ -88,11 +67,11 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
         id: id,
       },
       update: {
-        theme: theme,
+        theme: newTheme,
       },
       create: {
         ...userData,
-        theme: theme,
+        theme: newTheme,
       },
     });
     res.status(201).send(updateTheme);
@@ -100,10 +79,10 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
     console.log('Failed to update weight', err);
     res.sendStatus(500);
   }
-})
+});
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  console.log(req.user, "query")
+  // console.log(req.user, 'query');
   try {
     const { id } = (req.user as User) || {};
     const nameValue = await prisma.user.findUnique({
@@ -193,38 +172,29 @@ profileRouter.get('/lastRide', async (req: Request, res: Response) => {
 // Creates new user weight with POST. Updates any current weight value //
 profileRouter.post('/weight', async (req: Request, res: Response) => {
   try {
-    const { weight } = req.body;
+    const newWeight = req.body.weight;
     const {
       id,
       email,
       name,
       thumbnail,
+      weight,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      theme,
+      homeAddress,
+      totalMiles,
+      totalPosts,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
-      totalPosts,
-      theme,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     } = (req.user as User) || {};
 
@@ -235,31 +205,21 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       thumbnail,
       weight,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      theme,
+      homeAddress,
+      totalMiles,
+      totalPosts,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
-      totalPosts,
-      theme,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     };
 
@@ -268,11 +228,11 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
         id: id,
       },
       update: {
-        weight: weight,
+        weight: newWeight,
       },
       create: {
         ...userData,
-        weight: weight,
+        weight: newWeight,
       },
     });
     res.status(201).send(updateWeight);
@@ -307,31 +267,21 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       thumbnail,
       weight,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      theme,
+      homeAddress,
+      totalMiles,
+      totalPosts,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
-      totalPosts,
-      theme,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     } = (req.user as User) || {};
 
@@ -342,31 +292,21 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       thumbnail,
       weight,
       favAddresses,
-      homeAddress,
       location_lat,
       location_lng,
+      theme,
+      homeAddress,
+      totalMiles,
+      totalPosts,
       joinDate,
-      profileComplete,
+      lastLoginDate,
       firstRideCity,
       firstRideCountry,
       monthlyMiles,
-      mostMonthlyMiles,
-      totalMiles,
-      totalBadWeatherMiles,
-      totalGoodWeatherMiles,
-      totalCaloriesBurned,
-      totalMinutesAboveTime,
-      highestRideStreak,
-      mostWeeklyRides,
       ridesThisWeek,
-      totalRides,
-      totalPosts,
-      theme,
       totalReports,
-      totalDownvotedReports,
       monthlyDownvotedReports,
       totalRoutes,
-      totalLikesGiven,
       totalLikesReceived,
     };
 

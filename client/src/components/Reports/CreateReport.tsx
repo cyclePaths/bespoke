@@ -2,26 +2,12 @@ import React, { useEffect, useContext, createContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
-import { GoogleMap, Marker } from '@react-google-maps/api';
 import ReportsMap from './ReportsMap';
-import Reports from './Reports';
-
-// define report object
-interface Report {
-  body?: string;
-  type?: string;
-  title?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  published: boolean;
-  location_lat?: number;
-  location_lng?: number;
-  userId: number;
-}
+import { Report } from '@prisma/client';
 
 const CreateReport = () => {
-  const navigate = useNavigate();
 
+  // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -33,7 +19,6 @@ const CreateReport = () => {
   } | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
-
 
   const user = useContext(UserContext);
 
@@ -53,40 +38,35 @@ const CreateReport = () => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     try {
       if (!currentLocation) {
         throw new Error('Current location not available');
       }
+      const { email, id } = user;
       const formData = new FormData();
+      formData.append('userId', id);
+      formData.append('userEmail', email);
       formData.append('body', body);
       formData.append('type', type);
       formData.append('title', title);
       formData.append('latitude', currentLocation.lat.toString());
       formData.append('longitude', currentLocation.lng.toString());
-      if (image) {
-        formData.append('image', image);
-      }
-      const reportData: Omit<Report, 'id'> = {
-        body,
-        type,
-        title,
-        location_lat: currentLocation!.lat,
-        location_lng: currentLocation!.lng,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        published: false,
-        userId: user.id!,
-      };
-      const response = await axios.post('/reports', reportData);
+      image && formData.append('file', image);
+
+      console.log(formData);
+      const response = await axios.post<Report>('/reports', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setReports([...reports, response.data]);
       setBody('');
       setType('');
       setImage(null);
-      navigate('/reports');
     } catch (error: any) {
-      console.error(error);
+      console.error(error.message);
       setError(error.message);
     }
   };
@@ -101,6 +81,10 @@ const CreateReport = () => {
           clearInterval(interval!);
           return;
         }
+        var geoOps = {
+          enableHighAccuracy: false,
+          timeout: 10000
+        }
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
@@ -108,7 +92,9 @@ const CreateReport = () => {
             clearInterval(interval!);
             interval = null;
           },
-          (error) => setError(error.message)
+          (error) => {
+           setError(error.message)
+          }, geoOps
         );
       }, 1000);
     } else {
@@ -122,20 +108,15 @@ const CreateReport = () => {
     };
   }, []);
 
-  // useEffect(() => {
-
-  //     console.log("User", user);
-
-  // }, [])
 
   return (
     <div>
       <h1>Reports</h1>
-      <div style={{ height: '400px', width: '100%' }}>
+      <div>
         <ReportsMap />
       </div>
       <h2>Make a Report</h2>
-      <form onSubmit={handleSubmit} style={{marginBottom:"100px"}}>
+      <form onSubmit={handleSubmit}>
         <select id='report-type-input' onChange={handleTypeText}>
           <option value=''>Select a Report Type</option>
           <option value='Road Hazard'>Road Hazard</option>
@@ -155,9 +136,10 @@ const CreateReport = () => {
           placeholder='Comments'
           onChange={handleBodyText}
         />
-        <input type='file' accept='image/*' onChange={handleImage} />
+        <input id="file" type='file' name="file" accept='image/*' onChange={handleImage} />
         <input type='submit' value='submit' />
       </form>
+
     </div>
   );
 };

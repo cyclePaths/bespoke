@@ -9,10 +9,14 @@ import 'dotenv/config';
 import { SESSION_SECRET } from '../config';
 import BikeRoutes from './routes/mapped-routes';
 import { WeatherRoute } from './routes/weather-routes';
-import reportRouter from './routes/report-routes';
 import profileRouter from './routes/profile-route';
-import { bulletinRouter, commentRouter } from './routes/bulletinboard-routes';
+import dmRouter from './routes/dm-routes';
+import LeaderBoard from './routes/leaderboard-routes';
+import bulletinRouter from './routes/bulletinboard-routes';
+import commentRouter  from './routes/comment-routes';
+import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
+import reportRouter from './routes/report-routes';
 
 interface User {
   id: number;
@@ -126,8 +130,12 @@ app.use('/createReport', reportRouter);
 app.use('/profile', profileRouter);
 app.use('/bulletin', bulletinRouter);
 app.use('/comment', commentRouter);
+app.use('/equipment', equipmentRouter);
 app.use('/reports', reportRouter);
 app.use('/badges', badgeRouter);
+app.use('/dms', dmRouter);
+app.use('/leaderboard', LeaderBoard);
+
 
 // Render All Pages
 app.get('*', (req, res) => {
@@ -156,6 +164,15 @@ app.put('/home/user/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update user data' });
   }
 });
+process.env.PUBLIC_URL = '/';
+
+/////// SEEDER FOR USERS ///////
+
+// app.post('/user', async (req, res) => {
+//   const user = req.body;
+//   const newUser = await prisma.user.create({ data: user });
+//   res.sendStatus(201);
+// });
 
 //Listening
 app.listen(PORT, () =>
