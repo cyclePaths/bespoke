@@ -309,7 +309,7 @@ let badgesSeed = [
   },
   {
     name: 'Lean Legend',
-    badgeIcon: 'uhttps://cdn-icons-png.flaticon.com/512/3843/3843145.pngrl',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3843/3843145.png',
     tier: 2,
   },
   {
