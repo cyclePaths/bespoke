@@ -66,6 +66,7 @@ const AutoCompleteDropdownLayout = styled.div`
 const RouteButtonContainer = styled.div`
   display: block;
   margin-bottom: 5px;
+  margin-top: 10px;
 `;
 
 const RouteListOptions = styled.div`
@@ -112,6 +113,24 @@ const ForecastHelperIcon = styled.img`
   margin-left: -13px;
   height: 45px;
   width: 46px;
+`;
+
+const NavBarTop = styled.span`
+  background-color: rgb(218, 220, 218);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  position: fixed;
+  display: inline-flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+  height: 9vh;
+  z-index: 1000;
+`;
+
+const BandAid = styled.div`
+  padding-top: 9vh;
+  padding-bottom: 9vh;
 `;
 
 // const ToggleSwitch = styled.label`
@@ -181,4 +200,6 @@ export {
   OptionsDiv,
   RouteListOptions,
   RouteList,
+  NavBarTop,
+  BandAid,
 };

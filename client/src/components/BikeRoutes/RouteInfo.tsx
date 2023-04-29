@@ -1,25 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { RouteList } from '../../StyledComp';
 import { IconButton, Box } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 
 interface RouteProps {
   route: any;
+  index: number;
+  handleRouteClick: () => void;
+  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchDirections: () => void;
+  setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
+  likeList: any[];
+  setLikeList: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const RouteInfo = ({ route }) => {
+const RouteInfo = ({
+  route,
+  index,
+  handleRouteClick,
+  setOpenSearch,
+  fetchDirections,
+  setRouteList,
+  likeList,
+  setLikeList,
+}: RouteProps) => {
+  const { user } = useContext(UserContext);
   const [date, setDate] = useState<string>(route.createdAt);
   const [like, setLike] = useState<boolean>(false);
+  const [likeNumber, setLikeNumber] = useState<number>(route.likes);
 
-  const checkForLikes = () => {
+  const updateLikes = (isClicked: boolean) => {
     axios
-      .get('/bikeRoute/likes')
+      .put('/bikeRoutes/likes', {
+        like: isClicked,
+        routeId: route.id,
+        userId: route.userId,
+      })
       .then(({ data }) => {
-        console.log(data);
+        setLikeNumber(data.likes);
       })
       .catch((err) => {
-        console.error('Failed to get: ', err);
+        console.error('Failed to update User:', err);
       });
   };
 
@@ -29,7 +52,15 @@ const RouteInfo = ({ route }) => {
     setDate(readableDate);
   }, []);
 
-  useEffect(() => {}, [like]);
+  useEffect(() => {
+    let result = false;
+    likeList[index].forEach((likes) => {
+      if (likes.userId === user.id) {
+        result = true;
+      }
+    });
+    setLike(result);
+  }, []);
 
   return (
     <div style={{ width: '100%' }}>
@@ -38,26 +69,42 @@ const RouteInfo = ({ route }) => {
         sx={{
           display: 'flex',
           width: '250px',
-          borderStyle: 'solid',
-          borderColor: 'gray',
+          boxShadow: 2,
           borderRadius: '3px',
           marginY: '5px',
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-between',
         }}
       >
-        <div style={{ marginTop: '10px' }}>{date}:</div>
-        <div className='route-name' style={{ marginTop: '10px' }}>
-          {route.name}
+        <div style={{ display: 'flex' }}>
+          <div style={{ marginTop: '10px' }}>{date}:</div>
+          <div
+            className='route-name'
+            style={{ marginTop: '10px' }}
+            onClick={() => {
+              handleRouteClick();
+              setOpenSearch(false);
+              setRouteList([]);
+            }}
+          >
+            {route.name}
+          </div>
+          <div style={{ marginTop: '10px' }}>Likes:{likeNumber}</div>
         </div>
-        <div style={{ marginTop: '10px' }}>Likes:{route.likes}</div>
-        <IconButton>
-          {like ? (
-            <ThumbUpAltOutlinedIcon
-              style={{ color: '#6d6dbd' }}
-              onClick={() => setLike(false)}
-            />
+        <IconButton
+          onClick={() => {
+            if (!like) {
+              setLike(true);
+              updateLikes(true);
+            } else {
+              setLike(false);
+              updateLikes(false);
+            }
+          }}
+        >
+          {like === true ? (
+            <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
           ) : (
-            <ThumbUpAltOutlinedIcon onClick={() => setLike(true)} />
+            <ThumbUpAltOutlinedIcon />
           )}
         </IconButton>
       </Box>

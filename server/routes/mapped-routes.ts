@@ -15,6 +15,9 @@ type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
   user: { connect: { id: number } };
 };
 
+interface LikesQuery {
+  routeId: string;
+}
 // End of typescript types //
 
 // Creates new bike route with POST //
@@ -109,14 +112,18 @@ BikeRoutes.get('/routes', async (req, res) => {
           category: category as string,
           isPrivate: JSON.parse(privacy),
         },
+        include: {
+          userLikes: true,
+        },
       })
       .then((routeList) => {
         const radiusRoutes: BikeRoutes[] = [];
+        const likeList: any[] = [];
         routeList.forEach((route) => {
-          const gteLat = location_lat! - 0.1;
-          const lteLat = location_lat! + 0.1;
-          const gteLng = location_lng! - 0.1;
-          const lteLng = location_lng! + 0.1;
+          const gteLat = location_lat! - 0.4;
+          const lteLat = location_lat! + 0.4;
+          const gteLng = location_lng! - 0.4;
+          const lteLng = location_lng! + 0.4;
 
           if (
             (route.origin[0] as unknown as number) >= gteLat &&
@@ -125,26 +132,49 @@ BikeRoutes.get('/routes', async (req, res) => {
             (route.origin[1] as unknown as number) <= lteLng
           ) {
             radiusRoutes.push(route);
+            likeList.push(route.userLikes);
           }
         });
-        res.status(200).send(radiusRoutes);
+        res.status(200).send([radiusRoutes, likeList]);
       })
       .catch((err) => {
         console.error('Failed to fetch: ', err);
       });
   } else if (privacy === 'true') {
     prisma.user
-      .findMany({
+      .findUnique({
         where: {
           id: id,
         },
         include: {
-          createdRoutes: true,
+          createdRoutes: {
+            include: {
+              userLikes: true,
+            },
+          },
         },
       })
       .then((user) => {
-        const list = user[0].createdRoutes;
-        res.status(200).send(list);
+        console.log(user);
+        const radiusRoutes: BikeRoutes[] = [];
+        const likeList: any[] = [];
+        user!.createdRoutes.forEach((route) => {
+          const gteLat = location_lat! - 0.4;
+          const lteLat = location_lat! + 0.4;
+          const gteLng = location_lng! - 0.4;
+          const lteLng = location_lng! + 0.4;
+
+          if (
+            (route.origin[0] as unknown as number) >= gteLat &&
+            (route.origin[0] as unknown as number) <= lteLat &&
+            (route.origin[1] as unknown as number) >= gteLng &&
+            (route.origin[1] as unknown as number) <= lteLng
+          ) {
+            radiusRoutes.push(route);
+            likeList.push(route.userLikes);
+          }
+        });
+        res.status(200).send([radiusRoutes, likeList]);
       })
       .catch((err) => {
         console.error(err);
@@ -153,6 +183,135 @@ BikeRoutes.get('/routes', async (req, res) => {
   }
 });
 
-BikeRoutes.get('/likes', (req, res) => {});
+// Update a user and create or delete a user's like of a bike route //
+BikeRoutes.put('/likes', async (req, res) => {
+  const { like, routeId, userId } = req.body;
+  const { id } = req.user as User;
+  const user = await prisma.user.findUnique({ where: { id: id } });
+  const route = await prisma.bikeRoutes.findUnique({ where: { id: routeId } });
+  const totalLikesReceived = user?.totalLikesReceived;
+  const routeLikes = route?.likes;
+
+  // This conditional modifies what will happen when the value of the like button is true or false //
+  if (!like) {
+    // When false delete the like relation //
+    prisma.routeLike
+      .deleteMany({
+        where: {
+          userId: id,
+          bikeRouteId: routeId,
+        },
+      })
+      .then((message) => {
+        // Then update the user that created the route's like counter //
+        console.log(message);
+        prisma.user
+          .update({
+            where: {
+              id: userId,
+            },
+            data: {
+              totalLikesReceived: totalLikesReceived! - 1,
+            },
+          })
+          .then(() => {
+            // Then update the route's like counter //
+            prisma.bikeRoutes
+              .update({
+                where: {
+                  id: routeId,
+                },
+                data: {
+                  likes: routeLikes! - 1,
+                },
+              })
+              .then((route) => {
+                // Send the route back to the client to change the number on the screen //
+                res.status(200).send(route);
+              })
+              .catch((err) => {
+                console.error('Failed to update routes:', err);
+                res.sendStatus(500);
+              });
+          })
+          .catch((err) => {
+            console.error('Failed to update user:', err);
+            res.sendStatus(500);
+          });
+      })
+      .catch((err) => {
+        console.error('Failed to delete like relation:', err);
+        res.sendStatus(500);
+      });
+  } else {
+    prisma.routeLike
+      .create({
+        data: {
+          user: { connect: { id: id } },
+          bikeRoutes: { connect: { id: routeId } },
+        },
+      })
+      .then(() => {
+        prisma.user
+          .update({
+            where: {
+              id: userId,
+            },
+            data: {
+              totalLikesReceived: totalLikesReceived! + 1,
+            },
+          })
+          .then(() => {
+            prisma.bikeRoutes
+              .update({
+                where: {
+                  id: routeId,
+                },
+                data: {
+                  likes: routeLikes! + 1,
+                },
+              })
+              .then((route) => {
+                res.status(200).send(route);
+              })
+              .catch((err) => {
+                console.error('Failed to update routes:', err);
+                res.sendStatus(500);
+              });
+          })
+          .catch((err) => {
+            console.error('Failed to update user:', err);
+            res.sendStatus(500);
+          });
+      })
+      .catch((err) => {
+        console.error('Failed to create relation:', err);
+        res.sendStatus(500);
+      });
+  }
+});
+
+BikeRoutes.get('/likesValue', (req, res) => {
+  const { routeId } = req.query as unknown as LikesQuery;
+  const { id } = req.user as User;
+
+  prisma.routeLike
+    .findMany({
+      where: {
+        userId: id,
+        bikeRouteId: parseInt(routeId),
+      },
+    })
+    .then((like) => {
+      if (!like) {
+        res.sendStatus(404);
+      } else {
+        res.status(201).send(like);
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to finish request:', err);
+    });
+});
 
 export default BikeRoutes;

@@ -25,6 +25,10 @@ interface Props {
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
+  handleRouteClick: () => void;
+  fetchDirections: () => void;
+  likeList: any[];
+  setLikeList: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export interface Route {
@@ -46,6 +50,10 @@ const FetchedRoutes = ({
   category,
   setCategory,
   setRouteList,
+  handleRouteClick,
+  fetchDirections,
+  likeList,
+  setLikeList,
 }: Props) => {
   const user = useContext(UserContext);
 
@@ -93,9 +101,22 @@ const FetchedRoutes = ({
           label='User Routes Only'
         />
       </RouteListOptions>
-      {routeList.map((route, i) => (
-        <RouteInfo key={i} route={route} />
-      ))}
+      {routeList.map((route, i) => {
+        const index = i;
+        return (
+          <RouteInfo
+            key={i}
+            route={route}
+            index={index}
+            handleRouteClick={handleRouteClick}
+            setOpenSearch={setOpenSearch}
+            fetchDirections={fetchDirections}
+            setRouteList={setRouteList}
+            likeList={likeList}
+            setLikeList={setLikeList}
+          />
+        );
+      })}
     </div>
   );
 };

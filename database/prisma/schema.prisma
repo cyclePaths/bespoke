@@ -48,14 +48,14 @@ model User {
 }
 
 model DirectMessages {
-  id           Int      @id @default(autoincrement())
-  sender       User     @relation("SentMessages", fields: [senderId], references: [id])
-  senderId     Int
-  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  receiverId   Int
-  text         String
-  fromMe       Boolean
-  createdAt    DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId Int
+  text       String
+  fromMe     Boolean
+  createdAt  DateTime @default(now())
 }
 
 model BadgesOnUsers {
@@ -145,6 +145,7 @@ model RouteLike {
   userId      Int
   bikeRoutes  BikeRoutes @relation(fields: [bikeRouteId], references: [id])
   bikeRouteId Int
+  likeBool    Boolean    @default(true)
 }
 
 model Rides {
@@ -156,5 +157,3 @@ model Rides {
   User     User?  @relation(fields: [userId], references: [id])
   userId   Int?
 }
-
-

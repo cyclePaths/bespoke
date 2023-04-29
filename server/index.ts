@@ -14,12 +14,10 @@ import profileRouter from './routes/profile-route';
 import dmRouter from './routes/dm-routes';
 import LeaderBoard from './routes/leaderboard-routes';
 import bulletinRouter from './routes/bulletinboard-routes';
-import commentRouter  from './routes/comment-routes';
+import commentRouter from './routes/comment-routes';
 import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
 import reportRouter from './routes/report-routes';
-
-
 
 interface User {
   id: number;
@@ -141,7 +139,6 @@ app.use('/badges', badgeRouter);
 app.use('/dms', dmRouter);
 app.use('/leaderboard', LeaderBoard);
 
-
 // Render All Pages
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('client', 'dist', 'index.html'));
@@ -187,7 +184,6 @@ io.on('connection', (socket) => {
 //   console.log('Server listening on port 8080');
 // });
 
-
 ///// SEEDER FOR USERS ///////
 
 app.post('/user', async (req, res) => {
@@ -201,9 +197,6 @@ app.post('/user', async (req, res) => {
 //   console.log(`App now listening for requests at: http://localhost:${PORT}`)
 // );
 
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+httpServer.listen(PORT, () => {
+  console.log(`App now listening for requests at: http://localhost:${PORT}`);
 });
-
-
