@@ -10,7 +10,6 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
@@ -459,7 +458,6 @@ const Root = () => {
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
     <div className={isDark ? 'dark' : 'light'}>
-      <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider value={{ user, geoLocation, tickBadgeCounter }}>
         <BrowserRouter>
           <Routes>
@@ -519,7 +517,7 @@ const Root = () => {
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          <Stopwatch />
+          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>

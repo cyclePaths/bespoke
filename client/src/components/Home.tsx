@@ -38,7 +38,6 @@ const Home = ({
           setOpenLeaderBoard={setOpenLeaderBoard}
         >
           <LeaderBoard />
-          <button onClick={() => handleLeaderBoard()}>Exit</button>
         </LeaderBoardPopout>
       </div>
     </div>

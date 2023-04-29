@@ -74,9 +74,10 @@ const Map: React.FC = () => {
   const [routeName, setRouteName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
+  const [likeList, setLikeList] = useState<any[]>([]);
 
   // This is for creating routes //
-  const fetchDirections = (position: LatLngLiteral) => {
+  const fetchDirections = () => {
     if (!startingPoint) {
       return;
     }
@@ -159,7 +160,8 @@ const Map: React.FC = () => {
         params: { privacy: privacy, category: type },
       })
       .then(({ data }) => {
-        setRouteList(data);
+        setRouteList(data[0]);
+        setLikeList(data[1]);
       })
       .catch((err) => {
         console.error('Failed to GET:', err);
@@ -167,20 +169,20 @@ const Map: React.FC = () => {
   };
 
   // For displaying a saved route //
-  // const handleRouteClick = (): void => {
-  //   // console.log(routeList[0].origin, routeList[0].destination);
-  //   const originObj: Coordinates = {
-  //     lat: parseFloat(routeList[0].origin[0]),
-  //     lng: parseFloat(routeList[0].origin[1]),
-  //   };
-  //   const destObj: Coordinates = {
-  //     lat: parseFloat(routeList[0].destination[0]),
-  //     lng: parseFloat(routeList[0].destination[1]),
-  //   };
+  const handleRouteClick = (): void => {
+    // console.log(routeList[0].origin, routeList[0].destination);
+    const originObj: Coordinates = {
+      lat: parseFloat(routeList[0].origin[0]),
+      lng: parseFloat(routeList[0].origin[1]),
+    };
+    const destObj: Coordinates = {
+      lat: parseFloat(routeList[0].destination[0]),
+      lng: parseFloat(routeList[0].destination[1]),
+    };
 
-  //   setStartingPoint(originObj);
-  //   setMarkers((current) => [...current, destObj]);
-  // };
+    setStartingPoint(originObj);
+    setMarkers((current) => [...current, destObj]);
+  };
   // End of routes list //
 
   // Render Distance and Duration //
@@ -374,7 +376,11 @@ const Map: React.FC = () => {
           saveRoute={saveRoute}
         />
       </Popup>
-      <RoutesListPopup openSearch={openSearch} setOpenSearch={setOpenSearch}>
+      <RoutesListPopup
+        openSearch={openSearch}
+        setOpenSearch={setOpenSearch}
+        exitListForm={exitListForm}
+      >
         <FetchedRoutes
           fetchRoutes={fetchRoutes}
           routeList={routeList}
@@ -384,8 +390,11 @@ const Map: React.FC = () => {
           category={category}
           setCategory={setCategory}
           setRouteList={setRouteList}
+          handleRouteClick={handleRouteClick}
+          fetchDirections={fetchDirections}
+          likeList={likeList}
+          setLikeList={setLikeList}
         />
-        <button onClick={() => exitListForm()}>Exit</button>
       </RoutesListPopup>
       {/* The end of those Popups */}
     </div>

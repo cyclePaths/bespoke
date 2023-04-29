@@ -13,7 +13,7 @@ import {
 // Starting Props //
 type PlaceProps = {
   setStartingPoint: (position: google.maps.LatLngLiteral) => void;
-  fetchDirections: (position: google.maps.LatLngLiteral) => void;
+  fetchDirections: () => void;
   selected: google.maps.LatLngLiteral | undefined;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
   directions: google.maps.DirectionsResult | undefined;
@@ -48,7 +48,7 @@ const Places = ({
   // End of the input handlers //
 
   const handleRoute = (): void => {
-    fetchDirections(selected!);
+    fetchDirections();
   };
 
   return (
