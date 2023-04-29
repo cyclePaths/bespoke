@@ -511,7 +511,10 @@ const Root = () => {
               />
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
-              <Route path='reportsList' element={<ReportsList reports={reports} />} />
+              <Route
+                path='reportsList'
+                element={<ReportsList reports={reports} />}
+              />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
               <Route path='directMessages' element={<DirectMessages />} />
@@ -519,7 +522,7 @@ const Root = () => {
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          {/* <Stopwatch /> */}
+          <Stopwatch />
         </BrowserRouter>
       </UserContext.Provider>
     </div>

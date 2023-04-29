@@ -14,15 +14,9 @@ const Home = ({
   prepareWeatherIcon,
 }: RootPropsToHome) => {
   const navigate = useNavigate();
-  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
-
-  const handleLeaderBoard = () => {
-    setOpenLeaderBoard(false);
-  };
 
   return (
     <div>
-      <button onClick={() => setOpenLeaderBoard(true)}>Show LeaderBoard</button>
       {/* <button type='button'  onClick={() => navigate('/stopwatch')}>Stopwatch</button> */}
       <div>
         <ForecastRow
@@ -32,13 +26,6 @@ const Home = ({
           temperatureMeasurementUnit={temperatureMeasurementUnit}
           precipitationMeasurementUnit={precipitationMeasurementUnit}
         />
-
-        <LeaderBoardPopout
-          openLeaderBoard={openLeaderBoard}
-          setOpenLeaderBoard={setOpenLeaderBoard}
-        >
-          <LeaderBoard />
-        </LeaderBoardPopout>
       </div>
     </div>
   );
