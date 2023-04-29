@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Map from './Map';
-import { RouteCreatorComponent } from '../../StyledComp';
+import { BandAid, RouteCreatorComponent } from '../../StyledComp';
 // import PopupForm from './PopupForm';
 
 const RouteM: React.FC = () => {
@@ -9,10 +9,12 @@ const RouteM: React.FC = () => {
   const [selectedCat, setSelectedCat] = useState<string>('');
 
   return (
-    <RouteCreatorComponent>
-      <h1>Route Creator</h1>
-      <Map />
-    </RouteCreatorComponent>
+    <BandAid>
+      <RouteCreatorComponent>
+        <h1>Route Creator</h1>
+        <Map />
+      </RouteCreatorComponent>
+    </BandAid>
   );
 };
 

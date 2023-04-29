@@ -2,6 +2,7 @@ import React from 'react';
 import ForecastRow from './ForecastRow';
 import { RootPropsToWeather } from '../../Root';
 import { Hourly } from '../../Root';
+import { BandAid } from '../../StyledComp';
 
 const Weather = ({
   windSpeedMeasurementUnit,
@@ -31,7 +32,7 @@ const Weather = ({
   forecastRowArrays.push(forecastArray);
 
   return (
-    <div>
+    <BandAid>
       {forecastRowArrays.map((weatherRow, i) => {
         return (
           <ForecastRow
@@ -44,7 +45,7 @@ const Weather = ({
           />
         );
       })}
-    </div>
+    </BandAid>
   );
 };
 

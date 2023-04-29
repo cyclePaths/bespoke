@@ -1,23 +1,25 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { AppProps } from './App';
+import { UserContext } from '../Root';
+import StopwatchPopout from './StopwatchPopout';
 import {
-  Box,
-  CssBaseline,
   BottomNavigation,
   BottomNavigationAction,
-  Paper,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
+  IconButton,
 } from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
 import CloudIcon from '@mui/icons-material/Cloud';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import MessageIcon from '@mui/icons-material/Message';
+import TimerIcon from '@mui/icons-material/Timer';
+import Stopwatch from './Stopwatch';
+import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
+import LeaderBoard from './LeaderBoard/LeaderBoard';
+import { NavBarTop } from '../StyledComp';
 
 export interface NavbarProps {
   appPropsObj: AppProps;
@@ -25,14 +27,51 @@ export interface NavbarProps {
 
 const Navbar = ({ appPropsObj }: NavbarProps) => {
   const [value, setValue] = useState<number>(0);
+  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+  const { user } = useContext(UserContext);
+  const [userProfilePic, setUserProfilePic] = useState<any>(
+    <AccountCircleIcon />
+  );
+  const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
+
+  const handleLeaderBoard = () => {
+    setOpenLeaderBoard(true);
+  };
+
+  useEffect(() => {
+    if (user) {
+      setUserProfilePic(<img src={user.thumbnail} id='profilePic' />);
+    }
+  }, [user]);
 
   return (
     <div>
-      <div>
-        <Link style={{ fontSize: '50px' }} to='/home'>
+      <NavBarTop>
+        <Link style={{ fontSize: '35px' }} to='/home'>
           Bespoke
         </Link>
-      </div>
+        <span style={{ display: 'contents' }}>
+          <IconButton onClick={() => handleLeaderBoard()}>
+            <LeaderboardIcon />
+          </IconButton>
+          {/* <Stopwatch /> */}
+          <IconButton>
+            <MessageIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              if (openStopWatch) {
+                setOpenStopWatch(false);
+              } else {
+                setOpenStopWatch(true);
+              }
+            }}
+          >
+            <TimerIcon />
+          </IconButton>
+        </span>
+      </NavBarTop>
+
       <div
         id='navbar'
         style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
@@ -42,7 +81,12 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
-          // style={{ backgroundColor: '#25acda' }}
+          style={{
+            backgroundColor: '#dadcda',
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            zIndex: 1000,
+          }}
         >
           <BottomNavigationAction
             label='Navigate'
@@ -75,57 +119,25 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
           <BottomNavigationAction
             label='Profile'
             style={{ minWidth: '0px' }}
-            icon={<AccountCircleIcon />}
+            icon={userProfilePic}
             component={Link}
             to='/profile'
           />
         </BottomNavigation>
       </div>
+      <LeaderBoardPopout
+        openLeaderBoard={openLeaderBoard}
+        setOpenLeaderBoard={setOpenLeaderBoard}
+      >
+        <LeaderBoard />
+      </LeaderBoardPopout>
+      {/* <StopwatchPopout
+        openStopwatch={openStopwatch}
+        setOpenStopWatch={setOpenStopWatch}
+      > */}
+      <Stopwatch openStopWatch={openStopWatch} />
+      {/* </StopwatchPopout> */}
       <Outlet />
-      {/* <nav>
-        <div
-          id='navbar'
-          style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '10px 20px',
-            }}
-          >
-            <ul
-              style={{
-                display: 'flex',
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/bikeRoutes'>Create Route</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/createReport'>Create Report</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/weather'>Weather</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/bulletinBoard'>Bulletin Board</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/profile'>Profile</Link>
-              </li>
-              <li style={{ margin: '0 10px' }}>
-                <Link to='/directMessages'>Messages</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <Outlet />
-      </nav> */}
     </div>
   );
 };
