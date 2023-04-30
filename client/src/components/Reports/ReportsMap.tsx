@@ -164,18 +164,27 @@ const ReportsMap: React.FC = () => {
   }, [map]);
 
   return (
-      <div>
+    <div>
     <ToggleButtonGroup
       value={selectedType}
       onChange={handleTypeChange}
       aria-label="Report Type"
     >
-      <ToggleButton value="All">All</ToggleButton>
-<ToggleButton value="Road Hazard">Road Hazard</ToggleButton>
-<ToggleButton value="Theft Alert">Theft Alert</ToggleButton>
-<ToggleButton value="Collision">Collision</ToggleButton>
-<ToggleButton value="Point of Interest">Point of Interest</ToggleButton>
-
+      <ToggleButton value="All" sx={{ width: '20%' }}>
+        All
+      </ToggleButton>
+      <ToggleButton value="Road Hazard" sx={{ width: '20%' }}>
+        Road Hazard
+      </ToggleButton>
+      <ToggleButton value="Theft Alert" sx={{ width: '20%' }}>
+        Theft Alert
+      </ToggleButton>
+      <ToggleButton value="Collision" sx={{ width: '20%' }}>
+        Collision
+      </ToggleButton>
+      <ToggleButton value="Point of Interest" sx={{ width: '20%' }}>
+        Point of Interest
+      </ToggleButton>
     </ToggleButtonGroup>
     <Box height="100vh">
       <GoogleMap
