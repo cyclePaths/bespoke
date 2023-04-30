@@ -218,6 +218,15 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
     document.getElementById('badges')!.style.display = badgeDisplay;
   };
 
+  const displayNoBadgeIfEmpty = () => {
+    if (
+      selectedBadge !==
+      'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      return <AchievementBadgeByName src={selectedBadge} />;
+    }
+  };
+
   ///////////////////////////////////////////////////////////
   /*
 Elements that should render on loading the page
@@ -277,7 +286,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
   return (
     <div>
       <div>{`Hello ${user}!`}</div>
-      <AchievementBadgeByName src={selectedBadge} />
+      <div>{displayNoBadgeIfEmpty()}</div>
       <img
         style={{ borderRadius: '50%', width: '100px', height: '100px' }}
         src={photo}
@@ -322,6 +331,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           if (badge.badgeIcon !== 'url') {
             return (
               <AchievementBadge
+                key={badge.id}
                 onClick={() => {
                   setSelectedBadge(badge.badgeIcon);
                 }}

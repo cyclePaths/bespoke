@@ -16,7 +16,7 @@ import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
-import { Prisma, Badge } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
 export interface CurrentWeather {
   temperature: number;
@@ -118,6 +118,13 @@ export interface geoLocation {
   lng: number;
 }
 
+export interface Badge {
+  id: number;
+  name: string;
+  badgeIcon: string;
+  tier?: number;
+}
+
 export const UserContext = createContext<any>(Object());
 
 const Root = () => {
@@ -138,7 +145,15 @@ const Root = () => {
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
   //holds badge objects
-  const [userBadges, setUserBadges] = useState<Badge[]>([]);
+  const [userBadges, setUserBadges] = useState<Badge[]>([
+    {
+      id: 0,
+      name: 'No Achievements',
+      badgeIcon:
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
+      tier: 0,
+    },
+  ]);
   //holds URL of badge to display by username
   const [selectedBadge, setSelectedBadge] = useState<string>(
     userBadges[0].badgeIcon
@@ -291,7 +306,9 @@ const Root = () => {
     axios
       .get('/badges/badge-icons')
       .then(({ data }) => {
-        setUserBadges(data);
+        if (data[0]) {
+          setUserBadges(data);
+        }
       })
       .catch((err) => {
         console.log('Failed to get badge URLs ', err);
