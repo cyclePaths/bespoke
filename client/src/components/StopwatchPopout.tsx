@@ -1,24 +1,21 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import '../../styles.css';
 
-export interface SaveProps {
+interface StopProps {
+  openStopwatch: boolean;
+  setOpenStopWatch: React.Dispatch<React.SetStateAction<boolean>>;
   children;
-  openSearch: boolean;
-  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
-  exitListForm: () => void;
 }
 
-const RoutesListPopup = ({
+const StopwatchPopout = ({
+  openStopwatch,
+  setOpenStopWatch,
   children,
-  openSearch,
-  setOpenSearch,
-  exitListForm,
-}: SaveProps) => {
+}: StopProps) => {
   return (
-    <Dialog open={openSearch}>
-      <CloseIcon sx={{}} onClick={() => exitListForm()} />
+    <Dialog open={openStopwatch}>
+      <CloseIcon sx={{}} onClick={() => setOpenStopWatch(false)} />
       <DialogTitle>
         <header id='list' style={{ display: '' }}>
           Find By:
@@ -32,4 +29,4 @@ const RoutesListPopup = ({
   );
 };
 
-export default RoutesListPopup;
+export default StopwatchPopout;

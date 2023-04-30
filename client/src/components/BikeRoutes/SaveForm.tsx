@@ -50,7 +50,11 @@ const SaveForm = ({
         />
         <h2 className='centered-header'>Select Ride Options:</h2>
         <OptionsDiv>
-          <CategorySelector onChange={(e) => setCategory(e.target.value)}>
+          <CategorySelector
+            defaultValue='None'
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option disabled>None</option>
             <option>Casual</option>
             <option>Speedy</option>
             <option>Scenic</option>

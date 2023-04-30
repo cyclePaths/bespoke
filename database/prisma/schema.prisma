@@ -146,6 +146,7 @@ model RouteLike {
   userId      Int
   bikeRoutes  BikeRoutes @relation(fields: [bikeRouteId], references: [id])
   bikeRouteId Int
+  likeBool    Boolean    @default(true)
 }
 
 model Rides {

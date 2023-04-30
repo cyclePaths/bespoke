@@ -17,6 +17,7 @@ import {
   exiledRedHeadedStepChildrenOptionGroups,
   exiledRedHeadedStepChildrenValueGroups,
 } from '../../../profile-assets';
+import { BandAid } from '../../StyledComp';
 import {
   AchievementBadgeByName,
   AchievementBadge,
@@ -284,7 +285,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
   //..................................................
 
   return (
-    <div>
+    <BandAid>
       <div>{`Hello ${user}!`}</div>
       <div>{displayNoBadgeIfEmpty()}</div>
       <img
@@ -309,6 +310,16 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         saveTheme()
         }
         }>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
+        <ToggleSwitch>
+          <input
+            type='checkbox'
+            onChange={() => {
+              handleToggleStyle(), saveTheme();
+            }}
+          />
+          <span />
+        </ToggleSwitch>
+        {/* <div className='toggle-switch'>
         <ToggleSwitch>
           <input
             type='checkbox'
@@ -417,7 +428,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           </button>
         </div>
       </div>
-    </div>
+    </BandAid>
   );
 };
 

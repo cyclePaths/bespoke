@@ -10,7 +10,6 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
@@ -598,6 +597,10 @@ const Root = () => {
                 path='reportsList'
                 element={<ReportsList reports={reports} />}
               />
+              <Route
+                path='reportsList'
+                element={<ReportsList reports={reports} />}
+              />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
               <Route path='directMessages' element={<DirectMessages />} />
@@ -605,7 +608,7 @@ const Root = () => {
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          <Stopwatch />
+          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>

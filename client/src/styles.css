@@ -26,6 +26,15 @@
   margin-right: 25px;
 }
 
+body {
+  margin: 0px;
+}
+
+#profilePic {
+  border-radius: 100px;
+  height: 30px;
+}
+
 #list{
   text-align: center;
   margin-left: 50px;
