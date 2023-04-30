@@ -12,7 +12,7 @@ import { ToggleSwitch } from '../../ThemeStyles';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 // import Picker from 'react-mobile-picker';
-import Wheel from './Wheel';
+import Scrollers from './Scrollers';
 import '../../styles.css';
 import { UserContext } from '../../Root';
 import {
@@ -317,28 +317,8 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           </button>
         </div>
       </div> */}
-       <div
-      style={{
-        height: "240px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "#000",
-      }}
-    >
-      <div style={{ width: 70, height: 180 }}>
-        <Wheel initIdx={0} length={24} width={0} loop={true} />
-      </div>
-      <div style={{ width: 70, height: 180 }}>
-        <Wheel
-          initIdx={0}
-          length={60}
-          width={0}
-          loop={true}
-          perspective="left"
-        />
-      </div>
-    </div>
+<Scrollers />
+
       <div
         id='weight'
         className='weight'

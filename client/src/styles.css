@@ -64,87 +64,98 @@
 The code below is for the scroll wheel
 */
 
-.wheel.keen-slider {
-  display: block;
-  color: #fff;
-  height: 100%;
-  overflow: visible;
-  width: 100%;
-}
-.wheel--perspective-right .wheel__inner {
-  perspective-origin: calc(50% + 100px) 50%;
-  transform: translateX(10px);
-  -webkit-transform: translateX(10px);
-}
-.wheel--perspective-left .wheel__inner {
-  perspective-origin: calc(50% - 100px) 50%;
-  transform: translateX(-10px);
-  -webkit-transform: translateX(-10px);
-}
-
-.wheel__inner {
+[class^="number-slide"],
+[class*=" number-slide"] {
+  background: grey;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  height: 16%;
-  width: 100%;
-}
-
-.wheel__slides {
-  height: 100%;
-  position: relative;
-  width: 100%;
-}
-
-.wheel__shadow-top,
-.wheel__shadow-bottom {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
-  left: 0;
-  height: calc(42% + 2px);
-  width: 100%;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-  margin-top: -2px;
-  z-index: 5;
-}
-
-.wheel__shadow-bottom {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
-  margin-top: 2px;
-  border-bottom: none;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.3);
-}
-
-.wheel__label {
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 1;
-  margin-top: 1px;
-  margin-left: 5px;
-}
-
-.wheel__slide {
-  align-items: center;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  display: flex;
   font-size: 20px;
-  font-weight: 400;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  justify-content: flex-end;
+  color: #fff;
+  font-weight: 500;
+  height: 100px;
+  width: 50px;
+  max-height: 100vh;
+  border-radius: 50%;
 }
+
+.number-slide1 {
+  background: rgb(64, 175, 255);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 175, 255, 1) 0%,
+    rgba(63, 97, 255, 1) 100%
+  );
+}
+
+.number-slide2 {
+  background: rgb(255, 75, 64);
+  background: linear-gradient(
+    128deg,
+    rgba(255, 154, 63, 1) 0%,
+    rgba(255, 75, 64, 1) 100%
+  );
+}
+
+.custom-slide {
+  width: 150px;
+}
+
+.customButton {
+  height: 100px;
+  width: 120px;
+  max-height: 100vh;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+.customButton:active {
+  background-color: orangered;
+  color: white;
+}
+
+.number-slide3 {
+  background: rgb(182, 255, 64);
+  background: linear-gradient(
+    128deg,
+    rgba(182, 255, 64, 1) 0%,
+    rgba(63, 255, 71, 1) 100%
+  );
+  background: linear-gradient(
+    128deg,
+    rgba(189, 255, 83, 1) 0%,
+    rgba(43, 250, 82, 1) 100%
+  );
+}
+
+.number-slide4 {
+  background: rgb(64, 255, 242);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 255, 242, 1) 0%,
+    rgba(63, 188, 255, 1) 100%
+  );
+}
+
+.number-slide5 {
+  background: rgb(255, 64, 156);
+  background: linear-gradient(
+    128deg,
+    rgba(255, 64, 156, 1) 0%,
+    rgba(255, 63, 63, 1) 100%
+  );
+}
+
+.number-slide6 {
+  background: rgb(64, 76, 255);
+  background: linear-gradient(
+    128deg,
+    rgba(64, 76, 255, 1) 0%,
+    rgba(174, 63, 255, 1) 100%
+  );
+}
+
 
 /*
 The code above is for the scroll wheel
