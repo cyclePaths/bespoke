@@ -106,6 +106,7 @@ The code below is for the scroll wheel
   width: 120px;
   max-height: 100vh;
   border-radius: 50%;
+  color: 'white';
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }

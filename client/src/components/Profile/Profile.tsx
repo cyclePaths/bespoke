@@ -299,24 +299,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         </ul>
       </div>
     </div> */}
-      {/* <div style={{ position: 'relative', marginTop: 100 }}>
-        <Picker
-          optionGroups={optionGroups}
-          valueGroups={valueGroups}
-          onChange={handleChange}
-        />
-        <div>
-          <button
-            type='button'
-            onClick={() => {
-              workoutStatsRequest(),
-                setValueGroups(exiledRedHeadedStepChildrenValueGroups);
-            }}
-          >
-            Submit
-          </button>
-        </div>
-      </div> */}
+
 <Scrollers />
 
       <div
