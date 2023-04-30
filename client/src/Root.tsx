@@ -516,7 +516,7 @@ const Root = () => {
                 element={<ReportsList reports={reports} />}
               />
               <Route path='reportsMap' element={<ReportsMap />} />
-              <Route path='stopwatch' element={<Stopwatch />} />
+              {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
           </Routes>

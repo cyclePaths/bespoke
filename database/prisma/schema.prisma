@@ -28,7 +28,7 @@ model User {
   location_lng            Float?
   createdRoutes           BikeRoutes[]
   reports                 Report[]
-  theme                   Boolean          @default(false)
+  theme                   Boolean          @default(true)
   sentMessages            DirectMessages[] @relation("SentMessages")
   receivedMessages        DirectMessages[] @relation("ReceivedMessages")
   favoriteRoutes          RouteLike[]
