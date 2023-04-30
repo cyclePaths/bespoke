@@ -133,10 +133,10 @@ const Map: React.FC = () => {
   };
 
   // Rendering for the map //
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: MAP_API_TOKEN!,
-  });
+  // const { isLoaded } = useJsApiLoader({
+  //   id: 'google-map-script',
+  //   googleMapsApiKey: MAP_API_TOKEN!,
+  // });
 
   const mapRef = useRef<GoogleMap>();
 
@@ -289,7 +289,7 @@ const Map: React.FC = () => {
   }, [userCenter]);
 
   // Conditional to load something else if the map is not ready to load //
-  if (!isLoaded) return <div>Map is loading</div>;
+  // if (!isLoaded) return <div>Map is loading</div>;
   return (
     <div className='container'>
       {/* This is the address search bar */}
@@ -362,28 +362,40 @@ const Map: React.FC = () => {
       <RouteButtonContainer>
         <Button
           variant='contained'
-          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          sx={{
+            marginRight: '5px',
+            marginLeft: '5px',
+            backgroundColor: '#e0e0e0',
+          }}
           onClick={fetchDirections}
         >
-          <NavigationIcon />
+          <NavigationIcon sx={{ color: '#2e7d32' }} />
         </Button>
         <Button
           variant='contained'
-          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          sx={{
+            marginRight: '5px',
+            marginLeft: '5px',
+            backgroundColor: '#e0e0e0',
+          }}
           onClick={() => {
             if (directions) {
               setOpenPopup(true);
             }
           }}
         >
-          <SaveAltIcon />
+          <SaveAltIcon sx={{ color: '#546e7a' }} />
         </Button>
         <Button
           variant='contained'
-          sx={{ marginRight: '5px', marginLeft: '5px' }}
+          sx={{
+            marginRight: '5px',
+            marginLeft: '5px',
+            backgroundColor: '#e0e0e0',
+          }}
           onClick={() => setOpenSearch(true)}
         >
-          <SearchIcon />
+          <SearchIcon sx={{ color: 'black' }} />
         </Button>
       </RouteButtonContainer>
       {/* These are popup windows that will display when the Save Created Route button is click or the Find Route Button is clicked */}

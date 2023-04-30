@@ -13,10 +13,20 @@ const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
   return (
     <Dialog open={openPopup}>
       <CloseIcon onClick={() => setOpenPopup(false)} />
-      <DialogTitle>
-        <header className='centered-header-Save'>Save Route</header>
+      <DialogTitle style={{ padding: '5px', backgroundColor: '#0088d5' }}>
+        <header className='centered-header-Save'>Save Route:</header>
       </DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent
+        style={{
+          paddingLeft: '25px',
+          paddingBottom: '25px',
+          paddingRight: '25px',
+          paddingTop: '10px',
+          backgroundColor: '#0088d5',
+        }}
+      >
+        {children}
+      </DialogContent>
     </Dialog>
   );
 };

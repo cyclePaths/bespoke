@@ -60,8 +60,8 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             <EmojiEventsIcon sx={{ color: '#ffff00' }} />
           </IconButton>
           <Link to='/directMessages'>
-            <IconButton>
-              <MessageIcon onClick={() => setValue(null)} />
+            <IconButton onClick={() => setValue(null)}>
+              <MessageIcon sx={{ color: '#673ab7' }} />
             </IconButton>
           </Link>
           <IconButton
@@ -137,15 +137,10 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
       >
         <LeaderBoard />
       </LeaderBoardPopout>
-      {/* <StopwatchPopout
-        openStopwatch={openStopwatch}
-        setOpenStopWatch={setOpenStopWatch}
-      > */}
       <Stopwatch
         openStopWatch={openStopWatch}
         setActiveWatch={setActiveWatch}
       />
-      {/* </StopwatchPopout> */}
       <Outlet />
     </div>
   );

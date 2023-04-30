@@ -375,7 +375,16 @@ const Root = () => {
             clearInterval(interval!);
             interval = null;
           },
-          (error) => setError(error.message)
+          (error) => {
+            if (error.code === 1) {
+              const allowLocation = confirm(
+                'Please allow the website to access your location'
+              );
+              if (allowLocation) {
+                getLocation();
+              }
+            }
+          }
         );
       }, 1000);
     } else {
