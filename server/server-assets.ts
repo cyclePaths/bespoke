@@ -394,6 +394,10 @@ let badgesSeed = [
   },
 ];
 
+export const badgeURLs = badgesSeed.map((ele) => {
+  return ele.badgeIcon;
+});
+
 //URLs/links for neat icons we might use later:
 
 /*

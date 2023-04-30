@@ -8,7 +8,7 @@ import { useTheme } from './ThemeContext';
 // import { ToggleSwitch } from '../../StyledComp';
 import { ToggleSwitch } from '../../ThemeStyles';
 // import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
-
+import { BadgesOnUsers, Badge } from '@prisma/client';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 // import Picker from 'react-mobile-picker';
@@ -22,7 +22,8 @@ import {
   AchievementBadge,
   AchievementBadgeHolder,
 } from '../../StyledComp';
-import { badgesSeed } from '../../../../server/server-assets';
+import { badgesSeed, badgeURLs } from '../../../../server/server-assets';
+import { useRadioGroup } from '@material-ui/core';
 
 //Setting state types
 export type Address = string;
@@ -51,6 +52,17 @@ export interface RideStats {
 }
 
 const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
+  //Context
+  const {
+    userBadges,
+    setUserBadges,
+    getBadgesOnUser,
+    selectedBadge,
+    setSelectedBadge,
+    tickBadgeCounter,
+    addBadge,
+    tierCheck,
+  } = useContext(UserContext);
   //State values with useState hook.
   const [user, setUser] = useState(true);
   const [theme, setTheme] = useState();
@@ -73,6 +85,9 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [valueGroups, setValueGroups] = useState<ValueGroup>(
     exiledRedHeadedStepChildrenValueGroups
   );
+
+  //holds toggle-able value to control whether badges are displaying on profile page or not
+  const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
 
   const saveTheme = () => {
     axios.post('/profile/theme', {
@@ -193,9 +208,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
       });
   };
 
-  const [selectedBadge, setSelectedBadge] = useState(badgesSeed[0].badgeIcon);
-  const [badgeDisplay, setBadgeDisplay] = useState('none');
-
+  //show/hide badges on user profile page
   const badgesToggle = () => {
     if (badgeDisplay === 'none') {
       setBadgeDisplay('block');
@@ -203,10 +216,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
       setBadgeDisplay('none');
     }
     document.getElementById('badges')!.style.display = badgeDisplay;
-  };
-
-  const setDisplayBadge = (badge) => {
-    setSelectedBadge(badge);
   };
 
   ///////////////////////////////////////////////////////////
@@ -254,24 +263,27 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
+      getBadgesOnUser();
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
     });
   }, []);
 
+  //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {
-    //send selected badge url serverside for update to database
-  }, [selectedBadge]);
+    //will I need this?
+  }, [userBadges]);
   //..................................................
 
   return (
     <div>
       <div>{`Hello ${user}!`}</div>
+      <AchievementBadgeByName src={selectedBadge} />
       <img
         style={{ borderRadius: '50%', width: '100px', height: '100px' }}
         src={photo}
         alt='avatar'
       />
-      <AchievementBadgeByName src={selectedBadge} />
+
       <div>
         <Addresses
           address={address}
@@ -302,15 +314,16 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       <span />
     </div> */}
       </div>
+      <button>Add Badge</button>
       <div>Achievement Badges:</div>
       <button onClick={badgesToggle}>Show Achievements</button>
       <AchievementBadgeHolder id='badges'>
-        {badgesSeed.map((badge) => {
+        {userBadges.map((badge) => {
           if (badge.badgeIcon !== 'url') {
             return (
               <AchievementBadge
                 onClick={() => {
-                  setDisplayBadge(badge.badgeIcon);
+                  setSelectedBadge(badge.badgeIcon);
                 }}
                 src={badge.badgeIcon}
               />

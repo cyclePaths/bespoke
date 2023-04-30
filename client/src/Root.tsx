@@ -16,7 +16,7 @@ import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
-import { Prisma } from '@prisma/client';
+import { Prisma, Badge } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
 export interface CurrentWeather {
   temperature: number;
@@ -137,6 +137,12 @@ const Root = () => {
   const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
+  //holds badge objects
+  const [userBadges, setUserBadges] = useState<Badge[]>([]);
+  //holds URL of badge to display by username
+  const [selectedBadge, setSelectedBadge] = useState<string>(
+    userBadges[0].badgeIcon
+  );
 
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
@@ -280,15 +286,31 @@ const Root = () => {
     return weatherIcon;
   };
 
-  //function to choose which badge displays alongside user's name
-  const chooseBadge = () => {
-    //placeholder for now - will complete later
+  //pulls badges in from join table; will this be necessary or can user context handle it?
+  const getBadgesOnUser = () => {
+    axios
+      .get('/badges/badge-icons')
+      .then(({ data }) => {
+        setUserBadges(data);
+      })
+      .catch((err) => {
+        console.log('Failed to get badge URLs ', err);
+      });
   };
 
-  const tierCheck = (badgeId, userId, tiersObj) => {
+  //function to check if tier should increase (and increase it if so)
+  const tierCheck = (badgeName, tiersObj, tier = undefined) => {
+    let badgeId = 0;
+    for (let i = 0; i < userBadges.length; i++) {
+      if (userBadges[i].tier) {
+        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
+          badgeId = userBadges[i].id;
+          break;
+        }
+      }
+    }
     let config = {
       badgeId: badgeId,
-      userId: userId,
       tiers: {
         ...tiersObj,
       },
@@ -302,16 +324,24 @@ const Root = () => {
   };
 
   //function to add or remove (or update?) badges for users
-  const addBadge = (userId: number, badgeId: number) => {
+  const addBadge = (badgeName, tier = undefined) => {
+    let badgeId = 0;
+    for (let i = 0; i < userBadges.length; i++) {
+      if (userBadges[i].tier) {
+        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
+          badgeId = userBadges[i].id;
+          break;
+        }
+      }
+    }
     axios
       .post('/badges/add', {
-        userId: userId,
         badgeId: badgeId,
       })
       .then() //should update badge display, but this will need to be done later or possibly handled elsewhere?
       .catch((err) =>
         console.error(
-          `an error has occurred adding badge with ID ${badgeId} to user with id ${userId} `,
+          `an error has occurred adding badge with ID ${badgeId} to user`,
           err
         )
       );
@@ -319,21 +349,27 @@ const Root = () => {
 
   //function to increment or decrement values on the User table used for achievements/badges
   //increments by default, pass '-1' as third argument to decrement
-  const tickBadgeCounter = (userId, badgeId, change = 1) => {
+  const tickBadgeCounter = (badgeName, tier = undefined, change = 1) => {
+    let badgeId = 0;
+    for (let i = 0; i < userBadges.length; i++) {
+      if (userBadges[i].tier) {
+        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
+          badgeId = userBadges[i].id;
+          break;
+        }
+      }
+    }
     axios
       .patch('/badges/counter', {
-        userId: userId,
         badgeId: badgeId,
         change: change,
       })
       .then(() =>
-        console.log(
-          `successfully updated badge with ID ${badgeId} on user with id ${userId}`
-        )
+        console.log(`successfully updated badge with ID ${badgeId} on user`)
       )
       .catch((err) =>
         console.error(
-          `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
+          `an error occurred attempting to increment/decrement counter for user's badge with id ${badgeId}`,
           err
         )
       );
@@ -416,6 +452,21 @@ const Root = () => {
     findContext();
   }, []);
 
+  //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
+  useEffect(() => {
+    axios
+      .patch('/badges/set', {
+        iconURL: selectedBadge!,
+      })
+      .then() //log success?
+      .catch((err) =>
+        console.error(
+          `an error has occurred when PATCHing User with new badge URL: ${selectedBadge}`,
+          err
+        )
+      );
+  }, [selectedBadge]);
+
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
     displayIcon: true,
     time: new Date(),
@@ -461,7 +512,20 @@ const Root = () => {
     // <>
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
-      <UserContext.Provider value={{ user, geoLocation, tickBadgeCounter }}>
+      <UserContext.Provider
+        value={{
+          user,
+          geoLocation,
+          userBadges,
+          setUserBadges,
+          getBadgesOnUser,
+          selectedBadge,
+          setSelectedBadge,
+          tickBadgeCounter,
+          addBadge,
+          tierCheck,
+        }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
@@ -513,7 +577,10 @@ const Root = () => {
               />
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
-              <Route path='reportsList' element={<ReportsList reports={reports} />} />
+              <Route
+                path='reportsList'
+                element={<ReportsList reports={reports} />}
+              />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
               <Route path='directMessages' element={<DirectMessages />} />
