@@ -89,6 +89,11 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
+  //temporary - used for manually adding badges
+  const [tier, setTier] = useState(0);
+  const [inputBox, setInputBox] = useState('');
+
+  //functions
 
   const saveTheme = () => {
     axios.post('/profile/theme', {
@@ -221,8 +226,9 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
 
   const displayNoBadgeIfEmpty = () => {
     if (
+      selectedBadge &&
       selectedBadge !==
-      'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
     ) {
       return <AchievementBadgeByName src={selectedBadge} />;
     }
@@ -278,10 +284,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
     });
   }, []);
 
-  //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {
-    //will I need this?
-  }, [userBadges]);
+  useEffect(() => {}, [inputBox]);
+
+  useEffect(() => {}, [tier]);
+
   //..................................................
 
   return (
@@ -334,9 +340,37 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       <span />
     </div> */}
       </div>
-      <button>Add Badge</button>
+
       <div>Achievement Badges:</div>
-      <button onClick={badgesToggle}>Show Achievements</button>
+
+      <button onClick={badgesToggle}>Show Badges</button>
+      <button
+        onClick={() => {
+          addBadge(inputBox, tier);
+        }}
+      >
+        Add Badge
+      </button>
+      <input
+        type='text'
+        onChange={(event) => {
+          setInputBox(event.target.value);
+        }}
+      ></input>
+      <select
+        onChange={(event) => {
+          setTier(parseInt(event.target.value));
+        }}
+      >
+        <option value={0}>No Tier</option>
+        <option value={1}>1</option>
+        <option value={2}>2</option>
+        <option value={3}>3</option>
+        <option value={4}>4</option>
+        <option value={5}>5</option>
+        <option value={6}>6</option>
+      </select>
+
       <AchievementBadgeHolder id='badges'>
         {userBadges.map((badge) => {
           if (badge.badgeIcon !== 'url') {

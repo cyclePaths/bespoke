@@ -143,7 +143,17 @@ const Root = () => {
   const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
-  //holds badge objects
+  //holds all badge objects
+  const [allBadges, setAllBadges] = useState<Badge[]>([
+    {
+      id: 0,
+      name: 'No Achievements',
+      badgeIcon:
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
+      tier: 0,
+    },
+  ]);
+  //holds badge objects associated with user
   const [userBadges, setUserBadges] = useState<Badge[]>([
     {
       id: 0,
@@ -178,6 +188,7 @@ const Root = () => {
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
+
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
   const getForecasts = () => {
@@ -300,29 +311,57 @@ const Root = () => {
     return weatherIcon;
   };
 
-  //pulls badges in from join table; will this be necessary or can user context handle it?
+  //gets all badge objects on database for use in identifying badges from join table
+  const getBadges = () => {
+    axios
+      .get('badges/all-badges')
+      .then(({ data }) => {
+        setAllBadges(data);
+      })
+      .catch((err) => {
+        console.log('Failed to get badges from database: ', err);
+      });
+  };
+
+  //pulls badges in from join table
   const getBadgesOnUser = () => {
     axios
-      .get('/badges/badge-icons')
+      .get('/badges/user-badges')
       .then(({ data }) => {
         if (data[0]) {
           setUserBadges(data);
         }
       })
       .catch((err) => {
-        console.log('Failed to get badge URLs ', err);
+        console.log('Failed to get badges on user: ', err);
+      });
+  };
+
+  //function to ensure user's selected badge is displayed by their name
+  //Note that this will not affect other users' display badges - that functionality must be programmed elsewhere
+  const getSelectedBadge = () => {
+    axios
+      .get('/badges/selected-badge')
+      .then(({ data }) => {
+        setSelectedBadge(data);
+      })
+      .catch((err) => {
+        console.log('Failed to get badges on user: ', err);
       });
   };
 
   //function to check if tier should increase (and increase it if so)
   const tierCheck = (badgeName, tiersObj, tier = undefined) => {
     let badgeId = 0;
-    for (let i = 0; i < userBadges.length; i++) {
-      if (userBadges[i].tier) {
-        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
-          badgeId = userBadges[i].id;
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
           break;
         }
+      } else {
+        console.error('There is no tier to check!');
+        return;
       }
     }
     let config = {
@@ -333,7 +372,9 @@ const Root = () => {
     };
     axios
       .post('/badges/tier', config)
-      .then() //log something to confirm execution?
+      .then(() => {
+        getBadgesOnUser(); //update badgesOnUser with new DB info
+      })
       .catch((err) =>
         console.error('there was an error when checking/updating tiers')
       );
@@ -342,10 +383,18 @@ const Root = () => {
   //function to add or remove (or update?) badges for users
   const addBadge = (badgeName, tier = undefined) => {
     let badgeId = 0;
-    for (let i = 0; i < userBadges.length; i++) {
-      if (userBadges[i].tier) {
-        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
-          badgeId = userBadges[i].id;
+    console.log('this is all badges: ', allBadges);
+    console.log('this is the badge name to add: ', badgeName);
+    console.log('this is the tier of the badge to add: ', tier);
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      } else {
+        if (allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
           break;
         }
       }
@@ -354,7 +403,9 @@ const Root = () => {
       .post('/badges/add', {
         badgeId: badgeId,
       })
-      .then() //should update badge display, but this will need to be done later or possibly handled elsewhere?
+      .then(() => {
+        getBadgesOnUser(); //update badgesOnUser with new DB info
+      })
       .catch((err) =>
         console.error(
           `an error has occurred adding badge with ID ${badgeId} to user`,
@@ -367,10 +418,15 @@ const Root = () => {
   //increments by default, pass '-1' as third argument to decrement
   const tickBadgeCounter = (badgeName, tier = undefined, change = 1) => {
     let badgeId = 0;
-    for (let i = 0; i < userBadges.length; i++) {
-      if (userBadges[i].tier) {
-        if (userBadges[i].tier === tier && userBadges[i].name === badgeName) {
-          badgeId = userBadges[i].id;
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      } else {
+        if (allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
           break;
         }
       }
@@ -466,21 +522,47 @@ const Root = () => {
   useEffect(() => {
     getLocation();
     findContext();
+    getBadgesOnUser();
+    getBadges();
+    getSelectedBadge();
   }, []);
+
+  //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
+  useEffect(() => {
+    // console.log(
+    //   'user badges has changed, here is new userBadges: ',
+    //   userBadges
+    // );
+    //the below statement should set a default selected icon once the user earns their first badge
+    // if (
+    //   selectedBadge ===
+    //   'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    // ) {
+    //   setSelectedBadge(userBadges[0].badgeIcon);
+    // }
+  }, [userBadges]);
+
+  //watches allBadges to re-render if new ones are added
+  useEffect(() => {}, [allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
   useEffect(() => {
-    axios
-      .patch('/badges/set', {
-        iconURL: selectedBadge!,
-      })
-      .then() //log success?
-      .catch((err) =>
-        console.error(
-          `an error has occurred when PATCHing User with new badge URL: ${selectedBadge}`,
-          err
-        )
-      );
+    if (
+      selectedBadge !==
+      'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      axios
+        .patch('/badges/set', {
+          iconURL: selectedBadge!,
+        })
+        .then() //log success?
+        .catch((err) =>
+          console.error(
+            `an error has occurred when PATCHing User with new badge URL: ${selectedBadge}`,
+            err
+          )
+        );
+    }
   }, [selectedBadge]);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({

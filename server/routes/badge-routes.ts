@@ -11,8 +11,20 @@ import { identity } from 'rxjs';
 const badgeRouter = Router();
 const prisma = new PrismaClient();
 
-//returns array of badge objects
-badgeRouter.get('/badge-icons', async (req: Request, res: Response) => {
+//returns an array of ALL badge objects
+badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
+  try {
+    const badges = await prisma.badge.findMany({});
+    console.log('OOGA BOOGA THERE ARE THE BADGES? ', badges);
+    res.status(200).send(badges);
+  } catch (err) {
+    console.error('an error occurred when GETting all badges', err);
+    res.sendStatus(500);
+  }
+});
+
+//returns array of user's badge objects
+badgeRouter.get('/user-badges', async (req: Request, res: Response) => {
   const { id } = req.user as User;
   const userId = id;
   try {
@@ -24,29 +36,39 @@ badgeRouter.get('/badge-icons', async (req: Request, res: Response) => {
     const badgeIds = badgesOnUser.map((ele) => {
       return ele.badgeId;
     });
-    let badges: Badge[] = [];
-    badgeIds.forEach(async (ele) => {
-      try {
-        const badge = await prisma.badge.findUnique({
-          where: {
-            id: ele,
-          },
-        });
-        if (badge) {
-          badges.push(badge);
-        }
-      } catch (err) {
-        console.error(
-          `an error occurred when GETting badge with id ${ele} for user with id ${userId}`,
-          err
-        );
-        res.sendStatus(500);
-      }
+    const badges = await prisma.badge.findMany({
+      where: {
+        id: { in: badgeIds },
+      },
     });
     res.status(200).send(badges);
   } catch (err) {
     console.error(
       `an error occurred when GETting badges for user with id ${userId}`,
+      err
+    );
+    res.sendStatus(500);
+  }
+});
+
+//Function to send the URL for the badge the user has selected back to the client to display
+badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.user as User;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      console.error('could not find user in database');
+      res.sendStatus(404);
+    } else {
+      res.send(user.selectedBadge).status(200);
+    }
+  } catch (err) {
+    console.error(
+      "an error has occurred GETting the user's selected badge icon: ",
       err
     );
     res.sendStatus(500);
@@ -166,13 +188,17 @@ badgeRouter.post('/add', async (req, res) => {
       console.error(`could not find badge with id ${badgeId}`);
       res.sendStatus(500);
     }
-    await prisma.badgesOnUsers.create({
-      data: {
-        user: { connect: { id: userId } },
-        badge: { connect: { id: badgeId } },
-      },
-    });
-    res.sendStatus(201);
+    if (badge && user) {
+      await prisma.badgesOnUsers.create({
+        data: {
+          user: { connect: { id: userId } },
+          badge: { connect: { id: badgeId } },
+        },
+      });
+      res.sendStatus(201);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (err) {
     console.error(
       `an error occurred when attempting to add new badge with id ${badgeId} to user with id ${userId}`,
@@ -257,20 +283,27 @@ badgeRouter.patch('/set', async (req: Request, res: Response) => {
   }
 });
 
-//seeder function
+//seeder function for Badges
 
 async function seedBadges() {
   try {
+    //DO NOT UNCOMMENT BELOW WITHOUT READING WARNING
+    // await prisma.badgesOnUsers.deleteMany({}); //WARNING: This will clear badges from every user!!!
     await prisma.badge.deleteMany({});
   } catch (err) {
     console.error('there was an error deleting old badges ', err);
   }
   for (let i = 0; i < badgesSeed.length; i++) {
+    let tier: number | null = null;
+    if (badgesSeed[i].tier) {
+      tier = badgesSeed[i].tier!;
+    }
     try {
       await prisma.badge.create({
         data: {
           name: badgesSeed[i].name,
           badgeIcon: badgesSeed[i].badgeIcon,
+          tier: tier,
         },
       });
     } catch (err) {
@@ -279,8 +312,8 @@ async function seedBadges() {
   }
 }
 
-seedBadges()
-  .catch((err) => console.error('an error occurred when seeding Badges: ', err))
-  .finally(() => prisma.$disconnect()); //unsure if this part is necessary?
+// seedBadges()
+//   .catch((err) => console.error('an error occurred when seeding Badges: ', err))
+//   .finally(() => prisma.$disconnect()); //unsure if this part is necessary?
 
 export { badgeRouter };

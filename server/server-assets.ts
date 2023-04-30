@@ -39,32 +39,32 @@ let badgesSeed = [
   },
   {
     name: 'Monthly Trekker',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/4729/4729360.png',
     tier: 1,
   },
   {
     name: 'Monthly Trekker',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/4729/4729427.png',
     tier: 2,
   },
   {
     name: 'Monthly Trekker',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/4729/4729468.png',
     tier: 3,
   },
   {
     name: 'Dedicated Rider',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3732/3732641.png',
     tier: 1,
   },
   {
     name: 'Dedicated Rider',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3732/3732818.png',
     tier: 2,
   },
   {
     name: 'Dedicated Rider',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3732/3732831.png',
     tier: 3,
   },
   {
@@ -217,7 +217,7 @@ let badgesSeed = [
   },
   {
     name: 'Centurion',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/2720/2720080.png',
   },
   {
     name: 'Social Butterfly',
@@ -266,36 +266,36 @@ let badgesSeed = [
   },
   {
     name: 'Riding Streak',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/2830/2830977.png',
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3587/3587204.png',
     tier: 1,
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3587/3587286.png',
     tier: 2,
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3587/3587252.png',
     tier: 3,
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3270/3270523.png',
     tier: 4,
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3270/3270507.png',
     tier: 5,
   },
   {
     name: 'Disciplined',
-    badgeIcon: 'url',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3270/3270465.png',
     tier: 6,
   },
   {
