@@ -6,6 +6,8 @@ import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
 import ReportsList from './ReportsList';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { BandAid } from '../../StyledComp';
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
@@ -40,7 +42,8 @@ const ReportsMap: React.FC = () => {
   };
 
   const handleTypeChange = (event) => {
-    setSelectedType(event.target.value);
+    const value = event.target.value;
+    setSelectedType(value === "All" ? "" : value);
   };
 
   useEffect(() => {
@@ -68,11 +71,11 @@ const ReportsMap: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const filteredReports = selectedType
-        ? reports.filter(
-            (report) =>
-              report.type === selectedType && report.published === true
-          )
-        : reports.filter((report) => report.published === true);
+  ? reports.filter(
+      (report) => report.type === selectedType && report.published === true
+    )
+  : reports.filter((report) => report.published === true);
+
 
       const newMarkers = filteredReports.map((report) => {
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
@@ -87,7 +90,7 @@ const ReportsMap: React.FC = () => {
         const imageElement = document.createElement('img');
         if (imageUrl !== null) {
           imageElement.src = imageUrl; // imageUrl is now inferred as string
-        }        
+        }
         contentDiv.appendChild(imageElement);
         const idParagraph = document.createElement('p');
         idParagraph.textContent = report.id;
@@ -161,25 +164,30 @@ const ReportsMap: React.FC = () => {
   }, [map]);
 
   return (
-    <div>
-      <ReportsList reports={reports} />
+      <div>
+    <ToggleButtonGroup
+      value={selectedType}
+      onChange={handleTypeChange}
+      aria-label="Report Type"
+    >
+      <ToggleButton value="All">All</ToggleButton>
+<ToggleButton value="Road Hazard">Road Hazard</ToggleButton>
+<ToggleButton value="Theft Alert">Theft Alert</ToggleButton>
+<ToggleButton value="Collision">Collision</ToggleButton>
+<ToggleButton value="Point of Interest">Point of Interest</ToggleButton>
 
-      <select value={selectedType} onChange={handleTypeChange}>
-        <option value=''>All Reports</option>
-        <option value='Road Hazard'>Road Hazard</option>
-        <option value='Theft Alert'>Theft Alert</option>
-        <option value='Collision'>Collision</option>
-        <option value='Point of Interest'>Point of Interest</option>
-      </select>
-      {selectedType && <p>Selected type: {selectedType}</p>}
+    </ToggleButtonGroup>
+    <Box height="100vh">
       <GoogleMap
-        mapContainerStyle={defaultMapContainerStyle}
+        mapContainerStyle={{ height: '100%', width: '100%' }}
         center={center}
         zoom={15}
         onLoad={onLoad}
         options={options as google.maps.MapOptions}
       />
-    </div>
+    </Box>
+  </div>
+
   );
 };
 

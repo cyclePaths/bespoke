@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
 import ReportsList from './ReportsList';
-import { Button, Dialog, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { BandAid } from '../../StyledComp';
 
 const CreateReport = () => {
-  // const navigate = useNavigate();
+  const [showForm, setShowForm] = useState<boolean>(true); // add state variable
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -21,10 +20,6 @@ const CreateReport = () => {
   } | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [open, setOpen] = useState<boolean>(true);
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const user = useContext(UserContext);
 
@@ -79,7 +74,6 @@ const CreateReport = () => {
     }
   };
 
-  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {
@@ -105,63 +99,65 @@ const CreateReport = () => {
           },
           geoOps
         );
-      }, 1000);
-    } else {
-      setError('Geolocation is not supported by this browser.');
-    }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-    };
-  }, []);
 
-  return (
-    <BandAid>
-      <div>
-        <div>
-          <ReportsMap />
-        </div>
-        <Dialog open={open} onClose={handleClose}>
-          <div id='make-report-container'>
-            <div id='make-report-container'>
-              <h2>Make a Report</h2>
-              <form onSubmit={handleSubmit}>
-                <select id='report-type-input' onChange={handleTypeText}>
-                  <option value=''>Select a Report Type</option>
-                  <option value='Road Hazard'>Road Hazard</option>
-                  <option value='Theft Alert'>Theft Alert</option>
-                  <option value='Collision'>Collision</option>
-                  <option value='Point of Interest'>Point of Interest</option>
-                </select>
-                <input
-                  id='report-title-input'
-                  type='text'
-                  placeholder='Report Title'
-                  onChange={handleTitleText}
-                />
-                <input
-                  id='report-body-input'
-                  type='text'
-                  placeholder='Comments'
-                  onChange={handleBodyText}
-                />
-                <input
-                  id='file'
-                  type='file'
-                  name='file'
-                  accept='image/*'
-                  onChange={handleImage}
-                />
-                <input type='submit' value='submit' />
-              </form>
-            </div>
-          </div>
-        </Dialog>
-      </div>
-    </BandAid>
-  );
+
+}, 1000);
+} else {
+  setError('Geolocation is not supported by this browser.');
+}
+return () => {
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+  }
+};
+
+}, []);
+
+const toggleForm = () => {
+setShowForm(!showForm);
+};
+
+return (
+<BandAid>
+<div>
+<ReportsMap />
+</div>
+<h2>Make a Report</h2>
+<button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
+{showForm && (
+<form onSubmit={handleSubmit}>
+<select id='report-type-input' onChange={handleTypeText}>
+<option value=''>Select a Report Type</option>
+<option value='Road Hazard'>Road Hazard</option>
+<option value='Theft Alert'>Theft Alert</option>
+<option value='Collision'>Collision</option>
+<option value='Point of Interest'>Point of Interest</option>
+</select>
+<input
+         id='report-title-input'
+         type='text'
+         placeholder='Report Title'
+         onChange={handleTitleText}
+       />
+<input
+         id='report-body-input'
+         type='text'
+         placeholder='Comments'
+         onChange={handleBodyText}
+       />
+<input
+         id='file'
+         type='file'
+         name='file'
+         accept='image/*'
+         onChange={handleImage}
+       />
+<input type='submit' value='submit' />
+</form>
+)}
+</BandAid>
+);
 };
 
 export default CreateReport;
