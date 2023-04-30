@@ -1,7 +1,31 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-// import { createTheme } from '@mui/material/styles';
+import { makeStyles, createStyles, Theme, createTheme, ThemeProvider } from '@material-ui/core/styles';
 
+// Define a custom theme with breakpoints for small (sm) and medium (md) screens
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3f51b5',
+      light: '#7986cb',
+      dark: '#303f9f',
+    },
+    secondary: {
+      main: '#f50057',
+      light: '#ff4081',
+      dark: '#c51162',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+});
 
+// Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
@@ -26,8 +50,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
-
-
+// Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -40,8 +63,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      // width: '100%',
-      // height: '90%',
       marginBottom: theme.spacing(10),
     },
     messagesContainer: {
@@ -53,9 +74,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     message: {
       color: 'white',
       padding: theme.spacing(1),
-      // marginBottom: theme.spacing(1),
       wordWrap: 'break-word',
-
     },
     messageFromMe: {
       color: 'white',
@@ -65,20 +84,33 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginRight: 10,
       marginTop: 10,
       marginBottom: 10,
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 120,
+        marginRight: 10,
+      },
+      [theme.breakpoints.up('md')]: {
+        marginLeft: 1100,
+        marginRight: 30,
+      },
     },
     messageFromOther: {
-      // backgroundColor: theme.palette.secondary.light,
       alignSelf: 'flex-start',
-      // backgroundColor: 'green',
       color: 'white',
       backgroundColor: '#65CF22',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
       marginBottom: 10,
+      [theme.breakpoints.down('sm')]: {
+        marginRight: 120,
+        marginLeft: 10,
+      },
+      [theme.breakpoints.up('md')]: {
+        marginLeft: 30,
+        marginRight: 1100,
+      },
     },
     inputContainer: {
-
       display: 'flex',
       alignItems: 'center',
       padding: theme.spacing(1),
@@ -86,12 +118,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         color: 'white',
       },
     },
-    input: {
-      // color: 'white !important',
-      // marginRight: theme.spacing(1),
-      // flex: 1,
-      // resize: 'none',
-    },
+    input: {},
     search: {
       margin: 'auto',
       display: 'flex',
