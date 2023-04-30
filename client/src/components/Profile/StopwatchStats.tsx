@@ -117,7 +117,6 @@ const StopwatchStats = ({
       {isPickerVisible && (
         <div>
           <button
-          style={{ zIndex: 1000 }}
             type='button'
             onClick={() => {
               workoutStats();

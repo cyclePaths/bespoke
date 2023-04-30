@@ -8,7 +8,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
-import Stopwatch from './components/Stopwatch';
+import Stopwatch from './components/Profile/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 // import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
@@ -17,7 +17,6 @@ import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
-
 
 export interface CurrentWeather {
   temperature: number;

@@ -59,6 +59,10 @@
   font-size: 17px;
 }
 
+.stopwatch-container {
+  z-index: 9999;
+}
+
 
 /*
 The code below is for the scroll wheel

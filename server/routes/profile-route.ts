@@ -99,7 +99,6 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
   const { activity, duration, weight } = req.query;
-
   const options = {
     method: 'GET',
     url: 'https://api.api-ninjas.com/v1/caloriesburned',

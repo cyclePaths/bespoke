@@ -270,7 +270,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
     </div>
 
-    {/* <div>
+    <div>
 
       <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
@@ -298,7 +298,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           </li>
         </ul>
       </div>
-    </div> */}
+    </div>
 
 <Scrollers />
 

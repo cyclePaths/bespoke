@@ -20,6 +20,7 @@ const Scrollers = () => {
   const [minutes, setMinutes] = useState('');
   const [clickedHours, setClickedHours] = useState(false);
   const [clickedMinutes, setClickedMinutes] = useState(false);
+  let rideSpeedValue = '';
 
   const { workout, durationHours, durationMinutes } =
     exiledRedHeadedStepChildrenOptionGroups;
@@ -37,14 +38,36 @@ const Scrollers = () => {
     }
   }, [clickedHours, clickedMinutes]);
 
+  useEffect(() => {
+    for (let i = 0; i < workout.length; i++) {
+      if (workout[i].label === rideSpeed) {
+        rideSpeedValue = workout[i].value;
+      }
+    }
+  })
+
   const enterWorkout = () => {
     axios.get('/profile/workout', {
       params: {
-        activity: rideSpeed,
+        activity: rideSpeedValue,
         duration: totalTime,
         weight: weight,
       },
-    });
+    })
+      .then(({ data }) => {
+        const { total_calories } = data;
+        axios
+        .post('profile/workout', {
+          activity: rideSpeed,
+          duration: totalTime,
+          weight: weight,
+          calories: total_calories,
+        })
+      })
+
+      .catch((err) => {
+        console.log(err);
+      })
   };
 
   return (
