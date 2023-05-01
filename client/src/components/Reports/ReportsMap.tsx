@@ -92,16 +92,14 @@ const ReportsMap: React.FC = () => {
           imageElement.src = imageUrl; // imageUrl is now inferred as string
         }
         contentDiv.appendChild(imageElement);
-        const idParagraph = document.createElement('p');
-        idParagraph.textContent = report.id;
         const typeParagraph = document.createElement('p');
         typeParagraph.textContent = report.type;
         const titleParagraph = document.createElement('p');
         titleParagraph.textContent = report.title;
         const bodyParagraph = document.createElement('p');
         bodyParagraph.textContent = report.body;
-        const createdAtParagraph = document.createElement('p');
-        createdAtParagraph.textContent = `Reported: ${report.createdAt}`;
+        // const createdAtParagraph = document.createElement('p');
+        // createdAtParagraph.textContent = `Reported: ${report.createdAt}`;
         const button = document.createElement('button');
         button.textContent = 'Archive Report';
         button.onclick = () => handleButtonClick(report.id);
@@ -109,11 +107,10 @@ const ReportsMap: React.FC = () => {
         if (buttonClicked) {
           buttonClickedParagraph.textContent = 'Button clicked';
         }
-        contentDiv.appendChild(idParagraph);
         contentDiv.appendChild(typeParagraph);
         contentDiv.appendChild(titleParagraph);
         contentDiv.appendChild(bodyParagraph);
-        contentDiv.appendChild(createdAtParagraph);
+        // contentDiv.appendChild(createdAtParagraph);
         contentDiv.appendChild(button);
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);

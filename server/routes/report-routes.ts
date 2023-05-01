@@ -9,6 +9,7 @@ const cloudinary = require('cloudinary').v2;
 import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
 const path = require('path');
+import fs from 'fs';
 
 //  cloudinary credentials
 cloudinary.config({
@@ -81,20 +82,19 @@ reportRouter.post(
   },
   async (req, res) => {
     try {
-      const {
-        userId,
-        body,
-        type,
-        title,
-        latitude,
-        longitude,
-      } = req.body;
+      const { userId, body, type, title, latitude, longitude } = req.body;
       let imageUrl: string | undefined;
 
       // Check if file exists in the request and upload it to Cloudinary
       if (req.file) {
         const result = await cloudinary.uploader.upload(req.file.path);
         imageUrl = result.secure_url;
+        // Delete the local image file after it has been uploaded to Cloudinary
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.error('Error deleting the local image file:', err);
+          }
+        });
       }
       // console.log(req.user);
       const { id } = req.user as User;
@@ -127,8 +127,6 @@ reportRouter.post(
     }
   }
 );
-
-
 
 //  UPDATE report archived only
 reportRouter.patch('/:id', async (req: Request, res: Response) => {
