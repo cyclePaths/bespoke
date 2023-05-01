@@ -199,8 +199,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: geoLocation.lat,
-          longitude: geoLocation.lng,
+          latitude: 30,
+          longitude: -90.17,
           numDaysToForecast: numDaysToForecast,
         },
       })
