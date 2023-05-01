@@ -6,7 +6,6 @@ import {
   Badge,
   BadgesOnUsers,
 } from '@prisma/client';
-import { badgesSeed } from '../server-assets';
 import { identity } from 'rxjs';
 const badgeRouter = Router();
 const prisma = new PrismaClient();
@@ -284,36 +283,5 @@ badgeRouter.patch('/set', async (req: Request, res: Response) => {
 });
 
 //seeder function for Badges
-
-async function seedBadges() {
-  try {
-    //DO NOT UNCOMMENT BELOW WITHOUT READING WARNING
-    // await prisma.badgesOnUsers.deleteMany({}); //WARNING: This will clear badges from every user!!!
-    await prisma.badge.deleteMany({});
-  } catch (err) {
-    console.error('there was an error deleting old badges ', err);
-  }
-  for (let i = 0; i < badgesSeed.length; i++) {
-    let tier: number | null = null;
-    if (badgesSeed[i].tier) {
-      tier = badgesSeed[i].tier!;
-    }
-    try {
-      await prisma.badge.create({
-        data: {
-          name: badgesSeed[i].name,
-          badgeIcon: badgesSeed[i].badgeIcon,
-          tier: tier,
-        },
-      });
-    } catch (err) {
-      console.error('there was an error seeding badges ', err);
-    }
-  }
-}
-
-// seedBadges()
-//   .catch((err) => console.error('an error occurred when seeding Badges: ', err))
-//   .finally(() => prisma.$disconnect()); //unsure if this part is necessary?
 
 export { badgeRouter };

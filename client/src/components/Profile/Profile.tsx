@@ -23,7 +23,6 @@ import {
   AchievementBadge,
   AchievementBadgeHolder,
 } from '../../StyledComp';
-import { badgesSeed, badgeURLs } from '../../../../server/server-assets';
 import { useRadioGroup } from '@material-ui/core';
 
 //Setting state types

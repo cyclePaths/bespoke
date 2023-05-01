@@ -14,7 +14,8 @@
     "deploy": "git pull origin main && npm install && npm run prod",
     "lint": "eslint --ignore-path .eslintignore --ext .ts,.tsx .",
     "lint-and-fix": "eslint --ignore-path .eslintignore --ext .ts,.tsx . --fix",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\"",
+    "seed:Badge": "node database/prisma/seedScript.js"
   },
   "repository": {
     "type": "git",
