@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom'
 import Navbar from './Navbar';
 import { StopwatchTime } from '../Root';
-// import Stopwatch from './Stopwatch'
+// import Stopwatch from './Stopwatch';
 
 export interface AppProps {
   windSpeedMeasurementUnit: string;
@@ -21,8 +21,8 @@ const App = () => {
     useState('fahrenheit'); //should be either 'fahrenheit' or 'celsius'
   const [precipitationMeasurementUnit, setPrecipitationMeasurementUnit] =
     useState('inch'); //should be either 'mm' or 'inch'
-    // const [stopwatchState, setStopwatchState] =
-    // useState<StopwatchTime>({ hours: 0, minutes: 0, seconds: 0 });
+  // const [stopwatchState, setStopwatchState] =
+  // useState<StopwatchTime>({ hours: 0, minutes: 0, seconds: 0 });
 
   const appPropsObj: AppProps = {
     windSpeedMeasurementUnit: windSpeedMeasurementUnit,
@@ -39,7 +39,7 @@ const App = () => {
         <Navbar appPropsObj={appPropsObj} />
       </div>
       <div>
-      {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
+        {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
       </div>
     </div>
   );

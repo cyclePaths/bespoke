@@ -4,10 +4,8 @@ import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
-import { fill } from '@cloudinary/url-gen/actions/resize';
-import { CloudinaryImage } from '@cloudinary/url-gen';
-import { AdvancedImage } from '@cloudinary/react';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
+import ReportsList from './ReportsList';
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
@@ -16,10 +14,6 @@ const ReportsMap: React.FC = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
-
-  const myImage = new CloudinaryImage('sample', {
-    cloudName: 'dcecaxmxv',
-  }).resize(fill().width(100).height(150));
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
@@ -48,29 +42,6 @@ const ReportsMap: React.FC = () => {
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
   };
-
-  // const fetchReports = async () => {
-  //   try {
-  //     const response = await axios.get('/reports');
-  //     const filteredReports = response.data.filter((report) => {
-  //       const reportCreatedAt = new Date(report.createdAt);
-  //       const currentDate = new Date();
-  //       const monthAgo = new Date(
-  //         currentDate.getFullYear(),
-  //         currentDate.getMonth() - 1,
-  //         currentDate.getDate()
-  //       );
-  //       return reportCreatedAt >= monthAgo;
-  //     });
-  //     setReports(filteredReports);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchReports();
-  // }, [])
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -112,6 +83,12 @@ const ReportsMap: React.FC = () => {
 
         const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
+        const imageUrl: string | null = report.imgUrl;
+        const imageElement = document.createElement('img');
+        if (imageUrl !== null) {
+          imageElement.src = imageUrl; // imageUrl is now inferred as string
+        }        
+        contentDiv.appendChild(imageElement);
         const idParagraph = document.createElement('p');
         idParagraph.textContent = report.id;
         const typeParagraph = document.createElement('p');
@@ -162,56 +139,6 @@ const ReportsMap: React.FC = () => {
     }
   }, [map, reports, selectedType, buttonClicked]);
 
-  // useEffect(() => {
-  //   if (map && reports) {
-  //     const filteredReports = selectedType
-  //     ? reports.filter((report) => report.type === selectedType && report.published === true)
-  //     : reports.filter((report) => report.published === true);
-
-  //     const newMarkers = filteredReports.map((report) => {
-  //       const latLng = { lat: report.location_lat!, lng: report.location_lng! };
-  //       const marker = new google.maps.Marker({
-  //         position: latLng,
-  //         map,
-  //       });
-
-  //       const infoWindow = new google.maps.InfoWindow({
-  //         content: `<div>
-  //         <p>${report.id}</p>
-
-  //           <p>${report.type}</p>
-  //           <p>${report.title}</p>
-  //           <p>${report.body}</p>
-  //           <p>Reported: ${report.createdAt}</p>
-  //           <button onClick=${() => handleButtonClick(report.id)}>Archive Report</button>
-  //           ${buttonClicked ? '<p>Button clicked</p>' : ''}
-  //         </div>`,
-  //       });
-
-  //       marker.addListener('click', () => {
-  //         infoWindow.open(map, marker);
-  //       });
-
-  //       return marker;
-  //     });
-
-  //     markers.forEach((marker) => {
-  //       marker.setMap(null);
-  //     });
-
-  //     setMarkers(newMarkers);
-
-  //     const bounds = new google.maps.LatLngBounds();
-  //     newMarkers.forEach((marker) => {
-  //       const position = marker.getPosition();
-  //       if (position) {
-  //         bounds.extend(position);
-  //       }
-  //     });
-  //     map.fitBounds(bounds);
-  //   }
-  // }, [map, reports, selectedType, buttonClicked]);
-
   useEffect(() => {
     if (map) {
       if (navigator.geolocation) {
@@ -235,6 +162,8 @@ const ReportsMap: React.FC = () => {
 
   return (
     <div>
+      <ReportsList reports={reports} />
+
       <select value={selectedType} onChange={handleTypeChange}>
         <option value=''>All Reports</option>
         <option value='Road Hazard'>Road Hazard</option>
@@ -250,9 +179,6 @@ const ReportsMap: React.FC = () => {
         onLoad={onLoad}
         options={options as google.maps.MapOptions}
       />
-{reports.map(report => (
-  <img key={report.id} src={report.imgUrl ?? undefined} />
-))}
     </div>
   );
 };

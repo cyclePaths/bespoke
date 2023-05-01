@@ -10,14 +10,13 @@ import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
 import Stopwatch from './components/Profile/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
-// import Reports from './components/Reports/Reports';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
-
+import ReportsList from './components/Reports/ReportsList';
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -118,6 +117,13 @@ export interface geoLocation {
   lng: number;
 }
 
+export interface Badge {
+  id: number;
+  name: string;
+  badgeIcon: string;
+  tier?: number;
+}
+
 export const UserContext = createContext<any>(Object());
 
 const Root = () => {
@@ -137,6 +143,30 @@ const Root = () => {
   const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
   const [error, setError] = useState<string | undefined>(undefined);
+  //holds all badge objects
+  const [allBadges, setAllBadges] = useState<Badge[]>([
+    {
+      id: 0,
+      name: 'No Achievements',
+      badgeIcon:
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
+      tier: 0,
+    },
+  ]);
+  //holds badge objects associated with user
+  const [userBadges, setUserBadges] = useState<Badge[]>([
+    {
+      id: 0,
+      name: 'No Achievements',
+      badgeIcon:
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
+      tier: 0,
+    },
+  ]);
+  //holds URL of badge to display by username
+  const [selectedBadge, setSelectedBadge] = useState<string>(
+    userBadges[0].badgeIcon
+  );
 
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
@@ -158,6 +188,7 @@ const Root = () => {
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
+
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
   const getForecasts = () => {
@@ -280,38 +311,104 @@ const Root = () => {
     return weatherIcon;
   };
 
-  //function to choose which badge displays alongside user's name
-  const chooseBadge = () => {
-    //placeholder for now - will complete later
+  //gets all badge objects on database for use in identifying badges from join table
+  const getBadges = () => {
+    axios
+      .get('badges/all-badges')
+      .then(({ data }) => {
+        setAllBadges(data);
+      })
+      .catch((err) => {
+        console.log('Failed to get badges from database: ', err);
+      });
   };
 
-  const tierCheck = (badgeId, userId, tiersObj) => {
+  //pulls badges in from join table
+  const getBadgesOnUser = () => {
+    axios
+      .get('/badges/user-badges')
+      .then(({ data }) => {
+        if (data[0]) {
+          setUserBadges(data);
+        }
+      })
+      .catch((err) => {
+        console.log('Failed to get badges on user: ', err);
+      });
+  };
+
+  //function to ensure user's selected badge is displayed by their name
+  //Note that this will not affect other users' display badges - that functionality must be programmed elsewhere
+  const getSelectedBadge = () => {
+    axios
+      .get('/badges/selected-badge')
+      .then(({ data }) => {
+        setSelectedBadge(data);
+      })
+      .catch((err) => {
+        console.log('Failed to get badges on user: ', err);
+      });
+  };
+
+  //function to check if tier should increase (and increase it if so)
+  const tierCheck = (badgeName, tiersObj, tier = undefined) => {
+    let badgeId = 0;
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      } else {
+        console.error('There is no tier to check!');
+        return;
+      }
+    }
     let config = {
       badgeId: badgeId,
-      userId: userId,
       tiers: {
         ...tiersObj,
       },
     };
     axios
       .post('/badges/tier', config)
-      .then() //log something to confirm execution?
+      .then(() => {
+        getBadgesOnUser(); //update badgesOnUser with new DB info
+      })
       .catch((err) =>
         console.error('there was an error when checking/updating tiers')
       );
   };
 
   //function to add or remove (or update?) badges for users
-  const addBadge = (userId: number, badgeId: number) => {
+  const addBadge = (badgeName, tier = undefined) => {
+    let badgeId = 0;
+    console.log('this is all badges: ', allBadges);
+    console.log('this is the badge name to add: ', badgeName);
+    console.log('this is the tier of the badge to add: ', tier);
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      } else {
+        if (allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      }
+    }
     axios
       .post('/badges/add', {
-        userId: userId,
         badgeId: badgeId,
       })
-      .then() //should update badge display, but this will need to be done later or possibly handled elsewhere?
+      .then(() => {
+        getBadgesOnUser(); //update badgesOnUser with new DB info
+      })
       .catch((err) =>
         console.error(
-          `an error has occurred adding badge with ID ${badgeId} to user with id ${userId} `,
+          `an error has occurred adding badge with ID ${badgeId} to user`,
           err
         )
       );
@@ -319,21 +416,32 @@ const Root = () => {
 
   //function to increment or decrement values on the User table used for achievements/badges
   //increments by default, pass '-1' as third argument to decrement
-  const tickBadgeCounter = (userId, badgeId, change = 1) => {
+  const tickBadgeCounter = (badgeName, tier = undefined, change = 1) => {
+    let badgeId = 0;
+    for (let i = 0; i < allBadges.length; i++) {
+      if (allBadges[i].tier) {
+        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      } else {
+        if (allBadges[i].name === badgeName) {
+          badgeId = allBadges[i].id;
+          break;
+        }
+      }
+    }
     axios
       .patch('/badges/counter', {
-        userId: userId,
         badgeId: badgeId,
         change: change,
       })
       .then(() =>
-        console.log(
-          `successfully updated badge with ID ${badgeId} on user with id ${userId}`
-        )
+        console.log(`successfully updated badge with ID ${badgeId} on user`)
       )
       .catch((err) =>
         console.error(
-          `an error occurred attempting to increment/decrement counter on User model for userId ${userId}`,
+          `an error occurred attempting to increment/decrement counter for user's badge with id ${badgeId}`,
           err
         )
       );
@@ -414,7 +522,48 @@ const Root = () => {
   useEffect(() => {
     getLocation();
     findContext();
+    getBadgesOnUser();
+    getBadges();
+    getSelectedBadge();
   }, []);
+
+  //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
+  useEffect(() => {
+    // console.log(
+    //   'user badges has changed, here is new userBadges: ',
+    //   userBadges
+    // );
+    //the below statement should set a default selected icon once the user earns their first badge
+    // if (
+    //   selectedBadge ===
+    //   'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    // ) {
+    //   setSelectedBadge(userBadges[0].badgeIcon);
+    // }
+  }, [userBadges]);
+
+  //watches allBadges to re-render if new ones are added
+  useEffect(() => {}, [allBadges]);
+
+  //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
+  useEffect(() => {
+    if (
+      selectedBadge !==
+      'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      axios
+        .patch('/badges/set', {
+          iconURL: selectedBadge!,
+        })
+        .then() //log success?
+        .catch((err) =>
+          console.error(
+            `an error has occurred when PATCHing User with new badge URL: ${selectedBadge}`,
+            err
+          )
+        );
+    }
+  }, [selectedBadge]);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
     displayIcon: true,
@@ -454,13 +603,27 @@ const Root = () => {
       ele.displayIcon = false;
     }
   });
+  const reports = [];
 
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
-      <UserContext.Provider value={{ user, geoLocation, tickBadgeCounter }}>
+      <UserContext.Provider
+        value={{
+          user,
+          geoLocation,
+          userBadges,
+          setUserBadges,
+          getBadgesOnUser,
+          selectedBadge,
+          setSelectedBadge,
+          tickBadgeCounter,
+          addBadge,
+          tierCheck,
+        }}
+      >
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<App />}>
@@ -512,6 +675,14 @@ const Root = () => {
               />
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
+              <Route
+                path='reportsList'
+                element={<ReportsList reports={reports} />}
+              />
+              <Route
+                path='reportsList'
+                element={<ReportsList reports={reports} />}
+              />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='stopwatch' element={<Stopwatch />} />
               <Route path='directMessages' element={<DirectMessages />} />
@@ -519,7 +690,7 @@ const Root = () => {
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          <Stopwatch />
+          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>

@@ -4,9 +4,10 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
+import ReportsList from './ReportsList';
+import { BandAid } from '../../StyledComp';
 
 const CreateReport = () => {
-
   // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
@@ -38,7 +39,9 @@ const CreateReport = () => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     try {
       if (!currentLocation) {
@@ -83,8 +86,8 @@ const CreateReport = () => {
         }
         var geoOps = {
           enableHighAccuracy: false,
-          timeout: 10000
-        }
+          timeout: 10000,
+        };
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
@@ -93,8 +96,9 @@ const CreateReport = () => {
             interval = null;
           },
           (error) => {
-           setError(error.message)
-          }, geoOps
+            setError(error.message);
+          },
+          geoOps
         );
       }, 1000);
     } else {
@@ -108,9 +112,8 @@ const CreateReport = () => {
     };
   }, []);
 
-
   return (
-    <div>
+    <BandAid>
       <h1>Reports</h1>
       <div>
         <ReportsMap />
@@ -136,11 +139,16 @@ const CreateReport = () => {
           placeholder='Comments'
           onChange={handleBodyText}
         />
-        <input id="file" type='file' name="file" accept='image/*' onChange={handleImage} />
+        <input
+          id='file'
+          type='file'
+          name='file'
+          accept='image/*'
+          onChange={handleImage}
+        />
         <input type='submit' value='submit' />
       </form>
-
-    </div>
+    </BandAid>
   );
 };
 

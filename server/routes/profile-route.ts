@@ -35,6 +35,7 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -60,6 +61,7 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateTheme = await prisma.user.upsert({
@@ -128,14 +130,14 @@ profileRouter.post('/workout', async (req, res) => {
 
     const { id } = req.user as User;
 
-    const rideData: Rides = {
-      id,
-      activity,
-      duration,
-      weight,
-      calories,
-      userId: id,
-    };
+    // const rideData: Rides = {
+    //   id,
+    //   activity,
+    //   duration,
+    //   weight,
+    //   calories,
+    //   userId: id,
+    // };
     const newRide = await prisma.rides.create({
       data: {
         activity,
@@ -197,6 +199,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -222,6 +225,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -284,6 +288,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -309,6 +314,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateAddress = await prisma.user.upsert({

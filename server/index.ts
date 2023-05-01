@@ -1,5 +1,10 @@
 import path from 'path';
 import express from 'express';
+
+import http from 'http';
+
+import { Server } from 'socket.io';
+
 import session from 'express-session';
 import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
@@ -13,7 +18,7 @@ import profileRouter from './routes/profile-route';
 import dmRouter from './routes/dm-routes';
 import LeaderBoard from './routes/leaderboard-routes';
 import bulletinRouter from './routes/bulletinboard-routes';
-import commentRouter  from './routes/comment-routes';
+import commentRouter from './routes/comment-routes';
 import equipmentRouter from './routes/equipment-routes';
 import { badgeRouter } from './routes/badge-routes';
 import reportRouter from './routes/report-routes';
@@ -40,6 +45,9 @@ const isLoggedIn = (req, res, next) => {
 //
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+export { io };
 
 //  Authentication Middleware
 app.use(
@@ -136,7 +144,6 @@ app.use('/badges', badgeRouter);
 app.use('/dms', dmRouter);
 app.use('/leaderboard', LeaderBoard);
 
-
 // Render All Pages
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('client', 'dist', 'index.html'));
@@ -166,15 +173,37 @@ app.put('/home/user/:id', async (req, res) => {
 });
 process.env.PUBLIC_URL = '/';
 
-/////// SEEDER FOR USERS ///////
+/////////SOCKET IO/////////
+io.on('connection', (socket) => {
+  // console.log(`Socket ${socket.id} connected`);
 
-// app.post('/user', async (req, res) => {
-//   const user = req.body;
-//   const newUser = await prisma.user.create({ data: user });
-//   res.sendStatus(201);
+  socket.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    io.emit('message', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`Socket ${socket.id} disconnected`);
+  });
+});
+
+// httpServer.listen(8080, () => {
+//   console.log('Server listening on port 8080');
 // });
 
+///// SEEDER FOR USERS ///////
+
+app.post('/user', async (req, res) => {
+  const user = req.body;
+  const newUser = await prisma.user.create({ data: user });
+  res.sendStatus(201);
+});
+
 //Listening
-app.listen(PORT, () =>
-  console.log(`App now listening for requests at: http://localhost:${PORT}`)
-);
+// app.listen(PORT, () =>
+//   console.log(`App now listening for requests at: http://localhost:${PORT}`)
+// );
+
+httpServer.listen(PORT, () => {
+  console.log(`App now listening for requests at: http://localhost:${PORT}`);
+});

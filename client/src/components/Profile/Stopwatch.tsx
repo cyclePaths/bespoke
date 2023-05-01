@@ -28,7 +28,11 @@ interface ValueGroup {
   [key: string]: string;
 }
 
-const Stopwatch = () => {
+interface NavBarProps {
+  openStopWatch?: boolean;
+}
+
+const Stopwatch = ({ openStopWatch }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 0,
     minutes: 0,
@@ -126,7 +130,22 @@ const Stopwatch = () => {
   const { hours, minutes, seconds } = time;
 
   return (
-    <div style={{ position: 'fixed', top: 0, right: 0, marginRight: '20px' }}>
+    <div
+      style={{
+        position: 'fixed',
+        top: 40,
+        right: 32,
+        transform: 'translateX(-50)',
+        backgroundColor: 'white',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+        padding: '10px',
+        borderBottomRightRadius: '5px',
+        borderBottomLeftRadius: '5px',
+        borderTopLeftRadius: '5px',
+        zIndex: 1001,
+        display: openStopWatch ? 'block' : 'none',
+      }}
+    >
       <h3>
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
@@ -134,7 +153,9 @@ const Stopwatch = () => {
       {!isRunning && <button onClick={startStopwatch}>Start</button>}
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && <button onClick={stopStopwatch}>Stop</button>}
-      <button onClick={toggleStopwatch}>{isRunning ? 'Pause' : ' Reset '}</button>
+      <button onClick={toggleStopwatch}>
+        {isRunning ? 'Pause' : ' Reset '}
+      </button>
       {/* <button onClick={resetStopwatch}>{isRunning ? 'Reset' : 'Clear'}</button> */}
 
       {isPickerVisible && (
