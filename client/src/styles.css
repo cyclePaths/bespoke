@@ -6,14 +6,9 @@
 }
 
 .centered-header-Save {
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  margin-top: 10px;
-  font-size: 40px;
-  margin-left: 10px;
-  margin-right: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
+  display: flex;
+  justify-content: center;
+  font-size: 30px;
 }
 
 .route-saver-headers{
@@ -64,8 +59,8 @@ body {
 
 #set-private{
   font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  font-size: 17px;
+  /* font-weight: bold; */
+  font-size: 14px;
 }
 
 .stopwatch-container {
@@ -203,7 +198,8 @@ The code above is for the scroll wheel
 .leaderList {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  align-items: center;
 }
 
 .place-leaderboard {
@@ -216,4 +212,18 @@ The code above is for the scroll wheel
 
 .leaderboard-value {
   margin-right: 15px;
+}
+
+.override {
+  background-color: white;
+  border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  z-index: 1000;
 }

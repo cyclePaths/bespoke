@@ -17,27 +17,36 @@ const RouteCreatorComponent = styled.div`
 `;
 
 const PopoutSaveForm = styled.form`
-  display: block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: white;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
 `;
 
 const CategorySelector = styled.select`
-  border-color: black;
-  margin-right: 10px;
+  border-radius: 3px;
+  background-color: #e0e0e0;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const OptionsDiv = styled.div`
   display: flex;
-  flex-direction: row;
-  align-content: flex-start;
-  justify-content: space-evenly;
-  align-items: center;
+  place-content: flex-start space-evenly;
+  margin-top: 15px;
+  flex-wrap: wrap;
 `;
 
 const InputLayout = styled.input`
   height: 25px;
   width: 75%;
   margin-bottom: 5px;
+  border-radius: 2px;
+  background-color: #e0e0e0;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  border-style: hidden;
 `;
 
 const StartRouteContainer = styled.div`

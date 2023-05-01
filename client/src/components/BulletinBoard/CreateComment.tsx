@@ -34,11 +34,11 @@ const CreateComment = (props) => {
 
 
     return (
-    <div style={{ textAlign: 'right', marginBottom: '5px', maxHeight: '10px', minHeight: '10px' }}>
+    <div style={{ textAlign: 'left', marginBottom: '5px', maxHeight: '10px', minHeight: '10px' }}>
     <ThemeProvider theme={themeBulletin}>
         <div id='commentTextField' style={{ display: 'inline-block'}}>
         <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '20px',
-                                maxHeight: '20px', minHeight: '20px' }}
+                                maxHeight: '20px', minHeight: '20px', maxWidth: '200px' }}
             multiline={false}
             rows='1'
             inputProps={{
@@ -49,11 +49,11 @@ const CreateComment = (props) => {
             />
         </div>
         <div id="submitCommentButton" style={{ display: 'inline-block '}}>
-         <Button style={{ maxWidth: '100px', maxHeight: '25px', backgroundColor: '#17332c',
-                          minWidth: '100px', minHeight: '25px', }}
+         <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
+                          minWidth: '75px', minHeight: '25px', marginBottom: '5px' }}
           onClick={() => handleCommentSubmission()}
           >
-          <i>Comment</i>
+          <h5>Comment</h5>
           </Button>
         </div>
     </ThemeProvider>

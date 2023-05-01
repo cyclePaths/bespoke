@@ -102,9 +102,7 @@ const LeaderBoard = () => {
             <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
               Liked Users
             </h2>
-            <div
-              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
-            >
+            <div className='override'>
               {top10Likes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -114,9 +112,7 @@ const LeaderBoard = () => {
             <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
               Top Travelers
             </h2>
-            <div
-              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
-            >
+            <div className='override'>
               {top10Miles.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -126,9 +122,7 @@ const LeaderBoard = () => {
             <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
               Topic Chasers
             </h2>
-            <div
-              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
-            >
+            <div className='override'>
               {top10Post.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -138,9 +132,7 @@ const LeaderBoard = () => {
             <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
               Good Samaritans
             </h2>
-            <div
-              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
-            >
+            <div className='override'>
               {top10Reports.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -150,9 +142,7 @@ const LeaderBoard = () => {
             <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
               Reliable Routers
             </h2>
-            <div
-              style={{ backgroundColor: 'lightsteelblue', borderRadius: '4px' }}
-            >
+            <div className='override'>
               {top10CreatedRoutes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
