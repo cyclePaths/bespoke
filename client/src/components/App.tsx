@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom'
 import Navbar from './Navbar';
 import { StopwatchTime } from '../Root';
-import Stopwatch from './Stopwatch'
+// import Stopwatch from './Stopwatch'
 
 export interface AppProps {
   windSpeedMeasurementUnit: string;

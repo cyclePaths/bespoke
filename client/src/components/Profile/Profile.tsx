@@ -272,7 +272,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
     <div>
 
-      <div style={{ position: 'absolute', marginTop: 20 }}>
+      {/* <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
           <li style={{ listStyleType: 'none' }}>
             {rideStats && `Your last ride was an ${rideStats.activity}`}
@@ -297,7 +297,8 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
             )}
           </li>
         </ul>
-      </div>
+      </div> */}
+
     </div>
 
 <Scrollers />

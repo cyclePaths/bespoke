@@ -98,6 +98,7 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
+  console.log(req)
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -121,6 +122,7 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
+
   try {
     const { activity, duration, weight, calories } = req.body;
 

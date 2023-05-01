@@ -161,6 +161,10 @@ The code below is for the scroll wheel
   );
 }
 
+.hidden {
+  display: none;
+}
+
 
 /*
 The code above is for the scroll wheel
