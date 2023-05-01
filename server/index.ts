@@ -171,6 +171,7 @@ app.put('/home/user/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update user data' });
   }
 });
+process.env.PUBLIC_URL = '/';
 
 /////////SOCKET IO/////////
 io.on('connection', (socket) => {
