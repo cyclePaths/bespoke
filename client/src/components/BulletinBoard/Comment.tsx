@@ -5,9 +5,9 @@ const Comment = (props) => {
   const formattedDate = `${createdAt.slice(6,10)}-${createdAt.slice(2, 4)} at ${createdAt.slice(11, 16)}`
 
   return (
-    <div className='bulletin' style={{ backgroundColor: '#2b6355'}}>
-      <p className='bulletinTopic'><i>{commentCreator}</i> -- {formattedDate}</p>
-      <p style={{ display: 'inline-block' }} className='commentText'>{commentText}</p>
+    <div className='bulletin' style={{ backgroundColor: '#2b6355', marginTop: '5px'}}>
+      <div className='bulletinTopic'><i>{commentCreator}</i> -- {formattedDate}</div>
+      <div style={{ display: 'inline-block', marginTop: '5px' }} className='commentText'>{commentText}</div>
     </div>
   );
 };
