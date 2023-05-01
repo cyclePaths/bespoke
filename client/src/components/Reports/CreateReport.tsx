@@ -139,62 +139,77 @@ const CreateReport: React.FC = () => {
 
   return (
     <div>
-     <ReportsMap />
-    <Dialog open={open} onClose={handleClose}>
-      <div id='make-report-container'>
-        <form onSubmit={handleSubmit}>
-        <Grid container direction='column' spacing={2} sx={{ justifyContent: 'space-evenly' }}>
-  <Grid item>
-    <ToggleButtonGroup
-      value={type}
-      onChange={handleTypeText}
-      aria-label='Report Type'
-      exclusive
-    >
-      <ToggleButton value='Road Hazard'>Road Hazard</ToggleButton>
-      <ToggleButton value='Theft Alert'>Theft Alert</ToggleButton>
-      <ToggleButton value='Collision'>Collision</ToggleButton>
-      <ToggleButton value='Point of Interest'>
-        Point of Interest
-      </ToggleButton>
-    </ToggleButtonGroup>
-  </Grid>
-  <Grid item>
-    <TextField
-      id='report-title-input'
-      label='Report Title'
-      variant='outlined'
-      sx={{ width: '100%' }} // set the width to 100%
-      onChange={handleTitleText}
-    />
-  </Grid>
-  <Grid item>
-    <TextField
-      id='report-body-input'
-      label='Comments'
-      variant='outlined'
-      multiline
-      rows={4}
-      sx={{ width: '100%' }} // set the width to 100%
-      onChange={handleBodyText}
-    />
-  </Grid>
-</Grid>
+      <ReportsMap />
+      <Dialog open={open} onClose={handleClose}>
+        <div id='make-report-container'>
+          <form onSubmit={handleSubmit}>
+            {/* <Grid container direction='column' spacing={2} sx={{ justifyContent: 'space-evenly' }}> */}
+            {/* <Grid item> */}
+            <ToggleButtonGroup
+              value={type}
+              onChange={handleTypeText}
+              aria-label='Report Type'
+              exclusive
+              sx={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
+                Hazard
+              </ToggleButton>
+              <ToggleButton value='Theft Alert' sx={{ width: '20%' }}>
+                Theft
+              </ToggleButton>
+              <ToggleButton value='Collision' sx={{ width: '30%' }}>
+                Collision
+              </ToggleButton>
+              <ToggleButton value='Point of Interest'>P.O.I</ToggleButton>
+            </ToggleButtonGroup>
+            {/* </Grid> */}
+            {/* <Grid item> */}
+            <TextField
+              id='report-title-input'
+              label='Report Title'
+              variant='outlined'
+              sx={{ width: '100%' }} // set the width to 100%
+              onChange={handleTitleText}
+            />
+            {/* </Grid> */}
+            {/* <Grid item> */}
+            <TextField
+              id='report-body-input'
+              label='Comments'
+              variant='outlined'
+              multiline
+              rows={4}
+              sx={{ width: '100%' }} // set the width to 100%
+              onChange={handleBodyText}
+            />
+            {/* </Grid> */}
+            {/* </Grid> */}
 
-          <IconButton
-            color='primary'
-            aria-label='upload picture'
-            component='label'
-          >
-<input hidden accept='image/*' type='file' name='file'     onChange={handleImage}/>
-            <PhotoCamera />
-          </IconButton>
-          <input type='submit' value='submit' />
-        </form>
-      </div>
-    </Dialog>
+            <IconButton
+              color='primary'
+              aria-label='upload picture'
+              component='label'
+            >
+              <input
+                hidden
+                accept='image/*'
+                type='file'
+                name='file'
+                onChange={handleImage}
+              />
+              <PhotoCamera />
+            </IconButton>
+            <input type='submit' value='submit' />
+          </form>
+        </div>
+      </Dialog>
     </div>
-
   );
 };
 

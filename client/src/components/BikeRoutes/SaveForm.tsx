@@ -5,6 +5,7 @@ import {
   CategorySelector,
   OptionsDiv,
 } from '../../StyledComp';
+import Button from '@mui/material/Button';
 import '../../styles.css';
 
 interface SaveProps {
@@ -41,14 +42,13 @@ const SaveForm = ({
   return (
     <div>
       <PopoutSaveForm>
-        <h2 className='centered-header'>Enter Name of Route:</h2>
         <InputLayout
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
           type='text'
           maxLength='10'
+          placeholder='Enter Name of Route...'
         />
-        <h2 className='centered-header'>Select Ride Options:</h2>
         <OptionsDiv>
           <CategorySelector
             defaultValue='None'
@@ -59,16 +59,36 @@ const SaveForm = ({
             <option>Speedy</option>
             <option>Scenic</option>
           </CategorySelector>
-          <div>
-            <strong id='set-private'>Private?</strong>
+          <div
+            style={{
+              display: 'flex',
+              backgroundColor: '#e0e0e0',
+              padding: '3px',
+              borderRadius: '3px',
+              border: '1px solid',
+              borderColor: 'rgb(118, 118, 118) rgb(133, 133, 133)',
+              boxShadow: '0px 1px 0px rgba(0,0,0,0.2)',
+              alignItems: 'center',
+            }}
+          >
+            <div id='set-private'>Private?</div>
             <input
               type='checkbox'
               onClick={() => (setIsPrivate(true), console.log(isPrivate))}
             />
           </div>
-          <button type='button' onClick={() => handleSave()}>
-            Submit
-          </button>
+          <Button
+            variant='contained'
+            onClick={() => handleSave()}
+            sx={{
+              marginTop: '15px',
+              backgroundColor: '#e0e0e0',
+              color: 'black',
+              height: '30px',
+            }}
+          >
+            Save
+          </Button>
         </OptionsDiv>
       </PopoutSaveForm>
     </div>

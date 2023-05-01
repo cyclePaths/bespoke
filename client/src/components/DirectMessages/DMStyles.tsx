@@ -1,10 +1,9 @@
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 // import { createTheme } from '@mui/material/styles';
 
-
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {
-    width: '100%',
+    // width: '100%',
   },
   input: {
     color: 'white',
@@ -25,8 +24,6 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   underline: {},
   disabled: {},
 }));
-
-
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,7 +52,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(1),
       // marginBottom: theme.spacing(1),
       wordWrap: 'break-word',
-
     },
     messageFromMe: {
       color: 'white',
@@ -78,7 +74,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginBottom: 10,
     },
     inputContainer: {
-
       display: 'flex',
       alignItems: 'center',
       padding: theme.spacing(1),
@@ -103,6 +98,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       right: 0,
       width: '100%',
       marginTop: theme.spacing(12),
-    }
+    },
   })
 );

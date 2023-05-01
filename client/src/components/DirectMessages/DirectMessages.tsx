@@ -8,7 +8,7 @@ import SearchUsers, { Users } from './SearchUsers';
 import { ThemeProvider } from '@mui/material/styles';
 import io from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
-
+import { BandAid } from '../../StyledComp';
 
 interface Message {
   id: number;
@@ -91,21 +91,16 @@ function DirectMessages() {
   const [receiverId, setReceiverId] = useState(0);
   const [receiver, setReceiver] = useState<SelectedUser>();
   const [name, setName] = useState(true);
-  const [ messageThread, setMessageThread] = useState<Message[]>([]);
+  const [messageThread, setMessageThread] = useState<Message[]>([]);
 
-  const [ socket , setSocket] = useState<SocketIOClient.Socket>();
-
-
-
-
-
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   useEffect(() => {
     axios
       .get('/profile/user')
       .then(({ data }) => {
-        const { id, name } = data
-        console.log(id)
+        const { id, name } = data;
+        console.log(id);
         setUserId(id);
         setName(name);
       })
@@ -114,12 +109,11 @@ function DirectMessages() {
       });
 
     if (receiver) {
-      setReceiverId(receiver.id)
+      setReceiverId(receiver.id);
       console.log(options);
       console.log(receiver);
     }
   }, [receiver]);
-
 
   //  // Connect to the Socket.IO server
   //  const socketRef = useRef<SocketIOClient.Socket>();
@@ -128,8 +122,6 @@ function DirectMessages() {
   //  socketRef.current.on('connect', () => {
   //    console.log('Connected to Socket.IO server');
   //  });
-
-
 
   // useEffect(() => {
   //     // Create a new WebSocket connection to the server
@@ -147,63 +139,51 @@ function DirectMessages() {
   //     };
   //   }, [receiverId]);
 
+  useState(() => {
+    const newSocket = io('http://localhost:8080');
 
-    useState(() => {
-      const newSocket = io('http://localhost:8080');
+    // Store the Socket.IO client instance in the state variable
+    setSocket(newSocket);
 
-      // Store the Socket.IO client instance in the state variable
-      setSocket(newSocket);
-
-      // Listen for incoming 'message' events
-      newSocket.on('message', (newMessage: Message) => {
-        // Add the new message to the messages array
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      });
-
-      // Clean up the WebSocket connection when the component unmounts
-      return () => {
-        newSocket.disconnect();
-      };
+    // Listen for incoming 'message' events
+    newSocket.on('message', (newMessage: Message) => {
+      // Add the new message to the messages array
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
-
-
-
-
-
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      newSocket.disconnect();
+    };
+  });
 
   const loadMessages = async () => {
+    try {
+      const thread = await axios.get('/dms/retrieveMessages', {
+        params: { receiverId: receiverId },
+      });
+      console.log('Thread', thread);
+      const { data } = thread;
+      console.log('Big thread', thread);
 
-      try{
-        const thread = await axios.get('/dms/retrieveMessages', {
-          params: { receiverId: receiverId }
-        })
-        console.log('Thread', thread);
-        const { data } = thread;
-        console.log('Big thread', thread)
-
-        data.forEach((message) => {
-          console.log(message.text);
-          // setMessageThread((pevMessages) => [...pevMessages, message.text] as Message[])
-          setMessages((prevMessages) => [...prevMessages,  message]);
-        })
-
-      } catch (err) {
-        console.log(err);
-      }
+      data.forEach((message) => {
+        console.log(message.text);
+        // setMessageThread((pevMessages) => [...pevMessages, message.text] as Message[])
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-console.log('check thread', messages)
+  console.log('check thread', messages);
   useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
     }
   }, [receiverId]);
 
-
-
   const handleSendMessage = () => {
-
     if (!socket || !receiver) {
       return;
     }
@@ -218,7 +198,7 @@ console.log('check thread', messages)
 
     // Emit a 'message' event to the server
     // socketRef.current?.emit('message', newMessage);
-    socket?.emit('message',newMessage);
+    socket?.emit('message', newMessage);
 
     axios
       .post('/dms/message', {
@@ -247,7 +227,7 @@ console.log('check thread', messages)
   }, [socket]);
 
   return (
-    <div>
+    <BandAid>
       <div>{`Hello ${name}!`}</div>
       <SearchUsers
         open={open}
@@ -302,46 +282,11 @@ console.log('check thread', messages)
           </Button>
         </div>
       </Paper>
-    </div>
+    </BandAid>
   );
 }
 
 export default DirectMessages;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useRef, useEffect } from 'react';
 // import axios from 'axios';
@@ -353,7 +298,6 @@ export default DirectMessages;
 // import { ThemeProvider } from '@mui/material/styles';
 // import io from 'socket.io-client';
 // import * as SocketIOClient from 'socket.io-client';
-
 
 // interface Message {
 //   id: number;
@@ -458,7 +402,6 @@ export default DirectMessages;
 //     }
 //   }, [receiver]);
 
-
 //    // Connect to the Socket.IO server
 //    const socketRef = useRef<SocketIOClient.Socket>();
 //    socketRef.current = io('http://localhost:8080');
@@ -466,7 +409,6 @@ export default DirectMessages;
 //    socketRef.current.on('connect', () => {
 //      console.log('Connected to Socket.IO server');
 //    });
-
 
 //   const loadMessages = async () => {
 

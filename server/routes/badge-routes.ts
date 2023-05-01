@@ -14,7 +14,7 @@ const prisma = new PrismaClient();
 badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
   try {
     const badges = await prisma.badge.findMany({});
-    console.log('OOGA BOOGA THERE ARE THE BADGES? ', badges);
+    // console.log('OOGA BOOGA THERE ARE THE BADGES? ', badges);
     res.status(200).send(badges);
   } catch (err) {
     console.error('an error occurred when GETting all badges', err);

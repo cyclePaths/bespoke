@@ -66,34 +66,6 @@ const Places = ({
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            {/* <RouteButtonContainer>
-              <Button
-                variant='contained'
-                sx={{ marginRight: '5px', marginLeft: '5px' }}
-                onClick={handleRoute}
-              >
-                <NavigationIcon />
-              </Button>
-              <Button
-                variant='contained'
-                sx={{ marginRight: '5px', marginLeft: '5px' }}
-                onClick={() => {
-                  if (directions) {
-                    setOpenPopup(true);
-                  }
-                }}
-              >
-                <SaveAltIcon />
-              </Button>
-              <Button
-                variant='contained'
-                sx={{ marginRight: '5px', marginLeft: '5px' }}
-                onClick={() => setOpenSearch(true)}
-              >
-                <SearchIcon />
-              </Button>
-            </RouteButtonContainer> */}
-
             <InputLayout
               id='address-input'
               {...getInputProps({

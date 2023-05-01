@@ -484,7 +484,16 @@ const Root = () => {
             clearInterval(interval!);
             interval = null;
           },
-          (error) => setError(error.message)
+          (error) => {
+            if (error.code === 1) {
+              const allowLocation = confirm(
+                'Please allow the website to access your location'
+              );
+              if (allowLocation) {
+                getLocation();
+              }
+            }
+          }
         );
       }, 1000);
     } else {
@@ -684,7 +693,7 @@ const Root = () => {
                 element={<ReportsList reports={reports} />}
               />
               <Route path='reportsMap' element={<ReportsMap />} />
-              <Route path='stopwatch' element={<Stopwatch />} />
+              {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
           </Routes>
