@@ -423,7 +423,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           }
         })}
       </AchievementBadgeHolder>
-      <div>
+      {/* <div>
         <div style={{ position: 'absolute', marginTop: 20 }}>
           <ul>
             <li style={{ listStyleType: 'none' }}>
@@ -450,13 +450,13 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
       <div style={{ position: 'relative', marginTop: 100 }}>
-        <Picker
+        {/* <Picker
           optionGroups={optionGroups}
           valueGroups={valueGroups}
           onChange={handleChange}
-        />
+        /> */}
         <div>
           <button
             type='button'
