@@ -10,7 +10,7 @@ export const exiledRedHeadedStepChildrenValueGroups = {
 
 export const exiledRedHeadedStepChildrenOptionGroups = {
   workout: [
-    { value: '', label: 'Average Speed' },
+    // { value: '', label: 'Average Speed' },
     { value: 'leisure bicycling', label: '<10 mph' },
     { value: 'mph, light', label: '10-12 mph' },
     { value: '13.9 mph, moderate', label: '12-14 mph' },
@@ -20,7 +20,7 @@ export const exiledRedHeadedStepChildrenOptionGroups = {
     { value: 'mountain bike', label: 'Mountain Biking' },
   ],
   durationHours: [
-    { value: '0', label: 'hours' },
+    // { value: '0', label: 'hours' },
     { value: '60', label: '1' },
     { value: '120', label: '2' },
     { value: '180', label: '3' },
@@ -47,7 +47,7 @@ export const exiledRedHeadedStepChildrenOptionGroups = {
     { value: '1440', label: '24' },
   ],
   durationMinutes: [
-    { value: '0', label: 'minutes' },
+    // { value: '0', label: 'minutes' },
     { value: '1', label: '1' },
     { value: '2', label: '2' },
     { value: '3', label: '3' },

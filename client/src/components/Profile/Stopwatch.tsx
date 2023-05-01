@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../Root';
+import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
 import Picker from 'react-scrollable-picker';
 import {
   exiledStopwatchStatsRedHeadedStepChildrenOptionGroups,
   exiledRedHeadedStepChildrenValueGroups,
-} from '../../profile-assets';
-import StopwatchStats from '../components/Profile/StopwatchStats';
+} from '../../../profile-assets';
+import StopwatchStats from './StopwatchStats';
 
 export type StopwatchTime = {
   hours: number;
