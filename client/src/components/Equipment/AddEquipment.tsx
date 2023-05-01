@@ -6,7 +6,6 @@ import EquipmentPopup from './EquipmentPopup'
 
 const AddEquipment = () => {
   const context = useContext(UserContext)
-
   const [openEquipmentEntry, setOpenEquipmentEntry] = useState(false);
 
   const exitPopup= () => {
@@ -15,8 +14,8 @@ const AddEquipment = () => {
 
   return (
   <div>
-    <Button style={{backgroundColor: '#17332c', marginTop: '5px'}} onClick={() => setOpenEquipmentEntry(true)}>
-        Add Equipment
+    <Button style={{backgroundColor: '#17332c', marginTop: '5px', maxHeight: '40px'}} onClick={() => setOpenEquipmentEntry(true)}>
+        <h5>Add Parts</h5>
     </Button>
     <EquipmentPopup openEquipmentEntry={openEquipmentEntry} setOpenEquipmentEntry={setOpenEquipmentEntry}>
     <div style={{textAlign: 'center'}}>

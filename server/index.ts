@@ -1,6 +1,10 @@
 import path from 'path';
 import express from 'express';
+
+import http from 'http';
+
 import { Server } from 'socket.io';
+
 import session from 'express-session';
 import PgSimpleStore from 'connect-pg-simple';
 import passport from 'passport';
@@ -41,7 +45,8 @@ const isLoggedIn = (req, res, next) => {
 //
 
 const app = express();
-const io = new Server(8081);
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
 export { io };
 
 //  Authentication Middleware
@@ -169,6 +174,7 @@ app.put('/home/user/:id', async (req, res) => {
 
 /////////SOCKET IO/////////
 io.on('connection', (socket) => {
+  // console.log(`Socket ${socket.id} connected`);
 
   socket.on('message', (message) => {
     console.log(`Received message: ${message}`);

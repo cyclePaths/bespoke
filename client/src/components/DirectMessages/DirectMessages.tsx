@@ -149,7 +149,7 @@ function DirectMessages() {
 
 
     useState(() => {
-      const newSocket = io('http://localhost:8081');
+      const newSocket = io('http://localhost:8080');
 
       // Store the Socket.IO client instance in the state variable
       setSocket(newSocket);
