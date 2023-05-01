@@ -14,7 +14,7 @@ const ReportsMap: React.FC = () => {
   const [center, setCenter] = useState<google.maps.LatLng>();
   const [reports, setReports] = useState<Report[]>([]);
   const [buttonClicked, setButtonClicked] = useState(false);
-  const [selectedType, setSelectedType] = useState('left');
+  const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
   const onLoad = (map: google.maps.Map) => {
@@ -43,7 +43,7 @@ const ReportsMap: React.FC = () => {
 
   const handleTypeChange = (event) => {
     const value = event.target.value;
-    setSelectedType(value === 'All' ? '' : value);
+    setSelectedType(value === "All" ? "" : value);
   };
 
   useEffect(() => {
@@ -71,11 +71,11 @@ const ReportsMap: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const filteredReports = selectedType
-        ? reports.filter(
-            (report) =>
-              report.type === selectedType && report.published === true
-          )
-        : reports.filter((report) => report.published === true);
+  ? reports.filter(
+      (report) => report.type === selectedType && report.published === true
+    )
+  : reports.filter((report) => report.published === true);
+
 
       const newMarkers = filteredReports.map((report) => {
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
@@ -110,7 +110,6 @@ const ReportsMap: React.FC = () => {
         contentDiv.appendChild(typeParagraph);
         contentDiv.appendChild(titleParagraph);
         contentDiv.appendChild(bodyParagraph);
-        // contentDiv.appendChild(createdAtParagraph);
         contentDiv.appendChild(button);
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);
@@ -162,39 +161,42 @@ const ReportsMap: React.FC = () => {
 
   return (
     <BandAid>
-      <ToggleButtonGroup
-        value={selectedType}
-        onChange={handleTypeChange}
-        aria-label='Report Type'
-        sx={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          justifyContent: 'center',
-          width: '100%',
-        }}
-      >
-        <ToggleButton value='All'>All</ToggleButton>
-        <ToggleButton value='Road Hazard' sx={{ width: '20%' }}>
-          Hazard
-        </ToggleButton>
-        <ToggleButton value='Theft Alert' sx={{ width: '20%' }}>
-          Theft
-        </ToggleButton>
-        <ToggleButton value='Collision'>Collision</ToggleButton>
-        <ToggleButton value='Point of Interest' sx={{ width: '15%' }}>
-          P.O.I
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Box sx={{ display: 'flex', height: '75vh' }}>
-        <GoogleMap
-          mapContainerStyle={{ height: '100%', width: '100%' }}
-          center={center}
-          zoom={15}
-          onLoad={onLoad}
-          options={options as google.maps.MapOptions}
-        />
-      </Box>
+
+      <div>
+    <ToggleButtonGroup
+      value={selectedType}
+      onChange={handleTypeChange}
+      aria-label="Report Type"
+    >
+      <ToggleButton value="All" sx={{ width: '20%' }}>
+        All
+      </ToggleButton>
+      <ToggleButton value="Road Hazard" sx={{ width: '20%' }}>
+        Road Hazard
+      </ToggleButton>
+      <ToggleButton value="Theft Alert" sx={{ width: '20%' }}>
+        Theft Alert
+      </ToggleButton>
+      <ToggleButton value="Collision" sx={{ width: '20%' }}>
+        Collision
+      </ToggleButton>
+      <ToggleButton value="Point of Interest" sx={{ width: '20%' }}>
+        Point of Interest
+      </ToggleButton>
+    </ToggleButtonGroup>
+    <Box height="100vh">
+      <GoogleMap
+        mapContainerStyle={{ height: '100%', width: '100%' }}
+        center={center}
+        zoom={15}
+        onLoad={onLoad}
+        options={options as google.maps.MapOptions}
+      />
+    </Box>
+  </div>
     </BandAid>
+
+
   );
 };
 
