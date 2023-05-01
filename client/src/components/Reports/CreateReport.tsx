@@ -30,7 +30,10 @@ const CreateReport: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>(null);
+  } | null>({
+    lat: 29.9511,
+    lng: -90.0715,
+  });
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(true);
