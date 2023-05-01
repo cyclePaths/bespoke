@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../Root';
+import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
 import Picker from 'react-scrollable-picker';
 import {
   exiledStopwatchStatsRedHeadedStepChildrenOptionGroups,
   exiledRedHeadedStepChildrenValueGroups,
-} from '../../profile-assets';
-import StopwatchStats from '../components/Profile/StopwatchStats';
+} from '../../../profile-assets';
+import StopwatchStats from './StopwatchStats';
 
 export type StopwatchTime = {
   hours: number;
@@ -30,9 +30,10 @@ interface ValueGroup {
 
 interface NavBarProps {
   openStopWatch?: boolean;
+  setActiveWatch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Stopwatch = ({ openStopWatch }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setActiveWatch }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 0,
     minutes: 0,
@@ -150,9 +151,27 @@ const Stopwatch = ({ openStopWatch }: NavBarProps) => {
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
       </h3>
-      {!isRunning && <button onClick={startStopwatch}>Start</button>}
+      {!isRunning && (
+        <button
+          onClick={() => {
+            startStopwatch();
+            setActiveWatch(true);
+          }}
+        >
+          Start
+        </button>
+      )}
       {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
-      {isRunning && <button onClick={stopStopwatch}>Stop</button>}
+      {isRunning && (
+        <button
+          onClick={() => {
+            stopStopwatch();
+            setActiveWatch(false);
+          }}
+        >
+          Stop
+        </button>
+      )}
       <button onClick={toggleStopwatch}>
         {isRunning ? 'Pause' : ' Reset '}
       </button>

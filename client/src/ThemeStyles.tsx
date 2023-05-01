@@ -25,7 +25,7 @@ const ToggleSwitch = styled.label`
 
     &:before {
       position: absolute;
-      content: "";
+      content: '';
       height: 26px;
       width: 26px;
       left: 4px;
@@ -37,19 +37,17 @@ const ToggleSwitch = styled.label`
   }
 
   input:checked + span {
-    background-color: #2196F3;
+    background-color: #2196f3;
   }
 
   input:focus + span {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196f3;
   }
 
   input:checked + span:before {
     transform: translateX(26px);
   }
 `;
-
-
 
 const GlobalStyleDark = createGlobalStyle`
   html, body {
@@ -87,7 +85,7 @@ const GlobalStyleDark = createGlobalStyle`
       width: 26px;
       right: 4px;
       bottom: 4px;
-      background-color: #2196F3;
+      background-color: #0071ce;
       transition: transform 0.2s;
       border-radius: 50%;
     }
@@ -107,11 +105,9 @@ const GlobalStyleDark = createGlobalStyle`
   }
 `;
 
-
-
 const GlobalStyleLight = createGlobalStyle`
   html, body {
-    background-color: #fff;
+    background-color: #0088d5;
     color: #333;
   }
 
@@ -166,36 +162,6 @@ const GlobalStyleLight = createGlobalStyle`
 
 `;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // const ToggleSwitch = styled.label`
 //   position: relative;
 //   display: inline-block;
@@ -245,10 +211,4 @@ const GlobalStyleLight = createGlobalStyle`
 //   }
 // `;
 
-
-
-export {
-  GlobalStyleDark,
-  GlobalStyleLight,
-  ToggleSwitch,
-}
+export { GlobalStyleDark, GlobalStyleLight, ToggleSwitch };

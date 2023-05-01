@@ -28,7 +28,7 @@ const theme = createTheme({
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {
-    width: '100%',
+    // width: '100%',
   },
   input: {
     color: 'white',
@@ -50,7 +50,10 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
+<<<<<<< HEAD
 // Define the component styles
+=======
+>>>>>>> 8e778cf6f921ef0e76e88354a62b13d8b702d7ca
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -130,6 +133,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       right: 0,
       width: '100%',
       marginTop: theme.spacing(12),
-    }
+    },
   })
 );

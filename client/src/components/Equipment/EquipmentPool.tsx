@@ -8,6 +8,7 @@ import Equipment from './Equipment';
 const EquipmentPool = () => {
     const context = useContext(UserContext);
     const [equipment, setEquipment] = useState([]);
+    const [expansion, setExpansion] = useState(false)
 
     // Function to retrieve the equipment
   const getAllEquipment = () => {
@@ -20,14 +21,18 @@ const EquipmentPool = () => {
     });
   };
 
+  const handleEquipmentPoolClick = () => {
+    setExpansion(!expansion)
+  }
+
   useEffect(() => {
     getAllEquipment();
   }, [context])
 
   return (
     <div>
-      <Card style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div><b>EQUIPMENT POOL:</b>
-      {equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
+      <Card onClick={handleEquipmentPoolClick} style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div><b>Expand Parts Exchange:</b>
+      {expansion && equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
       </div>
       </Card>
     </div>

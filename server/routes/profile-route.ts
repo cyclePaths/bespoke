@@ -35,6 +35,7 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -60,6 +61,7 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateTheme = await prisma.user.upsert({
@@ -98,8 +100,8 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
+  console.log(req)
   const { activity, duration, weight } = req.query;
-
   const options = {
     method: 'GET',
     url: 'https://api.api-ninjas.com/v1/caloriesburned',
@@ -122,6 +124,7 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
+
   try {
     const { activity, duration, weight, calories } = req.body;
 
@@ -196,6 +199,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -221,6 +225,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateWeight = await prisma.user.upsert({
@@ -283,6 +288,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     } = (req.user as User) || {};
 
     const userData: User = {
@@ -308,6 +314,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
       monthlyDownvotedReports,
       totalRoutes,
       totalLikesReceived,
+      selectedBadge,
     };
 
     const updateAddress = await prisma.user.upsert({
