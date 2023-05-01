@@ -61,6 +61,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// reportRouter.post('/',  (req, res) => {
+
+//     console.log(req);
+
+// });
 reportRouter.post(
   '/',
   (req, res, next) => {
@@ -75,27 +80,25 @@ reportRouter.post(
     });
   },
   async (req, res) => {
-    // console.log(req);
     try {
       const {
-
-        userEmail,
+        userId,
         body,
         type,
         title,
         latitude,
         longitude,
-        image,
       } = req.body;
       let imageUrl: string | undefined;
 
-      const result = await cloudinary.uploader.upload(req.file?.path);
-      if (result) {
+      // Check if file exists in the request and upload it to Cloudinary
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path);
         imageUrl = result.secure_url;
-        console.log(req.body, imageUrl);
       }
+      // console.log(req.user);
       const { id } = req.user as User;
-      console.log("userId: ", id);
+
       // Save report data to database using Prisma
       const newReport = await prisma.report.create({
         data: {
@@ -125,106 +128,7 @@ reportRouter.post(
   }
 );
 
-// reportRouter.post('/', upload.single('image'), async (req, res) => {
-//   try {
-//     const { id, body, type, title, latitude, longitude, image } = req.body;
-// let imageUrl: string | undefined;
 
-//   const result = await cloudinary.uploader.upload(req.file?.path);
-//     console.log("CLOUDINARY RESULT: ", result);
-//     imageUrl = result.secure_url;
-// res.sendStatus(201);
-
-//       } catch (error) {
-//         console.error("Report Post Error: ", error);
-//         res.status(500).json({ error: 'An error occurred while saving the report.' });
-//       }
-//     });
-
-// const reportData: Report = {
-//   id: id,
-//   body: body,
-//   type: type,
-//   title: title,
-//   location_lat: Number(latitude),
-//   location_lng: Number(longitude),
-//   createdAt: new Date(),
-//   updatedAt: new Date(),
-//   published: true,
-//   userId: id,
-//   imgUrl: imageUrl ?? null,
-// };
-
-// // Save report data to database using Prisma
-// const newReport = await prisma.report.create({ data: reportData });
-// res.json(newReport);
-
-// reportRouter.post('/', async (req, res) => {
-//   // console.log("res:", res);
-//   try {
-//     const { id, body, type, title, latitude, longitude, image } = req.body;
-
-//     const formData = new FormData();
-//     formData.append('id', id)
-//     formData.append('body', body);
-//     formData.append('type', type);
-//     formData.append('title', title);
-//     formData.append('latitude', latitude);
-//     formData.append('longitude', longitude);
-
-//     let imageUrl: string | undefined;
-//     if (image) {
-//       // Upload image to Cloudinary
-//       const uniqueFilename = uuidv4();
-//       const formDataWithImage = new FormData();
-//       formDataWithImage.append('file', image);
-//       formDataWithImage.append('upload_preset', 'default-preset');
-//       formDataWithImage.append('public_id', uniqueFilename);
-//       const response = await axios.post(
-//         'https://api.cloudinary.com/v1_1/dcecaxmxv/image/upload',
-//         formDataWithImage,
-//       );
-//       imageUrl = result.secure_url;
-//     } else {
-//       imageUrl = undefined;
-//     }
-
-//     const reportData: Report = {
-//       id,
-//       body,
-//       type,
-//       title,
-//       location_lat: Number(latitude),
-//       location_lng: Number(longitude),
-//       createdAt: new Date(),
-//       updatedAt: new Date(),
-//       published: true,
-//       userId: id,
-//       imgUrl: imageUrl ?? null,
-//     };
-
-//     // Save report data to database using Prisma
-//     const newReport = await prisma.report.create({ data: reportData });
-//     res.json(newReport);
-//   } catch (error) {
-//     console.error("Report Post Error: ", error);
-//     res.status(500).json({ error: 'An error occurred while saving the report.' });
-//   }
-// });
-
-// reportRouter.post('/createMany', async (req, res) => {
-//   try {
-//     const data = req.body;
-//     const newPosts = await prisma.report.createMany({
-//       data,
-//     });
-//     res.status(201).json(newPosts);
-//     console.log("Success")
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
 
 //  UPDATE report archived only
 reportRouter.patch('/:id', async (req: Request, res: Response) => {

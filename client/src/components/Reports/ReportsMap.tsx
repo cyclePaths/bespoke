@@ -164,7 +164,9 @@ const ReportsMap: React.FC = () => {
   }, [map]);
 
   return (
-    <div>
+    <BandAid>
+
+      <div>
     <ToggleButtonGroup
       value={selectedType}
       onChange={handleTypeChange}
@@ -196,6 +198,8 @@ const ReportsMap: React.FC = () => {
       />
     </Box>
   </div>
+    </BandAid>
+
 
   );
 };

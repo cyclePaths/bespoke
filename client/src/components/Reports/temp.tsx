@@ -5,10 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
 import ReportsList from './ReportsList';
+import {
+  Input,
+  IconButton,
+  InputLabel,
+  InputAdornment,
+  TextField,
+  Grid,
+  Button,
+  Dialog,
+  ToggleButtonGroup,
+  ToggleButton,
+} from '@mui/material';
+import { AttachFile, PhotoCamera } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
 
-const CreateReport = () => {
-  const [showForm, setShowForm] = useState<boolean>(true); // add state variable
+const CreateReport: React.FC = () => {
+  // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -20,11 +33,20 @@ const CreateReport = () => {
   } | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const user = useContext(UserContext);
 
-  const handleTypeText = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setType(event.target.value);
+  const handleTypeText = (
+    event: React.MouseEvent<HTMLElement>,
+    value: string | null
+  ) => {
+    if (value) {
+      setType(value);
+    }
   };
 
   const handleTitleText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,12 +90,14 @@ const CreateReport = () => {
       setBody('');
       setType('');
       setImage(null);
-    } catch (error: any) {
-      console.error(error.message);
-      setError(error.message);
-    }
-  };
+      setOpen(false); // Close the dialog after the report is submitted
+  } catch (error: any) {
+    console.error(error.message);
+    setError(error.message);
+  }
+};
 
+  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     let interval: any | undefined;
     if (navigator.geolocation) {
@@ -99,65 +123,75 @@ const CreateReport = () => {
           },
           geoOps
         );
+      }, 1000);
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+  }, []);
 
+  return (
+    <div>
+     <ReportsMap />
+    <Dialog open={open} onClose={handleClose}>
+      <div id='make-report-container'>
+        <form onSubmit={handleSubmit}>
+          <Grid container direction='column' spacing={2}>
+            <Grid item>
+              <ToggleButtonGroup
+                value={type}
+                onChange={handleTypeText}
+                aria-label='Report Type'
+              >
+                <ToggleButton value='Road Hazard'>Road Hazard</ToggleButton>
+                <ToggleButton value='Theft Alert'>Theft Alert</ToggleButton>
+                <ToggleButton value='Collision'>Collision</ToggleButton>
+                <ToggleButton value='Point of Interest'>
+                  Point of Interest
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item>
+              <TextField
+                id='report-title-input'
+                label='Report Title'
+                variant='outlined'
+                sx={{ width: '100%' }} // set the width to 100%
+                onChange={handleTitleText}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id='report-body-input'
+                label='Comments'
+                variant='outlined'
+                multiline
+                rows={4}
+                sx={{ width: '100%' }} // set the width to 100%
+                onChange={handleBodyText}
+              />
+            </Grid>
+          </Grid>
+          <IconButton
+            color='primary'
+            aria-label='upload picture'
+            component='label'
+          >
+            <input hidden accept='image/*' type='file' />
+            <PhotoCamera />
+          </IconButton>
+          <input type='submit' value='submit' />
+        </form>
+      </div>
+    </Dialog>
+    </div>
 
-}, 1000);
-} else {
-  setError('Geolocation is not supported by this browser.');
-}
-return () => {
-  if (interval) {
-    clearInterval(interval);
-    interval = null;
-  }
-};
-
-}, []);
-
-const toggleForm = () => {
-setShowForm(!showForm);
-};
-
-return (
-<BandAid>
-<div>
-<ReportsMap />
-</div>
-<h2>Make a Report</h2>
-<button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Show Form'}</button>
-{showForm && (
-<form onSubmit={handleSubmit}>
-<select id='report-type-input' onChange={handleTypeText}>
-<option value=''>Select a Report Type</option>
-<option value='Road Hazard'>Road Hazard</option>
-<option value='Theft Alert'>Theft Alert</option>
-<option value='Collision'>Collision</option>
-<option value='Point of Interest'>Point of Interest</option>
-</select>
-<input
-         id='report-title-input'
-         type='text'
-         placeholder='Report Title'
-         onChange={handleTitleText}
-       />
-<input
-         id='report-body-input'
-         type='text'
-         placeholder='Comments'
-         onChange={handleBodyText}
-       />
-<input
-         id='file'
-         type='file'
-         name='file'
-         accept='image/*'
-         onChange={handleImage}
-       />
-<input type='submit' value='submit' />
-</form>
-)}
-</BandAid>
-);
+  );
 };
 
 export default CreateReport;
