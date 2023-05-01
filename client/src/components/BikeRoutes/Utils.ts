@@ -1,4 +1,4 @@
-const MAP_API_TOKEN: string = 'AIzaSyCAXIQ2ejlJQ9dsY1GrbwDHwoi2KaG3B4U';
+const MAP_API_TOKEN: string = 'AIzaSyBJbqpVzrxAa91WCUv6Y0GdKOjkSN3rEC8';
 
 const defaultMapContainerStyle = {
   height: '40vh',
