@@ -43,6 +43,7 @@ const CreateBulletin = () => {
 
     return (
     <div style={{ textAlign: 'center' }}>
+      <AddEquipment/>
     <ThemeProvider theme={themeBulletin}>
         <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
@@ -75,9 +76,8 @@ const CreateBulletin = () => {
                           minWidth: '75px', minHeight: '25px', marginLeft: '15px'}}
           onClick={() => handleBulletinSubmission()}
           >
-          <i>Submit</i>
+          <h5>Submit</h5>
           </Button>
-          <AddEquipment/>
     </ThemeProvider>
     </div>
   );
