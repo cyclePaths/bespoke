@@ -17,6 +17,7 @@ import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;

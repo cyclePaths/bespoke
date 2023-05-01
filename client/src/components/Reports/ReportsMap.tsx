@@ -140,12 +140,12 @@ const ReportsMap: React.FC = () => {
 
   useEffect(() => {
     if (map) {
-      if (navigator.geolocation) {
+      if (navigator.geolocation || !navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+              lat: 29.9511,
+              lng: -90.0715,
             };
             map.setCenter(pos);
           },
