@@ -8,7 +8,7 @@ import { useTheme } from './ThemeContext';
 // import { ToggleSwitch } from '../../StyledComp';
 import { ToggleSwitch } from '../../ThemeStyles';
 // import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
-
+import { BadgesOnUsers, Badge } from '@prisma/client';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 // import Picker from 'react-mobile-picker';
@@ -18,6 +18,12 @@ import {
   exiledRedHeadedStepChildrenValueGroups,
 } from '../../../profile-assets';
 import { BandAid } from '../../StyledComp';
+import {
+  AchievementBadgeByName,
+  AchievementBadge,
+  AchievementBadgeHolder,
+} from '../../StyledComp';
+import { useRadioGroup } from '@material-ui/core';
 
 //Setting state types
 export type Address = string;
@@ -46,6 +52,17 @@ export interface RideStats {
 }
 
 const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
+  //Context
+  const {
+    userBadges,
+    setUserBadges,
+    getBadgesOnUser,
+    selectedBadge,
+    setSelectedBadge,
+    tickBadgeCounter,
+    addBadge,
+    tierCheck,
+  } = useContext(UserContext);
   //State values with useState hook.
   const [user, setUser] = useState(true);
   const [theme, setTheme] = useState();
@@ -68,6 +85,14 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [valueGroups, setValueGroups] = useState<ValueGroup>(
     exiledRedHeadedStepChildrenValueGroups
   );
+
+  //holds toggle-able value to control whether badges are displaying on profile page or not
+  const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
+  //temporary - used for manually adding badges
+  const [tier, setTier] = useState(0);
+  const [inputBox, setInputBox] = useState('');
+
+  //functions
 
   const saveTheme = () => {
     axios.post('/profile/theme', {
@@ -188,6 +213,26 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
       });
   };
 
+  //show/hide badges on user profile page
+  const badgesToggle = () => {
+    if (badgeDisplay === 'none') {
+      setBadgeDisplay('block');
+    } else {
+      setBadgeDisplay('none');
+    }
+    document.getElementById('badges')!.style.display = badgeDisplay;
+  };
+
+  const displayNoBadgeIfEmpty = () => {
+    if (
+      selectedBadge &&
+      selectedBadge !==
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      return <AchievementBadgeByName src={selectedBadge} />;
+    }
+  };
+
   ///////////////////////////////////////////////////////////
   /*
 Elements that should render on loading the page
@@ -233,18 +278,27 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
+      getBadgesOnUser();
+      badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
     });
   }, []);
+
+  useEffect(() => {}, [inputBox]);
+
+  useEffect(() => {}, [tier]);
+
   //..................................................
 
   return (
     <BandAid>
       <div>{`Hello ${user}!`}</div>
+      <div>{displayNoBadgeIfEmpty()}</div>
       <img
         style={{ borderRadius: '50%', width: '100px', height: '100px' }}
         src={photo}
         alt='avatar'
       />
+
       <div>
         <Addresses
           address={address}
@@ -255,7 +309,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           setHomeAddress={setHomeAddress}
         />
       </div>
-      <div className='profile'>
+      <div id='profile'>
         {/* <button onClick={() => {
         handleToggleStyle(),
         saveTheme()
@@ -271,11 +325,66 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           <span />
         </ToggleSwitch>
         {/* <div className='toggle-switch'>
+        <ToggleSwitch>
+          <input
+            type='checkbox'
+            onChange={() => {
+              handleToggleStyle(), saveTheme();
+            }}
+          />
+          <span />
+        </ToggleSwitch>
+        {/* <div className='toggle-switch'>
       <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
       <span />
     </div> */}
       </div>
 
+      <div>Achievement Badges:</div>
+
+      <button onClick={badgesToggle}>Show Badges</button>
+      <button
+        onClick={() => {
+          addBadge(inputBox, tier);
+        }}
+      >
+        Add Badge
+      </button>
+      <input
+        type='text'
+        onChange={(event) => {
+          setInputBox(event.target.value);
+        }}
+      ></input>
+      <select
+        onChange={(event) => {
+          setTier(parseInt(event.target.value));
+        }}
+      >
+        <option value={0}>No Tier</option>
+        <option value={1}>1</option>
+        <option value={2}>2</option>
+        <option value={3}>3</option>
+        <option value={4}>4</option>
+        <option value={5}>5</option>
+        <option value={6}>6</option>
+      </select>
+
+      <AchievementBadgeHolder id='badges'>
+        {userBadges.map((badge) => {
+          if (badge.badgeIcon !== 'url') {
+            return (
+              <AchievementBadge
+                key={badge.id}
+                onClick={() => {
+                  setSelectedBadge(badge.badgeIcon);
+                }}
+                src={badge.badgeIcon}
+              />
+            );
+          }
+        })}
+      </AchievementBadgeHolder>
       <div>
         <div style={{ position: 'absolute', marginTop: 20 }}>
           <ul>
