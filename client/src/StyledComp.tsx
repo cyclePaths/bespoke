@@ -142,6 +142,22 @@ const BandAid = styled.div`
   padding-bottom: 9vh;
 `;
 
+const AchievementBadgeByName = styled.img`
+  height: 30px;
+  width: 30px;
+`;
+
+const AchievementBadge = styled.img`
+  height: 35px;
+  width: 35px;
+  margin-left: 12px;
+  margin-right: 12px;
+`;
+
+const AchievementBadgeHolder = styled.span`
+  display: none;
+`;
+
 // const ToggleSwitch = styled.label`
 //   position: relative;
 //   display: inline-block;
@@ -209,6 +225,9 @@ export {
   OptionsDiv,
   RouteListOptions,
   RouteList,
+  AchievementBadgeByName,
+  AchievementBadge,
+  AchievementBadgeHolder,
   NavBarTop,
   BandAid,
 };

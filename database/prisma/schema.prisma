@@ -45,6 +45,7 @@ model User {
   totalMiles              Int              @default(0)
   totalLikesReceived      Int              @default(0)
   badges                  BadgesOnUsers[]
+  selectedBadge           String?
 }
 
 model DirectMessages {

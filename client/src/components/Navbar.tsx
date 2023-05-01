@@ -15,7 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MessageIcon from '@mui/icons-material/Message';
 import TimerIcon from '@mui/icons-material/Timer';
-import Stopwatch from './Stopwatch';
+import Stopwatch from './Profile/Stopwatch';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import { NavBarTop } from '../StyledComp';
