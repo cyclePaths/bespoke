@@ -8,7 +8,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
-import Stopwatch from './components/Stopwatch';
+import Stopwatch from './components/Profile/Stopwatch';
 import RouteM from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';

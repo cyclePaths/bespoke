@@ -12,6 +12,8 @@ import { BadgesOnUsers, Badge } from '@prisma/client';
 import Addresses from './Addresses';
 import Picker from 'react-scrollable-picker';
 // import Picker from 'react-mobile-picker';
+import Scrollers from './Scrollers';
+import '../../styles.css';
 import { UserContext } from '../../Root';
 import {
   exiledRedHeadedStepChildrenOptionGroups,
@@ -338,7 +340,43 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
       <span />
     </div> */}
-      </div>
+
+    </div>
+
+    <div>
+
+      {/* <div style={{ position: 'absolute', marginTop: 20 }}>
+        <ul>
+          <li style={{ listStyleType: 'none' }}>
+            {rideStats && `Your last ride was an ${rideStats.activity}`}
+          </li>
+          <li style={{ listStyleType: 'none' }}>
+            {rideStats &&
+              `You rode for ${Math.floor(rideStats.duration / 60)} hours and ${
+                rideStats.duration % 60
+              } minutes`}
+          </li>
+          <li style={{ listStyleType: 'none' }}>
+            {rideStats &&
+              `Your weight for this ride was ${rideStats.weight} lbs`}
+          </li>
+          <li style={{ listStyleType: 'none' }}>
+            {rideStats && (
+              <>
+                You burned {rideStats.calories} calories!
+                <br />
+                Let's ride some more!
+              </>
+            )}
+          </li>
+        </ul>
+      </div> */}
+
+    </div>
+
+<Scrollers />
+
+      {/* </div> */}
 
       <div>Achievement Badges:</div>
 

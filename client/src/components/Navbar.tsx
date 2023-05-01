@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { AppProps } from './App';
 import { UserContext } from '../Root';
-import StopwatchPopout from './StopwatchPopout';
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -16,7 +15,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import MessageIcon from '@mui/icons-material/Message';
 import TimerIcon from '@mui/icons-material/Timer';
-import Stopwatch from './Stopwatch';
+import Stopwatch from './Profile/Stopwatch';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import { NavBarTop } from '../StyledComp';
