@@ -199,8 +199,10 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: geoLocation.lat,
-          longitude: geoLocation.lng,
+          // latitude: geoLocation.lat,
+          latitude: 29.9511,
+          // longitude: geoLocation.lng,
+          longitude: -90.0715,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -484,16 +486,7 @@ const Root = () => {
             clearInterval(interval!);
             interval = null;
           },
-          (error) => {
-            if (error.code === 1) {
-              const allowLocation = confirm(
-                'Please allow the website to access your location'
-              );
-              if (allowLocation) {
-                getLocation();
-              }
-            }
-          }
+          (error) => setError(error.message)
         );
       }, 1000);
     } else {
