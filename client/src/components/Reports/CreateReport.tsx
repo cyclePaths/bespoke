@@ -30,7 +30,10 @@ const CreateReport: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>(null);
+  } | null>({
+    lat: 29.9511,
+    lng: -90.0715,
+  });
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(true);
@@ -66,9 +69,7 @@ const CreateReport: React.FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (!currentLocation) {
-        throw new Error('Current location not available');
-      }
+
       const { email, id } = user;
 
       const formData = new FormData();
@@ -77,8 +78,8 @@ const CreateReport: React.FC = () => {
       formData.append('body', body);
       formData.append('type', type);
       formData.append('title', title);
-      formData.append('latitude', currentLocation.lat.toString());
-      formData.append('longitude', currentLocation.lng.toString());
+      formData.append('latitude', currentLocation!.lat.toString());
+      formData.append('longitude', currentLocation!.lng.toString());
       if (image) {
         formData.append('file', image);
       }
