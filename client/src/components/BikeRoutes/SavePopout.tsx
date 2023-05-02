@@ -11,8 +11,10 @@ interface SaveProps {
 
 const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
   return (
-    <Dialog open={openPopup} sx={{ color: 'rgb(133, 211, 255)' }}>
-      <CloseIcon onClick={() => setOpenPopup(false)} />
+    <Dialog open={openPopup}>
+      <div style={{ backgroundColor: 'rgb(133, 211, 255)' }}>
+        <CloseIcon onClick={() => setOpenPopup(false)} />
+      </div>
       <DialogContent
         style={{
           paddingLeft: '25px',

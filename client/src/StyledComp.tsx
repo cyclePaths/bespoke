@@ -27,29 +27,33 @@ const PopoutSaveForm = styled.form`
   flex-direction: column;
   align-items: center;
   flex-wrap: nowrap;
+  width: 255px;
 `;
 
 const CategorySelector = styled.select`
   border-radius: 3px;
   background-color: #e0e0e0;
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
 `;
 
 const OptionsDiv = styled.div`
   display: flex;
   place-content: flex-start space-evenly;
-  margin-top: 15px;
+  margin: 15px;
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const InputLayout = styled.input`
-  height: 25px;
+  height: 30px;
   width: 75%;
-  margin-bottom: 5px;
+  margin: 5px;
   border-radius: 2px;
   background-color: #e0e0e0;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
+  text-align: center;
 `;
 
 const StartRouteContainer = styled.div`
@@ -57,7 +61,7 @@ const StartRouteContainer = styled.div`
   z-index: 1000;
   position: fixed;
   width: 100%;
-  top: 14%;
+  top: 13%;
 `;
 
 const AutoCompleteDropdownLayout = styled.div`

@@ -51,32 +51,35 @@ const SaveForm = ({
           placeholder='Enter Name of Route...'
         />
         <OptionsDiv>
-          <CategorySelector
-            defaultValue='None'
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option disabled>None</option>
-            <option>Casual</option>
-            <option>Speedy</option>
-            <option>Scenic</option>
-          </CategorySelector>
-          <div
-            style={{
-              display: 'flex',
-              backgroundColor: '#e0e0e0',
-              padding: '3px',
-              borderRadius: '3px',
-              border: '1px solid',
-              borderColor: 'rgb(118, 118, 118) rgb(133, 133, 133)',
-              boxShadow: '0px 1px 0px rgba(0,0,0,0.2)',
-              alignItems: 'center',
-            }}
-          >
-            <div id='set-private'>Private?</div>
-            <input
-              type='checkbox'
-              onClick={() => (setIsPrivate(true), console.log(isPrivate))}
-            />
+          <div className='route-options'>
+            <CategorySelector
+              defaultValue='None'
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option disabled>None</option>
+              <option>Casual</option>
+              <option>Speedy</option>
+              <option>Scenic</option>
+            </CategorySelector>
+            <div
+              style={{
+                display: 'flex',
+                backgroundColor: '#e0e0e0',
+                padding: '3px',
+                borderRadius: '3px',
+                border: '1px solid',
+                borderColor: 'rgb(118, 118, 118) rgb(133, 133, 133)',
+                boxShadow: '0px 1px 0px rgba(0,0,0,0.2)',
+                alignItems: 'center',
+                marginLeft: '10px',
+              }}
+            >
+              <div id='set-private'>Private?</div>
+              <input
+                type='checkbox'
+                onClick={() => (setIsPrivate(true), console.log(isPrivate))}
+              />
+            </div>
           </div>
           <Button
             variant='contained'
