@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -6,6 +7,7 @@ import Box from '@mui/material/Box';
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
+import { ToggleSwitch } from '../../ThemeStyles';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -17,6 +19,7 @@ const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
+
     <div
       role='tabpanel'
       hidden={value !== index}
@@ -40,19 +43,22 @@ function a11yProps(index: number) {
   };
 }
 
-const ProfileNav = () => {
-  const [value, setValue] = useState(0);
+const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
+  const [value, setValue] = useState(-1);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [weight, setWeight] = useState(0);
   const [showScrollers, setShowScrollers] = useState(false);
+  const [tabVisibility, setTabVisibility] = useState([false, false, false, false]);
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    // setValue(newValue);
     // setActiveTab(newValue);
+    toggleTabVisibility(newValue);
 
 
     if (newValue === 2) {
-      setShowScrollers(true);
+      setShowScrollers(!tabVisibility[2]);
     } else {
       setShowScrollers(false);
     }
@@ -64,7 +70,20 @@ const ProfileNav = () => {
     setWeight(value);
   };
 
+  useEffect(() => {
+    axios.get('/profile/weight').then(({ data }) => {
+      setWeight(data.weight);
+    });
+      }, []);
 
+      const toggleTabVisibility = (tabIndex: number) => {
+    setTabVisibility((prevState) => {
+      const newState = prevState.map((visible, index) => {
+        return index === tabIndex ? !visible : false;
+      });
+      return newState;
+    });
+  };
 
 
   return (
@@ -82,21 +101,45 @@ const ProfileNav = () => {
           <Tab label='Stats' {...a11yProps(3)} />
         </Tabs>
       </Box>
+
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-      <div hidden={value !== 0}>
+
+{/* Below is the Greeting and Profile Pic and Theme Selection*/}
+      <div>{`Hello ${user}!`}</div>
+      <img
+        style={{ borderRadius: '50%', width: '100px', height: '100px' }}
+        src={photo}
+        alt='avatar'
+      />
+
+<div id='profile'>
+        <ToggleSwitch>
+          <input
+            type='checkbox'
+            onChange={() => {
+              handleToggleStyle(), saveTheme();
+            }}
+          />
+          <span />
+        </ToggleSwitch>
+    </div>
+{/* Above is the Greeting and Profile Pic and Theme Selection*/}
+
+      <div hidden={!tabVisibility[0]}>
 
         <SetHome />
       </div>
-      <div hidden={value !== 1} style={{ width: "100%" }}>
+      <div hidden={!tabVisibility[1]} style={{ width: "100%" }}>
         <div style={{ width: "100%" }}>
+          {`My current weight is ${weight} lbs`}
         <SetWeight weight={weight} onWeightChange={handleWeightChange} />
         </div>
       </div>
-      <div hidden={value !== 2} />
+      <div hidden={!tabVisibility[2]} />
 
 
       {showScrollers && <Scrollers />}
-      <div hidden={value !== 3} />
+      <div hidden={!tabVisibility[3]} />
 
       </div>
     </Box>

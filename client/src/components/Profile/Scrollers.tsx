@@ -101,9 +101,6 @@ const Scrollers = () => {
   return (
     <div>
       <div>
-        <button type='button'>Enter Ride Stats</button>
-      </div>
-      <div>
         {rideSpeed}
         {hours}
         {minutes}

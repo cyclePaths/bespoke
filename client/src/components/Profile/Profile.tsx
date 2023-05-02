@@ -20,7 +20,7 @@ import {
   AchievementBadge,
   AchievementBadgeHolder,
 } from '../../StyledComp';
-import { ToggleButtonGroup, ToggleButton, } from '@mui/material';
+import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 export interface RideStats {
   activity: string;
@@ -42,7 +42,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
     tierCheck,
   } = useContext(UserContext);
   //State values with useState hook.
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState('');
   const [theme, setTheme] = useState();
   const [photo, setPhoto] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -126,6 +126,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setUser(splitNames[0]);
         setPhoto(data.thumbnail);
         setTheme(data.theme);
+        setWeight(data.weight);
       })
       .catch((err) => {
         console.log(err);
@@ -171,35 +172,17 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
   return (
     <BandAid>
-     <ProfileNav />
-      <div>{`Hello ${user}!`}</div>
-      <div>{displayNoBadgeIfEmpty()}</div>
-      <img
-        style={{ borderRadius: '50%', width: '100px', height: '100px' }}
-        src={photo}
-        alt='avatar'
+      <ProfileNav
+        user={user}
+        photo={photo}
+        saveTheme={saveTheme}
+        handleToggleStyle={handleToggleStyle}
       />
 
-      <div id='profile'>
-        {/* <button onClick={() => {
-        handleToggleStyle(),
-        saveTheme()
-        }
-        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
-        <ToggleSwitch>
-          <input
-            type='checkbox'
-            onChange={() => {
-              handleToggleStyle(), saveTheme();
-            }}
-          />
-          <span />
-        </ToggleSwitch>
-    </div>
+      <div>{displayNoBadgeIfEmpty()}</div>
 
-    <div>
-
-      {/* <div style={{ position: 'absolute', marginTop: 20 }}>
+      <div>
+        {/* <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
           <li style={{ listStyleType: 'none' }}>
             {rideStats && `Your last ride was an ${rideStats.activity}`}
@@ -225,15 +208,12 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           </li>
         </ul>
       </div> */}
+      </div>
 
-    </div>
-
-
-
-{/* <Scrollers /> */}
+      {/* <Scrollers /> */}
 
       {/* </div> */}
-
+<div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
       <div>Achievement Badges:</div>
 
       <button onClick={badgesToggle}>Show Badges</button>
@@ -291,9 +271,8 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           left: 0,
           right: 0,
         }}
-      >
+      ></div>
 </div>
-
     </BandAid>
   );
 };
