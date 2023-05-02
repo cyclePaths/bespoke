@@ -11,7 +11,6 @@ const RouteM: React.FC = () => {
   return (
     <BandAid>
       <RouteCreatorComponent>
-        <h1>Route Creator</h1>
         <Map />
       </RouteCreatorComponent>
     </BandAid>

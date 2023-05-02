@@ -11,17 +11,15 @@ import {
   Marker,
   DirectionsRenderer,
   InfoWindow,
-  useJsApiLoader,
-  InfoBox,
 } from '@react-google-maps/api';
 import { RouteButtonContainer, StartRouteContainer } from '../../StyledComp';
-import { MAP_API_TOKEN, defaultMapContainerStyle } from './Utils';
+import { defaultMapContainerStyle } from './Utils';
 import Places from './Places';
 import FetchedRoutes from './FetchedRoutes';
-import PopupForm from './Popup';
+import PopupForm from './SavePopout';
 import axios from 'axios';
 import { UserContext } from '../../Root';
-import Popup from './Popup';
+import SavePopout from './SavePopout';
 import SaveForm from './SaveForm';
 import RoutesListPopup from './RoutesListPopup';
 import { Button } from '@mui/material';
@@ -131,12 +129,6 @@ const Map: React.FC = () => {
         });
     }
   };
-
-  // Rendering for the map //
-  // const { isLoaded } = useJsApiLoader({
-  //   id: 'google-map-script',
-  //   googleMapsApiKey: MAP_API_TOKEN!,
-  // });
 
   const mapRef = useRef<GoogleMap>();
 
@@ -312,27 +304,41 @@ const Map: React.FC = () => {
         mapContainerStyle={defaultMapContainerStyle}
         options={options as google.maps.MapOptions}
         center={userCenter}
-        zoom={13}
+        zoom={14}
         onLoad={onLoad}
         onClick={onMapClick}
       >
         {/* This renders the directions on screen */}
         {directions && <DirectionsRenderer directions={directions} />}
 
-        {/* {reportsList.map((report) => {
+        {reportsList.map((report, i) => (
           <Marker
-            key={report.id}
+            key={i}
             position={{
-              lat: parseFloat(report.lat),
-              lng: parseFloat(report.lng),
+              lat: parseFloat(report.location_lat),
+              lng: parseFloat(report.location_lng),
             }}
-          />;
-        })} */}
+            onClick={(event) => {
+              setSelected({
+                lat: event.latLng!.lat(),
+                lng: event.latLng!.lng(),
+              });
+            }}
+            // icon={{
+            //   path: ,
+            //   fillColor: '#f0b30f',
+            //   fillOpacity: 1,
+            //   strokeWeight: 0,
+            //   scale: 0.5,
+            //   anchor: new window.google.maps.Point(20, 40),
+            // }}
+          />
+        ))}
 
         {/* This is the markers that will be placed on the screen on render */}
-        {markers.map((marker) => (
+        {markers.map((marker, i) => (
           <Marker
-            key={marker.lat}
+            key={i}
             position={{ lat: marker.lat, lng: marker.lng }}
             onClick={(event) => {
               setSelected({
@@ -363,9 +369,14 @@ const Map: React.FC = () => {
         <Button
           variant='contained'
           sx={{
-            marginRight: '5px',
-            marginLeft: '5px',
+            margin: '4px',
             backgroundColor: '#e0e0e0',
+            '&:hover, &:active': {
+              backgroundColor: '#8b8b8b',
+            },
+            '&:focus': {
+              backgroundColor: '#e0e0e0',
+            },
           }}
           onClick={fetchDirections}
         >
@@ -374,9 +385,14 @@ const Map: React.FC = () => {
         <Button
           variant='contained'
           sx={{
-            marginRight: '5px',
-            marginLeft: '5px',
+            margin: '4px',
             backgroundColor: '#e0e0e0',
+            '&:hover, &:active': {
+              backgroundColor: '#8b8b8b',
+            },
+            '&:focus': {
+              backgroundColor: '#e0e0e0',
+            },
           }}
           onClick={() => {
             if (directions) {
@@ -389,9 +405,14 @@ const Map: React.FC = () => {
         <Button
           variant='contained'
           sx={{
-            marginRight: '5px',
-            marginLeft: '5px',
+            margin: '4px',
             backgroundColor: '#e0e0e0',
+            '&:hover, &:active': {
+              backgroundColor: '#8b8b8b',
+            },
+            '&:focus': {
+              backgroundColor: '#e0e0e0',
+            },
           }}
           onClick={() => setOpenSearch(true)}
         >
@@ -399,7 +420,7 @@ const Map: React.FC = () => {
         </Button>
       </RouteButtonContainer>
       {/* These are popup windows that will display when the Save Created Route button is click or the Find Route Button is clicked */}
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
+      <SavePopout openPopup={openPopup} setOpenPopup={setOpenPopup}>
         <SaveForm
           routeName={routeName}
           setRouteName={setRouteName}
@@ -411,7 +432,7 @@ const Map: React.FC = () => {
           directions={directions}
           saveRoute={saveRoute}
         />
-      </Popup>
+      </SavePopout>
       <RoutesListPopup
         openSearch={openSearch}
         setOpenSearch={setOpenSearch}

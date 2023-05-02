@@ -23,6 +23,7 @@
 
 body {
   margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
 #profilePic {
@@ -212,6 +213,36 @@ The code above is for the scroll wheel
 
 .leaderboard-value {
   margin-right: 15px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 425px) {
+  .container {
+    height: 85vh;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .container {
+    height: 83vh;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .container {
+    height: 84vh;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .container {
+    height: 82vh;
+  }
 }
 
 .override {

@@ -15,12 +15,17 @@ const LeaderBoardPopout = ({
   children,
   openLeaderBoard,
   setOpenLeaderBoard,
+  setLeaderBoard,
 }) => {
   const classes = contentStyles();
 
+  const handleClose = () => {
+    setOpenLeaderBoard(false);
+    setLeaderBoard(false);
+  };
   return (
     <Dialog open={openLeaderBoard}>
-      <CloseIcon onClick={() => setOpenLeaderBoard(false)} />
+      <CloseIcon onClick={() => handleClose()} />
       <DialogContent className={classes.dialogContent}>
         {children}
       </DialogContent>

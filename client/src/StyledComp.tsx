@@ -11,19 +11,22 @@ const Button = styled.button`
 `;
 
 const RouteCreatorComponent = styled.div`
-  display: block;
-  margin-top: 25px;
+  /* display: block;
+  margin-top: 25px; */
   text-align: center;
 `;
 
 const PopoutSaveForm = styled.form`
   display: flex;
+  -webkit-box-pack: center;
   justify-content: center;
-  flex-wrap: wrap;
   background-color: white;
   border-radius: 4px;
   padding: 10px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
 `;
 
 const CategorySelector = styled.select`
@@ -50,10 +53,11 @@ const InputLayout = styled.input`
 `;
 
 const StartRouteContainer = styled.div`
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
   text-align: center;
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  top: 14%;
 `;
 
 const AutoCompleteDropdownLayout = styled.div`
@@ -73,9 +77,12 @@ const AutoCompleteDropdownLayout = styled.div`
 `;
 
 const RouteButtonContainer = styled.div`
-  display: block;
-  margin-bottom: 5px;
-  margin-top: 10px;
+  position: fixed;
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  right: 4px;
 `;
 
 const RouteListOptions = styled.div`
