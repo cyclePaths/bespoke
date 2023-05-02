@@ -16,7 +16,7 @@ const Scrollers = () => {
     },
   });
 
-   const [refHours] = useKeenSlider<HTMLDivElement>({
+  const [refHours] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
     slides: {
@@ -25,7 +25,7 @@ const Scrollers = () => {
     },
   });
 
-   const [refMinutes] = useKeenSlider<HTMLDivElement>({
+  const [refMinutes] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
     slides: {
@@ -45,7 +45,6 @@ const Scrollers = () => {
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
   const [sliderStage, setSliderStage] = useState(0);
-
 
   let rideSpeedValue = '';
 
@@ -97,7 +96,29 @@ const Scrollers = () => {
       });
   };
 
-   return (
+  const handleBackButtonClick = () => {
+    if (sliderStage === 1) {
+      setActivityVisible(true);
+      setHoursVisible(false);
+    } else if (sliderStage === 2) {
+      setHoursVisible(true);
+      setMinutesVisible(false);
+    }
+    setSliderStage(sliderStage - 1);
+  };
+
+  const handleForwardButtonClick = () => {
+    if (sliderStage === 0) {
+      setActivityVisible(false);
+      setHoursVisible(true);
+    } else if (sliderStage === 1) {
+      setHoursVisible(false);
+      setMinutesVisible(true);
+    }
+    setSliderStage(sliderStage + 1);
+  };
+
+  return (
     <div>
       <div>
         {rideSpeed}
@@ -105,7 +126,14 @@ const Scrollers = () => {
         {minutes}
       </div>
       {sliderStage === 0 && (
-        <div ref={refActivity} className='keen-slider'>
+        <div
+          ref={refActivity}
+          className='keen-slider'
+          style={{
+            visibility: sliderStage === 0 ? 'visible' : 'hidden',
+            opacity: sliderStage === 0 ? 1 : 0,
+          }}
+        >
           {workout.map((activity) => {
             return (
               <React.Fragment key={activity.value}>
@@ -127,7 +155,14 @@ const Scrollers = () => {
         </div>
       )}
       {sliderStage === 1 && (
-        <div ref={refHours} className='keen-slider'>
+        <div
+          ref={refHours}
+          className='keen-slider'
+          style={{
+            visibility: sliderStage === 1 ? 'visible' : 'hidden',
+            opacity: sliderStage === 1 ? 1 : 0,
+          }}
+        >
           {durationHours.map((hour) => {
             return (
               <React.Fragment key={`${hour.value}-hour`}>
@@ -148,8 +183,16 @@ const Scrollers = () => {
           })}
         </div>
       )}
+
       {sliderStage === 2 && (
-        <div ref={refMinutes} className='keen-slider'>
+        <div
+          ref={refMinutes}
+          className='keen-slider'
+          style={{
+            visibility: sliderStage === 2 ? 'visible' : 'hidden',
+            opacity: sliderStage === 2 ? 1 : 0,
+          }}
+        >
           {durationMinutes.map((minute) => {
             return (
               <React.Fragment key={`${minute.value}-minute`}>
@@ -170,10 +213,34 @@ const Scrollers = () => {
           })}
         </div>
       )}
-      <div>
-        <button type='button' onClick={() => enterWorkout()}>
-          Get Ride Stats
-        </button>
+      <div className='buttonContainer'>
+        {sliderStage > 0 && (
+          <button
+            type='button'
+            className='backButton'
+            onClick={handleBackButtonClick}
+          >
+            &lt; &lt;
+          </button>
+        )}
+        {sliderStage < 3 && (
+          <button
+            type='button'
+            className='forwardButton'
+            onClick={handleForwardButtonClick}
+          >
+            &gt; &gt;
+          </button>
+        )}
+        {sliderStage === 3 && (
+          <button
+            type='button'
+            className='rideStatsButton'
+            onClick={() => enterWorkout()}
+          >
+            Get Ride Stats
+          </button>
+        )}
       </div>
     </div>
   );
