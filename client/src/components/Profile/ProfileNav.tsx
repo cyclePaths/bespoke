@@ -7,6 +7,9 @@ import Box from '@mui/material/Box';
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
+// import Scroller1 from './Scroller1';
+// import Scroller2 from './Scroller2';
+// import Scroller3 from './Scroller3';
 import { ToggleSwitch } from '../../ThemeStyles';
 
 interface TabPanelProps {
@@ -139,6 +142,21 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
 
 
       {showScrollers && <Scrollers />}
+      {/* <div>
+      <Scroller1 />
+      </div>
+
+      <div>
+      <Scroller2 />
+      </div>
+
+      <div>
+ <Scroller3 />
+      </div> */}
+
+
+
+
       <div hidden={!tabVisibility[3]} />
 
       </div>

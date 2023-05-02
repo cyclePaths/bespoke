@@ -6,7 +6,6 @@ import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
 
-
 const Scrollers = () => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -42,10 +41,10 @@ const Scrollers = () => {
   const [minutes, setMinutes] = useState('');
   const [clickedHours, setClickedHours] = useState(false);
   const [clickedMinutes, setClickedMinutes] = useState(false);
-  const [activityVisible, setActivityVisible] = useState(false);
+  const [activityVisible, setActivityVisible] = useState(true);
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
-
+  const [sliderStage, setSliderStage] = useState(0);
 
 
   let rideSpeedValue = '';
@@ -98,79 +97,79 @@ const Scrollers = () => {
       });
   };
 
-  return (
+   return (
     <div>
       <div>
         {rideSpeed}
         {hours}
         {minutes}
       </div>
-      <div className={activityVisible ? hiddenClass : ''}>
-      <div ref={refActivity} className='keen-slider'>
-        {workout.map((activity) => {
-          return (
-            <React.Fragment key={activity.value}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setRideSpeed(activity.label);
-                    setActivityVisible(true)
-                  }}
-                >
-                  {activity.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
-      </div>
-      <div className={hoursVisible ? hiddenClass : ''}>
-      <div ref={refHours} className='keen-slider'>
-        {durationHours.map((hour) => {
-          return (
-            <React.Fragment key={`${hour.value}-hour`}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setHours(hour.label);
-                    setHoursVisible(true)
-                  }}
-                >
-                  {hour.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
-      </div>
-      <div className={minutesVisible ? hiddenClass : ''}>
-      <div ref={refMinutes} className='keen-slider'>
-        {durationMinutes.map((minute) => {
-          return (
-            <React.Fragment key={`${minute.value}-minute`}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setMinutes(minute.label);
-                    setMinutesVisible(true)
-                  }}
-                >
-                  {minute.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
-      </div>
+      {sliderStage === 0 && (
+        <div ref={refActivity} className='keen-slider'>
+          {workout.map((activity) => {
+            return (
+              <React.Fragment key={activity.value}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setRideSpeed(activity.label);
+                      setSliderStage(1);
+                    }}
+                  >
+                    {activity.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
+      {sliderStage === 1 && (
+        <div ref={refHours} className='keen-slider'>
+          {durationHours.map((hour) => {
+            return (
+              <React.Fragment key={`${hour.value}-hour`}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setHours(hour.label);
+                      setSliderStage(2);
+                    }}
+                  >
+                    {hour.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
+      {sliderStage === 2 && (
+        <div ref={refMinutes} className='keen-slider'>
+          {durationMinutes.map((minute) => {
+            return (
+              <React.Fragment key={`${minute.value}-minute`}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setMinutes(minute.label);
+                      setSliderStage(3);
+                    }}
+                  >
+                    {minute.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
       <div>
         <button type='button' onClick={() => enterWorkout()}>
           Get Ride Stats
@@ -179,36 +178,5 @@ const Scrollers = () => {
     </div>
   );
 };
-
-
-
-
-// const Scrollers = ({ children }) => {
-//   const sliderRef = useRef(null);
-
-//   const [slider] = useKeenSlider({
-//     loop: true, // enable looping
-//     slides: { auto: true },
-//     mode: 'free',
-//     modifySlides: (sls) => {
-//       // duplicate the first and last slides
-//       return [
-//         ...sls.slice(-2).map((s) => ({ ...s, clone: true })),
-//         ...sls,
-//         ...sls.slice(0, 2).map((s) => ({ ...s, clone: true })),
-//       ];
-//     },
-//   });
-
-//   return (
-//     <div className="keen-slider" ref={sliderRef}>
-//       <div className="keen-slider__wrapper" ref={slider}>
-//         {children}
-//       </div>
-//     </div>
-//   );
-// };
-
-
 
 export default Scrollers;
