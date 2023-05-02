@@ -183,4 +183,35 @@ const Scrollers = () => {
   );
 };
 
+
+
+
+// const Scrollers = ({ children }) => {
+//   const sliderRef = useRef(null);
+
+//   const [slider] = useKeenSlider({
+//     loop: true, // enable looping
+//     slides: { auto: true },
+//     mode: 'free',
+//     modifySlides: (sls) => {
+//       // duplicate the first and last slides
+//       return [
+//         ...sls.slice(-2).map((s) => ({ ...s, clone: true })),
+//         ...sls,
+//         ...sls.slice(0, 2).map((s) => ({ ...s, clone: true })),
+//       ];
+//     },
+//   });
+
+//   return (
+//     <div className="keen-slider" ref={sliderRef}>
+//       <div className="keen-slider__wrapper" ref={slider}>
+//         {children}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
 export default Scrollers;

@@ -87,6 +87,7 @@ The code below is for the scroll wheel
   border-radius: 50%;
 }
 
+
 .custom-slide {
   width: 150px;
 }
@@ -96,7 +97,7 @@ The code below is for the scroll wheel
   width: 120px;
   max-height: 100vh;
   border-radius: 50%;
-  color: 'white';
+  color: white !important;
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }

@@ -50,10 +50,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
-<<<<<<< HEAD
 // Define the component styles
-=======
->>>>>>> 8e778cf6f921ef0e76e88354a62b13d8b702d7ca
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
