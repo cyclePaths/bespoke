@@ -87,7 +87,7 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
     //find badge with the id that was sent
     const badge = await prisma.badge.findUnique({
       where: {
-        id: userId,
+        id: badgeId,
       },
     });
     //if no badge with that id, throw error
@@ -101,51 +101,52 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
         userId_badgeId: { userId, badgeId },
       },
     });
-    //if the join table whose tier is being checked doesn't exist, initialize it
+    //if the join table whose tier is being checked doesn't exist:
     if (!badgeOnUser) {
-      await prisma.badgesOnUsers.create({
-        data: {
-          user: { connect: { id: userId } },
-          badge: { connect: { id: badgeId } },
-          counter: 1,
-        },
-      });
-    } else {
-      if (badge && badgeOnUser) {
-        const currentCount = badgeOnUser.counter; //get the current count for this join table
-        const currentTier = badge.tier; //get the current tier for the badge in question
-        let newTier = currentTier;
-        for (let key in tiers) {
-          if (currentCount === tiers[key] && currentTier !== parseInt(key)) {
-            newTier!++;
-          }
+      //initialize it?
+      // await prisma.badgesOnUsers.create({
+      //   data: {
+      //     user: { connect: { id: userId } },
+      //     badge: { connect: { id: badgeId } },
+      //     counter: 1,
+      //   },
+      // });
+      //I think it should just error out instead?
+      res.sendStatus(404);
+    } else if (badge && badgeOnUser) {
+      const currentCount = badgeOnUser.counter; //get the current count for this join table
+      const currentTier = badge.tier; //get the current tier for the badge in question
+      let newTier = currentTier;
+      for (let key in tiers) {
+        if (currentCount === tiers[key] && currentTier !== parseInt(key)) {
+          newTier!++;
         }
-        //if a higher tier level exists
-        if (badge.tier !== newTier!) {
-          //find badge of the appropriate tier
-          const higherTierBadge = await prisma.badge.findFirst({
+      }
+      //if a higher tier level exists
+      if (badge.tier !== newTier!) {
+        //find badge of the appropriate tier
+        const higherTierBadge = await prisma.badge.findFirst({
+          where: {
+            name: badge.name,
+            tier: newTier,
+          },
+        });
+        //delete current tier of badge
+        if (higherTierBadge) {
+          await prisma.badgesOnUsers.delete({
             where: {
-              name: badge.name,
-              tier: newTier,
+              userId_badgeId: { userId, badgeId },
             },
           });
-          //delete current tier of badge
-          if (higherTierBadge) {
-            await prisma.badgesOnUsers.delete({
-              where: {
-                userId_badgeId: { userId, badgeId },
-              },
-            });
 
-            //add new tier of badge
-            await prisma.badgesOnUsers.create({
-              data: {
-                user: { connect: { id: userId } },
-                badge: { connect: { id: higherTierBadge.id } },
-                counter: currentCount,
-              },
-            });
-          }
+          //add new tier of badge
+          await prisma.badgesOnUsers.create({
+            data: {
+              user: { connect: { id: userId } },
+              badge: { connect: { id: higherTierBadge.id } },
+              counter: currentCount,
+            },
+          });
         }
       }
     }

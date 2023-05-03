@@ -61,7 +61,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
     getBadgesOnUser,
     selectedBadge,
     setSelectedBadge,
-    tickBadgeCounter,
+    updateBadgeCounter,
     addBadge,
     tierCheck,
   } = useContext(UserContext);

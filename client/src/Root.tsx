@@ -407,8 +407,8 @@ const Root = () => {
   };
 
   //function to increment or decrement values on the User table used for achievements/badges
-  //increments by default, pass '-1' as third argument to decrement
-  const tickBadgeCounter = (badgeName, tier = undefined, change = 1) => {
+  //will change counter by +1 by default. Enter number to change by as final argument to increase by more than one (or decrease if negative number is passed)
+  const updateBadgeCounter = (badgeName, tier = undefined, change = 1) => {
     let badgeId = 0;
     for (let i = 0; i < allBadges.length; i++) {
       if (allBadges[i].tier) {
@@ -594,7 +594,7 @@ const Root = () => {
           setUserBadges,
           selectedBadge,
           setSelectedBadge,
-          tickBadgeCounter,
+          updateBadgeCounter,
           addBadge,
           tierCheck,
         }}
