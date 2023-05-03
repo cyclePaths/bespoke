@@ -43,34 +43,6 @@ badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
   }
 });
 
-//returns array of user's badge objects (should be unnecessary now since the "getBadges" function was refactored to also get user Badges)
-badgeRouter.get('/user-badges', async (req: Request, res: Response) => {
-  const { id } = req.user as User;
-  const userId = id;
-  try {
-    const badgesOnUser = await prisma.badgesOnUsers.findMany({
-      where: {
-        userId: userId,
-      },
-    });
-    const badgeIds = badgesOnUser.map((ele) => {
-      return ele.badgeId;
-    });
-    const badges = await prisma.badge.findMany({
-      where: {
-        id: { in: badgeIds },
-      },
-    });
-    res.status(200).send(badges);
-  } catch (err) {
-    console.error(
-      `an error occurred when GETting badges for user with id ${userId}`,
-      err
-    );
-    res.sendStatus(500);
-  }
-});
-
 //Function to send the URL for the badge the user has selected back to the client to display
 badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
   try {

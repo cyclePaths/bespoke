@@ -313,14 +313,11 @@ const Root = () => {
     return weatherIcon;
   };
 
-  //gets all badge objects on database for use in identifying badges from join table
+  //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
     axios
       .get('badges/all-badges')
       .then(({ data }) => {
-        // console.log('this is data: ', data);
-        // console.log('this is data.badges: ', data.allBadges);
-        // console.log('this is data.earnedBadges: ', data.earnedBadges);
         setAllBadges(data.allBadges);
         setUserBadges(data.earnedBadges);
       })
@@ -328,20 +325,6 @@ const Root = () => {
         console.error('Failed to get badges from database: ', err);
       });
   };
-
-  //pulls badges in from join table (should be unnecessary now since the "getBadges" function was refactored to also get user Badges)
-  // const getBadgesOnUser = () => {
-  //   axios
-  //     .get('/badges/user-badges')
-  //     .then(({ data }) => {
-  //       if (data[0]) {
-  //         setUserBadges(data);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log('Failed to get badges on user: ', err);
-  //     });
-  // };
 
   //function to ensure user's selected badge is displayed by their name
   //Note that this will not affect other users' display badges - that functionality must be programmed elsewhere
@@ -539,19 +522,7 @@ const Root = () => {
   }, []);
 
   //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {
-    // console.log(
-    //   'user badges has changed, here is new userBadges: ',
-    //   userBadges
-    // );
-    //the below statement should set a default selected icon once the user earns their first badge
-    // if (
-    //   selectedBadge ===
-    //   'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
-    // ) {
-    //   setSelectedBadge(userBadges[0].badgeIcon);
-    // }
-  }, [userBadges]);
+  useEffect(() => {}, [userBadges]);
 
   //watches allBadges to re-render if new ones are added
   useEffect(() => {}, [allBadges]);
