@@ -18,6 +18,7 @@ const Stats = () => {
   const [open, setOpen] = React.useState(false);
   const [speed, setSpeed] = React.useState<number | string>('');
   const [stats, setStats] = React.useState([]);
+  const [isStatsDisplayed, setIsStatsDisplayed] = React.useState(false);
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
   const handleChange = (event: SelectChangeEvent<typeof speed>) => {
@@ -27,6 +28,7 @@ const Stats = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setIsStatsDisplayed(false);
   };
 
   const handleClose = (
@@ -38,6 +40,7 @@ const Stats = () => {
     }
   };
 
+
   const getStats = () => {
     axios
       .get('/profile/stats', {
@@ -48,6 +51,7 @@ const Stats = () => {
       .then(({ data }) => {
         console.log(data)
         setStats(data);
+        setIsStatsDisplayed(true);
       })
       .catch((err) => {
         console.log(err);
@@ -94,7 +98,7 @@ const Stats = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <StatsDisplay stats={stats} />
+      {isStatsDisplayed && <StatsDisplay stats={stats} />}
     </div>
   );
 };
