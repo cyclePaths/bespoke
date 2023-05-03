@@ -73,31 +73,36 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
   const userId = id;
   const { badgeId, tiers } = req.body;
   try {
+    //get user from db
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
+    //if user not in db, throw error
     if (!user) {
-      console.error(`could not find user with id ${userId}`);
+      console.error(`could not find user with id ${userId} in the database`);
       res.sendStatus(500);
     }
+    //find badge with the id that was sent
     const badge = await prisma.badge.findUnique({
       where: {
         id: userId,
       },
     });
+    //if no badge with that id, throw error
     if (!badge) {
       console.error(`could not find badge with id ${badgeId}`);
       res.sendStatus(500);
     }
+    //find the join table entry for the user and badge
     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
       where: {
         userId_badgeId: { userId, badgeId },
       },
     });
+    //if the join table whose tier is being checked doesn't exist, initialize it
     if (!badgeOnUser) {
-      //if the join table whose tier is being checked doesn't exist, initialize it
       await prisma.badgesOnUsers.create({
         data: {
           user: { connect: { id: userId } },
@@ -155,7 +160,6 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
 });
 
 //Add new badge to User via join table - Achievement Get!
-
 badgeRouter.post('/add', async (req, res) => {
   const { id } = req.user as User;
   const userId = id;
@@ -184,6 +188,7 @@ badgeRouter.post('/add', async (req, res) => {
         data: {
           user: { connect: { id: userId } },
           badge: { connect: { id: badgeId } },
+          counter: 0,
         },
       });
       res.sendStatus(201);
@@ -200,7 +205,6 @@ badgeRouter.post('/add', async (req, res) => {
 });
 
 //increment or decrement counter for badge on join table
-
 badgeRouter.patch('/counter', async (req: Request, res: Response) => {
   try {
     const { id } = req.user as User;
@@ -212,7 +216,9 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      console.error('an error occurred trying to find user with id ', userId);
+      console.error(
+        `an error occurred trying to find user with id ${userId}; no user with that id exists in the database`
+      );
       res.sendStatus(500);
     }
     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
@@ -222,13 +228,16 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
     });
     if (!badgeOnUser) {
       if (change) {
-        await prisma.badgesOnUsers.create({
+        const newBadge = await prisma.badgesOnUsers.create({
           data: {
             user: { connect: { id: userId } },
             badge: { connect: { id: badgeId } },
             counter: change,
           },
         });
+        res.status(201).send(newBadge);
+      } else {
+        res.sendStatus(404); //I assume 404 is the correct status code, since the badge to be downticked wasn't found?
       }
     } else {
       let currentValue = badgeOnUser.counter;
@@ -237,7 +246,7 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
           userId_badgeId: { userId, badgeId },
         },
         data: {
-          counter: currentValue! + 1,
+          counter: currentValue! + change,
         },
       });
       res.status(200).send(updateCounter);

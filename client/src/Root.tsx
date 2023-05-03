@@ -335,7 +335,7 @@ const Root = () => {
         setSelectedBadge(data);
       })
       .catch((err) => {
-        console.log('Failed to get badges on user: ', err);
+        console.error('Failed to get badges on user: ', err);
       });
   };
 
@@ -377,9 +377,6 @@ const Root = () => {
     });
     if (!badgeNamesOnUser.includes(badgeName)) {
       let badgeId = 0;
-      console.log('this is all badges: ', allBadges);
-      console.log('this is the badge name to add: ', badgeName);
-      console.log('this is the tier of the badge to add: ', tier);
       for (let i = 0; i < allBadges.length; i++) {
         if (allBadges[i].tier) {
           if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
@@ -521,11 +518,8 @@ const Root = () => {
     getSelectedBadge();
   }, []);
 
-  //function to watch userBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {}, [userBadges]);
-
-  //watches allBadges to re-render if new ones are added
-  useEffect(() => {}, [allBadges]);
+  //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
+  useEffect(() => {}, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
   useEffect(() => {

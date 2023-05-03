@@ -29,123 +29,133 @@ interface AddressesProps {
 // }
 
 function Addresses(props: AddressesProps) {
-  const { address, setAddress, selectedAddress, setSelectedAddress, homeAddress, setHomeAddress } = props;
+  const {
+    address,
+    setAddress,
+    selectedAddress,
+    setSelectedAddress,
+    homeAddress,
+    setHomeAddress,
+  } = props;
 
   //setting state on change
-  const handleChange = useCallback(address => {
+  const handleChange = useCallback((address) => {
     setAddress(address);
-
   }, []);
 
-    //setting state on select of address. This also clears the input box and removes focus
-    const handleSelect = useCallback(async (address) => {
-      try {
-        const results = await geocodeByAddress(address);
-        const latLng = await getLatLng(results[0]);
-        setSelectedAddress(address);
-     setAddress('');
-        const input = document.getElementById('address-input');
-        if (input instanceof HTMLInputElement) {
-          input.blur();
-        }
-      } catch (err) {
-        console.log('Error', err);
+  //setting state on select of address. This also clears the input box and removes focus
+  const handleSelect = useCallback(async (address) => {
+    try {
+      const results = await geocodeByAddress(address);
+      const latLng = await getLatLng(results[0]);
+      setSelectedAddress(address);
+      setAddress('');
+      const input = document.getElementById('address-input');
+      if (input instanceof HTMLInputElement) {
+        input.blur();
       }
-    }, []);
+    } catch (err) {
+      console.error('Error', err);
+    }
+  }, []);
 
-
-    const saveHome = () => {
-      axios.post('/profile/address', {
-        address: selectedAddress
+  const saveHome = () => {
+    axios
+      .post('/profile/address', {
+        address: selectedAddress,
       })
 
-        .then(() => {
-            setHomeAddress(`Your home is ${selectedAddress}`);
-            setSelectedAddress('');
-        })
-        .catch((err) => {
-          console.log('Failed to post address', err);
-        })
-    }
+      .then(() => {
+        setHomeAddress(`Your home is ${selectedAddress}`);
+        setSelectedAddress('');
+      })
+      .catch((err) => {
+        console.error('Failed to post address', err);
+      });
+  };
 
-    useEffect(() => {
-      axios.get('/profile/address')
-        .then(({ data }) => {
-          if (data.homeAddress === null) {
-            setHomeAddress('');
-          } else {
-            setHomeAddress(`Your home is ${data.homeAddress}`);
-          }
-        })
-    }, [homeAddress])
-
-
+  useEffect(() => {
+    axios.get('/profile/address').then(({ data }) => {
+      if (data.homeAddress === null) {
+        setHomeAddress('');
+      } else {
+        setHomeAddress(`Your home is ${data.homeAddress}`);
+      }
+    });
+  }, [homeAddress]);
 
   return (
-<div>
-  <div>{homeAddress}</div>
-    <PlacesAutocomplete
-      value={address}
-      onChange={handleChange}
-      onSelect={handleSelect}
-    >
-      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <div id='address'
-        className='address'
-        style={{
-          // display: 'flex',
-          // flexDirection: 'row',
-          // justifyContent: 'center',
-          position: 'fixed',
-          bottom: 100,
-          // left: 0,
-          // right: 0,
-        }}>
-          <input id='address-input'
-            {...getInputProps({
-              placeholder: 'Search Places ...',
-              className: 'location-search-input',
-            })}
-          />
-          <div className="autocomplete-dropdown-container">
-            {loading && <div>Loading...</div>}
-            {suggestions.map(suggestion => {
-              const className = suggestion.active
-                ? 'suggestion-item--active'
-                : 'suggestion-item';
-              // inline style for demonstration purpose
-              const style = suggestion.active
-                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                : { backgroundColor: '#ffffff', cursor: 'pointer' };
-              return (
-                <div
-                  {...getSuggestionItemProps(suggestion, {
-                    className,
-                    style,
-                  })}
+    <div>
+      <div>{homeAddress}</div>
+      <PlacesAutocomplete
+        value={address}
+        onChange={handleChange}
+        onSelect={handleSelect}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div
+            id='address'
+            className='address'
+            style={{
+              // display: 'flex',
+              // flexDirection: 'row',
+              // justifyContent: 'center',
+              position: 'fixed',
+              bottom: 100,
+              // left: 0,
+              // right: 0,
+            }}
+          >
+            <input
+              id='address-input'
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input',
+              })}
+            />
+            <div className='autocomplete-dropdown-container'>
+              {loading && <div>Loading...</div>}
+              {suggestions.map((suggestion) => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+              <div>{selectedAddress}</div>
+              <div>
+                <button
+                  type='button'
+                  style={{ marginTop: '10px' }}
+                  onClick={() => saveHome()}
                 >
-                  <span>{suggestion.description}</span>
-                </div>
-              );
-            })}
-            <div>{selectedAddress}</div>
-               <div>
-      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div>
+                  Set Home
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-    </PlacesAutocomplete>
+        )}
+      </PlacesAutocomplete>
 
-    {/* <div>{selectedAddress}</div> */}
+      {/* <div>{selectedAddress}</div> */}
 
-    {/* <div>
+      {/* <div>
       <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
     </div> */}
-
     </div>
   );
 }
-
 
 export default Addresses;
