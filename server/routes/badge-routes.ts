@@ -35,6 +35,7 @@ badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
     let outp = {
       allBadges: allBadges,
       earnedBadges: earnedBadges,
+      joinTableBadges: badgesOnUser,
     };
     res.status(200).send(outp);
   } catch (err) {
@@ -113,17 +114,18 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
       // });
       //I think it should just error out instead?
       res.sendStatus(404);
-    } else if (badge && badgeOnUser) {
+    } else if (badge && badgeOnUser && badgeOnUser.counter && badge.tier) {
       const currentCount = badgeOnUser.counter; //get the current count for this join table
       const currentTier = badge.tier; //get the current tier for the badge in question
       let newTier = currentTier;
       for (let key in tiers) {
-        if (currentCount === tiers[key] && currentTier !== parseInt(key)) {
-          newTier!++;
+        //if the current count (presumably after an update, when this would be firing) is now equal to or greater than the threshold to tier up (and that tier up wouldn't be to the current tier)
+        if (currentCount >= tiers[key] && currentTier !== parseInt(key)) {
+          newTier++;
         }
       }
-      //if a higher tier level exists
-      if (badge.tier !== newTier!) {
+      //if newTier has been changed
+      if (badge.tier !== newTier) {
         //find badge of the appropriate tier
         const higherTierBadge = await prisma.badge.findFirst({
           where: {

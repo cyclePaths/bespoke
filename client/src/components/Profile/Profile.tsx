@@ -26,6 +26,7 @@ import {
   AchievementBadgeHolder,
 } from '../../StyledComp';
 import { useRadioGroup } from '@material-ui/core';
+import { badgeInfo } from '../../../assets';
 
 //Setting state types
 export type Address = string;

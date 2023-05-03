@@ -1,7 +1,12 @@
 import React, { useState, useContext, useEffect, createContext } from 'react';
 import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { weatherIcons, standardTiers, weeklyTiers } from '../assets';
+import {
+  weatherIcons,
+  standardTiers,
+  weeklyTiers,
+  badgesWithSpecialTiers,
+} from '../assets';
 import App from './components/App';
 import Home from './components/Home';
 import BulletinBoard from './components/BulletinBoard/BulletinBoard';
@@ -124,6 +129,10 @@ export interface Badge {
   tier?: number;
 }
 
+export interface BadgeWithCounter extends Badge {
+  counter?: number;
+}
+
 export const UserContext = createContext<any>(Object());
 
 const Root = () => {
@@ -154,13 +163,14 @@ const Root = () => {
     },
   ]);
   //holds badge objects associated with user
-  const [userBadges, setUserBadges] = useState<Badge[]>([
+  const [userBadges, setUserBadges] = useState<BadgeWithCounter[]>([
     {
       id: 0,
       name: 'No Achievements',
       badgeIcon:
         'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
       tier: 0,
+      counter: 0,
     },
   ]);
   //holds URL of badge to display by username
@@ -319,7 +329,18 @@ const Root = () => {
       .get('badges/all-badges')
       .then(({ data }) => {
         setAllBadges(data.allBadges);
-        setUserBadges(data.earnedBadges);
+        let earnedBadges = data.earnedBadges;
+        //add current count for all counters on all user badges that have counters
+        data.joinTableBadges.forEach((ele) => {
+          for (let i = 0; i < earnedBadges.length; i++) {
+            if (earnedBadges[i].counter) {
+              if (earnedBadges[i].id === ele.badgeId) {
+                earnedBadges[i].counter = ele.counter;
+              }
+            }
+          }
+        });
+        setUserBadges(earnedBadges);
       })
       .catch((err) => {
         console.error('Failed to get badges from database: ', err);
@@ -340,18 +361,24 @@ const Root = () => {
   };
 
   //function to check if tier should increase (and increase it if so)
-  const tierCheck = (badgeName, tiersObj, tier = undefined) => {
+  const tierCheck = (badgeName, tier) => {
     let badgeId = 0;
+    //look through all of the badges to find the one with this badge name and tier; get its id
     for (let i = 0; i < allBadges.length; i++) {
       if (allBadges[i].tier) {
         if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
           badgeId = allBadges[i].id;
           break;
         }
-      } else {
-        console.error('There is no tier to check!');
-        return;
       }
+    }
+    if (badgeId === 0) {
+      console.error('There is no tier to check!');
+      return;
+    }
+    let tiersObj = standardTiers;
+    if (badgesWithSpecialTiers[badgeName] !== undefined) {
+      tiersObj = badgesWithSpecialTiers[badgeName];
     }
     let config = {
       badgeId: badgeId,
