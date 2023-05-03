@@ -5,6 +5,9 @@ import Root, { UserContext } from '../../Root';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 
 const Scrollers = () => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
@@ -45,6 +48,7 @@ const Scrollers = () => {
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
   const [sliderStage, setSliderStage] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
 
   let rideSpeedValue = '';
 
@@ -73,7 +77,8 @@ const Scrollers = () => {
   });
 
   const enterWorkout = () => {
-    axios
+    if (weight >= 50) {
+      axios
       .get('/profile/workout', {
         params: {
           activity: rideSpeedValue,
@@ -94,6 +99,11 @@ const Scrollers = () => {
       .catch((err) => {
         console.log(err);
       });
+    } else {
+      setShowAlert(true);
+    }
+
+
   };
 
   const handleBackButtonClick = () => {
@@ -242,6 +252,14 @@ const Scrollers = () => {
           </button>
         )}
       </div>
+      {showAlert && (
+  <Stack sx={{ width: '100%', marginTop: 2 }}>
+    <Alert severity="error" onClose={() => setShowAlert(false)}>
+      <AlertTitle>Error</AlertTitle>
+      This is an error alert — <strong>Must enter weight to track stats</strong>
+    </Alert>
+  </Stack>
+)}
     </div>
   );
 };
