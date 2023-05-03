@@ -95,6 +95,14 @@ function DirectMessages() {
 
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   useEffect(() => {
     axios
       .get('/profile/user')
@@ -243,8 +251,8 @@ function DirectMessages() {
         loadMessages={loadMessages}
       ></SearchUsers>
 
-      <Paper className={classes.root}>
-        <div className={classes.messagesContainer}>
+      <Paper className={classes.root} >
+        <div className={classes.messagesContainer} ref={messagesContainerRef}>
           {messages.map((message) => (
             <Message
               id={message.id}
