@@ -92,10 +92,22 @@ function DirectMessages() {
   const [receiver, setReceiver] = useState<SelectedUser>();
   const [name, setName] = useState(true);
   const [messageThread, setMessageThread] = useState<Message[]>([]);
+  const [isReceiverSelected, setIsReceiverSelected] = useState(false);
 
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSetReceiver = (receiver: SelectedUser | null) => {
+    if (receiver !== null) {
+      setReceiver(receiver);
+      setIsReceiverSelected(true);
+    } else {
+      setReceiver(undefined);
+      setIsReceiverSelected(false);
+    }
+  };
+
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -123,29 +135,6 @@ function DirectMessages() {
     }
   }, [receiver]);
 
-  //  // Connect to the Socket.IO server
-  //  const socketRef = useRef<SocketIOClient.Socket>();
-  //  socketRef.current = io('http://localhost:8080');
-  // //  socketRef.current.emit('message', 'f!');
-  //  socketRef.current.on('connect', () => {
-  //    console.log('Connected to Socket.IO server');
-  //  });
-
-  // useEffect(() => {
-  //     // Create a new WebSocket connection to the server
-  //     const socket = io('http://localhost:8080');
-
-  //     // Listen for incoming 'message' events
-  //     socket.on('message', (newMessage: Message) => {
-  //       // Add the new message to the messages array
-  //       setMessages((prevMessages) => [...prevMessages, newMessage]);
-  //     });
-
-  //     return () => {
-  //       // Clean up the WebSocket connection when the component unmounts
-  //       socket.disconnect();
-  //     };
-  //   }, [receiverId]);
 
   useEffect(() => {
     const newSocket = io('http://localhost:8080');
@@ -249,8 +238,9 @@ function DirectMessages() {
         setReceiver={setReceiver}
         // setReceiverId={setReceiverId}
         loadMessages={loadMessages}
+        handleSetReceiver={handleSetReceiver}
       ></SearchUsers>
-
+{isReceiverSelected && (
       <Paper className={classes.root} >
         <div className={classes.messagesContainer} ref={messagesContainerRef}>
           {messages.map((message) => (
@@ -292,6 +282,7 @@ function DirectMessages() {
           </Button>
         </div>
       </Paper>
+)}
     </BandAid>
   );
 }
