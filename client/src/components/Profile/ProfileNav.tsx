@@ -4,6 +4,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
@@ -65,12 +67,12 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
     } else {
       setShowScrollers(false);
     }
+
   };
 
   const handleWeightChange = (value: number) => {
     setWeight(value);
   };
-
 
 
 
@@ -84,6 +86,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
       }, []);
 
       const toggleTabVisibility = (tabIndex: number) => {
+
     setTabVisibility((prevState) => {
       const newState = prevState.map((visible, index) => {
         return index === tabIndex ? !visible : false;
@@ -119,7 +122,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
         alt='avatar'
       />
 
-<div id='profile'>
+{/* <div id='profile'>
         <ToggleSwitch>
           <input
             type='checkbox'
@@ -129,6 +132,15 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
           />
           <span />
         </ToggleSwitch>
+    </div> */}
+
+<div id='profile'>
+<IconButton onClick={() => {
+    handleToggleStyle();
+    saveTheme();
+  }}>
+    <DarkModeIcon />
+  </IconButton>
     </div>
 {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 

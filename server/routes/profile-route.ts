@@ -91,9 +91,8 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
       where: {
         id: id,
       },
-      
+
     });
-    console.log(nameValue)
     res.status(200).send(nameValue);
   } catch (err) {
     console.log('Failed to get weight', err);
@@ -259,7 +258,7 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
         weight: true,
       },
     });
-    // console.log('weight', weightValue)
+
     res.status(200).send(weightValue);
   } catch (err) {
     console.log('Failed to get weight', err);

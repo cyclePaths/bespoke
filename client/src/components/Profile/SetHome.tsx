@@ -4,6 +4,7 @@ import Addresses, { Address, SelectedAddress, HomeAddress } from './Addresses';
 
 
 const SetHome = () => {
+  console.log("Rendering SetHome component");
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
   const [homeAddress, setHomeAddress] = useState('');
