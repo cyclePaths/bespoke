@@ -78,6 +78,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
   useEffect(() => {
     axios.get('/profile/weight')
       .then(({ data }) => {
+        console.log(data)
         setWeight(data.weight);
     });
       }, []);

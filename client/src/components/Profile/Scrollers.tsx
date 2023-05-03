@@ -49,15 +49,19 @@ const Scrollers = () => {
   const [minutesVisible, setMinutesVisible] = useState(false);
   const [sliderStage, setSliderStage] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
+  const [weight, setWeight] = useState();
+  const [user, setUser] = useState();
 
   let rideSpeedValue = '';
 
   const { workout, durationHours, durationMinutes } =
     exiledRedHeadedStepChildrenOptionGroups;
 
-  const user = useContext(UserContext);
+  // const user = useContext(UserContext);
+  // console.log(user);
 
-  let weight = user?.weight ?? 0;
+  // let weight = user?.weight ?? 0;
+  // console.log('Weight', weight)
 
   let totalTime = Number(hours) * 60 + Number(minutes);
 
@@ -76,8 +80,19 @@ const Scrollers = () => {
     }
   });
 
+  useEffect(() => {
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+        setWeight(data.weight)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, [])
+
+  console.log('weight', weight)
   const enterWorkout = () => {
-    if (weight >= 50) {
+    // if (weight >= 50) {
       axios
       .get('/profile/workout', {
         params: {
@@ -99,9 +114,9 @@ const Scrollers = () => {
       .catch((err) => {
         console.log(err);
       });
-    } else {
-      setShowAlert(true);
-    }
+    // } else {
+    //   setShowAlert(true);
+    // }
 
 
   };

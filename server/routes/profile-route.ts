@@ -85,14 +85,15 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  // console.log(req.user, 'query');
   try {
     const { id } = (req.user as User) || {};
     const nameValue = await prisma.user.findUnique({
       where: {
         id: id,
       },
+      
     });
+    console.log(nameValue)
     res.status(200).send(nameValue);
   } catch (err) {
     console.log('Failed to get weight', err);
@@ -101,7 +102,6 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
-  console.log(req)
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -255,7 +255,11 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
       where: {
         id: id,
       },
+      select: {
+        weight: true,
+      },
     });
+    // console.log('weight', weightValue)
     res.status(200).send(weightValue);
   } catch (err) {
     console.log('Failed to get weight', err);
@@ -354,12 +358,9 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
 
 
 profileRouter.get('/stats', async (req: Request, res: Response) => {
-  // console.log(req)
   try {
     const { id } = req.user as { id: number };
     const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
-    console.log('User ID:', id);
-    console.log('Speed:', speed);
     if (!speed) {
       return res.status(400).json({ error: 'Invalid speed value' });
     }
@@ -374,8 +375,6 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
       }
 
     });
-    console.log(typeof speed)
-    console.log('Stats Data:', statsData);
     res.status(200).json(statsData);
   } catch (error) {
     console.error(error);
