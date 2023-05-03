@@ -318,26 +318,30 @@ const Root = () => {
     axios
       .get('badges/all-badges')
       .then(({ data }) => {
-        setAllBadges(data);
+        // console.log('this is data: ', data);
+        // console.log('this is data.badges: ', data.allBadges);
+        // console.log('this is data.earnedBadges: ', data.earnedBadges);
+        setAllBadges(data.allBadges);
+        setUserBadges(data.earnedBadges);
       })
       .catch((err) => {
-        console.log('Failed to get badges from database: ', err);
+        console.error('Failed to get badges from database: ', err);
       });
   };
 
-  //pulls badges in from join table
-  const getBadgesOnUser = () => {
-    axios
-      .get('/badges/user-badges')
-      .then(({ data }) => {
-        if (data[0]) {
-          setUserBadges(data);
-        }
-      })
-      .catch((err) => {
-        console.log('Failed to get badges on user: ', err);
-      });
-  };
+  //pulls badges in from join table (should be unnecessary now since the "getBadges" function was refactored to also get user Badges)
+  // const getBadgesOnUser = () => {
+  //   axios
+  //     .get('/badges/user-badges')
+  //     .then(({ data }) => {
+  //       if (data[0]) {
+  //         setUserBadges(data);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log('Failed to get badges on user: ', err);
+  //     });
+  // };
 
   //function to ensure user's selected badge is displayed by their name
   //Note that this will not affect other users' display badges - that functionality must be programmed elsewhere
@@ -375,7 +379,7 @@ const Root = () => {
     axios
       .post('/badges/tier', config)
       .then(() => {
-        getBadgesOnUser(); //update badgesOnUser with new DB info
+        getBadges(); //update allBadges and badgesOnUser with new DB info
       })
       .catch((err) =>
         console.error('there was an error when checking/updating tiers')
@@ -384,36 +388,42 @@ const Root = () => {
 
   //function to add or remove (or update?) badges for users
   const addBadge = (badgeName, tier = undefined) => {
-    let badgeId = 0;
-    console.log('this is all badges: ', allBadges);
-    console.log('this is the badge name to add: ', badgeName);
-    console.log('this is the tier of the badge to add: ', tier);
-    for (let i = 0; i < allBadges.length; i++) {
-      if (allBadges[i].tier) {
-        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
-          badgeId = allBadges[i].id;
-          break;
-        }
-      } else {
-        if (allBadges[i].name === badgeName) {
-          badgeId = allBadges[i].id;
-          break;
+    //will not attempt to add badge if it already exists on user
+    const badgeNamesOnUser = userBadges.map((ele) => {
+      return ele.name;
+    });
+    if (!badgeNamesOnUser.includes(badgeName)) {
+      let badgeId = 0;
+      console.log('this is all badges: ', allBadges);
+      console.log('this is the badge name to add: ', badgeName);
+      console.log('this is the tier of the badge to add: ', tier);
+      for (let i = 0; i < allBadges.length; i++) {
+        if (allBadges[i].tier) {
+          if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+            badgeId = allBadges[i].id;
+            break;
+          }
+        } else {
+          if (allBadges[i].name === badgeName) {
+            badgeId = allBadges[i].id;
+            break;
+          }
         }
       }
+      axios
+        .post('/badges/add', {
+          badgeId: badgeId,
+        })
+        .then(() => {
+          getBadges(); //update allBadges and badgesOnUser with new DB info
+        })
+        .catch((err) =>
+          console.error(
+            `an error has occurred adding badge with ID ${badgeId} to user`,
+            err
+          )
+        );
     }
-    axios
-      .post('/badges/add', {
-        badgeId: badgeId,
-      })
-      .then(() => {
-        getBadgesOnUser(); //update badgesOnUser with new DB info
-      })
-      .catch((err) =>
-        console.error(
-          `an error has occurred adding badge with ID ${badgeId} to user`,
-          err
-        )
-      );
   };
 
   //function to increment or decrement values on the User table used for achievements/badges
@@ -524,7 +534,6 @@ const Root = () => {
   useEffect(() => {
     getLocation();
     findContext();
-    getBadgesOnUser();
     getBadges();
     getSelectedBadge();
   }, []);
@@ -618,7 +627,6 @@ const Root = () => {
           geoLocation,
           userBadges,
           setUserBadges,
-          getBadgesOnUser,
           selectedBadge,
           setSelectedBadge,
           tickBadgeCounter,

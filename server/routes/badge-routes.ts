@@ -12,16 +12,38 @@ const prisma = new PrismaClient();
 
 //returns an array of ALL badge objects
 badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
+  const { id } = req.user as User;
+  const userId = id;
   try {
-    const badges = await prisma.badge.findMany({});
-    res.status(200).send(badges);
+    const allBadges = await prisma.badge.findMany({});
+    const badgesOnUser = await prisma.badgesOnUsers.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    const badgeIds = badgesOnUser.map((ele) => {
+      return ele.badgeId;
+    });
+    //extracts all badges who have the same IDs as the ones from the join table (meaning the user has earned them)
+    const earnedBadges = allBadges.filter((ele) => {
+      if (badgeIds.includes(ele.id)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    let outp = {
+      allBadges: allBadges,
+      earnedBadges: earnedBadges,
+    };
+    res.status(200).send(outp);
   } catch (err) {
     console.error('an error occurred when GETting all badges', err);
     res.sendStatus(500);
   }
 });
 
-//returns array of user's badge objects
+//returns array of user's badge objects (should be unnecessary now since the "getBadges" function was refactored to also get user Badges)
 badgeRouter.get('/user-badges', async (req: Request, res: Response) => {
   const { id } = req.user as User;
   const userId = id;
@@ -74,7 +96,6 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 });
 
 //Checks to see if badge tier should update, and if so, deletes current tier's join table entry and adds next one
-
 badgeRouter.post('/tier', async (req: Request, res: Response) => {
   const { id } = req.user as User;
   const userId = id;

@@ -98,8 +98,9 @@ const ForecastEntry = styled.div`
   border-style: solid;
   justify-content: center;
   align-items: center;
-  background-color: rgb(84, 191, 165);
+  background-color: rgb(115, 216, 139); //this is the light mode color
 `;
+//this is the dark mode color for ForecastEntry: rgb(59, 143, 77)
 
 const WeatherIcon = styled.img`
   display: flex;
