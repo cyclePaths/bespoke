@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState } from 'react';
 
 // Define the default themes
 
-  interface Theme {
+  export interface Theme {
+    mode: string;
     backgroundColor: string;
     color: string;
   }
@@ -15,10 +16,12 @@ export interface ThemeContextType {
 
 const themes = {
   light: {
+    mode: 'light',
     backgroundColor: '#fff',
     color: '#333',
   },
   dark: {
+    mode: 'dark',
     backgroundColor: '#333',
     color: '#fff',
   },
@@ -50,6 +53,6 @@ const ThemeProvider = ({ children }) => {
 };
 
 // A custom hook for consuming the theme
-const useTheme = () => useContext(ThemeContext);
+const useTheme = () => useContext(ThemeContext).theme;
 
 export { ThemeProvider, useTheme };

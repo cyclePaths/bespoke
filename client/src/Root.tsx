@@ -133,6 +133,8 @@ const Root = () => {
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
 
+    const currentTheme = isDark ? GlobalStyleDark : GlobalStyleLight;
+
     // const location = useLocation();
     // let savedTheme = location.state && location.state.savedTheme;
     // setIsDark(savedTheme);
@@ -610,6 +612,7 @@ const Root = () => {
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
+    
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider

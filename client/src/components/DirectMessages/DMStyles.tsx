@@ -63,13 +63,15 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      marginBottom: theme.spacing(10),
+      marginBottom: theme.spacing(7),
     },
     messagesContainer: {
       flex: 1,
+      // flex: '0 0 auto',
       bottom: 0,
       overflowY: 'auto',
       padding: theme.spacing(1),
+      maxHeight: '560px',
     },
     message: {
       color: 'white',

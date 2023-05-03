@@ -70,11 +70,11 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
       },
     });
       // Emit a 'message' event to all connected clients except the sender
-      const client = Array.from(io.sockets.sockets.values()).find(
+      const socket = Array.from(io.sockets.sockets.values()).find(
         (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
       );
-      if (client) {
-        client.emit('message', newMessage);
+      if (socket) {
+        socket.emit('message', newMessage);
       }
 
   } catch {

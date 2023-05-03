@@ -12,6 +12,7 @@ import Scrollers from './Scrollers';
 import Stats from './Stats';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
+import { ThemeProvider } from './ThemeContext';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -134,14 +135,26 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
         </ToggleSwitch>
     </div> */}
 
-<div id='profile'>
-<IconButton onClick={() => {
+{/* <div id='profile'>
+       <IconButton onClick={() => {
+    handleToggleStyle();
+    saveTheme();
+  }}>
+    <DarkModeIcon />
+  </IconButton>
+    </div> */}
+
+<ThemeProvider>
+<div id='profile' className='themeIcon'>
+
+       <IconButton onClick={() => {
     handleToggleStyle();
     saveTheme();
   }}>
     <DarkModeIcon />
   </IconButton>
     </div>
+    </ThemeProvider>
 {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 
       <div hidden={!tabVisibility[0]}>
