@@ -4,6 +4,7 @@ import { PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
 import { CALORIES_BURNED_API } from '../../config';
 
+
 const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
 
@@ -351,4 +352,34 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
   }
 });
 
+
+profileRouter.get('/stats', async (req: Request, res: Response) => {
+  // console.log(req)
+  try {
+    const { id } = req.user as { id: number };
+    const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
+    console.log('User ID:', id);
+    console.log('Speed:', speed);
+    if (!speed) {
+      return res.status(400).json({ error: 'Invalid speed value' });
+    }
+
+    const statsData = await prisma.rides.findMany({
+      where: {
+        // AND: [
+           userId: id ,
+           activity: speed,
+        // ]
+
+      }
+
+    });
+    console.log(typeof speed)
+    console.log('Stats Data:', statsData);
+    res.status(200).json(statsData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 export default profileRouter;

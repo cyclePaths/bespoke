@@ -7,10 +7,9 @@ import Box from '@mui/material/Box';
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
-// import Scroller1 from './Scroller1';
-// import Scroller2 from './Scroller2';
-// import Scroller3 from './Scroller3';
+import Stats from './Stats';
 import { ToggleSwitch } from '../../ThemeStyles';
+import StatsDisplay from './StatsDisplay';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,6 +51,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
   const [weight, setWeight] = useState(0);
   const [showScrollers, setShowScrollers] = useState(false);
   const [tabVisibility, setTabVisibility] = useState([false, false, false, false]);
+  const [stats, setStats] = useState([]);
 
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -67,15 +67,18 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
     }
   };
 
-
-
   const handleWeightChange = (value: number) => {
     setWeight(value);
   };
 
+
+
+
+
   useEffect(() => {
-    axios.get('/profile/weight').then(({ data }) => {
-      setWeight(data.weight);
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+        setWeight(data.weight);
     });
       }, []);
 
@@ -142,22 +145,11 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
 
 
       {showScrollers && <Scrollers />}
-      {/* <div>
-      <Scroller1 />
+
+      <div hidden={!tabVisibility[3]}>
+      <Stats />
+      {/* <StatsDisplay stats={stats} /> */}
       </div>
-
-      <div>
-      <Scroller2 />
-      </div>
-
-      <div>
- <Scroller3 />
-      </div> */}
-
-
-
-
-      <div hidden={!tabVisibility[3]} />
 
       </div>
     </Box>
