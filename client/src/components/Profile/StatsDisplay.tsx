@@ -1,10 +1,18 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import dayjs from 'dayjs';
 
+// dayjs.extend(localizedFormat);
+// dayjs.extend(utc);
 
 const columns: GridColDef[] = [
-  { field: 'date', headerName: 'Date', width: 90 },
+  { field: 'rideDate',
+  headerName: 'Date',
+  width: 120,
+  valueFormatter: (params) => dayjs(params.value).format('MM/DD/YYYY'), // Update the format as needed
+
+},
   {
     field: 'duration',
     headerName: 'Duration',
@@ -14,7 +22,7 @@ const columns: GridColDef[] = [
   {
     field: 'weight',
     headerName: 'Weight',
-    width: 90,
+    width: 60,
     editable: true,
   },
   {
@@ -24,18 +32,9 @@ const columns: GridColDef[] = [
     width: 90,
     editable: true,
   },
-  // {
-  //   field: 'fullName',
-  //   headerName: 'Full name',
-  //   description: 'This column has a value getter and is not sortable.',
-  //   sortable: false,
-  //   width: 160,
-  //   valueGetter: (params: GridValueGetterParams) =>
-  //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  // },
 ];
 
-// 
+//
 
 const StatsDisplay = ({ stats }) => {
   return (
