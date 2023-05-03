@@ -50,10 +50,7 @@ const RoutesListPopup = ({
       </DialogTitle>
       <DialogContent
         style={{
-          paddingLeft: '25px',
-          paddingBottom: '25px',
-          paddingRight: '25px',
-          paddingTop: '10px',
+          padding: '30px',
           backgroundColor: 'rgb(133, 211, 255)',
         }}
       >

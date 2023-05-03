@@ -53,44 +53,42 @@ const RouteInfo = ({
   }, []);
 
   return (
-    <div style={{ width: '105%' }}>
+    <div style={{ width: '130%' }}>
       <Box
         component='span'
         sx={{
-          display: 'flex',
+          backgroundColor: '#e0e0e0',
+          display: 'grid',
           width: '100%',
-          boxShadow: 2,
+          boxShadow: '-2px 4px 4px rgba(0,0,0,0.2)',
           borderRadius: '3px',
           marginY: '5px',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
+          justifyItems: 'end',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline' }}>
-          <div
-            style={{ marginTop: '10px', marginRight: '5px', marginLeft: '5px' }}
-          >
-            {date}:
-          </div>
-          <div
-            className='route-name'
-            style={{
-              marginTop: '10px',
-              marginRight: '5px',
-              marginLeft: '5px',
-              fontWeight: 'bolder',
-            }}
-            onClick={() => {
-              handleRouteClick(route.origin, route.destination);
-              setOpenSearch(false);
-              setRouteList([]);
-            }}
-          >
-            {route.name}
-          </div>
-          <div style={{ marginTop: '10px', marginLeft: '5px' }}>
-            Likes: {likeNumber}
-          </div>
+        {/* <div style={{ display: 'flex', alignItems: 'baseline' }}> */}
+        <div style={{ marginTop: '10px', marginRight: '5px' }}>{date}:</div>
+        <div
+          className='route-name'
+          style={{
+            marginTop: '10px',
+            marginRight: '5px',
+            marginLeft: '5px',
+            fontWeight: 'bold',
+          }}
+          onClick={() => {
+            handleRouteClick(route.origin, route.destination);
+            setOpenSearch(false);
+            setRouteList([]);
+          }}
+        >
+          {route.name}
         </div>
+        <div style={{ marginTop: '10px', marginLeft: '5px' }}>
+          Likes: {likeNumber}
+        </div>
+        {/* </div> */}
         {route.userId === user.id ? (
           <IconButton disabled>
             <ThumbUpAltOutlinedIcon />
