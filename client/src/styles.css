@@ -38,23 +38,69 @@ body {
 
 #list{
   text-align: center;
-  margin-left: 50px;
-  margin-right: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  background-color: white;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 #results {
   text-align: center;
-  background-color: aliceblue;
+  background-color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
+#search-criteria {
+  display: flex;
+}
+
+#checkmark {
+  height: 17px;
+  border-radius: 6px;
+}
+
+#saveMessage {
+  left: 58%
+}
+
+@media screen and (min-width: 425px) {
+  #saveMessage {
+    left: 60%
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #saveMessage {
+    left: 78%
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #saveMessage {
+    left: 84%
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  #saveMessage {
+    left: 88%
+  }
+}
+
+@media screen and (min-width: 2560) {
+  #saveMessage {
+    left: 98%
+  }
+}
+
 .search-form {
-  display: grid;
-  align-content: stretch;
-  justify-content: center;
-  justify-items: stretch;
+  display: flex;
+  background-color: white;
+  border-radius: 4px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
 }
 
 .route-name {
@@ -226,27 +272,9 @@ The code above is for the scroll wheel
   align-items: center;
 }
 
-@media screen and (max-width: 425px) {
+@media screen {
   .container {
-    height: 85vh;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  .container {
-    height: 83vh;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .container {
-    height: 84vh;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .container {
-    height: 82vh;
+    height: 87vh
   }
 }
 

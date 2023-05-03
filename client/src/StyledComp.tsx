@@ -11,8 +11,6 @@ const Button = styled.button`
 `;
 
 const RouteCreatorComponent = styled.div`
-  /* display: block;
-  margin-top: 25px; */
   text-align: center;
 `;
 
@@ -61,7 +59,22 @@ const StartRouteContainer = styled.div`
   z-index: 1000;
   position: fixed;
   width: 100%;
-  top: 13%;
+  top: 12%;
+`;
+
+const SaveAlert = styled.span`
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+  z-index: 1005;
+  width: 141px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 88.5%;
+  border-radius: 6px;
+  padding: 5px;
+  font-weight: bold;
 `;
 
 const AutoCompleteDropdownLayout = styled.div`
@@ -90,7 +103,10 @@ const RouteButtonContainer = styled.div`
 `;
 
 const RouteListOptions = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
 `;
 
 const RouteList = styled.div`
@@ -144,13 +160,13 @@ const NavBarTop = styled.span`
   justify-content: space-around;
   width: 100%;
   align-items: center;
-  height: 9vh;
+  height: 6.6vh;
   z-index: 1000;
 `;
 
 const BandAid = styled.div`
-  padding-top: 9vh;
-  padding-bottom: 9vh;
+  padding-top: 6.6vh;
+  padding-bottom: 6.6vh;
 `;
 
 const AchievementBadgeByName = styled.img`
@@ -169,55 +185,6 @@ const AchievementBadgeHolder = styled.span`
   display: none;
 `;
 
-// const ToggleSwitch = styled.label`
-//   position: relative;
-//   display: inline-block;
-//   width: 60px;
-//   height: 34px;
-
-//   input {
-//     opacity: 0;
-//     width: 0;
-//     height: 0;
-//   }
-
-//   span {
-//     position: absolute;
-//     cursor: pointer;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background-color: #ccc;
-//     transition: background-color 0.2s;
-//     border-radius: 34px;
-
-//     &:before {
-//       position: absolute;
-//       content: "";
-//       height: 26px;
-//       width: 26px;
-//       left: 4px;
-//       bottom: 4px;
-//       background-color: white;
-//       transition: transform 0.2s;
-//       border-radius: 50%;
-//     }
-//   }
-
-//   input:checked + span {
-//     background-color: #2196F3;
-//   }
-
-//   input:focus + span {
-//     box-shadow: 0 0 1px #2196F3;
-//   }
-
-//   input:checked + span:before {
-//     transform: translateX(26px);
-//   }
-// `;
-
 export {
   ForecastBit,
   ForecastText,
@@ -231,7 +198,6 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
-  // ToggleSwitch,
   CategorySelector,
   OptionsDiv,
   RouteListOptions,
@@ -241,4 +207,5 @@ export {
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
+  SaveAlert,
 };

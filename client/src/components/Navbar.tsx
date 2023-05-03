@@ -166,6 +166,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             backgroundColor: '#dadcda',
             borderTopLeftRadius: '8px',
             borderTopRightRadius: '8px',
+            height: '6.6vh',
             zIndex: 1000,
           }}
         >

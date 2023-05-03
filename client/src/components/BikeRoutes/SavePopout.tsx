@@ -2,14 +2,9 @@ import React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../../styles.css';
+import { SavePopoutProps } from './RouteM';
 
-interface SaveProps {
-  children;
-  openPopup: boolean;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Popup = ({ children, openPopup, setOpenPopup }: SaveProps) => {
+const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
   return (
     <Dialog open={openPopup}>
       <div style={{ backgroundColor: 'rgb(133, 211, 255)' }}>

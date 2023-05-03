@@ -185,7 +185,7 @@ const ReportsMap: React.FC = () => {
           P.O.I
         </ToggleButton>
       </ToggleButtonGroup>
-      <Box sx={{ display: 'flex', height: '75vh' }}>
+      <Box sx={{ display: 'flex', height: '82vh' }}>
         <GoogleMap
           mapContainerStyle={{ height: '100%', width: '100%' }}
           center={center}

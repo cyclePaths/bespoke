@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const contentStyles = makeStyles((theme) => ({
   dialogContent: {
-    backgroundColor: '#e0e0e0', // Customize the background color
+    backgroundColor: 'rgb(133, 211, 255)', // Customize the background color
     color: 'black', // Customize the text color
     padding: theme.spacing(2), // Customize the padding
   },

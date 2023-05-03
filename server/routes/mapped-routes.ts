@@ -155,7 +155,6 @@ BikeRoutes.get('/routes', async (req, res) => {
         },
       })
       .then((user) => {
-        console.log(user);
         const radiusRoutes: BikeRoutes[] = [];
         const likeList: any[] = [];
         user!.createdRoutes.forEach((route) => {

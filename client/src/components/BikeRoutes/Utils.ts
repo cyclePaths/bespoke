@@ -1,5 +1,5 @@
 const defaultMapContainerStyle = {
-  height: '86vh',
+  height: '90vh',
   width: '100%',
   display: 'flex',
   justifyContent: 'center',

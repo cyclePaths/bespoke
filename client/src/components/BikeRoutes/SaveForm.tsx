@@ -7,18 +7,7 @@ import {
 } from '../../StyledComp';
 import Button from '@mui/material/Button';
 import '../../styles.css';
-
-interface SaveProps {
-  routeName: string;
-  setRouteName: React.Dispatch<React.SetStateAction<string>>;
-  category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
-  isPrivate: boolean;
-  setIsPrivate: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  directions: google.maps.DirectionsResult | undefined;
-  saveRoute: (name: string, category: string, privacy: boolean) => void;
-}
+import { SaveProps } from './RouteM';
 
 const SaveForm = ({
   routeName,
@@ -30,6 +19,7 @@ const SaveForm = ({
   setOpenPopup,
   directions,
   saveRoute,
+  setSaveMessage,
 }: SaveProps) => {
   const handleSave = () => {
     saveRoute(routeName, category, isPrivate);
