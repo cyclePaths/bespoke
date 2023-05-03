@@ -35,7 +35,7 @@ commentRouter.post('/', (req, res) => {
     .create({ data: newComment })
     .then((comment) => res.status(201).send(comment))
     .catch(() => {
-      console.loerrorg('Failed to POST new COMMENT');
+      console.error('Failed to POST new COMMENT');
       res.sendStatus(500);
     });
 });
