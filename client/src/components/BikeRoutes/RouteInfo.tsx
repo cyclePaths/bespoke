@@ -64,31 +64,23 @@ const RouteInfo = ({
           borderRadius: '3px',
           marginY: '5px',
           justifyContent: 'center',
-          justifyItems: 'end',
+          justifyItems: 'center',
         }}
       >
-        {/* <div style={{ display: 'flex', alignItems: 'baseline' }}> */}
-        <div style={{ marginTop: '10px', marginRight: '5px' }}>{date}:</div>
-        <div
-          className='route-name'
-          style={{
-            marginTop: '10px',
-            marginRight: '5px',
-            marginLeft: '5px',
-            fontWeight: 'bold',
-          }}
-          onClick={() => {
-            handleRouteClick(route.origin, route.destination);
-            setOpenSearch(false);
-            setRouteList([]);
-          }}
-        >
-          {route.name}
+        <div style={{ display: 'grid', justifyItems: 'center' }}>
+          <div>{date}:</div>
+          <div
+            className='route-name'
+            onClick={() => {
+              handleRouteClick(route.origin, route.destination);
+              setOpenSearch(false);
+              setRouteList([]);
+            }}
+          >
+            {route.name}
+          </div>
+          <div>Likes: {likeNumber}</div>
         </div>
-        <div style={{ marginTop: '10px', marginLeft: '5px' }}>
-          Likes: {likeNumber}
-        </div>
-        {/* </div> */}
         {route.userId === user.id ? (
           <IconButton disabled>
             <ThumbUpAltOutlinedIcon />

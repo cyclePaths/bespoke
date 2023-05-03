@@ -97,9 +97,12 @@ body {
   border-radius: 4px;
   padding-top: 20px;
   padding-bottom: 20px;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   padding-inline: 39px;
+  flex-wrap: wrap;
+  max-height: 51vh;
+  overflow: scroll;
 }
 
 .route-name {

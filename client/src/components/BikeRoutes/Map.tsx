@@ -155,7 +155,7 @@ const Map = ({ options }: MapOptionsProp) => {
           setSaveMessage(true);
           setTimeout(() => {
             setSaveMessage(false);
-          }, 3000);
+          }, 2400);
         })
         .catch((err) => {
           console.error('Failed request:', err);
