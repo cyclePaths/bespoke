@@ -22,7 +22,9 @@ import {
 import { BandAid } from '../../StyledComp';
 import {
   AchievementBadgeByName,
+  AchievementBadgeTooltip,
   AchievementBadge,
+  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
 } from '../../StyledComp';
 import { useRadioGroup } from '@material-ui/core';
@@ -59,7 +61,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const {
     userBadges,
     setUserBadges,
-    getBadgesOnUser,
     selectedBadge,
     setSelectedBadge,
     updateBadgeCounter,
@@ -281,7 +282,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
-      getBadgesOnUser();
       badgesToggle(); //used to fixe weird problem where first trigger of this function does not work, but no longer does for some reason
     });
   }, []);
@@ -498,3 +498,27 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 };
 
 export default Profile;
+
+//still working on this:
+
+// <AchievementBadgeHolder id='badges'>
+//         {userBadges.map((badge) => {
+//           return (
+//             <AchievementBadgeAndTooltipContainer
+//               key={badge.id}
+//               src={badge.badgeIcon}
+//             >
+//               <AchievementBadge
+//                 key={badge.id}
+//                 onClick={() => {
+//                   setSelectedBadge(badge.badgeIcon);
+//                 }}
+//                 title={badge.description}
+//               />
+//               <AchievementBadgeTooltip key={badge.id}>
+//                 {badge.description}
+//               </AchievementBadgeTooltip>
+//             </AchievementBadgeAndTooltipContainer>
+//           );
+//         })}
+//       </AchievementBadgeHolder>

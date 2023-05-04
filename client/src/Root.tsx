@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
+  badgeInfo,
   standardTiers,
   weeklyTiers,
   badgesWithSpecialTiers,
@@ -129,8 +130,9 @@ export interface Badge {
   tier?: number;
 }
 
-export interface BadgeWithCounter extends Badge {
+export interface BadgeWithAdditions extends Badge {
   counter?: number;
+  description?: string;
 }
 
 export const UserContext = createContext<any>(Object());
@@ -163,7 +165,7 @@ const Root = () => {
     },
   ]);
   //holds badge objects associated with user
-  const [userBadges, setUserBadges] = useState<BadgeWithCounter[]>([
+  const [userBadges, setUserBadges] = useState<BadgeWithAdditions[]>([
     {
       id: 0,
       name: 'No Achievements',
@@ -171,6 +173,7 @@ const Root = () => {
         'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
       tier: 0,
       counter: 0,
+      description: '',
     },
   ]);
   //holds URL of badge to display by username
@@ -329,7 +332,15 @@ const Root = () => {
       .get('badges/all-badges')
       .then(({ data }) => {
         setAllBadges(data.allBadges);
-        let earnedBadges = data.earnedBadges;
+        //add descriptions to the Badge objects for use in Tooltips
+        let earnedBadges = data.earnedBadges.map((ele) => {
+          for (let i = 0; i < badgeInfo.length; i++) {
+            if (badgeInfo[i].name === ele.name) {
+              ele.description = badgeInfo[i].description;
+            }
+          }
+          return ele;
+        });
         //add current count for all counters on all user badges that have counters
         data.joinTableBadges.forEach((ele) => {
           for (let i = 0; i < earnedBadges.length; i++) {

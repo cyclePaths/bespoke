@@ -148,11 +148,28 @@ const AchievementBadgeByName = styled.img`
   width: 30px;
 `;
 
+const AchievementBadgeTooltip = styled.span`
+  visibility: hidden;
+  padding: 5px 0;
+  border-radius: 6px;
+  text-align: center
+  position: absolute;
+  z-index: 1;
+`;
+
 const AchievementBadge = styled.img`
   height: 35px;
   width: 35px;
   margin-left: 12px;
   margin-right: 12px;
+`;
+
+const AchievementBadgeAndTooltipContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  &:hover ${AchievementBadgeTooltip} {
+    visibility: visible;
+  }
 `;
 
 const AchievementBadgeHolder = styled.span`
@@ -227,7 +244,9 @@ export {
   RouteListOptions,
   RouteList,
   AchievementBadgeByName,
+  AchievementBadgeTooltip,
   AchievementBadge,
+  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
