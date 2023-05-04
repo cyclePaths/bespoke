@@ -21,7 +21,7 @@ useEffect(() => {
 }, [context])
 
    return (
-    <div  className='bulletin' style={{ backgroundColor: '#94edd7', fontFamily: 'roboto'}}>
+    <div  className='bulletin' style={{ backgroundColor: 'rgb(115, 216, 139)', fontFamily: 'roboto'}}>
       <h4 className='bulletinTopic'>{topic} -- <i>{creator} -- {formattedDate}</i></h4>
       <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
       <CreateComment bulletinOrigin={ id }/>

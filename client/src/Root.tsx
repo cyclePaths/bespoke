@@ -216,9 +216,7 @@ const Root = () => {
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
           latitude: geoLocation.lat,
-        //latitude: 29.9511,
           longitude: geoLocation.lng,
-        //longitude: -90.0715,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -553,7 +551,7 @@ const Root = () => {
       updateUserLocation(geoLocation);
       getForecasts();
     }
-  }, []);
+  }, [geoLocation]);
 
   useEffect(() => {
     getLocation();
