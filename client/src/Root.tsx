@@ -181,8 +181,7 @@ const Root = () => {
   ]);
   //holds URL of badge to display by username
   const [selectedBadge, setSelectedBadge] = useState<string>(
-    userBadges[0].badgeIcon
-  );
+    'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'  );
 
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
@@ -623,7 +622,7 @@ const Root = () => {
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
-    
+
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
