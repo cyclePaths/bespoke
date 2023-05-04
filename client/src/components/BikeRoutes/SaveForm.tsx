@@ -7,18 +7,7 @@ import {
 } from '../../StyledComp';
 import Button from '@mui/material/Button';
 import '../../styles.css';
-
-interface SaveProps {
-  routeName: string;
-  setRouteName: React.Dispatch<React.SetStateAction<string>>;
-  category: string;
-  setCategory: React.Dispatch<React.SetStateAction<string>>;
-  isPrivate: boolean;
-  setIsPrivate: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  directions: google.maps.DirectionsResult | undefined;
-  saveRoute: (name: string, category: string, privacy: boolean) => void;
-}
+import { SaveProps } from './RouteM';
 
 const SaveForm = ({
   routeName,
@@ -30,6 +19,7 @@ const SaveForm = ({
   setOpenPopup,
   directions,
   saveRoute,
+  setSaveMessage,
 }: SaveProps) => {
   const handleSave = () => {
     saveRoute(routeName, category, isPrivate);
@@ -42,6 +32,7 @@ const SaveForm = ({
   return (
     <div>
       <PopoutSaveForm>
+        <header className='centered-header-Save'>Save Route:</header>
         <InputLayout
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
@@ -50,32 +41,35 @@ const SaveForm = ({
           placeholder='Enter Name of Route...'
         />
         <OptionsDiv>
-          <CategorySelector
-            defaultValue='None'
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option disabled>None</option>
-            <option>Casual</option>
-            <option>Speedy</option>
-            <option>Scenic</option>
-          </CategorySelector>
-          <div
-            style={{
-              display: 'flex',
-              backgroundColor: '#e0e0e0',
-              padding: '3px',
-              borderRadius: '3px',
-              border: '1px solid',
-              borderColor: 'rgb(118, 118, 118) rgb(133, 133, 133)',
-              boxShadow: '0px 1px 0px rgba(0,0,0,0.2)',
-              alignItems: 'center',
-            }}
-          >
-            <div id='set-private'>Private?</div>
-            <input
-              type='checkbox'
-              onClick={() => (setIsPrivate(true), console.log(isPrivate))}
-            />
+          <div className='route-options'>
+            <CategorySelector
+              defaultValue='None'
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option disabled>None</option>
+              <option>Casual</option>
+              <option>Speedy</option>
+              <option>Scenic</option>
+            </CategorySelector>
+            <div
+              style={{
+                display: 'flex',
+                backgroundColor: '#e0e0e0',
+                padding: '3px',
+                borderRadius: '3px',
+                border: '1px solid',
+                borderColor: 'rgb(118, 118, 118) rgb(133, 133, 133)',
+                boxShadow: '0px 1px 0px rgba(0,0,0,0.2)',
+                alignItems: 'center',
+                marginLeft: '10px',
+              }}
+            >
+              <div id='set-private'>Private?</div>
+              <input
+                type='checkbox'
+                onClick={() => (setIsPrivate(true), console.log(isPrivate))}
+              />
+            </div>
           </div>
           <Button
             variant='contained'

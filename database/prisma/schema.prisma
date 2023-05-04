@@ -131,8 +131,9 @@ model BikeRoutes {
   category    String?
   createdAt   DateTime    @default(now())
   userId      Int
-  destination Decimal[]
-  origin      Decimal[]
+  destination Json
+  origin      Json
+  waypoints   Json?
   likes       Int?        @default(0)
   isPrivate   Boolean     @default(false)
   user        User        @relation(fields: [userId], references: [id])

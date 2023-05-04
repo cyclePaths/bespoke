@@ -9,7 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import io from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
-import Conversations from './Conversations';
+// import Conversations from './Conversations';
 
 interface Message {
   id: number;
@@ -109,10 +109,10 @@ function DirectMessages() {
     }
   };
 
-
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -136,7 +136,6 @@ function DirectMessages() {
     }
   }, [receiver]);
 
-
   useEffect(() => {
     const newSocket = io('http://localhost:8080');
 
@@ -146,9 +145,12 @@ function DirectMessages() {
     // Listen for incoming 'message' events
     newSocket.on('message', (newMessage: Message) => {
       // Add the new message to the messages array if it's from the targeted receiver
-    if (newMessage.senderId === receiverId || newMessage.receiverId === receiverId) {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    }
+      if (
+        newMessage.senderId === receiverId ||
+        newMessage.receiverId === receiverId
+      ) {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      }
     });
 
     // Clean up the WebSocket connection when the component unmounts
@@ -242,50 +244,50 @@ function DirectMessages() {
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
       ></SearchUsers>
-      <Conversations />
-{isReceiverSelected && (
-      <Paper className={classes.root} >
-        <div className={classes.messagesContainer} ref={messagesContainerRef}>
-          {messages.map((message) => (
-            <Message
-              id={message.id}
-              senderId={message.senderId}
-              receiverId={message.receiverId}
-              text={message.text}
-              fromMe={message.senderId === userId}
-            />
-          ))}
-        </div>
+      {/* <Conversations /> */}
+      {isReceiverSelected && (
+        <Paper className={classes.root}>
+          <div className={classes.messagesContainer} ref={messagesContainerRef}>
+            {messages.map((message) => (
+              <Message
+                id={message.id}
+                senderId={message.senderId}
+                receiverId={message.receiverId}
+                text={message.text}
+                fromMe={message.senderId === userId}
+              />
+            ))}
+          </div>
 
-        <div className={classes.inputContainer}>
-          <TextField
-            // {...props}
-            InputProps={{
-              classes: {
-                root: inputClasses.root,
-                input: inputClasses.input,
-                underline: inputClasses.underline,
-                disabled: inputClasses.disabled,
-              },
-            }}
-            placeholder='Type your message...'
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            multiline
-            minRows={1}
-            maxRows={18}
-            inputRef={inputRef}
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleSendMessage}
-          >
-            Send
-          </Button>
-        </div>
-      </Paper>
-)}
+          <div className={classes.inputContainer}>
+            <TextField
+              // {...props}
+              InputProps={{
+                classes: {
+                  root: inputClasses.root,
+                  input: inputClasses.input,
+                  underline: inputClasses.underline,
+                  disabled: inputClasses.disabled,
+                },
+              }}
+              placeholder='Type your message...'
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              multiline
+              minRows={1}
+              maxRows={18}
+              inputRef={inputRef}
+            />
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleSendMessage}
+            >
+              Send
+            </Button>
+          </div>
+        </Paper>
+      )}
     </BandAid>
   );
 }

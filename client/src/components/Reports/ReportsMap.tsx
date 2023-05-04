@@ -10,7 +10,6 @@ import { Box, Fab, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
 
-
 //  webpack url-loader
 // import roadHazardIcon from './images/hazard.png';
 // import theftAlertIcon from './icons/theft.png';
@@ -24,7 +23,7 @@ const ReportsMap: React.FC = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
-const [locationError, setLocationError] = useState(false);
+  const [locationError, setLocationError] = useState(false);
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
@@ -56,7 +55,6 @@ const [locationError, setLocationError] = useState(false);
       },
     ],
   };
-
 
   const handleButtonClick = async (id: string) => {
     console.log(id);
@@ -166,13 +164,13 @@ const [locationError, setLocationError] = useState(false);
         //   };
 
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
-      const marker = new google.maps.Marker({
-        position: latLng,
-        map,
-        icon: getMarkerIconUrl(report.type),
-      });
+        const marker = new google.maps.Marker({
+          position: latLng,
+          map,
+          icon: getMarkerIconUrl(report.type),
+        });
 
-      const infoWindow = new google.maps.InfoWindow();
+        const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
         const imageUrl: string | null = report.imgUrl;
         const imageElement = document.createElement('img');
@@ -231,7 +229,6 @@ const [locationError, setLocationError] = useState(false);
       if (bounds !== null) {
         map.fitBounds(bounds);
       }
-
     }
   }, [map, reports, selectedType, buttonClicked]);
 
@@ -240,7 +237,10 @@ const [locationError, setLocationError] = useState(false);
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            const pos = new google.maps.LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            );
             setCenter(pos);
           },
           () => {
@@ -250,8 +250,6 @@ const [locationError, setLocationError] = useState(false);
       } else {
         setLocationError(true);
       }
-
-
     }
   }, [map]);
 

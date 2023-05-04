@@ -4,17 +4,7 @@ import { IconButton, Box } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import axios from 'axios';
 import { UserContext } from '../../Root';
-
-interface RouteProps {
-  route: any;
-  index: number;
-  handleRouteClick: () => void;
-  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
-  fetchDirections: () => void;
-  setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
-  likeList: any[];
-  setLikeList: React.Dispatch<React.SetStateAction<any[]>>;
-}
+import { Coordinates, RouteProps } from './RouteM';
 
 const RouteInfo = ({
   route,
@@ -24,7 +14,7 @@ const RouteInfo = ({
   fetchDirections,
   setRouteList,
   likeList,
-  setLikeList,
+  setMarkers,
 }: RouteProps) => {
   const { user } = useContext(UserContext);
   const [date, setDate] = useState<string>(route.createdAt);
@@ -46,6 +36,32 @@ const RouteInfo = ({
       });
   };
 
+  const handleRouteParsing = () => {
+    const origin = JSON.parse(route.origin as string);
+    const destination = JSON.parse(route.destination as string);
+    let waypoints;
+
+    if (route.waypoints !== null) {
+      waypoints = route.waypoints.map((waypoint) => {
+        const lat = waypoint.location.location.lat;
+        const lng = waypoint.location.location.lng;
+        return {
+          lat: lat,
+          lng: lng,
+        };
+      });
+
+      handleRouteClick(origin, destination);
+      setMarkers(waypoints);
+      setOpenSearch(false);
+      setRouteList([]);
+    } else {
+      handleRouteClick(origin, destination);
+      setOpenSearch(false);
+      setRouteList([]);
+    }
+  };
+
   useEffect(() => {
     const date = new Date(route.createdAt);
     const readableDate = date.toLocaleDateString();
@@ -63,50 +79,64 @@ const RouteInfo = ({
   }, []);
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '130%' }}>
       <Box
         component='span'
         sx={{
-          display: 'flex',
-          width: '250px',
-          boxShadow: 2,
+          backgroundColor: '#e0e0e0',
+          display: 'grid',
+          width: '100%',
+          boxShadow: '-2px 4px 4px rgba(0,0,0,0.2)',
           borderRadius: '3px',
           marginY: '5px',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
+          justifyItems: 'center',
         }}
       >
-        <div style={{ display: 'flex' }}>
-          <div style={{ marginTop: '10px' }}>{date}:</div>
-          <div
-            className='route-name'
-            style={{ marginTop: '10px' }}
-            onClick={() => {
-              handleRouteClick();
-              setOpenSearch(false);
-              setRouteList([]);
-            }}
-          >
-            {route.name}
-          </div>
-          <div style={{ marginTop: '10px' }}>Likes:{likeNumber}</div>
-        </div>
-        <IconButton
-          onClick={() => {
-            if (!like) {
-              setLike(true);
-              updateLikes(true);
-            } else {
-              setLike(false);
-              updateLikes(false);
-            }
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          {like === true ? (
-            <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
+          <div style={{ marginTop: '10px' }}>{date}:</div>
+          <div className='route-name' onClick={() => handleRouteParsing()}>
+            {route.name}
+          </div>
+        </div>
+        <span
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>
+          {route.userId === user.id ? (
+            <IconButton disabled>
+              <ThumbUpAltOutlinedIcon />
+            </IconButton>
           ) : (
-            <ThumbUpAltOutlinedIcon />
+            <IconButton
+              onClick={() => {
+                if (!like) {
+                  setLike(true);
+                  updateLikes(true);
+                } else {
+                  setLike(false);
+                  updateLikes(false);
+                }
+              }}
+            >
+              {like === true ? (
+                <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
+              ) : (
+                <ThumbUpAltOutlinedIcon />
+              )}
+            </IconButton>
           )}
-        </IconButton>
+        </span>
       </Box>
     </div>
   );
