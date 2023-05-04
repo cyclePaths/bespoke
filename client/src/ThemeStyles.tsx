@@ -64,7 +64,7 @@ const ToggleSwitch = styled.label`
 
 const GlobalStyleDark = createGlobalStyle`
   html, body {
-    background-color: #333;
+    background-color: #191a35;
     color: #fff;
   }
 
@@ -120,7 +120,7 @@ const GlobalStyleDark = createGlobalStyle`
 
 const GlobalStyleLight = createGlobalStyle`
   html, body {
-    background-color: #0088d5;
+    background-color: rgb(133, 211, 255);
     color: #333;
   }
 
