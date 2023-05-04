@@ -623,7 +623,7 @@ const Root = () => {
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
-    
+
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
