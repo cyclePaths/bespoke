@@ -9,12 +9,14 @@ import { ThemeProvider } from '@mui/material/styles';
 import io from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
-// import Conversations from './Conversations';
+import Conversations from './Conversations';
 
 interface Message {
   id: number;
   senderId: number;
+  senderName: string;
   receiverId: number;
+  receiverName: string;
   text: string;
   fromMe: boolean;
 }
@@ -73,13 +75,15 @@ function DirectMessages() {
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, senderId: 1, receiverId: 2, text: 'Hello!', fromMe: false },
-    { id: 2, senderId: 2, receiverId: 1, text: 'Hi there!', fromMe: true },
-    { id: 3, senderId: 1, receiverId: 2, text: 'How are you?', fromMe: false },
+    { id: 1, senderId: 1, senderName: '', receiverId: 2, receiverName: '', text: 'Hello!', fromMe: false },
+    { id: 2, senderId: 2, senderName: '', receiverId: 1, receiverName: '', text: 'Hi there!', fromMe: true },
+    { id: 3, senderId: 1, senderName: '', receiverId: 2, receiverName: '', text: 'How are you?', fromMe: false },
     {
       id: 4,
       senderId: 2,
+      senderName: '',
       receiverId: 1,
+      receiverName: '',
       text: "I'm good, thanks!",
       fromMe: true,
     },
@@ -91,7 +95,7 @@ function DirectMessages() {
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
   const [receiver, setReceiver] = useState<SelectedUser>();
-  const [name, setName] = useState(true);
+  const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
   const [isReceiverSelected, setIsReceiverSelected] = useState(false);
 
@@ -131,8 +135,8 @@ function DirectMessages() {
 
     if (receiver) {
       setReceiverId(receiver.id);
-      console.log(options);
-      console.log(receiver);
+      // console.log(options);
+      // console.log(receiver);
     }
   }, [receiver]);
 
@@ -164,9 +168,9 @@ function DirectMessages() {
       const thread = await axios.get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
       });
-      console.log('Thread', thread);
+      // console.log('Thread', thread);
       const { data } = thread;
-      console.log('Big thread', thread);
+      // console.log('Big thread', thread);
 
       data.forEach((message) => {
         console.log(message.text);
@@ -193,7 +197,9 @@ function DirectMessages() {
     const newMessage: Message = {
       id: 0,
       senderId: userId,
+      senderName: name,
       receiverId: receiver?.id ?? 0,
+      receiverName: receiver.name,
       text: messageInput,
       fromMe: true,
     };
@@ -207,10 +213,10 @@ function DirectMessages() {
         message: newMessage,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("NOOOOO", err);
       });
 
     // setMessages([...messages, newMessage]);
@@ -244,7 +250,7 @@ function DirectMessages() {
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
       ></SearchUsers>
-      {/* <Conversations /> */}
+      <Conversations />
       {isReceiverSelected && (
         <Paper className={classes.root}>
           <div className={classes.messagesContainer} ref={messagesContainerRef}>
@@ -252,7 +258,9 @@ function DirectMessages() {
               <Message
                 id={message.id}
                 senderId={message.senderId}
+                senderName={message.senderName}
                 receiverId={message.receiverId}
+                receiverName={message.receiverName}
                 text={message.text}
                 fromMe={message.senderId === userId}
               />
