@@ -72,7 +72,7 @@ const [locationError, setLocationError] = useState(false);
     }
   };
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypeChange = (event) => {
     const value = event.target.value;
     setSelectedType(value === 'All' ? '' : value);
   };

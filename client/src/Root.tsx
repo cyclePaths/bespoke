@@ -332,29 +332,32 @@ const Root = () => {
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
     axios
-      .get('badges/all-badges')
+    .get('badges/all-badges')
       .then(({ data }) => {
         setAllBadges(data.allBadges);
         //add descriptions to the Badge objects for use in Tooltips
-        let earnedBadges = data.earnedBadges.map((ele) => {
-          for (let i = 0; i < badgeInfo.length; i++) {
-            if (badgeInfo[i].name === ele.name) {
-              ele.description = badgeInfo[i].description;
-            }
-          }
-          return ele;
-        });
-        //add current count for all counters on all user badges that have counters
-        data.joinTableBadges.forEach((ele) => {
-          for (let i = 0; i < earnedBadges.length; i++) {
-            if (earnedBadges[i].counter) {
-              if (earnedBadges[i].id === ele.badgeId) {
-                earnedBadges[i].counter = ele.counter;
+        if (data.earnedBadges.length === 0) {
+          let earnedBadges = data.earnedBadges.map((ele) => {
+            for (let i = 0; i < badgeInfo.length; i++) {
+              if (badgeInfo[i].name === ele.name) {
+                ele.description = badgeInfo[i].description;
               }
             }
-          }
-        });
-        setUserBadges(earnedBadges);
+            return ele;
+          });
+          //add current count for all counters on all user badges that have counters
+          data.joinTableBadges.forEach((ele) => {
+            for (let i = 0; i < earnedBadges.length; i++) {
+              if (earnedBadges[i].counter) {
+                if (earnedBadges[i].id === ele.badgeId) {
+                  earnedBadges[i].counter = ele.counter;
+                }
+              }
+            }
+          });
+          setUserBadges(earnedBadges);
+        }
+
       })
       .catch((err) => {
         console.error('Failed to get badges from database: ', err);
@@ -625,7 +628,7 @@ const Root = () => {
   return (
     //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
     // <>
-    
+
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
