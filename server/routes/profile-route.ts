@@ -4,6 +4,7 @@ import { PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
 import { CALORIES_BURNED_API } from '../../config';
 
+
 const prisma = new PrismaClient();
 const profileRouter: Router = express.Router();
 
@@ -84,13 +85,13 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/user', async (req: Request, res: Response) => {
-  // console.log(req.user, 'query');
   try {
     const { id } = (req.user as User) || {};
     const nameValue = await prisma.user.findUnique({
       where: {
         id: id,
       },
+
     });
     res.status(200).send(nameValue);
   } catch (err) {
@@ -100,7 +101,6 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
-  console.log(req);
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -253,7 +253,11 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
       where: {
         id: id,
       },
+      select: {
+        weight: true,
+      },
     });
+
     res.status(200).send(weightValue);
   } catch (err) {
     console.error('Failed to get weight', err);
@@ -350,4 +354,29 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
   }
 });
 
+
+profileRouter.get('/stats', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.user as { id: number };
+    const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
+    if (!speed) {
+      return res.status(400).json({ error: 'Invalid speed value' });
+    }
+
+    const statsData = await prisma.rides.findMany({
+      where: {
+        // AND: [
+           userId: id ,
+           activity: speed,
+        // ]
+
+      }
+
+    });
+    res.status(200).json(statsData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 export default profileRouter;

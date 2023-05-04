@@ -179,7 +179,7 @@ const AchievementBadgeTooltip = styled.span`
   visibility: hidden;
   padding: 5px 0;
   border-radius: 6px;
-  text-align: center
+  text-align: center;
   position: absolute;
   z-index: 1;
 `;

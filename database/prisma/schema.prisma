@@ -158,4 +158,5 @@ model Rides {
   calories Int
   User     User?  @relation(fields: [userId], references: [id])
   userId   Int?
+  rideDate DateTime @default(now())
 }

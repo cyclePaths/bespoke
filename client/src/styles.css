@@ -142,6 +142,41 @@ The code below is for the scroll wheel
   border-radius: 50%;
 }
 
+.sliderWrapper {
+  height: 100px; /* Adjust the height value as needed */
+  position: relative;
+}
+
+.sliderHidden {
+  visibility: hidden;
+  opacity: 0;
+  height: 100px;
+  bottom: 0;
+  transition: opacity 0.5s;
+
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* set the width to 100% */
+}
+
+.backButton {
+  position: fixed;
+  left: 0;
+}
+
+.forwardButton {
+  position: fixed;
+  right: 0;
+}
+
+.rideStatsButton {
+  display: flex;
+  justify-content: center;
+}
+
 .custom-slide {
   width: 150px;
 }
@@ -151,7 +186,7 @@ The code below is for the scroll wheel
   width: 120px;
   max-height: 100vh;
   border-radius: 50%;
-  color: 'white';
+  color: white !important;
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }

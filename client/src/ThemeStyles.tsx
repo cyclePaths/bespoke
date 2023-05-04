@@ -1,4 +1,17 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import IconButton from '@mui/material/IconButton';
+
+const DarkModeIconWrapper = styled.div`
+  color: ${(props) => props.theme.color};
+
+  svg {
+    fill: ${(props) => props.theme.iconColor};
+  }
+`;
+
+const DarkModeIconButton = styled(IconButton)`
+  color: ${(props) => props.theme.mode === 'dark' ? 'primary' : 'inherit'};
+`;
 
 const ToggleSwitch = styled.label`
   position: relative;
@@ -162,4 +175,4 @@ const GlobalStyleLight = createGlobalStyle`
 
 `;
 
-export { GlobalStyleDark, GlobalStyleLight, ToggleSwitch };
+export { GlobalStyleDark, GlobalStyleLight, ToggleSwitch, DarkModeIconWrapper, DarkModeIconButton };
