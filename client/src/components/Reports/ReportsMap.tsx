@@ -289,7 +289,7 @@ const ReportsMap: React.FC = () => {
           </Box>
         </Box>
 
-        <Box height='100vh'>
+        <Box height='87vh;'>
           <GoogleMap
             mapContainerStyle={{ height: '100%', width: '100%' }}
             center={center}

@@ -34,7 +34,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const {
     userBadges,
     setUserBadges,
-    getBadgesOnUser,
     selectedBadge,
     setSelectedBadge,
     tickBadgeCounter,
@@ -159,7 +158,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
-      getBadgesOnUser();
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
     });
   }, []);
@@ -246,7 +244,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
       <AchievementBadgeHolder id='badges'>
         {userBadges.map((badge) => {
-          if (badge.badgeIcon !== 'url') {
+          // if (badge.badgeIcon !== 'url') {
             return (
               <AchievementBadge
                 key={badge.id}
@@ -256,7 +254,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
                 src={badge.badgeIcon}
               />
             );
-          }
+          // }
         })}
       </AchievementBadgeHolder>
       <div
