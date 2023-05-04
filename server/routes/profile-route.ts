@@ -78,7 +78,7 @@ profileRouter.post('/theme', async (req: Request, res: Response) => {
     });
     res.status(201).send(updateTheme);
   } catch (err) {
-    console.log('Failed to update weight', err);
+    console.error('Failed to update weight', err);
     res.sendStatus(500);
   }
 });
@@ -94,13 +94,13 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
     });
     res.status(200).send(nameValue);
   } catch (err) {
-    console.log('Failed to get weight', err);
+    console.error('Failed to get weight', err);
     res.sendStatus(500);
   }
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
-  console.log(req)
+  console.log(req);
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -124,7 +124,6 @@ profileRouter.get('/workout', (req: Request, res: Response) => {
 });
 
 profileRouter.post('/workout', async (req, res) => {
-
   try {
     const { activity, duration, weight, calories } = req.body;
 
@@ -149,7 +148,7 @@ profileRouter.post('/workout', async (req, res) => {
     });
     res.status(201).send(newRide);
   } catch (err) {
-    console.log('Failed to update ride', err);
+    console.error('Failed to update ride', err);
     res.sendStatus(500);
   }
 });
@@ -167,7 +166,7 @@ profileRouter.get('/lastRide', async (req: Request, res: Response) => {
     });
     res.status(200).send(lastRide);
   } catch (err) {
-    console.log('Failed to get weight', err);
+    console.error('Failed to get weight', err);
     res.sendStatus(500);
   }
 });
@@ -242,7 +241,7 @@ profileRouter.post('/weight', async (req: Request, res: Response) => {
     });
     res.status(201).send(updateWeight);
   } catch (err) {
-    console.log('Failed to update weight', err);
+    console.error('Failed to update weight', err);
     res.sendStatus(500);
   }
 });
@@ -257,7 +256,7 @@ profileRouter.get('/weight', async (req: Request, res: Response) => {
     });
     res.status(200).send(weightValue);
   } catch (err) {
-    console.log('Failed to get weight', err);
+    console.error('Failed to get weight', err);
     res.sendStatus(500);
   }
 });
@@ -331,7 +330,7 @@ profileRouter.post('/address', async (req: Request, res: Response) => {
     });
     res.status(201).send(updateAddress);
   } catch (err) {
-    console.log('Failed to update address', err);
+    console.error('Failed to update address', err);
     res.sendStatus(500);
   }
 });
@@ -346,7 +345,7 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
     });
     res.status(200).send(address);
   } catch (err) {
-    console.log('Failed to get address', err);
+    console.error('Failed to get address', err);
     res.sendStatus(500);
   }
 });

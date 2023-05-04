@@ -3,9 +3,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Profile, { RideStats } from './Profile';
 import Root, { UserContext } from '../../Root';
-import {
-  exiledRedHeadedStepChildrenValueGroups,
-} from '../../../profile-assets';
+import { exiledRedHeadedStepChildrenValueGroups } from '../../../profile-assets';
 
 export type StopwatchActivity = string;
 export type StopwatchDuration = number;
@@ -70,7 +68,7 @@ const StopwatchStats = ({
         if (`${workout}` === '13.9 mph, moderate') {
           workout = 'Average Speed 12-14 mph';
         }
-        if (`${workout}`=== '15.9 mph, vigorous') {
+        if (`${workout}` === '15.9 mph, vigorous') {
           workout = 'Average Speed 14-16 mph';
         }
         if (`${workout}` === 'very fast, racing') {
@@ -83,14 +81,13 @@ const StopwatchStats = ({
           workout = 'Mountain Biking';
         }
 
-        navigate('/Profile', {state:{
-          stopwatchActivity: workout,
-          stopwatchDuration: totalTime,
-          stopwatchCalories: total_calories
-        }
-
-        })
-
+        navigate('/Profile', {
+          state: {
+            stopwatchActivity: workout,
+            stopwatchDuration: totalTime,
+            stopwatchCalories: total_calories,
+          },
+        });
 
         console.log(response);
         axios
@@ -100,35 +97,34 @@ const StopwatchStats = ({
             weight: weight,
             calories: total_calories,
           })
-          .then(() => {
-          })
+          .then(() => {})
           .catch((err) => {
-            console.log('Could not post stats', err);
+            console.error('Could not post stats', err);
           });
       })
       .catch((err) => {
-        console.log(err, 'got no response');
+        console.error(err, 'got no response');
       });
   };
 
   return (
     <div>
-    <div>
-      {isPickerVisible && (
-        <div>
-          <button
-            type='button'
-            onClick={() => {
-              workoutStats();
-              setIsPickerVisible(false);
-              setValueGroups(exiledRedHeadedStepChildrenValueGroups);
-            }}
-          >
-            Get Stats
-          </button>
-        </div>
-      )}
-    </div>
+      <div>
+        {isPickerVisible && (
+          <div>
+            <button
+              type='button'
+              onClick={() => {
+                workoutStats();
+                setIsPickerVisible(false);
+                setValueGroups(exiledRedHeadedStepChildrenValueGroups);
+              }}
+            >
+              Get Stats
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
