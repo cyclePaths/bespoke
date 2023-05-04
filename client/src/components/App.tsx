@@ -38,9 +38,7 @@ const App = () => {
       <div>
         <Navbar appPropsObj={appPropsObj} />
       </div>
-      <div>
-        {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
-      </div>
+      <div>Hello World</div>
     </div>
   );
 };

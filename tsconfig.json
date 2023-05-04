@@ -45,7 +45,7 @@
     "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
     "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,
     "noUnusedLocals": false /* Enable error reporting when local variables aren't read. */,
-    "types": ["googlemaps", "node"],
+    "types": ["googlemaps", "node", "mocha"],
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,

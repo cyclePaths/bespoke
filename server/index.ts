@@ -66,7 +66,7 @@ app.use(passport.session());
 //  Authentication Routes
 // 1. Sign-In Splash
 app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Sign in with Google</div>');
+  res.render('/signIn');
 });
 
 // 2. Google endpoint
