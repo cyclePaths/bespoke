@@ -15,7 +15,6 @@ interface CustomSocket extends Socket {
   };
 }
 
-
 dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
   // console.log(req.body);
   try {
@@ -24,7 +23,7 @@ dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
     // console.log(allUsers)
     res.status(200).send(allUsers);
   } catch (err) {
-    console.log('Failed to get weight', err);
+    console.error('Failed to get weight', err);
     res.sendStatus(500);
   }
 });
@@ -39,8 +38,8 @@ dmRouter.get('/retrieveMessages', async (req: Request, res: Response) => {
       where: {
         OR: [
           { receiverId: Number(receiverId), senderId: id },
-          { receiverId: id, senderId: Number(receiverId) }
-        ]
+          { receiverId: id, senderId: Number(receiverId) },
+        ],
       },
       include: {
         sender: true,

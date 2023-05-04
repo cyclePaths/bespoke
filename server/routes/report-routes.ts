@@ -55,18 +55,14 @@ const storage = multer.diskStorage({
     cb(null, './images');
   },
   filename: (req, file, cb) => {
-    console.log();
     cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
 const upload = multer({ storage: storage });
 
-// reportRouter.post('/',  (req, res) => {
 
-//     console.log(req);
 
-// });
 reportRouter.post(
   '/',
   (req, res, next) => {
@@ -87,6 +83,10 @@ reportRouter.post(
 
       // Check if file exists in the request and upload it to Cloudinary
       if (req.file) {
+        const options = {
+          quality: "auto",
+          format: "auto"
+        };
         const result = await cloudinary.uploader.upload(req.file.path);
         imageUrl = result.secure_url;
         // Delete the local image file after it has been uploaded to Cloudinary
@@ -96,7 +96,7 @@ reportRouter.post(
           }
         });
       }
-      // console.log(req.user);
+
       const { id } = req.user as User;
 
       // Save report data to database using Prisma

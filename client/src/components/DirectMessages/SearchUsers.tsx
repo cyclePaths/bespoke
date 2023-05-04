@@ -42,7 +42,7 @@ function SearchUsers({
           setOptions([...response.data]);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
