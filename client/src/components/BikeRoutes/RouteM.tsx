@@ -50,6 +50,7 @@ export interface FetchedRoutesProps {
   fetchDirections: () => void;
   likeList: any[];
   setLikeList: React.Dispatch<React.SetStateAction<any[]>>;
+  setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
 }
 ///////////////////////////////////////////////// ->
 
@@ -62,7 +63,7 @@ export interface RouteProps {
   fetchDirections: () => void;
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
   likeList: any[];
-  setLikeList: React.Dispatch<React.SetStateAction<any[]>>;
+  setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
 }
 //////////////////////////////////////////////// ->
 

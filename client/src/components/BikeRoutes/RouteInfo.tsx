@@ -4,7 +4,7 @@ import { IconButton, Box } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import axios from 'axios';
 import { UserContext } from '../../Root';
-import { RouteProps } from './RouteM';
+import { Coordinates, RouteProps } from './RouteM';
 
 const RouteInfo = ({
   route,
@@ -14,7 +14,7 @@ const RouteInfo = ({
   fetchDirections,
   setRouteList,
   likeList,
-  setLikeList,
+  setMarkers,
 }: RouteProps) => {
   const { user } = useContext(UserContext);
   const [date, setDate] = useState<string>(route.createdAt);
@@ -34,6 +34,32 @@ const RouteInfo = ({
       .catch((err) => {
         console.error('Failed to update User:', err);
       });
+  };
+
+  const handleRouteParsing = () => {
+    const origin = JSON.parse(route.origin as string);
+    const destination = JSON.parse(route.destination as string);
+    let waypoints;
+
+    if (route.waypoints !== null) {
+      waypoints = route.waypoints.map((waypoint) => {
+        const lat = waypoint.location.location.lat;
+        const lng = waypoint.location.location.lng;
+        return {
+          lat: lat,
+          lng: lng,
+        };
+      });
+
+      handleRouteClick(origin, destination);
+      setMarkers(waypoints);
+      setOpenSearch(false);
+      setRouteList([]);
+    } else {
+      handleRouteClick(origin, destination);
+      setOpenSearch(false);
+      setRouteList([]);
+    }
   };
 
   useEffect(() => {
@@ -67,43 +93,50 @@ const RouteInfo = ({
           justifyItems: 'center',
         }}
       >
-        <div style={{ display: 'grid', justifyItems: 'center' }}>
-          <div>{date}:</div>
-          <div
-            className='route-name'
-            onClick={() => {
-              handleRouteClick(route.origin, route.destination);
-              setOpenSearch(false);
-              setRouteList([]);
-            }}
-          >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ marginTop: '10px' }}>{date}:</div>
+          <div className='route-name' onClick={() => handleRouteParsing()}>
             {route.name}
           </div>
-          <div>Likes: {likeNumber}</div>
         </div>
-        {route.userId === user.id ? (
-          <IconButton disabled>
-            <ThumbUpAltOutlinedIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            onClick={() => {
-              if (!like) {
-                setLike(true);
-                updateLikes(true);
-              } else {
-                setLike(false);
-                updateLikes(false);
-              }
-            }}
-          >
-            {like === true ? (
-              <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
-            ) : (
+        <span
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>
+          {route.userId === user.id ? (
+            <IconButton disabled>
               <ThumbUpAltOutlinedIcon />
-            )}
-          </IconButton>
-        )}
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                if (!like) {
+                  setLike(true);
+                  updateLikes(true);
+                } else {
+                  setLike(false);
+                  updateLikes(false);
+                }
+              }}
+            >
+              {like === true ? (
+                <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
+              ) : (
+                <ThumbUpAltOutlinedIcon />
+              )}
+            </IconButton>
+          )}
+        </span>
       </Box>
     </div>
   );

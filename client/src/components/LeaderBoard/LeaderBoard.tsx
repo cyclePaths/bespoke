@@ -99,50 +99,40 @@ const LeaderBoard = () => {
       <div className='navigation-wrapper'>
         <div ref={sliderRef} className='keen-slider'>
           <div className='keen-slider__slide'>
-            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
-              Liked Users
-            </h2>
-            <div className='override'>
+            <h2 className='leaderboardTitles'>Liked Users</h2>
+            <div className='leaderBoxOverride'>
               {top10Likes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
             </div>
           </div>
           <div className='keen-slider__slide'>
-            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
-              Top Travelers
-            </h2>
-            <div className='override'>
+            <h2 className='leaderboardTitles'>Top Travelers</h2>
+            <div className='leaderBoxOverride'>
               {top10Miles.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
             </div>
           </div>
           <div className='keen-slider__slide'>
-            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
-              Topic Chasers
-            </h2>
-            <div className='override'>
+            <h2 className='leaderboardTitles'>Topic Chasers</h2>
+            <div className='leaderBoxOverride'>
               {top10Post.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
             </div>
           </div>
           <div className='keen-slider__slide'>
-            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
-              Good Samaritans
-            </h2>
-            <div className='override'>
+            <h2 className='leaderboardTitles'>Good Samaritans</h2>
+            <div className='leaderBoxOverride'>
               {top10Reports.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
             </div>
           </div>
           <div className='keen-slider__slide'>
-            <h2 style={{ textAlign: 'center', marginTop: '5px' }}>
-              Reliable Routers
-            </h2>
-            <div className='override'>
+            <h2 className='leaderboardTitles'>Reliable Routers</h2>
+            <div className='leaderBoxOverride'>
               {top10CreatedRoutes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}

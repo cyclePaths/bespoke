@@ -25,8 +25,13 @@ const LeaderBoardPopout = ({
   };
   return (
     <Dialog open={openLeaderBoard}>
-      <CloseIcon onClick={() => handleClose()} />
-      <DialogContent className={classes.dialogContent}>
+      <div style={{ backgroundColor: 'rgb(133, 211, 255)' }}>
+        <CloseIcon onClick={() => handleClose()} />
+      </div>
+      <DialogContent
+        className={classes.dialogContent}
+        sx={{ paddingTop: '0px' }}
+      >
         {children}
       </DialogContent>
     </Dialog>

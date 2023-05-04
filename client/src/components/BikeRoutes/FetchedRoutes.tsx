@@ -25,7 +25,7 @@ const FetchedRoutes = ({
   handleRouteClick,
   fetchDirections,
   likeList,
-  setLikeList,
+  setMarkers,
 }: FetchedRoutesProps) => {
   const handleNewRoutes = () => {
     const searchBar = document.getElementById('route-searcher');
@@ -89,7 +89,7 @@ const FetchedRoutes = ({
             fetchDirections={fetchDirections}
             setRouteList={setRouteList}
             likeList={likeList}
-            setLikeList={setLikeList}
+            setMarkers={setMarkers}
           />
         );
       })}

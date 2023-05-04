@@ -9,11 +9,11 @@ const BikeRoutes = Router();
 const prisma = new PrismaClient();
 
 // Types for typescript //
-type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
-  origin: [number, number];
-  destination: [number, number];
-  user: { connect: { id: number } };
-};
+// type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
+//   origin: [number, number];
+//   destination: [number, number];
+//   user: { connect: { id: number } };
+// };
 
 interface LikesQuery {
   routeId: string;
@@ -23,32 +23,61 @@ interface LikesQuery {
 // Creates new bike route with POST //
 /// Only good for point A to point B ///
 BikeRoutes.post('/newRoute', (req, res) => {
-  const { directions, user, name, category, privacy } = req.body;
-  const id = user.id;
-  const originLat: number = directions.request.origin.location.lat;
-  const originLng: number = directions.request.origin.location.lng;
-  const destinationLat: number = directions.request.destination.location.lat;
-  const destinationLng: number = directions.request.destination.location.lng;
+  const { directions, name, category, privacy } = req.body;
+  const { id } = req.user as User;
 
-  const newBikeRoute: NewBikeRoute = {
-    origin: [originLat, originLng],
-    destination: [destinationLat, destinationLng],
-    user: { connect: { id: id } },
-    name: name,
-    category: category,
-    isPrivate: privacy,
-    createdAt: new Date(),
-  };
+  const origin: any = JSON.stringify(directions.request.origin.location);
+  const destination: any = JSON.stringify(
+    directions.request.destination.location
+  );
+  let waypoints: any;
 
-  prisma.bikeRoutes
-    .create({ data: newBikeRoute })
-    .then((result) => {
-      res.sendStatus(201);
-    })
-    .catch((err) => {
-      console.error('Failed to handle:', err);
-      res.sendStatus(500);
-    });
+  // Handles if we have waypoints, and if we do creates a route
+  if (directions.request.waypoints !== undefined) {
+    waypoints = JSON.parse(JSON.stringify(directions.request.waypoints));
+
+    prisma.bikeRoutes
+      .create({
+        data: {
+          origin: origin,
+          destination: destination,
+          waypoints: waypoints,
+          user: { connect: { id: id } },
+          category: category,
+          name: name,
+          isPrivate: privacy,
+          createdAt: new Date(),
+        },
+      })
+      .then(() => {
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.error('Failed to handle:', err);
+        res.sendStatus(500);
+      });
+    // If not create one without it
+  } else {
+    prisma.bikeRoutes
+      .create({
+        data: {
+          origin: origin,
+          destination: destination,
+          user: { connect: { id: id } },
+          name: name,
+          category: category,
+          isPrivate: privacy,
+          createdAt: new Date(),
+        },
+      })
+      .then(() => {
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.error('Failed to handle:', err);
+        res.sendStatus(500);
+      });
+  }
 });
 
 BikeRoutes.get('/routes/:id', (req, res) => {
@@ -76,12 +105,12 @@ BikeRoutes.get('/reports', async (req, res) => {
     const reportsList = await prisma.report.findMany({
       where: {
         location_lat: {
-          gte: parseFloat(lat as string) - 0.01,
-          lte: parseFloat(lat as string) + 0.01,
+          gte: parseFloat(lat as string) - 0.04,
+          lte: parseFloat(lat as string) + 0.04,
         },
         location_lng: {
-          gte: parseFloat(lng as string) - 0.01,
-          lte: parseFloat(lng as string) + 0.01,
+          gte: parseFloat(lng as string) - 0.04,
+          lte: parseFloat(lng as string) + 0.04,
         },
       },
       include: {
@@ -120,16 +149,19 @@ BikeRoutes.get('/routes', async (req, res) => {
         const radiusRoutes: BikeRoutes[] = [];
         const likeList: any[] = [];
         routeList.forEach((route) => {
+          const origin = JSON.parse(route.origin as string);
+          const destination = JSON.parse(route.destination as string);
+
           const gteLat = location_lat! - 0.4;
           const lteLat = location_lat! + 0.4;
           const gteLng = location_lng! - 0.4;
           const lteLng = location_lng! + 0.4;
 
           if (
-            (route.origin[0] as unknown as number) >= gteLat &&
-            (route.origin[0] as unknown as number) <= lteLat &&
-            (route.origin[1] as unknown as number) >= gteLng &&
-            (route.origin[1] as unknown as number) <= lteLng
+            (origin.lat as unknown as number) >= gteLat &&
+            (origin.lng as unknown as number) <= lteLat &&
+            (destination.lat as unknown as number) >= gteLng &&
+            (destination.lng as unknown as number) <= lteLng
           ) {
             radiusRoutes.push(route);
             likeList.push(route.userLikes);
@@ -158,16 +190,19 @@ BikeRoutes.get('/routes', async (req, res) => {
         const radiusRoutes: BikeRoutes[] = [];
         const likeList: any[] = [];
         user!.createdRoutes.forEach((route) => {
+          const origin = JSON.parse(route.origin as string);
+          const destination = JSON.parse(route.destination as string);
+
           const gteLat = location_lat! - 0.4;
           const lteLat = location_lat! + 0.4;
           const gteLng = location_lng! - 0.4;
           const lteLng = location_lng! + 0.4;
 
           if (
-            (route.origin[0] as unknown as number) >= gteLat &&
-            (route.origin[0] as unknown as number) <= lteLat &&
-            (route.origin[1] as unknown as number) >= gteLng &&
-            (route.origin[1] as unknown as number) <= lteLng
+            (origin.lat as unknown as number) >= gteLat &&
+            (origin.lng as unknown as number) <= lteLat &&
+            (destination.lat as unknown as number) >= gteLng &&
+            (destination.lng as unknown as number) <= lteLng
           ) {
             radiusRoutes.push(route);
             likeList.push(route.userLikes);

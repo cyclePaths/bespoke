@@ -16,7 +16,14 @@ import {
   SaveAlert,
   StartRouteContainer,
 } from '../../StyledComp';
-import { defaultMapContainerStyle } from './Utils';
+import {
+  defaultMapContainerStyle,
+  Theft,
+  Collision,
+  POI,
+  RoadHazard,
+  Default,
+} from './Utils';
 import MapInputandButton from './MapInputandButtons';
 import FetchedRoutes from './FetchedRoutes';
 import axios from 'axios';
@@ -77,6 +84,7 @@ const Map = ({ options }: MapOptionsProp) => {
     lng: -90.0715,
   });
   const [routeInfo, setRouteInfo] = useState<any>();
+  const [routeClicked, setRouteClicked] = useState<boolean>(false);
 
   // For Popup Route Save Action and Selector Action //
   const [openPopup, setOpenPopup] = useState<boolean>(false);
@@ -146,7 +154,6 @@ const Map = ({ options }: MapOptionsProp) => {
       axios
         .post('/bikeRoutes/newRoute', {
           directions,
-          user,
           name,
           category,
           privacy,
@@ -213,17 +220,9 @@ const Map = ({ options }: MapOptionsProp) => {
 
   // For displaying a saved route //
   const handleRouteClick = (origin, destination): void => {
-    const originObj: Coordinates = {
-      lat: parseFloat(origin[0]),
-      lng: parseFloat(origin[1]),
-    };
-    const destObj: Coordinates = {
-      lat: parseFloat(destination[0]),
-      lng: parseFloat(destination[1]),
-    };
-
-    setStartingPoint(originObj);
-    setMarkers((current) => [...current, destObj]);
+    setStartingPoint(origin);
+    setDestination(destination);
+    setRouteClicked(true);
   };
   // End of routes list //
 
@@ -285,7 +284,6 @@ const Map = ({ options }: MapOptionsProp) => {
   // Renders the directions and info window for the user's route when directions is populated //
   useEffect(() => {
     if (directions) {
-      console.log(directions.routes[0]);
       let routeTotalDistance = 0;
       let routeTotalDuration = 0;
       directions.routes[0].legs.forEach((route) => {
@@ -329,6 +327,24 @@ const Map = ({ options }: MapOptionsProp) => {
   useEffect(() => {
     fetchReports();
   }, [userCenter]);
+
+  useEffect(() => {
+    if (startingPoint && destination && markers.length > 0 && routeClicked) {
+      fetchDirections();
+    } else if (
+      startingPoint &&
+      destination &&
+      markers.length === 0 &&
+      routeClicked
+    ) {
+      fetchDirections();
+    }
+    setRouteClicked(false);
+  }, [startingPoint, destination, markers, routeClicked]);
+
+  useEffect(() => {
+    renderRouteInfo();
+  }, [routeInfo]);
 
   return (
     <div className='container'>
@@ -374,29 +390,112 @@ const Map = ({ options }: MapOptionsProp) => {
         )}
 
         {/* These are reports from the database that will appear on render of the screen. They are only in a certain distance from user */}
-        {reportsList.map((report, i) => (
-          <Marker
-            key={i}
-            position={{
-              lat: parseFloat(report.location_lat),
-              lng: parseFloat(report.location_lng),
-            }}
-            onClick={(event) => {
-              setSelected({
-                lat: event.latLng!.lat(),
-                lng: event.latLng!.lng(),
-              });
-            }}
-            // icon={{
-            //   path: ,
-            //   fillColor: '#f0b30f',
-            //   fillOpacity: 1,
-            //   strokeWeight: 0,
-            //   scale: 0.5,
-            //   anchor: new window.google.maps.Point(20, 40),
-            // }}
-          />
-        ))}
+        {reportsList.map(
+          (report, i) => {
+            switch (report.type) {
+              case 'Collision':
+                return (
+                  <Marker
+                    key={i}
+                    position={{
+                      lat: parseFloat(report.location_lat),
+                      lng: parseFloat(report.location_lng),
+                    }}
+                    onClick={(event) => {
+                      setSelected({
+                        lat: event.latLng!.lat(),
+                        lng: event.latLng!.lng(),
+                      });
+                    }}
+                    icon={Collision}
+                  />
+                );
+              case 'Theft Alert':
+                return (
+                  <Marker
+                    key={i}
+                    position={{
+                      lat: parseFloat(report.location_lat),
+                      lng: parseFloat(report.location_lng),
+                    }}
+                    onClick={(event) => {
+                      setSelected({
+                        lat: event.latLng!.lat(),
+                        lng: event.latLng!.lng(),
+                      });
+                    }}
+                    icon={Theft}
+                  />
+                );
+              case 'Point of Interest':
+                return (
+                  <Marker
+                    key={i}
+                    position={{
+                      lat: parseFloat(report.location_lat),
+                      lng: parseFloat(report.location_lng),
+                    }}
+                    onClick={(event) => {
+                      setSelected({
+                        lat: event.latLng!.lat(),
+                        lng: event.latLng!.lng(),
+                      });
+                    }}
+                    icon={POI}
+                  />
+                );
+              case 'Road Hazard':
+                return (
+                  <Marker
+                    key={i}
+                    position={{
+                      lat: parseFloat(report.location_lat),
+                      lng: parseFloat(report.location_lng),
+                    }}
+                    onClick={(event) => {
+                      setSelected({
+                        lat: event.latLng!.lat(),
+                        lng: event.latLng!.lng(),
+                      });
+                    }}
+                    icon={RoadHazard}
+                  />
+                );
+              default:
+                return (
+                  <Marker
+                    key={i}
+                    position={{
+                      lat: parseFloat(report.location_lat),
+                      lng: parseFloat(report.location_lng),
+                    }}
+                    onClick={(event) => {
+                      setSelected({
+                        lat: event.latLng!.lat(),
+                        lng: event.latLng!.lng(),
+                      });
+                    }}
+                    icon={Default}
+                  />
+                );
+            }
+          }
+          // (
+          //   <Marker
+          //     key={i}
+          //     position={{
+          //       lat: parseFloat(report.location_lat),
+          //       lng: parseFloat(report.location_lng),
+          //     }}
+          //     onClick={(event) => {
+          //       setSelected({
+          //         lat: event.latLng!.lat(),
+          //         lng: event.latLng!.lng(),
+          //       });
+          //     }}
+          //   />
+          // )
+        )}
 
         {/*  */}
         {startingPoint ? (
@@ -552,6 +651,7 @@ const Map = ({ options }: MapOptionsProp) => {
           fetchDirections={fetchDirections}
           likeList={likeList}
           setLikeList={setLikeList}
+          setMarkers={setMarkers}
         />
       </RoutesListPopup>
       {/* The end of those Popups */}
