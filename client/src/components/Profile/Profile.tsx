@@ -3,51 +3,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
+import ProfileNav from './ProfileNav';
 import styled from 'styled-components';
 import { useTheme } from './ThemeContext';
 // import { ToggleSwitch } from '../../StyledComp';
 import { ToggleSwitch } from '../../ThemeStyles';
 // import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { BadgesOnUsers, Badge } from '@prisma/client';
-import Addresses from './Addresses';
-import Picker from 'react-scrollable-picker';
-// import Picker from 'react-mobile-picker';
+import Addresses, { Address, SelectedAddress, HomeAddress } from './Addresses';
 import Scrollers from './Scrollers';
 import '../../styles.css';
 import { UserContext } from '../../Root';
-import {
-  exiledRedHeadedStepChildrenOptionGroups,
-  exiledRedHeadedStepChildrenValueGroups,
-} from '../../../profile-assets';
 import { BandAid } from '../../StyledComp';
 import {
   AchievementBadgeByName,
-  AchievementBadgeTooltip,
   AchievementBadge,
-  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
 } from '../../StyledComp';
-import { useRadioGroup } from '@material-ui/core';
-import { badgeInfo } from '../../../assets';
-
-//Setting state types
-export type Address = string;
-export type SelectedAddress = string;
-export type HomeAddress = string;
-export type Weight = number;
-
-interface Option {
-  value: string;
-  label: string;
-}
-
-interface OptionGroup {
-  [key: string]: Option[];
-}
-
-export interface ValueGroup {
-  [key: string]: string;
-}
+import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 export interface RideStats {
   activity: string;
@@ -61,14 +34,15 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const {
     userBadges,
     setUserBadges,
+    getBadgesOnUser,
     selectedBadge,
     setSelectedBadge,
-    updateBadgeCounter,
+    tickBadgeCounter,
     addBadge,
     tierCheck,
   } = useContext(UserContext);
   //State values with useState hook.
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState('');
   const [theme, setTheme] = useState();
   const [photo, setPhoto] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -83,12 +57,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
     weight: 0,
     calories: 0,
   });
-  const [optionGroups, setOptionGroups] = useState<OptionGroup>(
-    exiledRedHeadedStepChildrenOptionGroups
-  );
-  const [valueGroups, setValueGroups] = useState<ValueGroup>(
-    exiledRedHeadedStepChildrenValueGroups
-  );
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
@@ -125,98 +93,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   }
   //.................................................
 
-  /////////////////////////////////////////////////////////////////////////
-  /*
- This function makes an API request to get calories stats. It then posts
- those stats to the database and then the server sends back the stats
- to display on the page.
- */
-  const workoutStatsRequest = () => {
-    const { durationHours, durationMinutes } = valueGroups;
-    const numberHours = Number(durationHours);
-    const numberMinutes = Number(durationMinutes);
-    const totalTime = numberHours + numberMinutes;
-    axios
-      .get('/profile/workout', {
-        params: {
-          activity: `${valueGroups.workout}`,
-          duration: totalTime,
-          weight: weight,
-        },
-      })
-      .then(({ data }) => {
-        const { total_calories } = data;
-        if (`${valueGroups.workout}` === 'leisure bicycling') {
-          valueGroups.workout = 'Average Speed <10 mph';
-        }
-        if (`${valueGroups.workout}` === 'mph, light') {
-          valueGroups.workout = 'Average Speed 10-12 mph';
-        }
-        if (`${valueGroups.workout}` === '13.9 mph, moderate') {
-          valueGroups.workout = 'Average Speed 12-14 mph';
-        }
-        if (`${valueGroups.workout}` === '15.9 mph, vigorous') {
-          valueGroups.workout = 'Average Speed 14-16 mph';
-        }
-        if (`${valueGroups.workout}` === 'very fast, racing') {
-          valueGroups.workout = 'Average Speed 16-19 mph';
-        }
-        if (`${valueGroups.workout}` === '>20 mph, racing') {
-          valueGroups.workout = 'Average Speed 20+ mph';
-        }
-        if (`${valueGroups.workout}` === 'mountain bike') {
-          valueGroups.workout = 'Mountain Biking';
-        }
-
-        setRideStats(data);
-        setRideStats({
-          activity: `${valueGroups.workout}`,
-          duration: totalTime,
-          weight: weight,
-          calories: total_calories,
-        });
-        axios
-          .post('profile/workout', {
-            activity: `${valueGroups.workout}`,
-            duration: totalTime,
-            weight: weight,
-            calories: total_calories,
-          })
-          .then(({ data }) => {})
-          .catch((err) => {
-            console.error('Could not post stats', err);
-          });
-      })
-      .catch((err) => {
-        console.error('Failed to GET Calories', err);
-      });
-  };
-  //........................................................
-
-  const handleChange = (exercise: string, value: string) => {
-    setValueGroups((prevValueGroups) => ({
-      ...prevValueGroups,
-      [exercise]: value,
-    }));
-  };
-
-  const enterWeight = () => {
-    axios
-      .post('/profile/weight', {
-        weight: weightValue,
-      })
-      .then((response) => {
-        const input = document.getElementById('weight-input');
-        if (input instanceof HTMLInputElement) {
-          input.value = '';
-          input.blur();
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to input weight', err);
-      });
-  };
-
   //show/hide badges on user profile page
   const badgesToggle = () => {
     if (badgeDisplay === 'none') {
@@ -250,9 +126,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setUser(splitNames[0]);
         setPhoto(data.thumbnail);
         setTheme(data.theme);
+        setWeight(data.weight);
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
 
     axios.get('/profile/weight').then(({ data }) => {
@@ -282,64 +159,27 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
-      badgesToggle(); //used to fixe weird problem where first trigger of this function does not work, but no longer does for some reason
+      getBadgesOnUser();
+      badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
     });
   }, []);
 
-  useEffect(() => {}, [tier, inputBox]);
+  useEffect(() => {}, [inputBox]);
+
+  useEffect(() => {}, [tier]);
 
   //..................................................
 
   return (
     <BandAid>
-      <div>{`Hello ${user}!`}</div>
-      <div>{displayNoBadgeIfEmpty()}</div>
-      <img
-        style={{ borderRadius: '50%', width: '100px', height: '100px' }}
-        src={photo}
-        alt='avatar'
+      <ProfileNav
+        user={user}
+        photo={photo}
+        saveTheme={saveTheme}
+        handleToggleStyle={handleToggleStyle}
       />
 
-      <div>
-        <Addresses
-          address={address}
-          setAddress={setAddress}
-          selectedAddress={selectedAddress}
-          setSelectedAddress={setSelectedAddress}
-          homeAddress={homeAddress}
-          setHomeAddress={setHomeAddress}
-        />
-      </div>
-      <div id='profile'>
-        {/* <button onClick={() => {
-        handleToggleStyle(),
-        saveTheme()
-        }
-        }>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
-        <ToggleSwitch>
-          <input
-            type='checkbox'
-            onChange={() => {
-              handleToggleStyle(), saveTheme();
-            }}
-          />
-          <span />
-        </ToggleSwitch>
-        {/* <div className='toggle-switch'>
-        <ToggleSwitch>
-          <input
-            type='checkbox'
-            onChange={() => {
-              handleToggleStyle(), saveTheme();
-            }}
-          />
-          <span />
-        </ToggleSwitch>
-        {/* <div className='toggle-switch'>
-      <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
-      <span />
-    </div> */}
-      </div>
+      <div>{displayNoBadgeIfEmpty()}</div>
 
       <div>
         {/* <div style={{ position: 'absolute', marginTop: 20 }}>
@@ -370,10 +210,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       </div> */}
       </div>
 
-      <Scrollers />
+      {/* <Scrollers /> */}
 
       {/* </div> */}
-
+<div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
       <div>Achievement Badges:</div>
 
       <button onClick={badgesToggle}>Show Badges</button>
@@ -406,63 +246,19 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
       <AchievementBadgeHolder id='badges'>
         {userBadges.map((badge) => {
-          return (
-            <AchievementBadge
-              key={badge.id}
-              onClick={() => {
-                setSelectedBadge(badge.badgeIcon);
-              }}
-              src={badge.badgeIcon}
-            />
-          );
+          if (badge.badgeIcon !== 'url') {
+            return (
+              <AchievementBadge
+                key={badge.id}
+                onClick={() => {
+                  setSelectedBadge(badge.badgeIcon);
+                }}
+                src={badge.badgeIcon}
+              />
+            );
+          }
         })}
       </AchievementBadgeHolder>
-      {/* <div>
-        <div style={{ position: 'absolute', marginTop: 20 }}>
-          <ul>
-            <li style={{ listStyleType: 'none' }}>
-              {rideStats && `Your last ride was an ${rideStats.activity}`}
-            </li>
-            <li style={{ listStyleType: 'none' }}>
-              {rideStats &&
-                `You rode for ${Math.floor(
-                  rideStats.duration / 60
-                )} hours and ${rideStats.duration % 60} minutes`}
-            </li>
-            <li style={{ listStyleType: 'none' }}>
-              {rideStats &&
-                `Your weight for this ride was ${rideStats.weight} lbs`}
-            </li>
-            <li style={{ listStyleType: 'none' }}>
-              {rideStats && (
-                <>
-                  You burned {rideStats.calories} calories!
-                  <br />
-                  Let's ride some more!
-                </>
-              )}
-            </li>
-          </ul>
-        </div>
-      </div> */}
-      <div style={{ position: 'relative', marginTop: 100 }}>
-        {/* <Picker
-          optionGroups={optionGroups}
-          valueGroups={valueGroups}
-          onChange={handleChange}
-        /> */}
-        <div>
-          <button
-            type='button'
-            onClick={() => {
-              workoutStatsRequest(),
-                setValueGroups(exiledRedHeadedStepChildrenValueGroups);
-            }}
-          >
-            Submit
-          </button>
-        </div>
-      </div>
       <div
         id='weight'
         className='weight'
@@ -475,50 +271,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           left: 0,
           right: 0,
         }}
-      >
-        {/* <div style={{ marginRight: 10 }}>Weight: {weight} lbs</div> */}
-        <div>
-          <input
-            id='weight-input'
-            placeholder='update...'
-            onChange={(event) => setWeightValue(Number(event.target.value))}
-          ></input>
-          <button
-            type='button'
-            onClick={() => {
-              enterWeight(), setWeight(weightValue);
-            }}
-          >
-            Enter
-          </button>
-        </div>
-      </div>
+      ></div>
+</div>
     </BandAid>
   );
 };
 
 export default Profile;
-
-//still working on this:
-
-// <AchievementBadgeHolder id='badges'>
-//         {userBadges.map((badge) => {
-//           return (
-//             <AchievementBadgeAndTooltipContainer
-//               key={badge.id}
-//               src={badge.badgeIcon}
-//             >
-//               <AchievementBadge
-//                 key={badge.id}
-//                 onClick={() => {
-//                   setSelectedBadge(badge.badgeIcon);
-//                 }}
-//                 title={badge.description}
-//               />
-//               <AchievementBadgeTooltip key={badge.id}>
-//                 {badge.description}
-//               </AchievementBadgeTooltip>
-//             </AchievementBadgeAndTooltipContainer>
-//           );
-//         })}
-//       </AchievementBadgeHolder>
