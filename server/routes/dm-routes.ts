@@ -88,11 +88,13 @@ dmRouter.get('/conversations', async (req: Request, res: Response) => {
 
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
-  console.log(req);
+  // console.log(req.user);
   try {
-    const { receiverId, receiverName, name, text, fromMe } = req.body.message;
+    const { receiverId, receiverName, text, fromMe } = req.body.message;
 
-    const { id } = req.user as User;
+    // const { name } = req.user;
+
+    const { id, name } = req.user as User;
 
     const newMessage = await prisma.directMessages.create({
       data: {
@@ -114,8 +116,9 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
       if (socket) {
         socket.emit('message', newMessage);
       }
-
-  } catch {
+      res.sendStatus(201);
+  } catch (err) {
+    // console.log('failed', err)
     res.sendStatus(500);
   }
 });
