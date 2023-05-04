@@ -17,7 +17,10 @@ import { UserContext } from '../../Root';
 import { BandAid } from '../../StyledComp';
 import {
   AchievementBadgeByName,
+  AchievementBadgeTooltip,
+  TooltipBox,
   AchievementBadge,
+  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
 } from '../../StyledComp';
 import { ToggleButtonGroup, ToggleButton } from '@mui/material';
@@ -211,66 +214,72 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       {/* <Scrollers /> */}
 
       {/* </div> */}
-<div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
-      <div>Achievement Badges:</div>
+      <div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
+        <div>Achievement Badges:</div>
 
-      <button onClick={badgesToggle}>Show Badges</button>
-      <button
-        onClick={() => {
-          addBadge(inputBox, tier);
-        }}
-      >
-        Add Badge
-      </button>
-      <input
-        type='text'
-        onChange={(event) => {
-          setInputBox(event.target.value);
-        }}
-      ></input>
-      <select
-        onChange={(event) => {
-          setTier(parseInt(event.target.value));
-        }}
-      >
-        <option value={0}>No Tier</option>
-        <option value={1}>1</option>
-        <option value={2}>2</option>
-        <option value={3}>3</option>
-        <option value={4}>4</option>
-        <option value={5}>5</option>
-        <option value={6}>6</option>
-      </select>
+        <button onClick={badgesToggle}>Show Badges</button>
+        <button
+          onClick={() => {
+            addBadge(inputBox, tier);
+          }}
+        >
+          Add Badge
+        </button>
+        <input
+          type='text'
+          onChange={(event) => {
+            setInputBox(event.target.value);
+          }}
+        ></input>
+        <select
+          onChange={(event) => {
+            setTier(parseInt(event.target.value));
+          }}
+        >
+          <option value={0}>No Tier</option>
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+          <option value={5}>5</option>
+          <option value={6}>6</option>
+        </select>
 
-      <AchievementBadgeHolder id='badges'>
-        {userBadges.map((badge) => {
-          // if (badge.badgeIcon !== 'url') {
+        <AchievementBadgeHolder id='badges'>
+          {userBadges.map((badge) => {
             return (
-              <AchievementBadge
-                key={badge.id}
-                onClick={() => {
-                  setSelectedBadge(badge.badgeIcon);
-                }}
-                src={badge.badgeIcon}
-              />
+              <AchievementBadgeAndTooltipContainer>
+                <AchievementBadge
+                  key={badge.id}
+                  onClick={() => {
+                    setSelectedBadge(badge.badgeIcon);
+                  }}
+                  src={badge.badgeIcon}
+                />
+                <AchievementBadgeTooltip>
+                  <TooltipBox>
+                    <h3>{badge.name}</h3>
+                    <div>{badge.description}</div>
+                  </TooltipBox>
+                </AchievementBadgeTooltip>
+              </AchievementBadgeAndTooltipContainer>
             );
-          // }
-        })}
-      </AchievementBadgeHolder>
-      <div
-        id='weight'
-        className='weight'
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          position: 'fixed',
-          bottom: 60,
-          left: 0,
-          right: 0,
-        }}
-      ></div>
-</div>
+          })}
+        </AchievementBadgeHolder>
+        <div
+          id='weight'
+          className='weight'
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'fixed',
+            bottom: 60,
+            left: 0,
+            right: 0,
+          }}
+        ></div>
+      </div>
     </BandAid>
   );
 };
