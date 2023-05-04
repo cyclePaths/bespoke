@@ -164,6 +164,7 @@ const Scrollers = () => {
               <React.Fragment key={activity.value}>
                 <div className='keen-slider__slide number-slide1'>
                   <button
+
                     type='button'
                     className='customButton'
                     onClick={() => {
@@ -191,7 +192,9 @@ const Scrollers = () => {
           {durationHours.map((hour) => {
             return (
               <React.Fragment key={`${hour.value}-hour`}>
-                <div className='keen-slider__slide number-slide1'>
+                <div className='keen-slider__slide number-slide2'
+                // style={{ backgroundColor: 'red' }}
+                >
                   <button
                     type='button'
                     className='customButton'
@@ -221,7 +224,7 @@ const Scrollers = () => {
           {durationMinutes.map((minute) => {
             return (
               <React.Fragment key={`${minute.value}-minute`}>
-                <div className='keen-slider__slide number-slide1'>
+                <div className='keen-slider__slide number-slide6'>
                   <button
                     type='button'
                     className='customButton'
