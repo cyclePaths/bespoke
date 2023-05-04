@@ -17,7 +17,7 @@ bulletinRouter.get('/', (req, res) => {
     .findMany()
     .then((bulletins) => res.status(200).send(bulletins))
     .catch(() => {
-      console.log('Failed to GET BULLETINS');
+      console.error('Failed to GET BULLETINS');
       res.sendStatus(500);
     });
 });
@@ -35,11 +35,9 @@ bulletinRouter.post('/', (req, res) => {
     .create({ data: newBulletin })
     .then((bulletin) => res.status(201).send(bulletin))
     .catch(() => {
-      console.log('Failed to POST new BULLETIN');
+      console.error('Failed to POST new BULLETIN');
       res.sendStatus(500);
     });
 });
 
 export default bulletinRouter;
-
-
