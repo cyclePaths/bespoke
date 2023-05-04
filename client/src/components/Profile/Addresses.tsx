@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import { Address, SelectedAddress, HomeAddress } from './Profile';
-// import { SelectedAddress } from './Profile';
+import React, { useState, useCallback } from 'react';
+// import PlacesAutocomplete from 'react-places-autocomplete';
+import styled from 'styled-components';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import {
   geocodeByAddress,
@@ -9,153 +8,142 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 
-/*
-Instructions for react places autocomplete came from https://www.npmjs.com/package/react-places-autocomplete. I've refactored the code example from class component to hooks, and split between Profile.tsx and Addresses.tsx
-*/
 
-//bringing over props from Profile.tsx
-interface AddressesProps {
-  address: Address;
-  setAddress: React.Dispatch<React.SetStateAction<Address>>;
-  selectedAddress: SelectedAddress;
-  setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;
-  homeAddress: HomeAddress;
-  setHomeAddress: React.Dispatch<React.SetStateAction<HomeAddress>>;
+// Define styles for the autocomplete input box and suggestion list
+const AutocompleteWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const AutocompleteInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const AutocompleteSuggestions = styled.div`
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+`;
+
+export type Address = string;
+export type SelectedAddress = string;
+export type HomeAddress = string;
+
+interface Props {
+  address: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+  selectedAddress: string;
+  setSelectedAddress: React.Dispatch<React.SetStateAction<string>>;
+  homeAddress: string;
+  setHomeAddress: React.Dispatch<React.SetStateAction<string>>;
+  saveHome: () => void;
 }
-// bringing over props from Profile.tsx
-// interface AddressesProps {
-//   selectedAddress: SelectedAddress;
-//   setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress>>;
-// }
 
-function Addresses(props: AddressesProps) {
-  const {
-    address,
-    setAddress,
-    selectedAddress,
-    setSelectedAddress,
-    homeAddress,
-    setHomeAddress,
-  } = props;
 
-  //setting state on change
-  const handleChange = useCallback((address) => {
-    setAddress(address);
-  }, []);
 
-  //setting state on select of address. This also clears the input box and removes focus
-  const handleSelect = useCallback(async (address) => {
-    try {
-      const results = await geocodeByAddress(address);
-      const latLng = await getLatLng(results[0]);
-      setSelectedAddress(address);
-      setAddress('');
-      const input = document.getElementById('address-input');
-      if (input instanceof HTMLInputElement) {
-        input.blur();
-      }
-    } catch (err) {
-      console.error('Error', err);
-    }
-  }, []);
+const Addresses = ({
+  address,
+  setAddress,
+  selectedAddress,
+  setSelectedAddress,
+  homeAddress,
+  setHomeAddress,
+  saveHome,
+}: Props) => {
+  const [place, setPlace] = useState('');
 
-  const saveHome = () => {
-    axios
-      .post('/profile/address', {
-        address: selectedAddress,
-      })
-
-      .then(() => {
-        setHomeAddress(`Your home is ${selectedAddress}`);
-        setSelectedAddress('');
-      })
-      .catch((err) => {
-        console.error('Failed to post address', err);
-      });
+  const handlePlaceSelect = (selectedPlace: string) => {
+    setPlace(selectedPlace);
+    setAddress(selectedPlace);
   };
 
-  useEffect(() => {
-    axios.get('/profile/address').then(({ data }) => {
-      if (data.homeAddress === null) {
-        setHomeAddress('');
-      } else {
-        setHomeAddress(`Your home is ${data.homeAddress}`);
+  const handleHomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHomeAddress(event.target.value);
+  };
+
+
+
+  // setting state on change
+  const handleChange = useCallback(address => {
+    setAddress(address);
+
+  }, []);
+
+    //setting state on select of address. This also clears the input box and removes focus
+    const handleSelect = useCallback(async (address) => {
+      try {
+        const results = await geocodeByAddress(address);
+        const latLng = await getLatLng(results[0]);
+        setSelectedAddress(address);
+     setAddress('');
+        const input = document.getElementById('address-input');
+        if (input instanceof HTMLInputElement) {
+          input.blur();
+        }
+      } catch (err) {
+        console.log('Error', err);
       }
-    });
-  }, [homeAddress]);
-
-  return (
-    <div>
-      <div>{homeAddress}</div>
-      <PlacesAutocomplete
-        value={address}
-        onChange={handleChange}
-        onSelect={handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div
-            id='address'
-            className='address'
-            style={{
-              // display: 'flex',
-              // flexDirection: 'row',
-              // justifyContent: 'center',
-              position: 'fixed',
-              bottom: 100,
-              // left: 0,
-              // right: 0,
-            }}
-          >
-            <input
-              id='address-input'
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
-            <div className='autocomplete-dropdown-container'>
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-              <div>{selectedAddress}</div>
-              <div>
-                <button
-                  type='button'
-                  style={{ marginTop: '10px' }}
-                  onClick={() => saveHome()}
+    }, []);
+    return (
+<div>
+  <div>{homeAddress}</div>
+    <PlacesAutocomplete
+      value={address}
+      onChange={handleChange}
+      onSelect={handleSelect}
+    >
+      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+        <div id='address'
+        className='address'>
+          <input id='address-input'
+            {...getInputProps({
+              placeholder: 'Search Places ...',
+              className: 'location-search-input',
+            })}
+          />
+          <div className="autocomplete-dropdown-container">
+            {loading && <div>Loading...</div>}
+            {suggestions.map(suggestion => {
+              const className = suggestion.active
+                ? 'suggestion-item--active'
+                : 'suggestion-item';
+              // inline style for demonstration purpose
+              const style = suggestion.active
+                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+              return (
+                <div
+                  {...getSuggestionItemProps(suggestion, {
+                    className,
+                    style,
+                  })}
                 >
-                  Set Home
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-
-      {/* <div>{selectedAddress}</div> */}
-
-      {/* <div>
+                  <span>{suggestion.description}</span>
+                </div>
+              );
+            })}
+            <div>{selectedAddress}</div>
+               <div>
       <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div> */}
+    </div>
+          </div>
+        </div>
+      )}
+    </PlacesAutocomplete>
     </div>
   );
-}
+};
 
 export default Addresses;
