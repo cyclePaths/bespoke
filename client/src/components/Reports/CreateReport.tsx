@@ -69,7 +69,7 @@ const CreateReport: React.FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     try {
-
+      console.log(user);
       const { email, id } = user;
 
       const formData = new FormData();
@@ -102,6 +102,8 @@ const CreateReport: React.FC = () => {
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
+    console.log(user);
+
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {

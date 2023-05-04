@@ -6,8 +6,16 @@ import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
 import ReportsList from './ReportsList';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Fab, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
+
+
+//  webpack url-loader
+// import roadHazardIcon from './images/hazard.png';
+// import theftAlertIcon from './icons/theft.png';
+// import collisionIcon from './images/collision.png';
+// import pointOfInterestIcon from './images/poi.png';
 
 const ReportsMap: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map>();
@@ -16,6 +24,7 @@ const ReportsMap: React.FC = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+const [locationError, setLocationError] = useState(false);
 
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
@@ -24,8 +33,30 @@ const ReportsMap: React.FC = () => {
   const user = useContext(UserContext);
   const options = {
     disableDefaultUI: true,
-    zoomControl: true,
+    styles: [
+      {
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }],
+      },
+      {
+        featureType: 'transit',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }],
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }],
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }],
+      },
+    ],
   };
+
 
   const handleButtonClick = async (id: string) => {
     console.log(id);
@@ -41,9 +72,9 @@ const ReportsMap: React.FC = () => {
     }
   };
 
-  const handleTypeChange = (event) => {
+  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSelectedType(value === "All" ? "" : value);
+    setSelectedType(value === 'All' ? '' : value);
   };
 
   useEffect(() => {
@@ -71,20 +102,77 @@ const ReportsMap: React.FC = () => {
   useEffect(() => {
     if (map && reports) {
       const filteredReports = selectedType
-  ? reports.filter(
-      (report) => report.type === selectedType && report.published === true
-    )
-  : reports.filter((report) => report.published === true);
-
+        ? reports.filter(
+            (report) =>
+              report.type === selectedType && report.published === true
+          )
+        : reports.filter((report) => report.published === true);
 
       const newMarkers = filteredReports.map((report) => {
-        const latLng = { lat: report.location_lat!, lng: report.location_lng! };
-        const marker = new google.maps.Marker({
-          position: latLng,
-          map,
-        });
+        const getMarkerIconUrl = (reportType) => {
+          const markerSize = new google.maps.Size(35, 35);
+          switch (reportType) {
+            case 'Road Hazard':
+              return {
+                url: 'https://cdn2.iconfinder.com/data/icons/vehicle-18/100/transport-09-512.png',
+                scaledSize: markerSize,
+              };
+            case 'Theft Alert':
+              return {
+                url: 'https://user-images.githubusercontent.com/25103430/71287503-897b8080-2336-11ea-8b31-848bfab5176e.png',
+                scaledSize: markerSize,
+              };
+            case 'Collision':
+              return {
+                url: 'https://icons.iconarchive.com/icons/fa-team/fontawesome/48/FontAwesome-Car-Burst-icon.png',
+                scaledSize: markerSize,
+              };
+            case 'Point of Interest':
+              return {
+                url: 'https://cdn.pixabay.com/photo/2013/04/01/21/30/point-of-interest-99163_960_720.png',
+                scaledSize: markerSize,
+              };
+            default:
+              return {
+                url: './thefticon.png',
+                scaledSize: markerSize,
+              };
+          }
+        };
 
-        const infoWindow = new google.maps.InfoWindow();
+        //   return {
+        //     url: roadHazardIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Theft Alert':
+        //   return {
+        //     url: theftAlertIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Collision':
+        //   return {
+        //     url: collisionIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Point of Interest':
+        //   return {
+        //     url: pointOfInterestIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // default:
+        //   return {
+        //     url: roadHazardIcon,
+        //     scaledSize: markerSize,
+        //   };
+
+        const latLng = { lat: report.location_lat!, lng: report.location_lng! };
+      const marker = new google.maps.Marker({
+        position: latLng,
+        map,
+        icon: getMarkerIconUrl(report.type),
+      });
+
+      const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
         const imageUrl: string | null = report.imgUrl;
         const imageElement = document.createElement('img');
@@ -121,82 +209,99 @@ const ReportsMap: React.FC = () => {
         return marker;
       });
 
+      const centerLatLng = center ? center : newMarkers[0]?.getPosition();
+      const circle = new google.maps.Circle({
+        center: centerLatLng!,
+        radius: 804.5, // 1/5 mile in meters
+        map,
+        strokeColor: '#0000FF',
+        strokeOpacity: 0.5,
+        strokeWeight: 1,
+        fillColor: '#0000FF',
+        fillOpacity: 0.2,
+      });
+
       markers.forEach((marker) => {
         marker.setMap(null);
       });
 
       setMarkers(newMarkers);
 
-      const bounds = new google.maps.LatLngBounds();
-      newMarkers.forEach((marker) => {
-        const position = marker.getPosition();
-        if (position) {
-          bounds.extend(position);
-        }
-      });
-      map.fitBounds(bounds);
+      const bounds = circle.getBounds();
+      if (bounds !== null) {
+        map.fitBounds(bounds);
+      }
+
     }
   }, [map, reports, selectedType, buttonClicked]);
 
   useEffect(() => {
     if (map) {
-      if (navigator.geolocation || !navigator.geolocation) {
+      if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const pos = {
-              lat: 29.9511,
-              lng: -90.0715,
-            };
-            map.setCenter(pos);
+            const pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            setCenter(pos);
           },
           () => {
-            console.error('Error: The Geolocation service failed.');
+            setLocationError(true);
           }
         );
       } else {
-        console.error("Error: Your browser doesn't support geolocation.");
+        setLocationError(true);
       }
+
+
     }
   }, [map]);
 
   return (
     <BandAid>
-
       <div>
-    <ToggleButtonGroup
-      value={selectedType}
-      onChange={handleTypeChange}
-      aria-label="Report Type"
-    >
-      <ToggleButton value="All" sx={{ width: '20%' }}>
-        All
-      </ToggleButton>
-      <ToggleButton value="Road Hazard" sx={{ width: '20%' }}>
-        Road Hazard
-      </ToggleButton>
-      <ToggleButton value="Theft Alert" sx={{ width: '20%' }}>
-        Theft Alert
-      </ToggleButton>
-      <ToggleButton value="Collision" sx={{ width: '20%' }}>
-        Collision
-      </ToggleButton>
-      <ToggleButton value="Point of Interest" sx={{ width: '20%' }}>
-        Point of Interest
-      </ToggleButton>
-    </ToggleButtonGroup>
-    <Box height="100vh">
-      <GoogleMap
-        mapContainerStyle={{ height: '100%', width: '100%' }}
-        center={center}
-        zoom={15}
-        onLoad={onLoad}
-        options={options as google.maps.MapOptions}
-      />
-    </Box>
-  </div>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 80,
+            right: 2,
+            zIndex: 1,
+          }}
+        >
+          <Box sx={{ marginRight: 2 }}>
+            <Fab color='primary'>
+              <FilterList />
+            </Fab>
+          </Box>
+          <Box>
+            <ToggleButtonGroup
+              value={selectedType}
+              onChange={handleTypeChange}
+              aria-label='Report Type'
+            >
+              <ToggleButton value='All'>All</ToggleButton>
+              <ToggleButton value='Road Hazard'></ToggleButton>
+              <ToggleButton value='Theft Alert'>Theft Alert</ToggleButton>
+              <ToggleButton value='Collision'>Collision</ToggleButton>
+              <ToggleButton value='Point of Interest'>
+                Point of Interest
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        </Box>
+
+        <Box height='100vh'>
+          <GoogleMap
+            mapContainerStyle={{ height: '100%', width: '100%' }}
+            center={center}
+            zoom={15}
+            onLoad={onLoad}
+            options={options as google.maps.MapOptions}
+          />
+        </Box>
+      </div>
     </BandAid>
-
-
   );
 };
 
