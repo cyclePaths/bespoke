@@ -109,13 +109,13 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
 
     console.error('New message created:', newMessage);
 
-      // Emit a 'message' event to all connected clients except the sender
-      const socket = Array.from(io.sockets.sockets.values()).find(
-        (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
-      );
-      if (socket) {
-        socket.emit('message', newMessage);
-      }
+      // // Emit a 'message' event to all connected clients except the sender
+      // const socket = Array.from(io.sockets.sockets.values()).find(
+      //   (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
+      // );
+      // if (socket) {
+      //   socket.emit('message', newMessage);
+      // }
       res.sendStatus(201);
   } catch (err) {
     // console.log('failed', err)
