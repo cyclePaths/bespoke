@@ -9,6 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import io from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
+import Conversations from './Conversations';
 
 interface Message {
   id: number;
@@ -175,7 +176,7 @@ function DirectMessages() {
     }
   };
 
-  console.log('check thread', messages);
+  // console.log('check thread', messages);
   useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
@@ -228,6 +229,7 @@ function DirectMessages() {
   return (
     <BandAid>
       <div>{`Hello ${name}!`}</div>
+
       <SearchUsers
         open={open}
         setOpen={setOpen}
@@ -240,6 +242,7 @@ function DirectMessages() {
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
       ></SearchUsers>
+      <Conversations />
 {isReceiverSelected && (
       <Paper className={classes.root} >
         <div className={classes.messagesContainer} ref={messagesContainerRef}>

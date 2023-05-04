@@ -50,8 +50,32 @@ dmRouter.get('/retrieveMessages', async (req: Request, res: Response) => {
     res.status(200).send(conversation);
   } catch (err) {
     console.log(err);
+    res.sendStatus(500);
   }
 });
+
+dmRouter.get('/conversations', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.user as { id: number };
+
+    const conversations = await prisma.directMessages.findMany({
+      where: {
+        OR: [
+          { senderId: id },
+          { receiverId: id },
+        ],
+      },
+      include: {
+        sender: true,
+        receiver: true,
+      }
+    })
+    res.status(200).send(conversations);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+})
 
 
 dmRouter.post('/message', async (req: Request, res: Response) => {

@@ -37,7 +37,7 @@ function SearchUsers({
     const getUsers = async () => {
       try {
         const response = await axios.get('/dms/findUsers');
-        console.log(response);
+        console.log("RESPONSO", response);
         if (active) {
           setOptions([...response.data]);
         }
