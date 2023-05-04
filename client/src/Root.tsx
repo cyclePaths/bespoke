@@ -215,8 +215,10 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: geoLocation.lat,
-          longitude: geoLocation.lng,
+          // latitude: geoLocation.lat,
+          latitude: 29.9511,
+          // longitude: geoLocation.lng,
+          longitude: -90.0715,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -334,7 +336,7 @@ const Root = () => {
       .then(({ data }) => {
         setAllBadges(data.allBadges);
         //add descriptions to the Badge objects for use in Tooltips
-        if (data.earnedBadges.length === 0) {
+        if (data.earnedBadges.length > 0) {
           let earnedBadges = data.earnedBadges.map((ele) => {
             for (let i = 0; i < badgeInfo.length; i++) {
               if (badgeInfo[i].name === ele.name) {
