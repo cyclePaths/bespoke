@@ -22,10 +22,13 @@ import {
 import { BandAid } from '../../StyledComp';
 import {
   AchievementBadgeByName,
+  AchievementBadgeTooltip,
   AchievementBadge,
+  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
 } from '../../StyledComp';
 import { useRadioGroup } from '@material-ui/core';
+import { badgeInfo } from '../../../assets';
 
 //Setting state types
 export type Address = string;
@@ -58,10 +61,9 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const {
     userBadges,
     setUserBadges,
-    getBadgesOnUser,
     selectedBadge,
     setSelectedBadge,
-    tickBadgeCounter,
+    updateBadgeCounter,
     addBadge,
     tierCheck,
   } = useContext(UserContext);
@@ -182,11 +184,11 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
           })
           .then(({ data }) => {})
           .catch((err) => {
-            console.log('Could not post stats', err);
+            console.error('Could not post stats', err);
           });
       })
       .catch((err) => {
-        console.log('Failed to GET Calories', err);
+        console.error('Failed to GET Calories', err);
       });
   };
   //........................................................
@@ -211,7 +213,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
         }
       })
       .catch((err) => {
-        console.log('Failed to input weight', err);
+        console.error('Failed to input weight', err);
       });
   };
 
@@ -250,7 +252,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setTheme(data.theme);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     axios.get('/profile/weight').then(({ data }) => {
@@ -280,14 +282,11 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setRideStats(data);
-      getBadgesOnUser();
-      badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
+      badgesToggle(); //used to fixe weird problem where first trigger of this function does not work, but no longer does for some reason
     });
   }, []);
 
-  useEffect(() => {}, [inputBox]);
-
-  useEffect(() => {}, [tier]);
+  useEffect(() => {}, [tier, inputBox]);
 
   //..................................................
 
@@ -340,12 +339,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       <input className='toggle-switch' type="checkbox"  onChange={() => {handleToggleStyle(), saveTheme()}}/>
       <span />
     </div> */}
+      </div>
 
-    </div>
-
-    <div>
-
-      {/* <div style={{ position: 'absolute', marginTop: 20 }}>
+      <div>
+        {/* <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
           <li style={{ listStyleType: 'none' }}>
             {rideStats && `Your last ride was an ${rideStats.activity}`}
@@ -371,10 +368,9 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           </li>
         </ul>
       </div> */}
+      </div>
 
-    </div>
-
-<Scrollers />
+      <Scrollers />
 
       {/* </div> */}
 
@@ -410,17 +406,15 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
       <AchievementBadgeHolder id='badges'>
         {userBadges.map((badge) => {
-          if (badge.badgeIcon !== 'url') {
-            return (
-              <AchievementBadge
-                key={badge.id}
-                onClick={() => {
-                  setSelectedBadge(badge.badgeIcon);
-                }}
-                src={badge.badgeIcon}
-              />
-            );
-          }
+          return (
+            <AchievementBadge
+              key={badge.id}
+              onClick={() => {
+                setSelectedBadge(badge.badgeIcon);
+              }}
+              src={badge.badgeIcon}
+            />
+          );
         })}
       </AchievementBadgeHolder>
       {/* <div>
@@ -504,3 +498,27 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 };
 
 export default Profile;
+
+//still working on this:
+
+// <AchievementBadgeHolder id='badges'>
+//         {userBadges.map((badge) => {
+//           return (
+//             <AchievementBadgeAndTooltipContainer
+//               key={badge.id}
+//               src={badge.badgeIcon}
+//             >
+//               <AchievementBadge
+//                 key={badge.id}
+//                 onClick={() => {
+//                   setSelectedBadge(badge.badgeIcon);
+//                 }}
+//                 title={badge.description}
+//               />
+//               <AchievementBadgeTooltip key={badge.id}>
+//                 {badge.description}
+//               </AchievementBadgeTooltip>
+//             </AchievementBadgeAndTooltipContainer>
+//           );
+//         })}
+//       </AchievementBadgeHolder>
