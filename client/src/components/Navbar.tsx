@@ -27,16 +27,86 @@ export interface NavbarProps {
 
 const Navbar = ({ appPropsObj }: NavbarProps) => {
   const [value, setValue] = useState<any>(null);
-  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
-  const { user } = useContext(UserContext);
   const [userProfilePic, setUserProfilePic] = useState<any>(
     <AccountCircleIcon />
   );
+  // A bunch of watchers that change the colors of buttons on click //
+  /// BOTTOM NAV ///
+  const [navigate, setNavigate] = useState<boolean>(false);
+  const [weather, setWeather] = useState<boolean>(false);
+  const [report, setReport] = useState<boolean>(false);
+  const [bulletin, setBulletin] = useState<boolean>(false);
+  /// TOP NAV ///
+  const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
+  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+  const [messages, setMessages] = useState<boolean>(false);
   const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
 
+  // User Context //
+  const { user } = useContext(UserContext);
+
   const handleLeaderBoard = () => {
     setOpenLeaderBoard(true);
+    setLeaderBoard(true);
+  };
+
+  const clickHome = () => {
+    setValue(null);
+    setNavigate(false);
+    setWeather(false);
+    setReport(false);
+    setBulletin(false);
+    setMessages(false);
+  };
+
+  const toNav = () => {
+    setNavigate(true);
+    setWeather(false);
+    setReport(false);
+    setBulletin(false);
+    setMessages(false);
+  };
+
+  const toWeather = () => {
+    setNavigate(false);
+    setWeather(true);
+    setReport(false);
+    setBulletin(false);
+    setMessages(false);
+  };
+
+  const toReport = () => {
+    setNavigate(false);
+    setWeather(false);
+    setReport(true);
+    setBulletin(false);
+    setMessages(false);
+  };
+
+  const toBulletin = () => {
+    setNavigate(false);
+    setWeather(false);
+    setReport(false);
+    setBulletin(true);
+    setMessages(false);
+  };
+
+  const toProfile = () => {
+    setNavigate(false);
+    setWeather(false);
+    setReport(false);
+    setBulletin(false);
+    setMessages(false);
+  };
+
+  const toMessages = () => {
+    setValue(null);
+    setMessages(true);
+    setNavigate(false);
+    setWeather(false);
+    setReport(false);
+    setBulletin(false);
   };
 
   useEffect(() => {
@@ -51,17 +121,22 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
         <Link
           style={{ fontSize: '35px' }}
           to='/home'
-          onClick={() => setValue(null)}
+          onClick={() => clickHome()}
         >
           Bespoke
         </Link>
         <span style={{ display: 'contents' }}>
           <IconButton onClick={() => handleLeaderBoard()}>
-            <EmojiEventsIcon sx={{ color: '#ffff00' }} />
+            <EmojiEventsIcon
+              sx={{ color: leaderBoard ? '#ffff00' : '#757575' }}
+            />
           </IconButton>
           <Link to='/directMessages'>
-            <IconButton onClick={() => setValue(null)}>
-              <MessageIcon sx={{ color: '#673ab7' }} />
+            <IconButton
+              onClick={() => toMessages()}
+              sx={{ color: messages ? '#673ab7' : '#757575' }}
+            >
+              <MessageIcon sx={{ color: messages ? '#673ab7' : '#757575' }} />
             </IconButton>
           </Link>
           <IconButton
@@ -91,35 +166,50 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             backgroundColor: '#dadcda',
             borderTopLeftRadius: '8px',
             borderTopRightRadius: '8px',
+            height: '6.6vh',
             zIndex: 1000,
           }}
         >
           <BottomNavigationAction
             label='Navigate'
-            style={{ minWidth: '0px', color: '#f44336' }}
-            icon={<PlaceIcon sx={{ color: '#f44336' }} />}
+            style={{ minWidth: '0px', color: navigate ? '#f44336' : '#757575' }}
+            icon={
+              <PlaceIcon sx={{ color: navigate ? '#f44336' : '#757575' }} />
+            }
             component={Link}
+            onClick={() => toNav()}
             to='/bikeRoutes'
           />
           <BottomNavigationAction
             label='Weather'
-            style={{ minWidth: '0px', color: 'black' }}
-            icon={<CloudIcon sx={{ color: '#fafafa' }} />}
+            style={{ minWidth: '0px', color: weather ? 'black' : '#757575' }}
+            icon={<CloudIcon sx={{ color: weather ? '#fafafa' : '#757575' }} />}
             component={Link}
+            onClick={() => toWeather()}
             to='/weather'
           />
           <BottomNavigationAction
             label='Report'
-            style={{ minWidth: '0px', color: '#f9a825' }}
-            icon={<ReportProblemIcon sx={{ color: '#f9a825' }} />}
+            style={{ minWidth: '0px', color: report ? '#f9a825' : '#757575' }}
+            icon={
+              <ReportProblemIcon
+                sx={{ color: report ? '#f9a825' : '#757575' }}
+              />
+            }
             component={Link}
+            onClick={() => toReport()}
             to='/createReport'
           />
           <BottomNavigationAction
             label='Bulletin'
-            style={{ minWidth: '0px', color: '#81c784' }}
-            icon={<FormatListBulletedIcon sx={{ color: '#81c784' }} />}
+            style={{ minWidth: '0px', color: bulletin ? '#81c784' : '#757575' }}
+            icon={
+              <FormatListBulletedIcon
+                sx={{ color: bulletin ? '#81c784' : '#757575' }}
+              />
+            }
             component={Link}
+            onClick={() => toBulletin()}
             to='/bulletinBoard'
           />
           <BottomNavigationAction
@@ -127,6 +217,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
             style={{ minWidth: '0px' }}
             icon={userProfilePic}
             component={Link}
+            onClick={() => toProfile()}
             to='/profile'
           />
         </BottomNavigation>
@@ -134,6 +225,7 @@ const Navbar = ({ appPropsObj }: NavbarProps) => {
       <LeaderBoardPopout
         openLeaderBoard={openLeaderBoard}
         setOpenLeaderBoard={setOpenLeaderBoard}
+        setLeaderBoard={setLeaderBoard}
       >
         <LeaderBoard />
       </LeaderBoardPopout>

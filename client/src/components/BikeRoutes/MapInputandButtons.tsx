@@ -8,30 +8,12 @@ import {
   InputLayout,
   AutoCompleteDropdownLayout,
   RouteButtonContainer,
+  SaveAlert,
 } from '../../StyledComp';
 import { Button } from '@mui/material';
-// import NavigationIcon from '@mui/icons-material/Navigation';
-// import SaveAltIcon from '@mui/icons-material/SaveAlt';
-// import SearchIcon from '@mui/icons-material/Search';
+import { PlaceProps } from './RouteM';
 
-// Starting Props //
-type PlaceProps = {
-  setStartingPoint: (position: google.maps.LatLngLiteral) => void;
-  fetchDirections: () => void;
-  selected: google.maps.LatLngLiteral | undefined;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  directions: google.maps.DirectionsResult | undefined;
-  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const Places = ({
-  setStartingPoint,
-  fetchDirections,
-  selected,
-  setOpenPopup,
-  directions,
-  setOpenSearch,
-}: PlaceProps) => {
+const Places = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
   // Handle the input box //
@@ -53,12 +35,8 @@ const Places = ({
   };
   // End of the input handlers //
 
-  const handleRoute = (): void => {
-    fetchDirections();
-  };
-
   return (
-    <div style={{ position: 'relative' }}>
+    <div>
       <PlacesAutocomplete
         value={currAdd}
         onChange={handleChange}
