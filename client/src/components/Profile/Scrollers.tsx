@@ -1,11 +1,10 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import Root, { UserContext } from '../../Root';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
-
 
 const Scrollers = () => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
@@ -17,7 +16,7 @@ const Scrollers = () => {
     },
   });
 
-   const [refHours] = useKeenSlider<HTMLDivElement>({
+  const [refHours] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
     slides: {
@@ -26,7 +25,7 @@ const Scrollers = () => {
     },
   });
 
-   const [refMinutes] = useKeenSlider<HTMLDivElement>({
+  const [refMinutes] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
     slides: {
@@ -45,8 +44,6 @@ const Scrollers = () => {
   const [activityVisible, setActivityVisible] = useState(false);
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
-
-
 
   let rideSpeedValue = '';
 
@@ -94,7 +91,7 @@ const Scrollers = () => {
       })
 
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -109,70 +106,70 @@ const Scrollers = () => {
         {minutes}
       </div>
       <div className={activityVisible ? hiddenClass : ''}>
-      <div ref={refActivity} className='keen-slider'>
-        {workout.map((activity) => {
-          return (
-            <React.Fragment key={activity.value}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setRideSpeed(activity.label);
-                    setActivityVisible(true)
-                  }}
-                >
-                  {activity.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
+        <div ref={refActivity} className='keen-slider'>
+          {workout.map((activity) => {
+            return (
+              <React.Fragment key={activity.value}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setRideSpeed(activity.label);
+                      setActivityVisible(true);
+                    }}
+                  >
+                    {activity.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
       <div className={hoursVisible ? hiddenClass : ''}>
-      <div ref={refHours} className='keen-slider'>
-        {durationHours.map((hour) => {
-          return (
-            <React.Fragment key={`${hour.value}-hour`}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setHours(hour.label);
-                    setHoursVisible(true)
-                  }}
-                >
-                  {hour.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
+        <div ref={refHours} className='keen-slider'>
+          {durationHours.map((hour) => {
+            return (
+              <React.Fragment key={`${hour.value}-hour`}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setHours(hour.label);
+                      setHoursVisible(true);
+                    }}
+                  >
+                    {hour.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
       <div className={minutesVisible ? hiddenClass : ''}>
-      <div ref={refMinutes} className='keen-slider'>
-        {durationMinutes.map((minute) => {
-          return (
-            <React.Fragment key={`${minute.value}-minute`}>
-              <div className='keen-slider__slide number-slide1'>
-                <button
-                  type='button'
-                  className='customButton'
-                  onClick={() => {
-                    setMinutes(minute.label);
-                    setMinutesVisible(true)
-                  }}
-                >
-                  {minute.label}
-                </button>
-              </div>
-            </React.Fragment>
-          );
-        })}
-      </div>
+        <div ref={refMinutes} className='keen-slider'>
+          {durationMinutes.map((minute) => {
+            return (
+              <React.Fragment key={`${minute.value}-minute`}>
+                <div className='keen-slider__slide number-slide1'>
+                  <button
+                    type='button'
+                    className='customButton'
+                    onClick={() => {
+                      setMinutes(minute.label);
+                      setMinutesVisible(true);
+                    }}
+                  >
+                    {minute.label}
+                  </button>
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
       <div>
         <button type='button' onClick={() => enterWorkout()}>

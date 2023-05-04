@@ -12,21 +12,10 @@ const prisma = new PrismaClient();
 
 //returns an array of ALL badge objects
 badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
-  try {
-    const badges = await prisma.badge.findMany({});
-    // console.log('OOGA BOOGA THERE ARE THE BADGES? ', badges);
-    res.status(200).send(badges);
-  } catch (err) {
-    console.error('an error occurred when GETting all badges', err);
-    res.sendStatus(500);
-  }
-});
-
-//returns array of user's badge objects
-badgeRouter.get('/user-badges', async (req: Request, res: Response) => {
   const { id } = req.user as User;
   const userId = id;
   try {
+    const allBadges = await prisma.badge.findMany({});
     const badgesOnUser = await prisma.badgesOnUsers.findMany({
       where: {
         userId: userId,
@@ -35,17 +24,22 @@ badgeRouter.get('/user-badges', async (req: Request, res: Response) => {
     const badgeIds = badgesOnUser.map((ele) => {
       return ele.badgeId;
     });
-    const badges = await prisma.badge.findMany({
-      where: {
-        id: { in: badgeIds },
-      },
+    //extracts all badges who have the same IDs as the ones from the join table (meaning the user has earned them)
+    const earnedBadges = allBadges.filter((ele) => {
+      if (badgeIds.includes(ele.id)) {
+        return true;
+      } else {
+        return false;
+      }
     });
-    res.status(200).send(badges);
+    let outp = {
+      allBadges: allBadges,
+      earnedBadges: earnedBadges,
+      joinTableBadges: badgesOnUser,
+    };
+    res.status(200).send(outp);
   } catch (err) {
-    console.error(
-      `an error occurred when GETting badges for user with id ${userId}`,
-      err
-    );
+    console.error('an error occurred when GETting all badges', err);
     res.sendStatus(500);
   }
 });
@@ -75,80 +69,86 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 });
 
 //Checks to see if badge tier should update, and if so, deletes current tier's join table entry and adds next one
-
 badgeRouter.post('/tier', async (req: Request, res: Response) => {
   const { id } = req.user as User;
   const userId = id;
   const { badgeId, tiers } = req.body;
   try {
+    //get user from db
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
+    //if user not in db, throw error
     if (!user) {
-      console.error(`could not find user with id ${userId}`);
+      console.error(`could not find user with id ${userId} in the database`);
       res.sendStatus(500);
     }
+    //find badge with the id that was sent
     const badge = await prisma.badge.findUnique({
       where: {
-        id: userId,
+        id: badgeId,
       },
     });
+    //if no badge with that id, throw error
     if (!badge) {
       console.error(`could not find badge with id ${badgeId}`);
       res.sendStatus(500);
     }
+    //find the join table entry for the user and badge
     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
       where: {
         userId_badgeId: { userId, badgeId },
       },
     });
+    //if the join table whose tier is being checked doesn't exist:
     if (!badgeOnUser) {
-      //if the join table whose tier is being checked doesn't exist, initialize it
-      await prisma.badgesOnUsers.create({
-        data: {
-          user: { connect: { id: userId } },
-          badge: { connect: { id: badgeId } },
-          counter: 1,
-        },
-      });
-    } else {
-      if (badge && badgeOnUser) {
-        const currentCount = badgeOnUser.counter; //get the current count for this join table
-        const currentTier = badge.tier; //get the current tier for the badge in question
-        let newTier = currentTier;
-        for (let key in tiers) {
-          if (currentCount === tiers[key] && currentTier !== parseInt(key)) {
-            newTier!++;
-          }
+      //initialize it?
+      // await prisma.badgesOnUsers.create({
+      //   data: {
+      //     user: { connect: { id: userId } },
+      //     badge: { connect: { id: badgeId } },
+      //     counter: 1,
+      //   },
+      // });
+      //I think it should just error out instead?
+      res.sendStatus(404);
+    } else if (badge && badgeOnUser && badgeOnUser.counter && badge.tier) {
+      const currentCount = badgeOnUser.counter; //get the current count for this join table
+      const currentTier = badge.tier; //get the current tier for the badge in question
+      let newTier = currentTier;
+      for (let key in tiers) {
+        //if the current count (presumably after an update, when this would be firing) is now equal to or greater than the threshold to tier up (and that tier up wouldn't be to the current tier)
+        if (currentCount >= tiers[key] && currentTier !== parseInt(key)) {
+          newTier++;
         }
-        //if a higher tier level exists
-        if (badge.tier !== newTier!) {
-          //find badge of the appropriate tier
-          const higherTierBadge = await prisma.badge.findFirst({
+      }
+      //if newTier has been changed
+      if (badge.tier !== newTier) {
+        //find badge of the appropriate tier
+        const higherTierBadge = await prisma.badge.findFirst({
+          where: {
+            name: badge.name,
+            tier: newTier,
+          },
+        });
+        //delete current tier of badge
+        if (higherTierBadge) {
+          await prisma.badgesOnUsers.delete({
             where: {
-              name: badge.name,
-              tier: newTier,
+              userId_badgeId: { userId, badgeId },
             },
           });
-          //delete current tier of badge
-          if (higherTierBadge) {
-            await prisma.badgesOnUsers.delete({
-              where: {
-                userId_badgeId: { userId, badgeId },
-              },
-            });
 
-            //add new tier of badge
-            await prisma.badgesOnUsers.create({
-              data: {
-                user: { connect: { id: userId } },
-                badge: { connect: { id: higherTierBadge.id } },
-                counter: currentCount,
-              },
-            });
-          }
+          //add new tier of badge
+          await prisma.badgesOnUsers.create({
+            data: {
+              user: { connect: { id: userId } },
+              badge: { connect: { id: higherTierBadge.id } },
+              counter: currentCount,
+            },
+          });
         }
       }
     }
@@ -163,7 +163,6 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
 });
 
 //Add new badge to User via join table - Achievement Get!
-
 badgeRouter.post('/add', async (req, res) => {
   const { id } = req.user as User;
   const userId = id;
@@ -192,6 +191,7 @@ badgeRouter.post('/add', async (req, res) => {
         data: {
           user: { connect: { id: userId } },
           badge: { connect: { id: badgeId } },
+          counter: 0,
         },
       });
       res.sendStatus(201);
@@ -208,7 +208,6 @@ badgeRouter.post('/add', async (req, res) => {
 });
 
 //increment or decrement counter for badge on join table
-
 badgeRouter.patch('/counter', async (req: Request, res: Response) => {
   try {
     const { id } = req.user as User;
@@ -220,7 +219,9 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
       },
     });
     if (!user) {
-      console.error('an error occurred trying to find user with id ', userId);
+      console.error(
+        `an error occurred trying to find user with id ${userId}; no user with that id exists in the database`
+      );
       res.sendStatus(500);
     }
     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
@@ -230,13 +231,16 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
     });
     if (!badgeOnUser) {
       if (change) {
-        await prisma.badgesOnUsers.create({
+        const newBadge = await prisma.badgesOnUsers.create({
           data: {
             user: { connect: { id: userId } },
             badge: { connect: { id: badgeId } },
             counter: change,
           },
         });
+        res.status(201).send(newBadge);
+      } else {
+        res.sendStatus(404); //I assume 404 is the correct status code, since the badge to be downticked wasn't found?
       }
     } else {
       let currentValue = badgeOnUser.counter;
@@ -245,7 +249,7 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
           userId_badgeId: { userId, badgeId },
         },
         data: {
-          counter: currentValue! + 1,
+          counter: currentValue! + change,
         },
       });
       res.status(200).send(updateCounter);

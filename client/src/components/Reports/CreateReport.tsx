@@ -69,9 +69,7 @@ const CreateReport: React.FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     try {
-      if (!currentLocation) {
-        throw new Error('Current location not available');
-      }
+      console.log(user);
       const { email, id } = user;
 
       const formData = new FormData();
@@ -80,8 +78,8 @@ const CreateReport: React.FC = () => {
       formData.append('body', body);
       formData.append('type', type);
       formData.append('title', title);
-      formData.append('latitude', currentLocation.lat.toString());
-      formData.append('longitude', currentLocation.lng.toString());
+      formData.append('latitude', currentLocation!.lat.toString());
+      formData.append('longitude', currentLocation!.lng.toString());
       if (image) {
         formData.append('file', image);
       }
@@ -104,6 +102,8 @@ const CreateReport: React.FC = () => {
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
+    console.log(user);
+
     let interval: any | undefined;
     if (navigator.geolocation) {
       interval = setInterval(() => {

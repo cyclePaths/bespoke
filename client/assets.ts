@@ -200,6 +200,137 @@ export const weatherIcons = {
   },
 };
 
+export const badgeInfo = [
+  {
+    name: 'Certified',
+    description: 'Fill out all necessary information on your profile',
+  },
+  {
+    name: 'Bespoke Devotee',
+    description: 'Have a Bespoke account for at least one year',
+  },
+  {
+    name: 'Monthly Trekker',
+    description: 'Ride a significant distance in a single month',
+  },
+  {
+    name: 'Dedicated Rider',
+    description: 'Complete lots of rides',
+  },
+  {
+    name: 'Early Bird',
+    description: 'Complete a ride very early in the morning',
+  },
+  {
+    name: 'Night Rider',
+    description: 'Complete a ride late at night',
+  },
+  {
+    name: 'Tourist',
+    description: 'Complete a ride in a new city',
+  },
+  {
+    name: 'World Traveler',
+    description: 'Complete a ride in a new country',
+  },
+  {
+    name: 'Iron Lungs',
+    description: 'Complete a ride at a high altitude',
+  },
+  {
+    name: 'Cold Blooded',
+    description: 'Complete a ride in very cold weather',
+  },
+  {
+    name: 'Boiling Blood',
+    description: 'Complete a ride in very hot weather',
+  },
+  {
+    name: 'Road Warrior',
+    description: 'Ride a significant distance overall',
+  },
+  {
+    name: 'Lean Machine',
+    description: 'Burn a significant amount of calories overall',
+  },
+  {
+    name: 'Community Enthusiast',
+    description: 'Make a lot of posts on the boards',
+  },
+  {
+    name: 'Wheelie Popular',
+    description: 'Accumulate likes on your posts',
+  },
+  {
+    name: 'Storm Chaser',
+    description: 'Ride a significant distance in Inclement weather',
+  },
+  {
+    name: 'Fairweather Friend',
+    description: 'Ride a significant distance in clear weather',
+  },
+  {
+    name: 'Safety Sentinel',
+    description: 'Report a lot of hazards to the community',
+  },
+  {
+    name: 'Speedster',
+    description: 'Arrive at your ride destinations faster than expected',
+  },
+  {
+    name: 'Centurion',
+    description: 'Complete a 100+ mile (about 161km) ride',
+  },
+  {
+    name: 'Social Butterfly',
+    description: 'Like many posts by other Bespoke bikers',
+  },
+  {
+    name: 'Explorer',
+    description: 'Create many routes',
+  },
+  {
+    name: 'Tour Guide',
+    description: 'Report many points of interest',
+  },
+  {
+    name: 'Riding Streak',
+    description: 'Complete at least one ride many days in a row',
+  },
+  {
+    name: 'Disciplined',
+    description: 'Complete at least one ride each day of the same week',
+  },
+  {
+    name: 'Karen',
+    description: 'You have made too many downvoted reports!',
+  },
+  {
+    name: 'Lean Legend',
+    description: 'Burn the most calories among all Bespoke bikers',
+  },
+  {
+    name: 'Community Legend',
+    description: 'Make the most posts among all Bespoke bikers',
+  },
+  {
+    name: 'Traveling Legend',
+    description: 'Travel the longest distance among all Bespoke bikers',
+  },
+  {
+    name: 'Likable Legend',
+    description: 'Have the most likes among all Bespoke bikers',
+  },
+  {
+    name: 'Legendary Warden',
+    description: 'Report the most hazards among all Bespoke bikers',
+  },
+  {
+    name: 'Legendary Explorer',
+    description: 'Create the most public routes among all Bespoke bikers',
+  },
+];
+
 export const standardTiers = {
   1: 5,
   2: 25,
@@ -213,4 +344,8 @@ export const weeklyTiers = {
   4: 5,
   5: 6,
   6: 7,
+};
+
+export const badgesWithSpecialTiers = {
+  Disciplined: weeklyTiers,
 };

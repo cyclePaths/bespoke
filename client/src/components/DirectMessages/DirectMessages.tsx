@@ -105,7 +105,7 @@ function DirectMessages() {
         setName(name);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     if (receiver) {
@@ -172,7 +172,7 @@ function DirectMessages() {
         setMessages((prevMessages) => [...prevMessages, message]);
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -208,7 +208,7 @@ function DirectMessages() {
         console.log(response);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
 
     // setMessages([...messages, newMessage]);
@@ -392,7 +392,7 @@ export default DirectMessages;
 //         setName(name);
 //       })
 //       .catch((err) => {
-//         console.log(err);
+//         console.error(err);
 //       });
 
 //     if (receiver) {
@@ -427,7 +427,7 @@ export default DirectMessages;
 //         })
 
 //       } catch (err) {
-//         console.log(err);
+//         console.error(err);
 //       }
 //   };
 
@@ -454,7 +454,7 @@ export default DirectMessages;
 //         console.log(response);
 //       })
 //       .catch((err) => {
-//         console.log(err);
+//         console.error(err);
 //       });
 
 //     setMessages([...messages, newMessage]);

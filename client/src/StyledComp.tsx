@@ -125,8 +125,9 @@ const ForecastEntry = styled.div`
   border-style: solid;
   justify-content: center;
   align-items: center;
-  background-color: rgb(84, 191, 165);
+  background-color: rgb(115, 216, 139); //this is the light mode color
 `;
+//this is the dark mode color for ForecastEntry: rgb(59, 143, 77)
 
 const WeatherIcon = styled.img`
   display: flex;
@@ -174,11 +175,28 @@ const AchievementBadgeByName = styled.img`
   width: 30px;
 `;
 
+const AchievementBadgeTooltip = styled.span`
+  visibility: hidden;
+  padding: 5px 0;
+  border-radius: 6px;
+  text-align: center
+  position: absolute;
+  z-index: 1;
+`;
+
 const AchievementBadge = styled.img`
   height: 35px;
   width: 35px;
   margin-left: 12px;
   margin-right: 12px;
+`;
+
+const AchievementBadgeAndTooltipContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  &:hover ${AchievementBadgeTooltip} {
+    visibility: visible;
+  }
 `;
 
 const AchievementBadgeHolder = styled.span`
@@ -203,7 +221,9 @@ export {
   RouteListOptions,
   RouteList,
   AchievementBadgeByName,
+  AchievementBadgeTooltip,
   AchievementBadge,
+  AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,

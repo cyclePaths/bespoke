@@ -20,7 +20,6 @@ WeatherRoute.get('/forecast', (req, res) => {
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&daily=sunrise&daily=sunset&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day`
     )
     .then(({ data }) => {
-      // console.log(data.hourly.time[1].slice(11, 13));
       const currentWeather = {
         temperature: data.current_weather.temperature,
         windspeed: data.current_weather.windspeed,
