@@ -11,49 +11,70 @@ const Button = styled.button`
 `;
 
 const RouteCreatorComponent = styled.div`
-  display: block;
-  margin-top: 25px;
   text-align: center;
 `;
 
 const PopoutSaveForm = styled.form`
   display: flex;
+  -webkit-box-pack: center;
   justify-content: center;
-  flex-wrap: wrap;
   background-color: white;
   border-radius: 4px;
   padding: 10px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 255px;
 `;
 
 const CategorySelector = styled.select`
   border-radius: 3px;
   background-color: #e0e0e0;
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
 `;
 
 const OptionsDiv = styled.div`
   display: flex;
   place-content: flex-start space-evenly;
-  margin-top: 15px;
+  margin: 15px;
   flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const InputLayout = styled.input`
-  height: 25px;
+  height: 30px;
   width: 75%;
-  margin-bottom: 5px;
+  margin: 5px;
   border-radius: 2px;
   background-color: #e0e0e0;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
+  text-align: center;
 `;
 
 const StartRouteContainer = styled.div`
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
   text-align: center;
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  top: 12%;
+`;
+
+const SaveAlert = styled.span`
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+  z-index: 1005;
+  width: 141px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 88.5%;
+  border-radius: 6px;
+  padding: 5px;
+  font-weight: bold;
 `;
 
 const AutoCompleteDropdownLayout = styled.div`
@@ -73,13 +94,19 @@ const AutoCompleteDropdownLayout = styled.div`
 `;
 
 const RouteButtonContainer = styled.div`
-  display: block;
-  margin-bottom: 5px;
-  margin-top: 10px;
+  position: fixed;
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  right: 4px;
 `;
 
 const RouteListOptions = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
 `;
 
 const RouteList = styled.div`
@@ -134,13 +161,13 @@ const NavBarTop = styled.span`
   justify-content: space-around;
   width: 100%;
   align-items: center;
-  height: 9vh;
+  height: 6.6vh;
   z-index: 1000;
 `;
 
 const BandAid = styled.div`
-  padding-top: 9vh;
-  padding-bottom: 9vh;
+  padding-top: 6.6vh;
+  padding-bottom: 6.6vh;
 `;
 
 const AchievementBadgeByName = styled.img`
@@ -152,7 +179,7 @@ const AchievementBadgeTooltip = styled.span`
   visibility: hidden;
   padding: 5px 0;
   border-radius: 6px;
-  text-align: center
+  text-align: center;
   position: absolute;
   z-index: 1;
 `;
@@ -176,55 +203,6 @@ const AchievementBadgeHolder = styled.span`
   display: none;
 `;
 
-// const ToggleSwitch = styled.label`
-//   position: relative;
-//   display: inline-block;
-//   width: 60px;
-//   height: 34px;
-
-//   input {
-//     opacity: 0;
-//     width: 0;
-//     height: 0;
-//   }
-
-//   span {
-//     position: absolute;
-//     cursor: pointer;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background-color: #ccc;
-//     transition: background-color 0.2s;
-//     border-radius: 34px;
-
-//     &:before {
-//       position: absolute;
-//       content: "";
-//       height: 26px;
-//       width: 26px;
-//       left: 4px;
-//       bottom: 4px;
-//       background-color: white;
-//       transition: transform 0.2s;
-//       border-radius: 50%;
-//     }
-//   }
-
-//   input:checked + span {
-//     background-color: #2196F3;
-//   }
-
-//   input:focus + span {
-//     box-shadow: 0 0 1px #2196F3;
-//   }
-
-//   input:checked + span:before {
-//     transform: translateX(26px);
-//   }
-// `;
-
 export {
   ForecastBit,
   ForecastText,
@@ -238,7 +216,6 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
-  // ToggleSwitch,
   CategorySelector,
   OptionsDiv,
   RouteListOptions,
@@ -250,4 +227,5 @@ export {
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
+  SaveAlert,
 };

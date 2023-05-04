@@ -10,14 +10,6 @@ export interface Users {
   name: string;
 }
 
-// export interface SearchUsersProps {
-//   open: boolean;
-//   setOpen: (open: boolean) => void;
-//   options: readonly Users[];
-//   setOptions: (options: readonly Users[]) => void;
-//   loading: boolean;
-// }
-
 function sleep(delay = 0) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
@@ -33,6 +25,7 @@ function SearchUsers({
   receiver,
   setReceiver,
   loadMessages,
+  handleSetReceiver,
 }) {
   const [findUser, setFindUser] = useState('');
 
@@ -44,7 +37,7 @@ function SearchUsers({
     const getUsers = async () => {
       try {
         const response = await axios.get('/dms/findUsers');
-        console.log(response);
+        console.log("RESPONSO", response);
         if (active) {
           setOptions([...response.data]);
         }
@@ -78,7 +71,13 @@ function SearchUsers({
           option.name === value.name
         }
         getOptionLabel={(option) => option.name}
-        onChange={(event, newValue) => setReceiver(newValue)}
+        // onChange={(event, newValue) => setReceiver(newValue)}
+        onChange={(event, newValue) => {
+          setReceiver(newValue);
+          handleSetReceiver(newValue);
+        }}
+
+
         options={options}
         loading={loading}
         renderInput={(params) => (

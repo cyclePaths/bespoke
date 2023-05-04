@@ -37,7 +37,8 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: GOOGLE_CALLBACK_URL,
+      // callbackURL: GOOGLE_CALLBACK_URL,
+      callbackURL: 'http://localhost:8080/google/callback',
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {

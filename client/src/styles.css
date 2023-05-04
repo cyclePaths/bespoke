@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   font-size: 30px;
+  margin: 5px;
 }
 
 .route-saver-headers{
@@ -21,8 +22,13 @@
   margin-right: 25px;
 }
 
+.route-options {
+  display: flex;
+}
+
 body {
   margin: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
 #profilePic {
@@ -32,29 +38,78 @@ body {
 
 #list{
   text-align: center;
-  margin-left: 50px;
-  margin-right: 50px;
-  padding-left: 20px;
-  padding-right: 20px;
+  background-color: white;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 #results {
   text-align: center;
-  background-color: aliceblue;
+  background-color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
+#search-criteria {
+  display: flex;
+}
+
+#checkmark {
+  height: 17px;
+  border-radius: 6px;
+}
+
+#saveMessage {
+  left: 58%
+}
+
+@media screen and (min-width: 425px) {
+  #saveMessage {
+    left: 60%
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #saveMessage {
+    left: 78%
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #saveMessage {
+    left: 84%
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  #saveMessage {
+    left: 88%
+  }
+}
+
+@media screen and (min-width: 2560) {
+  #saveMessage {
+    left: 98%
+  }
+}
+
 .search-form {
-  display: grid;
-  align-content: stretch;
-  justify-content: center;
-  justify-items: stretch;
+  display: flex;
+  background-color: white;
+  border-radius: 4px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  flex-direction: row;
+  align-items: center;
+  padding-inline: 39px;
+  flex-wrap: wrap;
+  max-height: 51vh;
+  overflow: scroll;
 }
 
 .route-name {
   color: rgb(57, 57, 177);
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  margin-top: 5px;
+  font-size: 25px;
 }
 
 #set-private{
@@ -87,6 +142,41 @@ The code below is for the scroll wheel
   border-radius: 50%;
 }
 
+.sliderWrapper {
+  height: 100px; /* Adjust the height value as needed */
+  position: relative;
+}
+
+.sliderHidden {
+  visibility: hidden;
+  opacity: 0;
+  height: 100px;
+  bottom: 0;
+  transition: opacity 0.5s;
+
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* set the width to 100% */
+}
+
+.backButton {
+  position: fixed;
+  left: 0;
+}
+
+.forwardButton {
+  position: fixed;
+  right: 0;
+}
+
+.rideStatsButton {
+  display: flex;
+  justify-content: center;
+}
+
 .custom-slide {
   width: 150px;
 }
@@ -96,7 +186,7 @@ The code below is for the scroll wheel
   width: 120px;
   max-height: 100vh;
   border-radius: 50%;
-  color: 'white';
+  color: white !important;
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }
@@ -197,9 +287,12 @@ The code above is for the scroll wheel
 
 .leaderList {
   display: flex;
+  margin: 9px;
   justify-content: space-between;
-  /* margin-bottom: 20px; */
   align-items: center;
+  background-color: white;
+  border-radius: 4px;
+  width: 85%;
 }
 
 .place-leaderboard {
@@ -210,20 +303,38 @@ The code above is for the scroll wheel
   margin-bottom: 10px;
 }
 
+.leaderboardTitles {
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  margin-right: 40px;
+  margin-left: 40px;
+  border-radius: 4px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
 .leaderboard-value {
   margin-right: 15px;
 }
 
-.override {
-  background-color: white;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen {
+  .container {
+    height: 87vh
+  }
+}
+
+.leaderBoxOverride {
+  background-color: #e0e0e0;
   border-radius: 4px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   flex-direction: column;
-  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
-  margin-top: 20px;
-  margin-bottom: 20px;
-  overflow: hidden;
-  z-index: 1000;
+  align-items: center;
+  margin-right: 5px;
+  margin-left: 5px;
 }
