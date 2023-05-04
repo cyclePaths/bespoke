@@ -192,7 +192,12 @@ The code below is for the scroll wheel
 }
 
 .customButton:active {
-  background-color: orangered;
+  background-color: rgb(32, 31, 31);
+  background: linear-gradient(
+    128deg,
+    rgb(125, 125, 125) 0%,
+    rgb(6, 6, 6) 100%
+  );
   color: white;
 }
 
@@ -203,6 +208,7 @@ The code below is for the scroll wheel
     rgba(64, 175, 255, 1) 0%,
     rgba(63, 97, 255, 1) 100%
   );
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .number-slide2 {
@@ -210,8 +216,9 @@ The code below is for the scroll wheel
   background: linear-gradient(
     128deg,
     rgba(255, 154, 63, 1) 0%,
-    rgba(255, 75, 64, 1) 100%
+    rgba(255, 63, 63, 1) 100%
   );
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .number-slide3 {
@@ -253,6 +260,7 @@ The code below is for the scroll wheel
     rgba(64, 76, 255, 1) 0%,
     rgba(174, 63, 255, 1) 100%
   );
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .hidden {
