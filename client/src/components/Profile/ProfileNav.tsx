@@ -78,13 +78,13 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
 
 
 
-  useEffect(() => {
-    axios.get('/profile/weight')
-      .then(({ data }) => {
-        console.log(data)
-        setWeight(data.weight);
-    });
-      }, []);
+  // useEffect(() => {
+  //   axios.get('/profile/weight')
+  //     .then(({ data }) => {
+  //       console.log(data)
+  //       setWeight(data.weight);
+  //   });
+  //     }, []);
 
       const toggleTabVisibility = (tabIndex: number) => {
 
@@ -123,27 +123,6 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
         alt='avatar'
       />
 
-{/* <div id='profile'>
-        <ToggleSwitch>
-          <input
-            type='checkbox'
-            onChange={() => {
-              handleToggleStyle(), saveTheme();
-            }}
-          />
-          <span />
-        </ToggleSwitch>
-    </div> */}
-
-{/* <div id='profile'>
-       <IconButton onClick={() => {
-    handleToggleStyle();
-    saveTheme();
-  }}>
-    <DarkModeIcon />
-  </IconButton>
-    </div> */}
-
 <ThemeProvider>
 <div id='profile' className='themeIcon'>
 
@@ -163,7 +142,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
       </div>
       <div hidden={!tabVisibility[1]} style={{ width: "100%" }}>
         <div style={{ width: "100%" }}>
-          {`My current weight is ${weight} lbs`}
+          {/* {`My current weight is ${weight} lbs`} */}
         <SetWeight weight={weight} onWeightChange={handleWeightChange} />
         </div>
       </div>

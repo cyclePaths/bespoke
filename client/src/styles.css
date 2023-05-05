@@ -366,7 +366,7 @@ The code below is for the Profile search Home address feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 10%; /* Adjust the top value to position the element where you want it */
+  top: 15%; /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%); /* Center the element vertically */
 }
 
@@ -382,10 +382,6 @@ The code below is for the Profile search Home address feature
   transform: translateX(-50%);
 }
 
-/* .address-input {
-  margin-bottom: 10px;
-} */
-
 .address-input {
   margin-bottom: 10px;
 }
@@ -399,6 +395,60 @@ The code below is for the Profile search Home address feature
   justify-content: center;
   align-items: center;
   max-height: 500px;
-  overflow-y: auto; /* Add a scrollbar when the suggestions list exceeds the container height */
+  overflow-y: auto;
+}
+/*
+The code above is for the Profile search Home address feature
+*/
+
+/*
+The code below is for the Profile set weight feature
+*/
+
+.weight-parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
 }
 
+.weight-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute; /* Position the element relative to the parent element */
+  top: 15%; /* Adjust the top value to position the element where you want it */
+  transform: translateY(-50%); /* Center the element vertically */
+
+}
+
+.saveWeight {
+  margin-top: 10px !important;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.custom-snackbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 8px;
+}
+
+.current-weight {
+  position: absolute;
+  top: calc(15% - 100px); /* Adjust the value to position the element where you want it */
+  left: 50%;
+  /* justify-content:center;
+  margin-left: 20;
+  margin-right: 20; */
+  transform: translateX(-50%);
+}
+
+
+
+/*
+The code above is for the Profile set weight feature
+*/
