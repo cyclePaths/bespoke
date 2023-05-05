@@ -552,7 +552,7 @@ const Root = () => {
       updateUserLocation(geoLocation);
       getForecasts();
     }
-  }, []);
+  }, [geoLocation]);
 
   useEffect(() => {
     getLocation();

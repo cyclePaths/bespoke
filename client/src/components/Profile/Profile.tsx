@@ -248,9 +248,8 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         <AchievementBadgeHolder id='badges'>
           {userBadges.map((badge) => {
             return (
-              <AchievementBadgeAndTooltipContainer>
+              <AchievementBadgeAndTooltipContainer key={badge.id}>
                 <AchievementBadge
-                  key={badge.id}
                   onClick={() => {
                     setSelectedBadge(badge.badgeIcon);
                   }}
