@@ -292,11 +292,13 @@ const Root = () => {
       weatherIcon = weatherIcons[timeOfDay].snow;
     } else if (weather === 'Thunderstorm') {
       if (chanceOfRain >= 50) {
-        if (rainfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        } else if (snowfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        }
+        //I noticed the below logic doesn't really work sometimes, probably b/c rainfall/snowfall is based on the previous hour
+        // if (rainfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
+        // } else if (snowfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
+        // }
+        weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
       } else {
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
       }
