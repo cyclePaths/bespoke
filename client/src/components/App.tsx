@@ -38,7 +38,6 @@ const App = () => {
       <div>
         <Navbar appPropsObj={appPropsObj} />
       </div>
-      <div>Hello World</div>
     </div>
   );
 };
