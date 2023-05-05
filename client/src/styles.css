@@ -346,3 +346,59 @@ The code above is for the scroll wheel
   margin-right: 5px;
   margin-left: 5px;
 }
+
+/*
+The code below is for the Profile search Home address feature
+*/
+
+.setAddress {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute; /* Position the element relative to the parent element */
+  top: 10%; /* Adjust the top value to position the element where you want it */
+  transform: translateY(-50%); /* Center the element vertically */
+}
+
+.saveHome {
+  margin-top: 10px !important;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.displayedAddress {
+  position: absolute;
+  top: calc(5% - 60px); /* Adjust the value to position the element where you want it */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* .address-input {
+  margin-bottom: 10px;
+} */
+
+.address-input {
+  margin-bottom: 10px;
+}
+
+.autocomplete-dropdown-container {
+  /* position: relative; */
+  position:sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-height: 500px;
+  overflow-y: auto; /* Add a scrollbar when the suggestions list exceeds the container height */
+}
+

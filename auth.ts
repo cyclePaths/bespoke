@@ -58,15 +58,6 @@ passport.use(
             thumbnail: profile._json.picture || gravatarUrl, // Use profile picture URL if available, otherwise use default avatar URL
           };
 
-          // // Check if profile picture is a real image or a default image
-          // const response = await fetch(profile._json.picture);
-          // if (response.status === 200) {
-          //   // The profile picture is a real image
-          //   newUserData.thumbnail = profile._json.picture;
-          // } else {
-          //   // The profile picture is a default image
-          //   // Do nothing, thumbnail will remain null
-          // }
           const newUser = await prisma.user.create({
             data: newUserData,
           });

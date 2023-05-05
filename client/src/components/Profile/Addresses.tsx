@@ -8,6 +8,11 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+
 
 // Define styles for the autocomplete input box and suggestion list
 const AutocompleteWrapper = styled.div`
@@ -97,8 +102,20 @@ const Addresses = ({
       }
     }, []);
     return (
-<div>
-  <div>{homeAddress}</div>
+<div className='setAddress'>
+<Box
+      component="form"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+  <div className='displayedAddress'>{homeAddress}</div>
     <PlacesAutocomplete
       value={address}
       onChange={handleChange}
@@ -106,13 +123,22 @@ const Addresses = ({
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <div id='address'
-        className='address'>
-          <input id='address-input'
+        className='address' style={{}}>
+
+<TextField id='address-input' type="search" variant="standard"
+            {...getInputProps({
+              placeholder: 'Search Places ...',
+              className: 'location-search-input',
+
+            })}
+          />
+
+          {/* <input id='address-input'
             {...getInputProps({
               placeholder: 'Search Places ...',
               className: 'location-search-input',
             })}
-          />
+          /> */}
           <div className="autocomplete-dropdown-container">
             {loading && <div>Loading...</div>}
             {suggestions.map(suggestion => {
@@ -121,8 +147,8 @@ const Addresses = ({
                 : 'suggestion-item';
               // inline style for demonstration purpose
               const style = suggestion.active
-                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                ? { backgroundColor: '#b01e1e', cursor: 'pointer' }
+                : { backgroundColor: '#21a136', cursor: 'pointer' };
               return (
                 <div
                   {...getSuggestionItemProps(suggestion, {
@@ -135,13 +161,18 @@ const Addresses = ({
               );
             })}
             <div>{selectedAddress}</div>
-               <div>
-      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div>
+
+<Stack  direction="row" spacing={5}>
+      <Button className='saveHome' variant="contained" color="success" onClick={() => saveHome()}>
+      Set Home
+      </Button>
+    </Stack>
           </div>
         </div>
       )}
+
     </PlacesAutocomplete>
+    </Box>
     </div>
   );
 };
