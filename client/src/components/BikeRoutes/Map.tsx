@@ -157,6 +157,7 @@ const Map = ({ options }: MapOptionsProp) => {
           name,
           category,
           privacy,
+          userId: user.id,
         })
         .then(() => {
           setSaveMessage(true);

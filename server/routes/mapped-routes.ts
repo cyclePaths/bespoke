@@ -9,11 +9,6 @@ const BikeRoutes = Router();
 const prisma = new PrismaClient();
 
 // Types for typescript //
-// type NewBikeRoute = Prisma.BikeRoutesCreateInput & {
-//   origin: [number, number];
-//   destination: [number, number];
-//   user: { connect: { id: number } };
-// };
 
 interface LikesQuery {
   routeId: string;
@@ -21,10 +16,9 @@ interface LikesQuery {
 // End of typescript types //
 
 // Creates new bike route with POST //
-/// Only good for point A to point B ///
 BikeRoutes.post('/newRoute', (req, res) => {
-  const { directions, name, category, privacy } = req.body;
-  const { id } = req.user as User;
+  const { directions, name, category, privacy, userId } = req.body;
+  // const { id } = req.user as User;
 
   const origin: any = JSON.stringify(directions.request.origin.location);
   const destination: any = JSON.stringify(
@@ -42,7 +36,7 @@ BikeRoutes.post('/newRoute', (req, res) => {
           origin: origin,
           destination: destination,
           waypoints: waypoints,
-          user: { connect: { id: id } },
+          user: { connect: { id: userId } },
           category: category,
           name: name,
           isPrivate: privacy,
@@ -63,7 +57,7 @@ BikeRoutes.post('/newRoute', (req, res) => {
         data: {
           origin: origin,
           destination: destination,
-          user: { connect: { id: id } },
+          user: { connect: { id: userId } },
           name: name,
           category: category,
           isPrivate: privacy,
