@@ -66,6 +66,7 @@ app.use(passport.session());
 //  Authentication Routes
 // 1. Sign-In Splash
 app.get('/', (req, res) => {
+  // res.redirect('/signIn');
   res.send('<a href="/auth/google">Sign in with Google</div>');
 });
 
@@ -175,7 +176,14 @@ process.env.PUBLIC_URL = '/';
 
 /////////SOCKET IO/////////
 io.on('connection', (socket) => {
-  // console.log(`Socket ${socket.id} connected`);
+  socket.on('DM', ({ userId1, userId2 }) => {
+    const room = `DM-${userId1}-${userId2}`;
+    socket.join(room);
+
+    socket.on('message', (message) => {
+      io.to(room).emit('message', message);
+    });
+  });
 
   socket.on('message', (message) => {
     console.log(`Received message: ${message}`);
@@ -187,8 +195,10 @@ io.on('connection', (socket) => {
   });
 });
 
-// httpServer.listen(8080, () => {
-//   console.log('Server listening on port 8080');
+///// SAVE THIS JUST IN CASE /////
+// socket.on('message', (message) => {
+//   console.log(`Received message: ${message}`);
+//   io.emit('message', message);
 // });
 
 ///// SEEDER FOR USERS ///////
@@ -198,11 +208,6 @@ app.post('/user', async (req, res) => {
   const newUser = await prisma.user.create({ data: user });
   res.sendStatus(201);
 });
-
-//Listening
-// app.listen(PORT, () =>
-//   console.log(`App now listening for requests at: http://localhost:${PORT}`)
-// );
 
 httpServer.listen(PORT, () => {
   console.log(`App now listening for requests at: http://localhost:${PORT}`);

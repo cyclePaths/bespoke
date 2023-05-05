@@ -215,9 +215,7 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          // latitude: geoLocation.lat,
           latitude: geoLocation.lat,
-          // longitude: geoLocation.lng,
           longitude: geoLocation.lng,
           numDaysToForecast: numDaysToForecast,
         },
@@ -629,7 +627,6 @@ const Root = () => {
     // <>
 
     <div className={isDark ? 'dark' : 'light'}>
-      <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
         value={{
           user,
@@ -706,6 +703,7 @@ const Root = () => {
               {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
+            {/* <Route path='signIn' element={<SignIn/>} */}
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
