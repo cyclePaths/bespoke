@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import axios from 'axios';
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, User, DirectMessages } from '@prisma/client';
 import { Request, Response } from 'express';
 import socketIO, { Server, Socket } from 'socket.io';
 import http, { IncomingMessage } from 'http';
@@ -13,6 +13,15 @@ interface CustomSocket extends Socket {
   request: IncomingMessage & {
     user?: User;
   };
+}
+
+interface NewMessage {
+  senderId: number;
+  senderName: string;
+  receiverId: number;
+  receiverName: string;
+  text: string;
+  fromMe: boolean;
 }
 
 dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
@@ -59,48 +68,42 @@ dmRouter.get('/conversations', async (req: Request, res: Response) => {
 
     const conversations = await prisma.directMessages.findMany({
       where: {
-        OR: [
-          { senderId: id },
-          { receiverId: id },
-        ],
+        OR: [{ senderId: id }, { receiverId: id }],
       },
       include: {
         sender: true,
         receiver: true,
-      }
-    })
+      },
+    });
     res.status(200).send(conversations);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
-
+});
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
-  // console.log(req);
+  // console.log(req.user);
   try {
-    const { receiverId, text, fromMe } = req.body.message;
+    const { receiverId, receiverName, text, fromMe } = req.body.message;
 
-    const { id } = req.user as User;
+    // const { name } = req.user;
+
+    const { id, name } = req.user as User;
 
     const newMessage = await prisma.directMessages.create({
       data: {
         senderId: id,
+        senderName: name,
         receiverId: receiverId,
+        receiverName: receiverName,
         text: text,
         fromMe: fromMe,
       },
     });
-      // Emit a 'message' event to all connected clients except the sender
-      const socket = Array.from(io.sockets.sockets.values()).find(
-        (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
-      );
-      if (socket) {
-        socket.emit('message', newMessage);
-      }
-
-  } catch {
+    res.status(201).send(newMessage);
+  } catch (err) {
+    console.error('failed', err);
     res.sendStatus(500);
   }
 });

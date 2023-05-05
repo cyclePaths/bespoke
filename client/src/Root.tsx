@@ -330,7 +330,7 @@ const Root = () => {
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
     axios
-    .get('badges/all-badges')
+      .get('badges/all-badges')
       .then(({ data }) => {
         setAllBadges(data.allBadges);
         //add descriptions to the Badge objects for use in Tooltips
@@ -355,7 +355,6 @@ const Root = () => {
           });
           setUserBadges(earnedBadges);
         }
-
       })
       .catch((err) => {
         console.error('Failed to get badges from database: ', err);
@@ -628,7 +627,6 @@ const Root = () => {
     // <>
 
     <div className={isDark ? 'dark' : 'light'}>
-      <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
         value={{
           user,
@@ -705,6 +703,7 @@ const Root = () => {
               {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
+            {/* <Route path='signIn' element={<SignIn/>} */}
           </Routes>
           {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
