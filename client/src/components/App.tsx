@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { StopwatchTime } from '../Root';
 // import Stopwatch from './Stopwatch';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export interface AppProps {
   windSpeedMeasurementUnit: string;
@@ -33,10 +35,18 @@ const App = () => {
     setPrecipitationMeasurementUnit: setPrecipitationMeasurementUnit,
   };
 
+  const achievementGet = () => {
+    toast('You got an achievement!');
+  };
+
   return (
     <div>
       <div>
         <Navbar appPropsObj={appPropsObj} />
+      </div>
+      <div>
+        <button onClick={achievementGet}>Click For Toast</button>
+        <ToastContainer />
       </div>
       <div>
         {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
