@@ -4,7 +4,6 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
-import ReportsList from './ReportsList';
 import {
   Input,
   IconButton,
@@ -18,7 +17,6 @@ import {
   ToggleButton,
 } from '@mui/material';
 import { AttachFile, PhotoCamera } from '@mui/icons-material';
-import { BandAid } from '../../StyledComp';
 
 const CreateReport: React.FC = () => {
   // const navigate = useNavigate();
@@ -30,10 +28,8 @@ const CreateReport: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>({
-    lat: 29.9511,
-    lng: -90.0715,
-  });
+  } | null>();
+  const [center, setCenter] = useState<google.maps.LatLng>();
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(true);
@@ -41,7 +37,7 @@ const CreateReport: React.FC = () => {
     setOpen(false);
   };
 
-  const user = useContext(UserContext);
+  const { user, geoLocation } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -68,76 +64,59 @@ const CreateReport: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    try {
-      console.log(user);
-      const { email, id } = user;
+    if (currentLocation) {
+      try {
+        // console.log(user);
+        const { email, id } = user;
 
-      const formData = new FormData();
-      formData.append('userId', id);
-      formData.append('userEmail', email);
-      formData.append('body', body);
-      formData.append('type', type);
-      formData.append('title', title);
-      formData.append('latitude', currentLocation!.lat.toString());
-      formData.append('longitude', currentLocation!.lng.toString());
-      if (image) {
-        formData.append('file', image);
+        const formData = new FormData();
+        formData.append('userId', id);
+        formData.append('userEmail', email);
+        formData.append('body', body);
+        formData.append('type', type);
+        formData.append('title', title);
+        formData.append('latitude', currentLocation!.lat.toString());
+        formData.append('longitude', currentLocation!.lng.toString());
+        if (image) {
+          formData.append('file', image);
+        }
+        // console.log(formData);
+        const response = await axios.post<Report>('/reports', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setReports([...reports, response.data]);
+        setBody('');
+        setType('');
+        setImage(null);
+        setOpen(false);
+      } catch (error: any) {
+        console.error(error.message);
+        setError(error.message);
       }
-      console.log(formData);
-      const response = await axios.post<Report>('/reports', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      setReports([...reports, response.data]);
-      setBody('');
-      setType('');
-      setImage(null);
-      setOpen(false);
-    } catch (error: any) {
-      console.error(error.message);
-      setError(error.message);
+    } else {
+      console.log("CreateReport: CurrentLocation not available");
     }
   };
 
+  useEffect(() => {
+    if (geoLocation) {
+      setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
+    }
+  });
+
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
-    console.log(user);
-
-    let interval: any | undefined;
-    if (navigator.geolocation) {
-      interval = setInterval(() => {
-        if (!navigator.geolocation) {
-          setError('Geolocation is not supported by this browser.');
-          clearInterval(interval!);
-          return;
-        }
-        var geoOps = {
-          enableHighAccuracy: false,
-          timeout: 10000,
-        };
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval!);
-            interval = null;
-          },
-          (error) => {
-            setError(error.message);
-          },
-          geoOps
-        );
-      }, 1000);
-    } else {
-      setError('Geolocation is not supported by this browser.');
-    }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ lat: latitude, lng: longitude });
+      },
+      (error) => {
+        setError(error.message);
       }
-    };
+    );
   }, []);
 
   return (

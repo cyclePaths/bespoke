@@ -22,7 +22,6 @@ import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
-import ReportsList from './components/Reports/ReportsList';
 
 export interface CurrentWeather {
   temperature: number;
@@ -138,6 +137,7 @@ export interface BadgeWithAdditions extends Badge {
 
 export const UserContext = createContext<any>(Object());
 
+
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
   const [isDark, setIsDark] = useState(false);
@@ -156,6 +156,7 @@ const Root = () => {
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<any>();
   const [geoLocation, setGeoLocation] = useState<any>();
+  const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
   //holds all badge objects
   const [allBadges, setAllBadges] = useState<Badge[]>([
@@ -214,10 +215,10 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          // latitude: geoLocation.lat,
-          latitude: 29.9511,
-          // longitude: geoLocation.lng,
-          longitude: -90.0715,
+          latitude: geoLocation.lat,
+          // latitude: 29.9511,
+          longitude: geoLocation.lng,
+          // longitude: -90.0715,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -504,34 +505,19 @@ const Root = () => {
   };
 
   const getLocation = () => {
-    let interval: any | undefined;
     if (navigator.geolocation) {
-      interval = setInterval(() => {
-        if (!navigator.geolocation) {
-          setError('Geolocation is not supported by this browser.');
-          clearInterval(interval!);
-          return;
-        }
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setGeoLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval!);
-            interval = null;
-          },
-          (error) => setError(error.message)
-        );
-      }, 1000);
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          const { latitude, longitude } = position.coords;
+          setGeoLocation({ lat: latitude, lng: longitude });
+        },
+        (error: GeolocationPositionError) => setError(error.message)
+      );
     } else {
       setError('Geolocation is not supported by this browser.');
     }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-    };
   };
+
 
   const updateUserLocation = (geoObj: geoLocation) => {
     const id = user!.id;
@@ -552,14 +538,14 @@ const Root = () => {
       updateUserLocation(geoLocation);
       getForecasts();
     }
-  }, []);
+  }, [geoLocation]);
 
   useEffect(() => {
     getLocation();
     findContext();
     getBadges();
     getSelectedBadge();
-  }, []);
+  }, geoLocation? [] : [geoLocation]);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {}, [userBadges, allBadges]);
@@ -694,14 +680,6 @@ const Root = () => {
               />
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
-              <Route
-                path='reportsList'
-                element={<ReportsList reports={reports} />}
-              />
-              <Route
-                path='reportsList'
-                element={<ReportsList reports={reports} />}
-              />
               <Route path='reportsMap' element={<ReportsMap />} />
               {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />

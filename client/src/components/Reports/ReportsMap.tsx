@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, createContext} from 'react';
 import axios from 'axios';
 import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
-import ReportsList from './ReportsList';
 import { Box, Fab, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
+
+
 
 //  webpack url-loader
 // import roadHazardIcon from './images/hazard.png';
@@ -207,7 +209,7 @@ const ReportsMap: React.FC = () => {
         return marker;
       });
 
-      const centerLatLng = center ? center : newMarkers[0]?.getPosition();
+      const centerLatLng = center;
       const circle = new google.maps.Circle({
         center: centerLatLng!,
         radius: 804.5, // 1/5 mile in meters
@@ -251,7 +253,7 @@ const ReportsMap: React.FC = () => {
         setLocationError(true);
       }
     }
-  }, [map]);
+  }, center? [map, selectedType] : [map]);
 
   return (
     <BandAid>
@@ -267,10 +269,7 @@ const ReportsMap: React.FC = () => {
             zIndex: 1,
           }}
         >
-          <Box sx={{ marginRight: 2 }}>
-            <Fab color='primary'>
-              <FilterList />
-            </Fab>
+          <Box sx={{ marginRight: 0 }}>
           </Box>
           <Box>
             <ToggleButtonGroup
@@ -279,7 +278,7 @@ const ReportsMap: React.FC = () => {
               aria-label='Report Type'
             >
               <ToggleButton value='All'>All</ToggleButton>
-              <ToggleButton value='Road Hazard'></ToggleButton>
+              <ToggleButton value='Road Hazard'>Road Hazard</ToggleButton>
               <ToggleButton value='Theft Alert'>Theft Alert</ToggleButton>
               <ToggleButton value='Collision'>Collision</ToggleButton>
               <ToggleButton value='Point of Interest'>
@@ -304,3 +303,4 @@ const ReportsMap: React.FC = () => {
 };
 
 export default ReportsMap;
+
