@@ -36,9 +36,9 @@ const handleSetEquipmentType = (e) => {
 }
 
     return (
-        <Dialog open={openEquipmentEntry} style={{backgroundColor: '#5555556e'}}>
+        <Dialog open={openEquipmentEntry} PaperProps={{style: {backgroundColor: '#757575'}}}>
            <OutlinedInput
-            style={{ backgroundColor: '#87BBDC', marginTop: '10px',
+            style={{ backgroundColor: 'rgb(133, 211, 255)', marginTop: '10px',
                      maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
@@ -49,7 +49,7 @@ const handleSetEquipmentType = (e) => {
               value: equipmentDescription,
             }}
             />
-          <OutlinedInput style={{ backgroundColor: '#87BBDC', marginTop: '5px',
+          <OutlinedInput style={{ backgroundColor: 'rgb(133, 211, 255)', marginTop: '5px',
                                maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
@@ -60,9 +60,9 @@ const handleSetEquipmentType = (e) => {
               value: equipmentType,
             }}
             />
-            <Button style={{backgroundColor: '#17332c', marginTop: '5px'}}
+            <Button style={{backgroundColor: '#17332c',  marginTop: '5px'}}
               onClick={() => handleEquipmentSubmission()}>
-            Add Equipment
+            <div style={{color: 'rgb(133, 211, 255)'}}>Add Equipment</div>
             </Button>
           <DialogContent>{children}</DialogContent>
         </Dialog>

@@ -21,7 +21,7 @@ const AddEquipment = () => {
     <EquipmentPopup openEquipmentEntry={openEquipmentEntry} setOpenEquipmentEntry={setOpenEquipmentEntry}>
     <div style={{textAlign: 'center'}}>
     <Button style={{backgroundColor: '#17332c', marginTop: '5px'}}
-              onClick={() => exitPopup()}>Close
+              onClick={() => exitPopup()}><div style={{color:'rgb(133, 211, 255)'}}>Close</div>
     </Button>
     </div>
     </EquipmentPopup>
