@@ -69,6 +69,7 @@ reportRouter.post(
     upload.single('file')(req, res, (err) => {
       if (err) {
         console.error('Multer Error: ', err);
+        console.log(err);
         return res
           .status(400)
           .json({ error: 'An error occurred while uploading the image.' });
@@ -83,11 +84,13 @@ reportRouter.post(
 
       // Check if file exists in the request and upload it to Cloudinary
       if (req.file) {
+        //  configure to create infowindow thumbnail and large for full report view
         const options = {
           quality: "auto",
           format: "auto"
         };
         const result = await cloudinary.uploader.upload(req.file.path);
+        console.log("Cloudinary Result: ", result)
         imageUrl = result.secure_url;
         // Delete the local image file after it has been uploaded to Cloudinary
         fs.unlink(req.file.path, (err) => {

@@ -104,7 +104,7 @@ const CreateReport: React.FC = () => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
-  });
+  }, currentLocation? [] : [geoLocation]);
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
