@@ -189,6 +189,8 @@ const ReportsMap: React.FC = () => {
         typeParagraph.textContent = report.type;
         const titleParagraph = document.createElement('p');
         titleParagraph.textContent = report.title;
+        const authorParagraph = document.createElement('p');
+        authorParagraph.textContent = report.userId.toString();
         const bodyParagraph = document.createElement('p');
         bodyParagraph.textContent = report.body;
         // const createdAtParagraph = document.createElement('p');
