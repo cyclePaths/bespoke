@@ -218,6 +218,10 @@ const AchievementBadgeHolder = styled.span`
   display: none;
 `;
 
+const ToastBuffer = styled.div`
+  padding-top: 30px;
+`;
+
 export {
   ForecastBit,
   ForecastText,
@@ -244,4 +248,5 @@ export {
   NavBarTop,
   BandAid,
   SaveAlert,
+  ToastBuffer,
 };

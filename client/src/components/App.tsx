@@ -5,11 +5,14 @@ import { StopwatchTime } from '../Root';
 // import Stopwatch from './Stopwatch';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastBuffer } from '../StyledComp';
 
 //We will eventually use Link to allow us to create clickable routing
 const App = () => {
-  const achievementGet = () => {
-    toast('You got an achievement!');
+  let messageToSend = 'test message';
+
+  const sendToast = (message: string) => {
+    toast(message);
   };
 
   return (
@@ -17,10 +20,27 @@ const App = () => {
       <div>
         <Navbar />
       </div>
-      <div>
-        <button onClick={achievementGet}>Click For Toast</button>
-        <ToastContainer />
-      </div>
+      <ToastBuffer>
+        <button
+          onClick={() => {
+            sendToast(messageToSend);
+          }}
+        >
+          Click For Toast
+        </button>
+        <ToastContainer
+          position='top-center'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='dark'
+        />
+      </ToastBuffer>
       <div>
         {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
       </div>

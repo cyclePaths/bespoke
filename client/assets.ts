@@ -306,6 +306,10 @@ export const badgeInfo = [
     description: 'You have made too many downvoted reports!',
   },
   {
+    name: 'Gearhead',
+    description: 'Post parts to the Parts Exchange',
+  },
+  {
     name: 'Lean Legend',
     description: 'Burn the most calories among all Bespoke bikers',
   },

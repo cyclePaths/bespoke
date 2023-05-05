@@ -23,6 +23,7 @@ import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
+import { toast } from 'react-toastify';
 
 export interface CurrentWeather {
   temperature: number;
@@ -404,11 +405,14 @@ const Root = () => {
     };
     axios
       .post('/badges/tier', config)
-      .then(() => {
+      .then(({ data }) => {
+        if (data.tierUp) {
+          toast(`You have just achieved tier ${data.tier} on ${badgeName}!`);
+        }
         getBadges(); //update allBadges and badgesOnUser with new DB info
       })
       .catch((err) =>
-        console.error('there was an error when checking/updating tiers')
+        console.error('there was an error when checking/updating tiers: ', err)
       );
   };
 
@@ -438,6 +442,7 @@ const Root = () => {
           badgeId: badgeId,
         })
         .then(() => {
+          toast(`New Achievement Earned: ${badgeName}!`);
           getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
@@ -480,6 +485,35 @@ const Root = () => {
           err
         )
       );
+  };
+
+  //if only a badgeName is passed in, will add badge to user
+  //if badgeName and change are passed in, will add the badge (if not already earned) and update the counter on the badge by the value of change (if not 0)
+  //If counter is updating, tier should also be passed in - function will check to see if tier should be updated in that case and will update if appropriate
+  const updateAchievements = async (
+    badgeName,
+    tier = undefined,
+    change = 0
+  ) => {
+    if (!badgeName) {
+      console.error('You need to pass in a badge name!');
+      return;
+    } else {
+      await addBadge(badgeName); //won't fire if badge is already on user
+    }
+    try {
+      if (change !== 0) {
+        await updateBadgeCounter(badgeName, tier, change);
+        if (tier) {
+          await tierCheck(badgeName, tier);
+        }
+      }
+    } catch (err) {
+      console.error(
+        'an error has occurred while attempting to update the database with achievement related info',
+        err
+      );
+    }
   };
 
   const findContext = () => {
@@ -640,6 +674,7 @@ const Root = () => {
           updateBadgeCounter,
           addBadge,
           tierCheck,
+          updateAchievements,
         }}
       >
         <BrowserRouter>

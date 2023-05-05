@@ -96,6 +96,8 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
       console.error(`could not find badge with id ${badgeId}`);
       res.sendStatus(500);
     }
+    let tier = badge?.tier;
+    let tierUp = false;
     //find the join table entry for the user and badge
     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
       where: {
@@ -126,6 +128,8 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
       }
       //if newTier has been changed
       if (badge.tier !== newTier) {
+        tier = newTier;
+        tierUp = true;
         //find badge of the appropriate tier
         const higherTierBadge = await prisma.badge.findFirst({
           where: {
@@ -152,7 +156,11 @@ badgeRouter.post('/tier', async (req: Request, res: Response) => {
         }
       }
     }
-    res.sendStatus(201);
+    let responseData = {
+      tierUp: tierUp,
+      tier: tier,
+    };
+    res.send(responseData).status(201);
   } catch (err) {
     console.error(
       `an error occurred when attempting to check/update the tier of badge with id ${badgeId} for user with id ${userId}`,
