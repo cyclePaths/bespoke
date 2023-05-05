@@ -17,6 +17,7 @@ import {
   ToggleButton,
 } from '@mui/material';
 import { AttachFile, PhotoCamera } from '@mui/icons-material';
+import { LatLngLiteral } from '../BikeRoutes/RouteM';
 
 const CreateReport: React.FC = () => {
   // const navigate = useNavigate();
@@ -30,6 +31,10 @@ const CreateReport: React.FC = () => {
     lng: number;
   } | null>();
   const [center, setCenter] = useState<google.maps.LatLng>();
+  const [userCenter, setUserCenter] = useState<LatLngLiteral>({
+    lat: 29.9511,
+    lng: -90.0715,
+  });
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(true);
@@ -99,12 +104,17 @@ const CreateReport: React.FC = () => {
       console.log("CreateReport: CurrentLocation not available");
     }
   };
-
   useEffect(() => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
-  }, currentLocation? [] : [geoLocation]);
+  }, [geoLocation]);
+
+  // useEffect(() => {
+  //   if (geoLocation) {
+  //     setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
+  //   }
+  // }, currentLocation? [] : [geoLocation]);
 
   //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {

@@ -10,6 +10,7 @@ import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
 import Icon from '@mui/material/Icon';
+import { LatLngLiteral } from '../BikeRoutes/RouteM';
 
 
 
@@ -27,12 +28,15 @@ const ReportsMap: React.FC = () => {
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
   const [locationError, setLocationError] = useState(false);
-
+  const [userCenter, setUserCenter] = useState<LatLngLiteral>({
+    lat: 29.9511,
+    lng: -90.0715,
+  });
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
   };
 
-  const user = useContext(UserContext);
+  const { user, geoLocation } = useContext(UserContext);
   const options = {
     disableDefaultUI: true,
     styles: [
@@ -235,26 +239,33 @@ const ReportsMap: React.FC = () => {
     }
   }, [map, reports, selectedType, buttonClicked]);
 
+  // useEffect(() => {
+  //   if (map) {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           const pos = new google.maps.LatLng(
+  //             position.coords.latitude,
+  //             position.coords.longitude
+  //           );
+  //           setCenter(pos);
+  //         },
+  //         () => {
+  //           setLocationError(true);
+  //         }
+  //       );
+  //     } else {
+  //       setLocationError(true);
+  //     }
+  //   }
+  // }, center? [map, selectedType] : [map]);
+
+  // Sets the center of the map upon page loading //
   useEffect(() => {
-    if (map) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const pos = new google.maps.LatLng(
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            setCenter(pos);
-          },
-          () => {
-            setLocationError(true);
-          }
-        );
-      } else {
-        setLocationError(true);
-      }
+    if (geoLocation) {
+      setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
-  }, center? [map, selectedType] : [map]);
+  }, [geoLocation]);
 
   return (
     <BandAid>
@@ -292,7 +303,7 @@ const ReportsMap: React.FC = () => {
         <Box height='87vh;'>
           <GoogleMap
             mapContainerStyle={{ height: '100%', width: '100%' }}
-            center={center}
+            center={userCenter}
             zoom={15}
             onLoad={onLoad}
             options={options as google.maps.MapOptions}

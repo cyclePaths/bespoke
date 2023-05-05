@@ -49,14 +49,16 @@ model User {
 }
 
 model DirectMessages {
-  id         Int      @id @default(autoincrement())
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  senderId   Int
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  receiverId Int
-  text       String
-  fromMe     Boolean
-  createdAt  DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id])
+  senderId     Int
+  senderName   String   @map(name: "sender.name")
+  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId   Int
+  receiverName String   @map(name: "receiver.name")
+  text         String
+  fromMe       Boolean
+  createdAt    DateTime @default(now())
 }
 
 model BadgesOnUsers {
@@ -151,12 +153,12 @@ model RouteLike {
 }
 
 model Rides {
-  id       Int    @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   activity String
   duration Int
   weight   Int
   calories Int
-  User     User?  @relation(fields: [userId], references: [id])
+  User     User?    @relation(fields: [userId], references: [id])
   userId   Int?
   rideDate DateTime @default(now())
 }
