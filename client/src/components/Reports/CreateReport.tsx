@@ -42,7 +42,7 @@ const CreateReport: React.FC = () => {
     setOpen(false);
   };
 
-  const { user, geoLocation } = useContext(UserContext);
+  const { user, geoLocation, addBadge } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -92,9 +92,9 @@ const CreateReport: React.FC = () => {
         });
 
         if (type === 'Point of Interest') {
-          user.addBadge('Tour Guide', 1);
+          addBadge('Tour Guide', 1);
         } else {
-          user.addBadge('Safety Sentinel', 1);
+          addBadge('Safety Sentinel', 1);
         }
 
         setReports([...reports, response.data]);
