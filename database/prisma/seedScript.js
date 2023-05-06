@@ -276,6 +276,10 @@ let badgesSeed = [
     badgeIcon: 'https://cdn-icons-png.flaticon.com/512/539/539982.png',
   },
   {
+    name: 'Gearhead',
+    badgeIcon: 'https://cdn-icons-png.flaticon.com/512/9100/9100364.png',
+  },
+  {
     name: 'Lean Legend',
     badgeIcon: 'https://cdn-icons-png.flaticon.com/512/3842/3842868.png',
     tier: 1,
