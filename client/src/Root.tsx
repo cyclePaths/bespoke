@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, createContext } from 'react';
-import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, createContext } from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
@@ -14,15 +14,13 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
-import Stopwatch from './components/Profile/Stopwatch';
-import RouteM from './components/BikeRoutes/RouteM';
+import RouteM, { LatLngLiteral } from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import LeaderBoard from './components/LeaderBoard/LeaderBoard';
-import { Prisma } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
+import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 
 export interface CurrentWeather {
@@ -96,6 +94,9 @@ export interface RootPropsToHome {
     rainfall: number,
     snowfall: number
   ) => string;
+  setHomeCoordinates: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >;
 }
 export interface StopwatchTime {
   hours: number;
@@ -206,6 +207,7 @@ const Root = () => {
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
+  const [homeCoordinates, setHomeCoordinates] = useState<LatLngLiteral>();
 
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
@@ -657,9 +659,6 @@ const Root = () => {
   const reports = [];
 
   return (
-    //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
-    // <>
-
     <div className={isDark ? 'dark' : 'light'}>
       <UserContext.Provider
         value={{
@@ -687,11 +686,20 @@ const Root = () => {
                     temperatureMeasurementUnit={temperatureMeasurementUnit}
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
                     prepareWeatherIcon={prepareWeatherIcon}
+                    setHomeCoordinates={setHomeCoordinates}
                   />
                 }
               />
               <Route path='bulletinBoard' element={<BulletinBoard />} />
-              <Route path='bikeRoutes' element={<RouteM />} />
+              <Route
+                path='bikeRoutes'
+                element={
+                  <RouteM
+                    homeCoordinates={homeCoordinates!}
+                    setHomeCoordinates={setHomeCoordinates}
+                  />
+                }
+              />
               <Route
                 path='weather'
                 element={
@@ -727,18 +735,14 @@ const Root = () => {
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
-              {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
-            {/* <Route path='signIn' element={<SignIn/>} */}
+            <Route path='signIn' element={<SignIn />} />
           </Routes>
-          {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>
-    // </>
   );
 };
 

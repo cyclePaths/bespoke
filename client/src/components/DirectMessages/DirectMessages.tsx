@@ -142,7 +142,6 @@ function DirectMessages() {
         newMessage.senderId === receiverId &&
         newMessage.receiverId === userId
       ) {
-        console.log();
         setMessage(newMessage);
       }
     });
@@ -195,7 +194,6 @@ function DirectMessages() {
     };
 
     // Emit a 'message' event to the server
-    // socketRef.current?.emit('message', newMessage);
     socket.emit('message', newMessage);
 
     axios
