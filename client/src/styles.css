@@ -365,7 +365,9 @@ The code below is for the Profile search Home address feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* top: 100x;
+  bottom: 0px; */
+  height: 50vh;
   position: relative;
 }
 
@@ -375,18 +377,18 @@ The code below is for the Profile search Home address feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 15%; /* Adjust the top value to position the element where you want it */
+  top: 30%; /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%); /* Center the element vertically */
 }
 
 .saveHome {
   margin-top: 10px !important;
-  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
 .displayedAddress {
   position: absolute;
-  top: calc(5% - 60px); /* Adjust the value to position the element where you want it */
+  top: calc(15% - 60px); /* Adjust the value to position the element where you want it */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -419,7 +421,7 @@ The code below is for the Profile set weight feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 50vh;
   position: relative;
 }
 
@@ -429,7 +431,7 @@ The code below is for the Profile set weight feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 15%; /* Adjust the top value to position the element where you want it */
+  top: 30%; /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%); /* Center the element vertically */
 
 }
@@ -448,7 +450,8 @@ The code below is for the Profile set weight feature
 
 .current-weight {
   position: absolute;
-  top: calc(15% - 100px); /* Adjust the value to position the element where you want it */
+  top: calc(15% - 60px); 
+  /* top: calc(30% - 100px);  */
   left: 50%;
   /* justify-content:center;
   margin-left: 20;

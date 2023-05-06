@@ -594,7 +594,7 @@ const Root = () => {
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {
-    console.log('use effect watching user/allBadges has been called');
+    // console.log('use effect watching user/allBadges has been called');
   }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
