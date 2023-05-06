@@ -4,7 +4,6 @@ import { UserContext } from '../../Root';
 import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
-import ReportsList from './ReportsList';
 import {
   Input,
   IconButton,
@@ -18,7 +17,7 @@ import {
   ToggleButton,
 } from '@mui/material';
 import { AttachFile, PhotoCamera } from '@mui/icons-material';
-import { BandAid } from '../../StyledComp';
+import { LatLngLiteral } from '../BikeRoutes/RouteM';
 
 const CreateReport: React.FC = () => {
   // const navigate = useNavigate();
@@ -30,7 +29,9 @@ const CreateReport: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>({
+  } | null>();
+  const [center, setCenter] = useState<google.maps.LatLng>();
+  const [userCenter, setUserCenter] = useState<LatLngLiteral>({
     lat: 29.9511,
     lng: -90.0715,
   });
@@ -41,7 +42,7 @@ const CreateReport: React.FC = () => {
     setOpen(false);
   };
 
-  const user = useContext(UserContext);
+  const { user, geoLocation } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -68,105 +69,62 @@ const CreateReport: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    try {
-      console.log(user);
-      const { email, id } = user;
+    if (currentLocation) {
+      try {
+        const { email, id } = user;
 
-      const formData = new FormData();
-      formData.append('userId', id);
-      formData.append('userEmail', email);
-      formData.append('body', body);
-      formData.append('type', type);
-      formData.append('title', title);
-      formData.append('latitude', currentLocation!.lat.toString());
-      formData.append('longitude', currentLocation!.lng.toString());
-      if (image) {
-        formData.append('file', image);
+        const formData = new FormData();
+        formData.append('userId', id);
+        formData.append('userEmail', email);
+        formData.append('body', body);
+        formData.append('type', type);
+        formData.append('title', title);
+        formData.append('latitude', currentLocation!.lat.toString());
+        formData.append('longitude', currentLocation!.lng.toString());
+        if (image) {
+          formData.append('file', image);
+        }
+
+        const response = await axios.post<Report>('/reports', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (type === 'Point of Interest') {
+          user.addBadge('Tour Guide', 1);
+        } else {
+          user.addBadge('Safety Sentinel', 1);
+        }
+
+        setReports([...reports, response.data]);
+        setBody('');
+        setType('');
+        setImage(null);
+        setOpen(false);
+      } catch (error: any) {
+        console.error(error.message);
+        setError(error.message);
       }
-      console.log(formData);
-      const response = await axios.post<Report>('/reports', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      if (type === 'Point of Interest') {
-        // let currentTierPOI = 0;
-        // for (let i = 0; i < user.userBadges.length; i++) {
-        //   if (user.userBadges[i].name === 'Tour Guide') {
-        //     currentTierPOI = user.userBadges[i].tier;
-        //     break;
-        //   }
-        // }
-        // if (currentTierPOI !== 0) {
-        //   user.updateAchievements('Tour Guide', currentTierPOI, 1);
-        // } else {
-        //   user.updateAchievements('Tour Guide', 1, 1);
-        // }
-        user.addBadge('Tour Guide', 1);
-      } else {
-        // let currentTierHazard = 0;
-        // for (let i = 0; i < user.userBadges.length; i++) {
-        //   if (user.userBadges[i].name === 'Safety Sentinel') {
-        //     currentTierHazard = user.userBadges[i].tier;
-        //     break;
-        //   }
-        //   if (currentTierHazard !== 0) {
-        //     user.updateAchievements('Safety Sentinel', currentTierHazard, 1);
-        //   } else {
-        //     user.updateAchievements('Safety Sentinel', 1, 1);
-        //   }
-        // }
-        user.addBadge('Safety Sentinel', 1);
-      }
-      setReports([...reports, response.data]);
-      setBody('');
-      setType('');
-      setImage(null);
-      setOpen(false);
-    } catch (error: any) {
-      console.error(error.message);
-      setError(error.message);
     }
   };
 
-  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
-    console.log(user);
-
-    let interval: any | undefined;
-    if (navigator.geolocation) {
-      interval = setInterval(() => {
-        if (!navigator.geolocation) {
-          setError('Geolocation is not supported by this browser.');
-          clearInterval(interval!);
-          return;
-        }
-        var geoOps = {
-          enableHighAccuracy: false,
-          timeout: 10000,
-        };
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentLocation({ lat: latitude, lng: longitude });
-            clearInterval(interval!);
-            interval = null;
-          },
-          (error) => {
-            setError(error.message);
-          },
-          geoOps
-        );
-      }, 1000);
-    } else {
-      setError('Geolocation is not supported by this browser.');
+    if (geoLocation) {
+      setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
+  }, [geoLocation]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ lat: latitude, lng: longitude });
+      },
+      (error) => {
+        setError(error.message);
       }
-    };
+    );
   }, []);
 
   return (
@@ -175,8 +133,6 @@ const CreateReport: React.FC = () => {
       <Dialog open={open} onClose={handleClose}>
         <div id='make-report-container'>
           <form onSubmit={handleSubmit}>
-            {/* <Grid container direction='column' spacing={2} sx={{ justifyContent: 'space-evenly' }}> */}
-            {/* <Grid item> */}
             <ToggleButtonGroup
               value={type}
               onChange={handleTypeText}
@@ -188,6 +144,8 @@ const CreateReport: React.FC = () => {
                 justifyContent: 'center',
                 width: '100%',
               }}
+
+
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
                 Hazard
