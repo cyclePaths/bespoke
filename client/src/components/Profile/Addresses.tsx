@@ -74,8 +74,8 @@ const Addresses = ({
   saveHome,
 }: Props) => {
   const [place, setPlace] = useState('');
-  const [open, setOpen] = React.useState(false);
-  const [alertType, setAlertType] = useState<'success' | 'warning' | null>(
+  const [openAddress, setOpenAddress] = React.useState(false);
+  const [alertTypeAddress, setAlertTypeAddress] = useState<'success' | 'warning' | null>(
     null
   );
 
@@ -117,7 +117,7 @@ const Addresses = ({
       .then(({ data }) => {
         if (data.homeAddress === null) {
           setHomeAddress('Save a home address to find a quick route home.');
-          setAlertType('warning');
+          setAlertTypeAddress('warning');
           handleAlertClick();
         } else {
           const home = data.homeAddress;
@@ -129,7 +129,7 @@ const Addresses = ({
   }, [homeAddress]);
 
   const handleAlertClick = () => {
-    setOpen(true);
+    setOpenAddress(true);
   };
 
   const handleClose = (
@@ -140,7 +140,7 @@ const Addresses = ({
       return;
     }
 
-    setOpen(false);
+    setOpenAddress(false);
   };
 
   return (
@@ -217,7 +217,7 @@ const Addresses = ({
                       color='success'
                       onClick={() => {
                         saveHome();
-                        setAlertType('success');
+                        setAlertTypeAddress('success');
                         handleAlertClick();
                       }}
                     >
@@ -231,9 +231,9 @@ const Addresses = ({
         </Box>
       </div>
       <div className='custom-snackbar-addresses'>
-        {alertType === 'success' && (
+        {alertTypeAddress === 'success' && (
           <Snackbar
-            open={open}
+            open={openAddress}
             autoHideDuration={5000}
             onClose={handleClose}
             // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -248,9 +248,9 @@ const Addresses = ({
             </Alert>
           </Snackbar>
         )}
-        {alertType === 'warning' && (
+        {alertTypeAddress === 'warning' && (
           <Snackbar
-            open={open}
+            open={openAddress}
             autoHideDuration={5000}
             onClose={handleClose}
             // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -258,7 +258,7 @@ const Addresses = ({
           >
             <Alert
               onClose={handleClose}
-              severity='error'
+              severity="warning"
               sx={{ width: '100%' }}
             >
               Set an address so you can find your way home, wherever you are!
