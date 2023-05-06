@@ -117,7 +117,7 @@ const SetWeight = (props: WeightTabProps) => {
         autoComplete='off'
       >
         <div>
-          <Typography className='current-weight'>{weightMessage}</Typography>
+          <h4 className='current-weight'>{weightMessage}</h4>
         </div>
         <div className='weight-input'>
           <TextField
