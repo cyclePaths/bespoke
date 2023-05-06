@@ -346,6 +346,9 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
       where: {
         id: id,
       },
+      select: {
+        homeAddress: true,
+      }
     });
     res.status(200).send(address);
   } catch (err) {

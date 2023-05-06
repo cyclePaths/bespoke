@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-// import PlacesAutocomplete from 'react-places-autocomplete';
+import React, { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import {
@@ -8,6 +8,19 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+});
 
 // Define styles for the autocomplete input box and suggestion list
 const AutocompleteWrapper = styled.div`
@@ -51,8 +64,6 @@ interface Props {
   saveHome: () => void;
 }
 
-
-
 const Addresses = ({
   address,
   setAddress,
@@ -63,6 +74,10 @@ const Addresses = ({
   saveHome,
 }: Props) => {
   const [place, setPlace] = useState('');
+  const [open, setOpen] = React.useState(false);
+  const [alertType, setAlertType] = useState<'success' | 'warning' | null>(
+    null
+  );
 
   const handlePlaceSelect = (selectedPlace: string) => {
     setPlace(selectedPlace);
@@ -73,76 +88,185 @@ const Addresses = ({
     setHomeAddress(event.target.value);
   };
 
-
-
   // setting state on change
-  const handleChange = useCallback(address => {
+  const handleChange = useCallback((address) => {
     setAddress(address);
-
   }, []);
 
-    //setting state on select of address. This also clears the input box and removes focus
-    const handleSelect = useCallback(async (address) => {
-      try {
-        const results = await geocodeByAddress(address);
-        const latLng = await getLatLng(results[0]);
-        setSelectedAddress(address);
-     setAddress('');
-        const input = document.getElementById('address-input');
-        if (input instanceof HTMLInputElement) {
-          input.blur();
-        }
-      } catch (err) {
-        console.log('Error', err);
+  //setting state on select of address. This also clears the input box and removes focus
+  const handleSelect = useCallback(async (address) => {
+    try {
+      const results = await geocodeByAddress(address);
+      const latLng = await getLatLng(results[0]);
+      setSelectedAddress(address);
+      setAddress('');
+      // setAlertType('success');
+      // handleAlertClick();
+      const input = document.getElementById('address-input');
+      if (input instanceof HTMLInputElement) {
+        input.blur();
       }
-    }, []);
-    return (
-<div>
-  <div>{homeAddress}</div>
-    <PlacesAutocomplete
-      value={address}
-      onChange={handleChange}
-      onSelect={handleSelect}
-    >
-      {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <div id='address'
-        className='address'>
-          <input id='address-input'
+    } catch (err) {
+      console.log('Error', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get('/profile/address')
+      .then(({ data }) => {
+        if (data.homeAddress === null) {
+          setHomeAddress('Save a home address to find a quick route home.');
+          setAlertType('warning');
+          handleAlertClick();
+        } else {
+          const home = data.homeAddress;
+          console.log('Address', data.homeAddress);
+          setHomeAddress(`Your home is ${home}`);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [homeAddress]);
+
+  const handleAlertClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <div className='setAddress'>
+        <Box
+          component='form'
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete='off'
+        >
+          <div className='displayedAddress'>{homeAddress}</div>
+          <PlacesAutocomplete
+            value={address}
+            onChange={handleChange}
+            onSelect={handleSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div id='address' className='address'>
+                <TextField
+                  id='address-input'
+                  type='search'
+                  variant='standard'
+                  {...getInputProps({
+                    placeholder: 'Search Places ...',
+                    className: 'location-search-input',
+                  })}
+                />
+
+                {/* <input id='address-input'
             {...getInputProps({
               placeholder: 'Search Places ...',
               className: 'location-search-input',
             })}
-          />
-          <div className="autocomplete-dropdown-container">
-            {loading && <div>Loading...</div>}
-            {suggestions.map(suggestion => {
-              const className = suggestion.active
-                ? 'suggestion-item--active'
-                : 'suggestion-item';
-              // inline style for demonstration purpose
-              const style = suggestion.active
-                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                : { backgroundColor: '#ffffff', cursor: 'pointer' };
-              return (
-                <div
-                  {...getSuggestionItemProps(suggestion, {
-                    className,
-                    style,
+          /> */}
+                <div className='autocomplete-dropdown-container'>
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const className = suggestion.active
+                      ? 'suggestion-item--active'
+                      : 'suggestion-item';
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? { backgroundColor: '#b01e1e', cursor: 'pointer' }
+                      : { backgroundColor: '#21a136', cursor: 'pointer' };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style,
+                        })}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
                   })}
-                >
-                  <span>{suggestion.description}</span>
+                  <div>{selectedAddress}</div>
+
+                  <Stack direction='row' spacing={5}>
+                    <Button
+                      className='saveHome'
+                      variant='contained'
+                      color='success'
+                      onClick={() => {
+                        saveHome();
+                        setAlertType('success');
+                        handleAlertClick();
+                      }}
+                    >
+                      Set Home
+                    </Button>
+                  </Stack>
                 </div>
-              );
-            })}
-            <div>{selectedAddress}</div>
-               <div>
-      <button type='button' style={{marginTop: '10px'}} onClick={() => saveHome()}>Set Home</button>
-    </div>
-          </div>
-        </div>
-      )}
-    </PlacesAutocomplete>
-    </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
+        </Box>
+      </div>
+      <div className='custom-snackbar-addresses'>
+        {alertType === 'success' && (
+          <Snackbar
+            open={open}
+            autoHideDuration={5000}
+            onClose={handleClose}
+            // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            sx={{ bottom: '150px' }}
+          >
+            <Alert
+              onClose={handleClose}
+              severity='success'
+              sx={{ width: '100vw' }}
+            >
+              Home address successfully updated!
+            </Alert>
+          </Snackbar>
+        )}
+        {alertType === 'warning' && (
+          <Snackbar
+            open={open}
+            autoHideDuration={5000}
+            onClose={handleClose}
+            // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            sx={{ bottom: '150px' }}
+          >
+            <Alert
+              onClose={handleClose}
+              severity='error'
+              sx={{ width: '100%' }}
+            >
+              Set an address so you can find your way home, wherever you are!
+            </Alert>
+          </Snackbar>
+        )}
+      </div>
+    </>
   );
 };
 
