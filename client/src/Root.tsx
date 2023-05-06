@@ -590,7 +590,7 @@ const Root = () => {
     findContext();
     getBadges();
     getSelectedBadge();
-  }, [geoLocation]);
+  }, []);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {

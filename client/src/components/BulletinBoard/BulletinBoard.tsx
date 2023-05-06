@@ -62,7 +62,7 @@ const BulletinBoard = () => {
 
   return (
     <BandAid>
-      <Card style={{ backgroundColor: '#5555556e', borderRadius: '5px' }}>
+      <Card style={{ backgroundColor: 'rgb(133, 211, 255)', borderRadius: '5px' }}>
         <EquipmentPool />
         <CreateBulletin />
         {bulletins.map((bulletin, i) => (

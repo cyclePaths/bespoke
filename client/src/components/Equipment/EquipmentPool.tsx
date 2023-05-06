@@ -31,7 +31,7 @@ const EquipmentPool = () => {
 
   return (
     <div>
-      <Card onClick={handleEquipmentPoolClick} style={{ backgroundColor: '#87BBDC', borderRadius: '5px'}}><div><b>Expand Parts Exchange:</b>
+      <Card onClick={handleEquipmentPoolClick} style={{ backgroundColor: 'rgb(115, 216, 139)', borderRadius: '5px'}}><div><b>View Parts Exchange:</b>
       {expansion && equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
       </div>
       </Card>
