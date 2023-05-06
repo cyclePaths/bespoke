@@ -181,8 +181,8 @@ const NavBarTop = styled.span`
 `;
 
 const BandAid = styled.div`
-  padding-top: 6.6vh;
-  padding-bottom: 6.6vh;
+  padding-top: 6.4vh;
+  padding-bottom: 2vh;
 `;
 
 const AchievementBadgeByName = styled.img`

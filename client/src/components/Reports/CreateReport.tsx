@@ -144,8 +144,6 @@ const CreateReport: React.FC = () => {
                 justifyContent: 'center',
                 width: '100%',
               }}
-
-
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
                 Hazard
