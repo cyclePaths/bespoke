@@ -338,6 +338,7 @@ The code above is for the scroll wheel
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 87vh;
 }
 
 @media screen {
