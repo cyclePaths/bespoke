@@ -22,6 +22,8 @@ import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import LeaderBoard from './components/LeaderBoard/LeaderBoard';
 import { Prisma } from '@prisma/client';
+import ReportsList from './components/Reports/ReportsList';
+import { toast } from 'react-toastify';
 
 export interface CurrentWeather {
   temperature: number;
@@ -292,11 +294,13 @@ const Root = () => {
       weatherIcon = weatherIcons[timeOfDay].snow;
     } else if (weather === 'Thunderstorm') {
       if (chanceOfRain >= 50) {
-        if (rainfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        } else if (snowfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        }
+        //I noticed the below logic doesn't really work sometimes, probably b/c rainfall/snowfall is based on the previous hour
+        // if (rainfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
+        // } else if (snowfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
+        // }
+        weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
       } else {
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
       }
@@ -402,11 +406,14 @@ const Root = () => {
     };
     axios
       .post('/badges/tier', config)
-      .then(() => {
+      .then(({ data }) => {
+        if (data.tierUp) {
+          toast(`You have just achieved tier ${data.tier} on ${badgeName}!`);
+        }
         getBadges(); //update allBadges and badgesOnUser with new DB info
       })
       .catch((err) =>
-        console.error('there was an error when checking/updating tiers')
+        console.error('there was an error when checking/updating tiers: ', err)
       );
   };
 
@@ -436,6 +443,11 @@ const Root = () => {
           badgeId: badgeId,
         })
         .then(() => {
+          if (tier) {
+            toast(`New Achievement Earned: ${badgeName} Tier ${tier}!`);
+          } else {
+            toast(`New Achievement Earned: ${badgeName}!`);
+          }
           getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
@@ -444,6 +456,8 @@ const Root = () => {
             err
           )
         );
+    } else {
+      console.error(`User has already earned ${badgeName}!`);
     }
   };
 
@@ -478,6 +492,39 @@ const Root = () => {
           err
         )
       );
+  };
+
+  //if only a badgeName is passed in, will add badge to user
+  //if badgeName and change are passed in, will add the badge (if not already earned) and update the counter on the badge by the value of change (if not 0)
+  //If counter is updating, tier should also be passed in - function will check to see if tier should be updated in that case and will update if appropriate
+  const updateAchievements = async (
+    badgeName,
+    tier = undefined,
+    change = 0
+  ) => {
+    try {
+      if (!badgeName) {
+        console.error('You need to pass in a badge name!');
+        return;
+      } else {
+        await addBadge(badgeName, tier); //won't fire if badge is already on user
+      }
+    } catch (err) {
+      console.error(`was not able to add ${badgeName} to user!`);
+    }
+    try {
+      if (change !== 0) {
+        await updateBadgeCounter(badgeName, tier, change);
+        if (tier) {
+          await tierCheck(badgeName, tier);
+        }
+      }
+    } catch (err) {
+      console.error(
+        'an error has occurred while attempting to update the database with achievement related info',
+        err
+      );
+    }
   };
 
   const findContext = () => {
@@ -545,7 +592,9 @@ const Root = () => {
   }, geoLocation? [] : [geoLocation]);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {}, [userBadges, allBadges]);
+  useEffect(() => {
+    console.log('use effect watching user/allBadges has been called');
+  }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
   useEffect(() => {
@@ -623,6 +672,7 @@ const Root = () => {
           updateBadgeCounter,
           addBadge,
           tierCheck,
+          updateAchievements,
         }}
       >
         <BrowserRouter>

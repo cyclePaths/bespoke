@@ -306,6 +306,10 @@ export const badgeInfo = [
     description: 'You have made too many downvoted reports!',
   },
   {
+    name: 'Gearhead',
+    description: 'Post parts to the Parts Exchange',
+  },
+  {
     name: 'Lean Legend',
     description: 'Burn the most calories among all Bespoke bikers',
   },
@@ -332,7 +336,7 @@ export const badgeInfo = [
 ];
 
 export const standardTiers = {
-  1: 5,
+  1: 1,
   2: 25,
   3: 50,
 };
