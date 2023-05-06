@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UserContext } from '../../Root';
 import { Button } from '@mui/material'
 import EquipmentPopup from './EquipmentPopup'
+import ThemeProvider from '@mui/material';
 
 const AddEquipment = () => {
   const context = useContext(UserContext)
@@ -15,12 +16,12 @@ const AddEquipment = () => {
   return (
   <div>
     <Button style={{backgroundColor: '#17332c', marginTop: '5px', maxHeight: '40px'}} onClick={() => setOpenEquipmentEntry(true)}>
-        <h5>Add Parts</h5>
+        <h5 style={{color: 'rgb(133, 211, 255)'}}>Add Parts</h5>
     </Button>
     <EquipmentPopup openEquipmentEntry={openEquipmentEntry} setOpenEquipmentEntry={setOpenEquipmentEntry}>
     <div style={{textAlign: 'center'}}>
     <Button style={{backgroundColor: '#17332c', marginTop: '5px'}}
-              onClick={() => exitPopup()}>Close
+              onClick={() => exitPopup()}><div style={{color:'rgb(133, 211, 255)'}}>Close</div>
     </Button>
     </div>
     </EquipmentPopup>
