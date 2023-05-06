@@ -89,6 +89,35 @@ const CreateReport: React.FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      if (type === 'Point of Interest') {
+        // let currentTierPOI = 0;
+        // for (let i = 0; i < user.userBadges.length; i++) {
+        //   if (user.userBadges[i].name === 'Tour Guide') {
+        //     currentTierPOI = user.userBadges[i].tier;
+        //     break;
+        //   }
+        // }
+        // if (currentTierPOI !== 0) {
+        //   user.updateAchievements('Tour Guide', currentTierPOI, 1);
+        // } else {
+        //   user.updateAchievements('Tour Guide', 1, 1);
+        // }
+        user.addBadge('Tour Guide', 1);
+      } else {
+        // let currentTierHazard = 0;
+        // for (let i = 0; i < user.userBadges.length; i++) {
+        //   if (user.userBadges[i].name === 'Safety Sentinel') {
+        //     currentTierHazard = user.userBadges[i].tier;
+        //     break;
+        //   }
+        //   if (currentTierHazard !== 0) {
+        //     user.updateAchievements('Safety Sentinel', currentTierHazard, 1);
+        //   } else {
+        //     user.updateAchievements('Safety Sentinel', 1, 1);
+        //   }
+        // }
+        user.addBadge('Safety Sentinel', 1);
+      }
       setReports([...reports, response.data]);
       setBody('');
       setType('');
