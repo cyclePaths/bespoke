@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+#sign-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 35%;
+  left: 33.7%;
+}
+
 .centered-header {
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -345,4 +354,11 @@ The code above is for the scroll wheel
   align-items: center;
   margin-right: 5px;
   margin-left: 5px;
+}
+
+
+/* This is the disable some of the google watermarks */
+
+.gm-style-cc {
+  display: none;
 }

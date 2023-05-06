@@ -21,6 +21,10 @@ export interface MapOptionsProp {
     disableDefaultUI: boolean;
     zoomControl: boolean;
   };
+  homeCoordinates: LatLngLiteral;
+  setHomeCoordinates: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >;
 }
 
 const options = {
@@ -95,13 +99,24 @@ export interface SavePopoutProps {
   openPopup: boolean;
   setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+interface RouteMProps {
+  homeCoordinates: LatLngLiteral;
+  setHomeCoordinates: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >;
+}
 ///////////////////////////////////////////// ->
 
-const RouteM: React.FC = () => {
+const RouteM = ({ homeCoordinates, setHomeCoordinates }: RouteMProps) => {
   return (
     <BandAid>
       <RouteCreatorComponent>
-        <Map options={options} />
+        <Map
+          options={options}
+          homeCoordinates={homeCoordinates}
+          setHomeCoordinates={setHomeCoordinates}
+        />
       </RouteCreatorComponent>
     </BandAid>
   );

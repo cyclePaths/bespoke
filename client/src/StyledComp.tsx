@@ -121,6 +121,21 @@ const ForecastRowContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+// Specifically for the home page //
+const ForecastRowContainerforHome = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  width: 52.7%;
+`;
+
+const StatsDivs = styled.div`
+  background-color: white;
+  margin: 5px;
+  /* box-shadow: 0px 1px 3px #121212; */
+  border-radius: 2px;
+`;
+
 const ForecastEntry = styled.div`
   border-style: solid;
   justify-content: center;
@@ -218,6 +233,21 @@ const AchievementBadgeHolder = styled.span`
   display: none;
 `;
 
+// This is the start of the home page //
+
+const HomePageCompWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const GoHomeIcon = styled.img`
+  width: 77%;
+  position: absolute;
+  top: 59%;
+`;
+
 const ToastBuffer = styled.div`
   padding-top: 30px;
 `;
@@ -248,5 +278,9 @@ export {
   NavBarTop,
   BandAid,
   SaveAlert,
+  HomePageCompWrapper,
+  GoHomeIcon,
+  ForecastRowContainerforHome,
+  StatsDivs,
   ToastBuffer,
 };

@@ -28,9 +28,7 @@ const App = () => {
           theme='dark'
         />
       </ToastBuffer>
-      <div>
-        {/* <Stopwatch stopwatchState={stopwatchState} setStopwatchState={setStopwatchState} /> */}
-      </div>
+      <div></div>
     </div>
   );
 };
