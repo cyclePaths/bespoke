@@ -71,7 +71,6 @@ const CreateReport: React.FC = () => {
     event.preventDefault();
     if (currentLocation) {
       try {
-        // console.log(user);
         const { email, id } = user;
 
         const formData = new FormData();
@@ -85,12 +84,19 @@ const CreateReport: React.FC = () => {
         if (image) {
           formData.append('file', image);
         }
-        // console.log(formData);
+
         const response = await axios.post<Report>('/reports', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
+
+        if (type === 'Point of Interest') {
+          user.addBadge('Tour Guide', 1);
+        } else {
+          user.addBadge('Safety Sentinel', 1);
+        }
+
         setReports([...reports, response.data]);
         setBody('');
         setType('');
@@ -100,64 +106,15 @@ const CreateReport: React.FC = () => {
         console.error(error.message);
         setError(error.message);
       }
-      console.log(formData);
-      const response = await axios.post<Report>('/reports', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      if (type === 'Point of Interest') {
-        // let currentTierPOI = 0;
-        // for (let i = 0; i < user.userBadges.length; i++) {
-        //   if (user.userBadges[i].name === 'Tour Guide') {
-        //     currentTierPOI = user.userBadges[i].tier;
-        //     break;
-        //   }
-        // }
-        // if (currentTierPOI !== 0) {
-        //   user.updateAchievements('Tour Guide', currentTierPOI, 1);
-        // } else {
-        //   user.updateAchievements('Tour Guide', 1, 1);
-        // }
-        user.addBadge('Tour Guide', 1);
-      } else {
-        // let currentTierHazard = 0;
-        // for (let i = 0; i < user.userBadges.length; i++) {
-        //   if (user.userBadges[i].name === 'Safety Sentinel') {
-        //     currentTierHazard = user.userBadges[i].tier;
-        //     break;
-        //   }
-        //   if (currentTierHazard !== 0) {
-        //     user.updateAchievements('Safety Sentinel', currentTierHazard, 1);
-        //   } else {
-        //     user.updateAchievements('Safety Sentinel', 1, 1);
-        //   }
-        // }
-        user.addBadge('Safety Sentinel', 1);
-      }
-      setReports([...reports, response.data]);
-      setBody('');
-      setType('');
-      setImage(null);
-      setOpen(false);
-    } catch (error: any) {
-      console.error(error.message);
-      setError(error.message);
     }
   };
+
   useEffect(() => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
   }, [geoLocation]);
 
-  // useEffect(() => {
-  //   if (geoLocation) {
-  //     setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
-  //   }
-  // }, currentLocation? [] : [geoLocation]);
-
-  //interval used to have its type set to: NodeJS.Timeout | null
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -176,8 +133,6 @@ const CreateReport: React.FC = () => {
       <Dialog open={open} onClose={handleClose}>
         <div id='make-report-container'>
           <form onSubmit={handleSubmit}>
-            {/* <Grid container direction='column' spacing={2} sx={{ justifyContent: 'space-evenly' }}> */}
-            {/* <Grid item> */}
             <ToggleButtonGroup
               value={type}
               onChange={handleTypeText}
@@ -189,6 +144,8 @@ const CreateReport: React.FC = () => {
                 justifyContent: 'center',
                 width: '100%',
               }}
+
+
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
                 Hazard
