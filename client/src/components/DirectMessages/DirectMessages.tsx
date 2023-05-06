@@ -238,7 +238,7 @@ function DirectMessages() {
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
       ></SearchUsers>
-      <Conversations />
+      {/* <Conversations /> */}
       {isReceiverSelected && (
         <Paper className={classes.root}>
           <div className={classes.messagesContainer} ref={messagesContainerRef}>
