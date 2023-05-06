@@ -565,7 +565,7 @@ const Root = () => {
 
 
   const updateUserLocation = (geoObj: geoLocation) => {
-    const id = user!.id;
+    const id = user?.id;
     const updatedData = {
       location_lat: geoObj.lat,
       location_lng: geoObj.lng,
@@ -590,7 +590,7 @@ const Root = () => {
     findContext();
     getBadges();
     getSelectedBadge();
-  }, geoLocation? [] : [geoLocation]);
+  }, []);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {
