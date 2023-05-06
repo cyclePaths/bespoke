@@ -55,6 +55,11 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
   const [showScrollers, setShowScrollers] = useState(false);
   const [tabVisibility, setTabVisibility] = useState([false, false, false, false]);
   const [stats, setStats] = useState([]);
+  // const [open, setOpen] = useState(false);
+  // const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>
+  // const [alertTypeAddress, setAlertTypeAddress] = useState<'success' | 'warning' | null>(
+  //   null
+  // );
 
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -143,7 +148,14 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
       <div hidden={!tabVisibility[1]} style={{ width: "100%" }}>
         <div style={{ width: "100%" }}>
           {/* {`My current weight is ${weight} lbs`} */}
-        <SetWeight weight={weight} onWeightChange={handleWeightChange} />
+        <SetWeight
+        weight={weight}
+        onWeightChange={handleWeightChange}
+        // open={open}
+        // setOpen={setOpen}
+        // alertTypeWeight={alertTypeWeight}
+        // setAlertTypeWeight={setAlertTypeWeight}
+        />
         </div>
       </div>
       <div hidden={!tabVisibility[2]} />

@@ -72,6 +72,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
       padding: theme.spacing(1),
       maxHeight: '560px',
+      zIndex: 0,
     },
     message: {
       color: 'white',
@@ -132,11 +133,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       right: 0,
       width: '100%',
       marginTop: theme.spacing(12),
+      zIndex: 1000,
     },
   }),
 );
 
 export const conversationStyle = makeStyles((theme: Theme) => ({
 
-  
+
 }))
