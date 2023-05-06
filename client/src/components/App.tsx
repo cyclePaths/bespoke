@@ -9,25 +9,12 @@ import { ToastBuffer } from '../StyledComp';
 
 //We will eventually use Link to allow us to create clickable routing
 const App = () => {
-  let messageToSend = 'test message';
-
-  const sendToast = (message: string) => {
-    toast(message);
-  };
-
   return (
     <div>
       <div>
         <Navbar />
       </div>
       <ToastBuffer>
-        <button
-          onClick={() => {
-            sendToast(messageToSend);
-          }}
-        >
-          Click For Toast
-        </button>
         <ToastContainer
           position='top-center'
           autoClose={5000}

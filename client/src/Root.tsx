@@ -442,7 +442,11 @@ const Root = () => {
           badgeId: badgeId,
         })
         .then(() => {
-          toast(`New Achievement Earned: ${badgeName}!`);
+          if (tier) {
+            toast(`New Achievement Earned: ${badgeName} Tier ${tier}!`);
+          } else {
+            toast(`New Achievement Earned: ${badgeName}!`);
+          }
           getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
@@ -451,6 +455,8 @@ const Root = () => {
             err
           )
         );
+    } else {
+      console.error(`User has already earned ${badgeName}!`);
     }
   };
 
@@ -495,11 +501,15 @@ const Root = () => {
     tier = undefined,
     change = 0
   ) => {
-    if (!badgeName) {
-      console.error('You need to pass in a badge name!');
-      return;
-    } else {
-      await addBadge(badgeName); //won't fire if badge is already on user
+    try {
+      if (!badgeName) {
+        console.error('You need to pass in a badge name!');
+        return;
+      } else {
+        await addBadge(badgeName, tier); //won't fire if badge is already on user
+      }
+    } catch (err) {
+      console.error(`was not able to add ${badgeName} to user!`);
     }
     try {
       if (change !== 0) {
@@ -596,7 +606,9 @@ const Root = () => {
   }, []);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {}, [userBadges, allBadges]);
+  useEffect(() => {
+    console.log('use effect watching user/allBadges has been called');
+  }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
   useEffect(() => {

@@ -336,7 +336,7 @@ export const badgeInfo = [
 ];
 
 export const standardTiers = {
-  1: 5,
+  1: 1,
   2: 25,
   3: 50,
 };

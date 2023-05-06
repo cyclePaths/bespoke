@@ -252,12 +252,16 @@ badgeRouter.patch('/counter', async (req: Request, res: Response) => {
       }
     } else {
       let currentValue = badgeOnUser.counter;
+      if (currentValue === null || currentValue === undefined) {
+        currentValue = 0;
+      }
+      const newValue = currentValue + change;
       const updateCounter = await prisma.badgesOnUsers.update({
         where: {
           userId_badgeId: { userId, badgeId },
         },
         data: {
-          counter: currentValue! + change,
+          counter: newValue,
         },
       });
       res.status(200).send(updateCounter);
