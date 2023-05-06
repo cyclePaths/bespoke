@@ -24,7 +24,6 @@ interface NewMessage {
   fromMe: boolean;
 }
 
-
 dmRouter.get(`/findUsers`, async (req: Request, res: Response) => {
   // console.log(req.body);
   try {
@@ -69,23 +68,19 @@ dmRouter.get('/conversations', async (req: Request, res: Response) => {
 
     const conversations = await prisma.directMessages.findMany({
       where: {
-        OR: [
-          { senderId: id },
-          { receiverId: id },
-        ],
+        OR: [{ senderId: id }, { receiverId: id }],
       },
       include: {
         sender: true,
         receiver: true,
-      }
-    })
+      },
+    });
     res.status(200).send(conversations);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
-})
-
+});
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
   // console.log(req.user);
@@ -106,19 +101,9 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
         fromMe: fromMe,
       },
     });
-
-    console.error('New message created:', newMessage);
-
-      // // Emit a 'message' event to all connected clients except the sender
-      // const socket = Array.from(io.sockets.sockets.values()).find(
-      //   (socket: CustomSocket) => socket.request.user?.id === Number(receiverId)
-      // );
-      // if (socket) {
-      //   socket.emit('message', newMessage);
-      // }
-      res.sendStatus(201);
+    res.status(201).send(newMessage);
   } catch (err) {
-    // console.log('failed', err)
+    console.error('failed', err);
     res.sendStatus(500);
   }
 });

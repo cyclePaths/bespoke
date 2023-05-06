@@ -47,7 +47,11 @@ import { report } from 'process';
 
 // Sets the map to not be google styled //
 
-const Map = ({ options }: MapOptionsProp) => {
+const Map = ({
+  options,
+  homeCoordinates,
+  setHomeCoordinates,
+}: MapOptionsProp) => {
   /////////////// CONTEXT AND STATE //////////////////
   // Pull user and geoLocation from context //
   const { user, geoLocation } = useContext(UserContext);
@@ -157,6 +161,7 @@ const Map = ({ options }: MapOptionsProp) => {
           name,
           category,
           privacy,
+          userId: user.id,
         })
         .then(() => {
           setSaveMessage(true);
@@ -241,18 +246,18 @@ const Map = ({ options }: MapOptionsProp) => {
         <div>
           <p>Duration: {routeInfo.duration}</p>
           <p>Distance: {routeInfo.distance}</p>
-          <p>Google Warning: {routeInfo.warnings[0]}</p>
           <p>
             Reports in Area:{' '}
             {reportsList.length > 0
               ? reportsList.map((report) =>
                   report.location_lat >= routeInfo.centerLat - 0.007 &&
                   report.location_lat <= routeInfo.centerLat + 0.007
-                    ? report.type
-                    : 'None'
+                    ? report.type + ', '
+                    : ''
                 )
               : 'None'}
           </p>
+          <p>Google Warning: {routeInfo.warnings[0]}</p>
         </div>
       </InfoWindow>
     );
@@ -346,6 +351,22 @@ const Map = ({ options }: MapOptionsProp) => {
     renderRouteInfo();
   }, [routeInfo]);
 
+  useEffect(() => {
+    if (homeCoordinates) {
+      setStartingPoint(geoLocation);
+      setDestination(homeCoordinates);
+      setHomeCoordinates(undefined);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (homeCoordinates === undefined) {
+      setTimeout(() => {
+        fetchDirections();
+      }, 1000);
+    }
+  }, [homeCoordinates]);
+
   return (
     <div className='container'>
       {saveMessage ? (
@@ -390,112 +411,95 @@ const Map = ({ options }: MapOptionsProp) => {
         )}
 
         {/* These are reports from the database that will appear on render of the screen. They are only in a certain distance from user */}
-        {reportsList.map(
-          (report, i) => {
-            switch (report.type) {
-              case 'Collision':
-                return (
-                  <Marker
-                    key={i}
-                    position={{
-                      lat: parseFloat(report.location_lat),
-                      lng: parseFloat(report.location_lng),
-                    }}
-                    onClick={(event) => {
-                      setSelected({
-                        lat: event.latLng!.lat(),
-                        lng: event.latLng!.lng(),
-                      });
-                    }}
-                    icon={Collision}
-                  />
-                );
-              case 'Theft Alert':
-                return (
-                  <Marker
-                    key={i}
-                    position={{
-                      lat: parseFloat(report.location_lat),
-                      lng: parseFloat(report.location_lng),
-                    }}
-                    onClick={(event) => {
-                      setSelected({
-                        lat: event.latLng!.lat(),
-                        lng: event.latLng!.lng(),
-                      });
-                    }}
-                    icon={Theft}
-                  />
-                );
-              case 'Point of Interest':
-                return (
-                  <Marker
-                    key={i}
-                    position={{
-                      lat: parseFloat(report.location_lat),
-                      lng: parseFloat(report.location_lng),
-                    }}
-                    onClick={(event) => {
-                      setSelected({
-                        lat: event.latLng!.lat(),
-                        lng: event.latLng!.lng(),
-                      });
-                    }}
-                    icon={POI}
-                  />
-                );
-              case 'Road Hazard':
-                return (
-                  <Marker
-                    key={i}
-                    position={{
-                      lat: parseFloat(report.location_lat),
-                      lng: parseFloat(report.location_lng),
-                    }}
-                    onClick={(event) => {
-                      setSelected({
-                        lat: event.latLng!.lat(),
-                        lng: event.latLng!.lng(),
-                      });
-                    }}
-                    icon={RoadHazard}
-                  />
-                );
-              default:
-                return (
-                  <Marker
-                    key={i}
-                    position={{
-                      lat: parseFloat(report.location_lat),
-                      lng: parseFloat(report.location_lng),
-                    }}
-                    onClick={(event) => {
-                      setSelected({
-                        lat: event.latLng!.lat(),
-                        lng: event.latLng!.lng(),
-                      });
-                    }}
-                    icon={Default}
-                  />
-                );
-            }
+        {reportsList.map((report, i) => {
+          switch (report.type) {
+            case 'Collision':
+              return (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(report.location_lat),
+                    lng: parseFloat(report.location_lng),
+                  }}
+                  onClick={(event) => {
+                    setSelected({
+                      lat: event.latLng!.lat(),
+                      lng: event.latLng!.lng(),
+                    });
+                  }}
+                  icon={Collision}
+                />
+              );
+            case 'Theft Alert':
+              return (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(report.location_lat),
+                    lng: parseFloat(report.location_lng),
+                  }}
+                  onClick={(event) => {
+                    setSelected({
+                      lat: event.latLng!.lat(),
+                      lng: event.latLng!.lng(),
+                    });
+                  }}
+                  icon={Theft}
+                />
+              );
+            case 'Point of Interest':
+              return (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(report.location_lat),
+                    lng: parseFloat(report.location_lng),
+                  }}
+                  onClick={(event) => {
+                    setSelected({
+                      lat: event.latLng!.lat(),
+                      lng: event.latLng!.lng(),
+                    });
+                  }}
+                  icon={POI}
+                />
+              );
+            case 'Road Hazard':
+              return (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(report.location_lat),
+                    lng: parseFloat(report.location_lng),
+                  }}
+                  onClick={(event) => {
+                    setSelected({
+                      lat: event.latLng!.lat(),
+                      lng: event.latLng!.lng(),
+                    });
+                  }}
+                  icon={RoadHazard}
+                />
+              );
+            default:
+              return (
+                <Marker
+                  key={i}
+                  position={{
+                    lat: parseFloat(report.location_lat),
+                    lng: parseFloat(report.location_lng),
+                  }}
+                  onClick={(event) => {
+                    setSelected({
+                      lat: event.latLng!.lat(),
+                      lng: event.latLng!.lng(),
+                    });
+                  }}
+                  icon={Default}
+                />
+              );
           }
-          // (
-          //   <Marker
-          //     key={i}
-          //     position={{
-          //       lat: parseFloat(report.location_lat),
-          //       lng: parseFloat(report.location_lng),
-          //     }}
-          //     onClick={(event) => {
-          //       setSelected({
-          //         lat: event.latLng!.lat(),
-          //         lng: event.latLng!.lng(),
-          //       });
-          //     }}
-          //   />
-          // )
-        )}
+        })}
 
         {/*  */}
         {startingPoint ? (

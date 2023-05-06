@@ -121,6 +121,21 @@ const ForecastRowContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+// Specifically for the home page //
+const ForecastRowContainerforHome = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  width: 52.7%;
+`;
+
+const StatsDivs = styled.div`
+  background-color: white;
+  margin: 5px;
+  /* box-shadow: 0px 1px 3px #121212; */
+  border-radius: 2px;
+`;
+
 const ForecastEntry = styled.div`
   border-style: solid;
   justify-content: center;
@@ -182,6 +197,20 @@ const AchievementBadgeTooltip = styled.span`
   text-align: center;
   position: absolute;
   z-index: 1;
+  width: 120px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 1s;
+`;
+
+const TooltipBox = styled.div`
+  width: 150px;
+  border: 10px solid green;
+  padding: 25px;
+  margin: 10px;
+  background-color: #ea960e;
 `;
 
 const AchievementBadge = styled.img`
@@ -196,11 +225,31 @@ const AchievementBadgeAndTooltipContainer = styled.div`
   display: inline-block;
   &:hover ${AchievementBadgeTooltip} {
     visibility: visible;
+    opacity: 1;
   }
 `;
 
 const AchievementBadgeHolder = styled.span`
   display: none;
+`;
+
+// This is the start of the home page //
+
+const HomePageCompWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const GoHomeIcon = styled.img`
+  width: 77%;
+  position: absolute;
+  top: 59%;
+`;
+
+const ToastBuffer = styled.div`
+  padding-top: 30px;
 `;
 
 export {
@@ -222,10 +271,16 @@ export {
   RouteList,
   AchievementBadgeByName,
   AchievementBadgeTooltip,
+  TooltipBox,
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
   SaveAlert,
+  HomePageCompWrapper,
+  GoHomeIcon,
+  ForecastRowContainerforHome,
+  StatsDivs,
+  ToastBuffer,
 };

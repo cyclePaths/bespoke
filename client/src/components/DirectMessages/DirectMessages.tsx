@@ -74,20 +74,8 @@ function DirectMessages() {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, senderId: 1, senderName: '', receiverId: 2, receiverName: '', text: 'Hello!', fromMe: false },
-    { id: 2, senderId: 2, senderName: '', receiverId: 1, receiverName: '', text: 'Hi there!', fromMe: true },
-    { id: 3, senderId: 1, senderName: '', receiverId: 2, receiverName: '', text: 'How are you?', fromMe: false },
-    {
-      id: 4,
-      senderId: 2,
-      senderName: '',
-      receiverId: 1,
-      receiverName: '',
-      text: "I'm good, thanks!",
-      fromMe: true,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [message, setMessage] = useState<Message>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly Users[]>([]);
@@ -135,8 +123,6 @@ function DirectMessages() {
 
     if (receiver) {
       setReceiverId(receiver.id);
-      // console.log(options);
-      // console.log(receiver);
     }
   }, [receiver]);
 
@@ -146,14 +132,17 @@ function DirectMessages() {
     // Store the Socket.IO client instance in the state variable
     setSocket(newSocket);
 
+    // Join the room for the current user and receiver
+    newSocket.emit('joinRoom', { userId, receiverId });
+
     // Listen for incoming 'message' events
-    newSocket.on('message', (newMessage: Message) => {
+    newSocket.on('message', (newMessage) => {
       // Add the new message to the messages array if it's from the targeted receiver
       if (
-        newMessage.senderId === receiverId ||
-        newMessage.receiverId === receiverId
+        newMessage.senderId === receiverId &&
+        newMessage.receiverId === userId
       ) {
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessage(newMessage);
       }
     });
 
@@ -161,41 +150,41 @@ function DirectMessages() {
     return () => {
       newSocket.disconnect();
     };
-  }, [receiverId]);
+  }, [userId, receiverId]);
 
+  useEffect(() => {
+    if (message) {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    }
+  }, [message]);
+
+  /// This loads the messages of the selected user you have ///
   const loadMessages = async () => {
     try {
       const thread = await axios.get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
       });
-      // console.log('Thread', thread);
       const { data } = thread;
-      // console.log('Big thread', thread);
-
-      data.forEach((message) => {
-        console.log(message.text);
-        // setMessageThread((pevMessages) => [...pevMessages, message.text] as Message[])
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
+      setMessages(data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  // console.log('check thread', messages);
   useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
     }
   }, [receiverId]);
 
+  /// End of Load Mounting ///
+
   const handleSendMessage = () => {
     if (!socket || !receiver) {
       return;
     }
-
-    const newMessage: Message = {
-      id: 0,
+    console.log(message);
+    const newMessage = {
       senderId: userId,
       senderName: name,
       receiverId: receiver?.id ?? 0,
@@ -205,18 +194,17 @@ function DirectMessages() {
     };
 
     // Emit a 'message' event to the server
-    // socketRef.current?.emit('message', newMessage);
-    socket?.emit('message', newMessage);
+    socket.emit('message', newMessage);
 
     axios
       .post('/dms/message', {
         message: newMessage,
       })
-      .then((response) => {
-        // console.log(response);
+      .then(({ data }) => {
+        setMessages((current) => [...current, data]);
       })
       .catch((err) => {
-        console.log("NOOOOO", err);
+        console.error('NOOOOO', err);
       });
 
     // setMessages([...messages, newMessage]);

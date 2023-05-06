@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, createContext } from 'react';
-import { Routes, Route, BrowserRouter, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, createContext } from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
@@ -14,15 +14,14 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
-import Stopwatch from './components/Profile/Stopwatch';
-import RouteM from './components/BikeRoutes/RouteM';
+import RouteM, { LatLngLiteral } from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import LeaderBoard from './components/LeaderBoard/LeaderBoard';
-import { Prisma } from '@prisma/client';
 import ReportsList from './components/Reports/ReportsList';
+import SignIn from './components/SignIn';
+import { toast } from 'react-toastify';
 
 export interface CurrentWeather {
   temperature: number;
@@ -95,6 +94,9 @@ export interface RootPropsToHome {
     rainfall: number,
     snowfall: number
   ) => string;
+  setHomeCoordinates: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | undefined>
+  >;
 }
 export interface StopwatchTime {
   hours: number;
@@ -204,6 +206,7 @@ const Root = () => {
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
+  const [homeCoordinates, setHomeCoordinates] = useState<LatLngLiteral>();
 
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
@@ -215,10 +218,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          // latitude: geoLocation.lat,
-          latitude: 29.9511,
-          // longitude: geoLocation.lng,
-          longitude: -90.0715,
+          latitude: geoLocation.lat,
+          longitude: geoLocation.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -294,11 +295,13 @@ const Root = () => {
       weatherIcon = weatherIcons[timeOfDay].snow;
     } else if (weather === 'Thunderstorm') {
       if (chanceOfRain >= 50) {
-        if (rainfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        } else if (snowfall > 0) {
-          weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        }
+        //I noticed the below logic doesn't really work sometimes, probably b/c rainfall/snowfall is based on the previous hour
+        // if (rainfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
+        // } else if (snowfall > 0) {
+        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
+        // }
+        weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
       } else {
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
       }
@@ -332,7 +335,7 @@ const Root = () => {
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
     axios
-    .get('badges/all-badges')
+      .get('badges/all-badges')
       .then(({ data }) => {
         setAllBadges(data.allBadges);
         //add descriptions to the Badge objects for use in Tooltips
@@ -357,7 +360,6 @@ const Root = () => {
           });
           setUserBadges(earnedBadges);
         }
-
       })
       .catch((err) => {
         console.error('Failed to get badges from database: ', err);
@@ -405,11 +407,14 @@ const Root = () => {
     };
     axios
       .post('/badges/tier', config)
-      .then(() => {
+      .then(({ data }) => {
+        if (data.tierUp) {
+          toast(`You have just achieved tier ${data.tier} on ${badgeName}!`);
+        }
         getBadges(); //update allBadges and badgesOnUser with new DB info
       })
       .catch((err) =>
-        console.error('there was an error when checking/updating tiers')
+        console.error('there was an error when checking/updating tiers: ', err)
       );
   };
 
@@ -439,6 +444,11 @@ const Root = () => {
           badgeId: badgeId,
         })
         .then(() => {
+          if (tier) {
+            toast(`New Achievement Earned: ${badgeName} Tier ${tier}!`);
+          } else {
+            toast(`New Achievement Earned: ${badgeName}!`);
+          }
           getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
@@ -447,6 +457,8 @@ const Root = () => {
             err
           )
         );
+    } else {
+      console.error(`User has already earned ${badgeName}!`);
     }
   };
 
@@ -481,6 +493,39 @@ const Root = () => {
           err
         )
       );
+  };
+
+  //if only a badgeName is passed in, will add badge to user
+  //if badgeName and change are passed in, will add the badge (if not already earned) and update the counter on the badge by the value of change (if not 0)
+  //If counter is updating, tier should also be passed in - function will check to see if tier should be updated in that case and will update if appropriate
+  const updateAchievements = async (
+    badgeName,
+    tier = undefined,
+    change = 0
+  ) => {
+    try {
+      if (!badgeName) {
+        console.error('You need to pass in a badge name!');
+        return;
+      } else {
+        await addBadge(badgeName, tier); //won't fire if badge is already on user
+      }
+    } catch (err) {
+      console.error(`was not able to add ${badgeName} to user!`);
+    }
+    try {
+      if (change !== 0) {
+        await updateBadgeCounter(badgeName, tier, change);
+        if (tier) {
+          await tierCheck(badgeName, tier);
+        }
+      }
+    } catch (err) {
+      console.error(
+        'an error has occurred while attempting to update the database with achievement related info',
+        err
+      );
+    }
   };
 
   const findContext = () => {
@@ -553,7 +598,7 @@ const Root = () => {
       updateUserLocation(geoLocation);
       getForecasts();
     }
-  }, []);
+  }, [geoLocation]);
 
   useEffect(() => {
     getLocation();
@@ -563,7 +608,9 @@ const Root = () => {
   }, []);
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
-  useEffect(() => {}, [userBadges, allBadges]);
+  useEffect(() => {
+    console.log('use effect watching user/allBadges has been called');
+  }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
   useEffect(() => {
@@ -626,11 +673,7 @@ const Root = () => {
   const reports = [];
 
   return (
-    //This <> tag and it's closing tag are an important part of wrapping the app for dark/light modes
-    // <>
-
     <div className={isDark ? 'dark' : 'light'}>
-      <UserContext.Provider value={user!}></UserContext.Provider>
       <UserContext.Provider
         value={{
           user,
@@ -642,6 +685,7 @@ const Root = () => {
           updateBadgeCounter,
           addBadge,
           tierCheck,
+          updateAchievements,
         }}
       >
         <BrowserRouter>
@@ -656,11 +700,20 @@ const Root = () => {
                     temperatureMeasurementUnit={temperatureMeasurementUnit}
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
                     prepareWeatherIcon={prepareWeatherIcon}
+                    setHomeCoordinates={setHomeCoordinates}
                   />
                 }
               />
               <Route path='bulletinBoard' element={<BulletinBoard />} />
-              <Route path='bikeRoutes' element={<RouteM />} />
+              <Route
+                path='bikeRoutes'
+                element={
+                  <RouteM
+                    homeCoordinates={homeCoordinates!}
+                    setHomeCoordinates={setHomeCoordinates}
+                  />
+                }
+              />
               <Route
                 path='weather'
                 element={
@@ -704,17 +757,14 @@ const Root = () => {
                 element={<ReportsList reports={reports} />}
               />
               <Route path='reportsMap' element={<ReportsMap />} />
-              {/* <Route path='stopwatch' element={<Stopwatch />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
             </Route>
+            <Route path='signIn' element={<SignIn />} />
           </Routes>
-          {/* <button onClick={handleToggleStyle}>{isDark ? 'Light Mode' : 'Dark Mode'}</button> */}
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-          {/* <Stopwatch /> */}
         </BrowserRouter>
       </UserContext.Provider>
     </div>
-    // </>
   );
 };
 
