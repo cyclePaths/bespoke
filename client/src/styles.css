@@ -185,12 +185,12 @@ The code below is for the scroll wheel
 
 .backButton {
   position: fixed;
-  left: 0;
+  margin-left: 10px;
 }
 
 .forwardButton {
   position: fixed;
-  right: 0;
+  margin-right: 10px;
 }
 
 .rideStatsButton {
@@ -316,6 +316,15 @@ The code below is for the scroll wheel
   margin: 5px;
   text-align: center;
   white-space: nowrap;
+}
+
+.error-success-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 100px;
+  transform: translate(-50%, -50%);
 }
 
 /*

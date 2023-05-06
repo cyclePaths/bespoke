@@ -5,9 +5,19 @@ import Root, { UserContext } from '../../Root';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+// import Alert from '@mui/material/Alert';
+// import AlertTitle from '@mui/material/AlertTitle';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+});
 
 const Scrollers = () => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
@@ -42,17 +52,23 @@ const Scrollers = () => {
   const [rideSpeed, setRideSpeed] = useState('');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
-  const [clickedHours, setClickedHours] = useState(false);
-  const [clickedMinutes, setClickedMinutes] = useState(false);
+  const [activityMessage, setActivityMessage] = useState('');
+  const [hoursMessage, setHoursMessage] = useState('');
+  const [minutesMessage, setMinutesMessage] = useState('');
   const [activityVisible, setActivityVisible] = useState(true);
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
   const [sliderStage, setSliderStage] = useState(0);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [show2ndErrorAlert, setShow2ndErrorAlert] = useState(false);
   const [weight, setWeight] = useState(0);
   const [user, setUser] = useState();
+  const [showStack, setShowStack] = useState(true);
 
   let rideSpeedValue = '';
+  let hoursValue = hours;
+  let minutesValue = minutes;
 
   const { workout, durationHours, durationMinutes } =
     exiledRedHeadedStepChildrenOptionGroups;
@@ -60,11 +76,19 @@ const Scrollers = () => {
   let totalTime = Number(hours) * 60 + Number(minutes);
 
   useEffect(() => {
-    if (clickedHours && clickedMinutes) {
-      totalTime = Number(hours) * 60 + Number(minutes);
-      console.log(totalTime);
+    if (hours[0] === '1' && hours[1] === '') {
+      hoursValue = '1';
+    } else {
+      hoursValue = hours.slice(0, -6);
     }
-  }, [clickedHours, clickedMinutes]);
+    if (minutes[0] === '1' && minutes[1] === '') {
+      minutesValue = '1';
+    } else {
+      minutesValue = minutes.slice(0, -7);
+    }
+
+    totalTime = Number(hoursValue) * 60 + Number(minutesValue);
+  }, [hours, minutes]);
 
   useEffect(() => {
     for (let i = 0; i < workout.length; i++) {
@@ -72,6 +96,7 @@ const Scrollers = () => {
         rideSpeedValue = workout[i].value;
       }
     }
+    console.log('Speed', rideSpeedValue);
   });
 
   useEffect(() => {
@@ -86,6 +111,7 @@ const Scrollers = () => {
   }, []);
 
   console.log('weight', weight);
+
   const enterWorkout = () => {
     if (weight >= 50) {
       axios
@@ -97,20 +123,29 @@ const Scrollers = () => {
           },
         })
         .then(({ data }) => {
+          // setShowSuccessAlert(true);
           const { total_calories } = data;
-          axios.post('profile/workout', {
-            activity: rideSpeed,
-            duration: totalTime,
-            weight: weight,
-            calories: total_calories,
-          });
+          axios
+            .post('/profile/workout', {
+              activity: rideSpeed,
+              duration: totalTime,
+              weight: weight,
+              calories: total_calories,
+            })
+            .then(() => {})
+            .catch((err) => {
+              console.log(err);
+            });
         })
 
         .catch((err) => {
           console.log(err);
         });
     } else {
-      setShowAlert(true);
+      setShowErrorAlert(true);
+      setTimeout(() => {
+        setShowErrorAlert(false);
+      }, 6000);
     }
   };
 
@@ -136,15 +171,55 @@ const Scrollers = () => {
     setSliderStage(sliderStage + 1);
   };
 
+  const successfullyEnteredStats = () => {
+    setTimeout(() => {
+      setActivityMessage('');
+      setHoursMessage('');
+      setMinutesMessage('');
+    }, 8000);
+  };
+
+  const unsuccessfullyEnteredStats = () => {
+    setTimeout(() => {
+      setActivityMessage('');
+      setHoursMessage('');
+      setMinutesMessage('');
+    }, 2000);
+  };
+
+  const handleGetRideStatsButton = () => {
+    if (rideSpeedValue === '') {
+      setShow2ndErrorAlert(true);
+      unsuccessfullyEnteredStats();
+      setTimeout(() => {
+        setShow2ndErrorAlert(false);
+      }, 6000);
+    } else if (hoursValue === '' && minutesValue === '') {
+      setShow2ndErrorAlert(true);
+      unsuccessfullyEnteredStats();
+      setTimeout(() => {
+        setShow2ndErrorAlert(false);
+      }, 6000);
+    } else {
+      enterWorkout();
+      setShowSuccessAlert(true);
+      setTimeout(() => {
+        setShowSuccessAlert(false);
+      }, 6000);
+      successfullyEnteredStats();
+      setShowStack(false);
+    }
+  };
+
   return (
     <>
       <div className='scroller-parent'>
         <div className='selected-stats-state'>
-          {rideSpeed}
-          <br/>
-          {hours}
-          <br/>
-          {minutes}
+          {activityMessage}
+          <br />
+          {hoursMessage}
+          <br />
+          {minutesMessage}
         </div>
         {sliderStage === 0 && (
           <div
@@ -163,7 +238,8 @@ const Scrollers = () => {
                       type='button'
                       className='customButton'
                       onClick={() => {
-                        setRideSpeed(`You chose: ${activity.label}`);
+                        setRideSpeed(activity.label);
+                        setActivityMessage(`You chose: ${activity.label}`);
                         setSliderStage(1);
                       }}
                     >
@@ -187,15 +263,13 @@ const Scrollers = () => {
             {durationHours.map((hour) => {
               return (
                 <React.Fragment key={`${hour.value}-hour`}>
-                  <div
-                    className='keen-slider__slide number-slide2'
-                    // style={{ backgroundColor: 'red' }}
-                  >
+                  <div className='keen-slider__slide number-slide2'>
                     <button
                       type='button'
                       className='customButton'
                       onClick={() => {
-                        setHours(`Hours riding: ${hour.label}`);
+                        setHours(hour.label);
+                        setHoursMessage(`Hours riding: ${hour.label}`);
                         setSliderStage(2);
                       }}
                     >
@@ -225,7 +299,8 @@ const Scrollers = () => {
                       type='button'
                       className='customButton'
                       onClick={() => {
-                        setMinutes(`Minutes riding: ${minute.label}`);
+                        setMinutes(minute.label);
+                        setMinutesMessage(`Minutes riding: ${minute.label}`);
                         setSliderStage(3);
                       }}
                     >
@@ -237,66 +312,116 @@ const Scrollers = () => {
             })}
           </div>
         )}
+      </div>
+      {showStack && (
+        <Stack direction='row' spacing={2}>
+          <div className='buttonContainer'>
+            {sliderStage > 0 && (
+              <Button
+                type='button'
+                variant='contained'
+                className='backButton'
+                sx={{ position: 'fixed', left: 0 }}
+                onClick={handleBackButtonClick}
+              >
+                &lt; &lt;
+              </Button>
+            )}
 
+            {sliderStage === 0 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                className='backButton'
+                sx={{ position: 'fixed', left: 0 }}
+              >
+                &lt; &lt;
+              </Button>
+            )}
 
+            {sliderStage < 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                className='forwardButton'
+                sx={{ position: 'fixed', right: 0 }}
+                onClick={handleForwardButtonClick}
+              >
+                &gt; &gt;
+              </Button>
+            )}
 
+            {sliderStage === 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                className='forwardButton'
+                sx={{ position: 'fixed', right: 0 }}
+              >
+                &gt; &gt;
+              </Button>
+            )}
 
-{sliderStage === 3 && (
-          <div
-            ref={refMinutes}
-            className='invisible-scroller'
-            style={{
-              visibility: sliderStage === 3 ? 'visible' : 'hidden',
-              opacity: sliderStage === 3 ? 1 : 0,
-            }}
-          >
+            {sliderStage < 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                color='success'
+                className='rideStatsButton'
+                sx={{ position: 'fixed', center: 0 }}
+              >
+                Get Ride Stats
+              </Button>
+            )}
 
+            {sliderStage === 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                color='success'
+                className='rideStatsButton'
+                sx={{ position: 'fixed', center: 0 }}
+                onClick={handleGetRideStatsButton}
+              >
+                Get Ride Stats
+              </Button>
+            )}
           </div>
-        )}
-
-
-</div>
-
-        {/* <div></div> */}
-        <div className='buttonContainer'>
-          {sliderStage > 0 && (
-            <button
-              type='button'
-              className='backButton'
-              onClick={handleBackButtonClick}
-            >
-              &lt; &lt;
-            </button>
-          )}
-          {sliderStage < 3 && (
-            <button
-              type='button'
-              className='forwardButton'
-              onClick={handleForwardButtonClick}
-            >
-              &gt; &gt;
-            </button>
-          )}
-          {sliderStage === 3 && (
-            <button
-              type='button'
-              className='rideStatsButton'
-              onClick={() => enterWorkout()}
-            >
-              Get Ride Stats
-            </button>
-          )}
-        </div>
-        {showAlert && (
-          <Stack sx={{ width: '100%', marginTop: 2 }}>
-            <Alert severity='error' onClose={() => setShowAlert(false)}>
-              <AlertTitle>Error</AlertTitle>
-              This is an error alert —{' '}
+        </Stack>
+      )}
+      <>
+        {showErrorAlert && (
+          <Stack className='error-success-alert'>
+            <Alert severity='error' onClose={() => setShowErrorAlert(false)}>
               <strong>Must enter weight to track stats</strong>
             </Alert>
           </Stack>
         )}
-      {/* </div> */}
+
+        {showSuccessAlert && (
+          <Stack className='error-success-alert'>
+            <Alert
+              severity='success'
+              onClose={() => setShowSuccessAlert(false)}
+            >
+              <strong>Stats successfully saved!</strong>
+            </Alert>
+          </Stack>
+        )}
+
+        {show2ndErrorAlert && (
+          <Stack className='error-success-alert'>
+            <Alert severity='error' onClose={() => setShow2ndErrorAlert(false)}>
+              <strong>
+                Must enter average speed to and a time to track stats
+              </strong>
+            </Alert>
+          </Stack>
+        )}
+      </>
     </>
   );
 };
