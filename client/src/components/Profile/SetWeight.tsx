@@ -27,8 +27,9 @@ const SetWeight = (props: WeightTabProps) => {
 
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [alertType, setAlertType] = useState<'success' | 'error' | null>(null);
+  const [openWeight, setOpenWeight] = useState(false);
+  const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>(null);
+  // const [noWeightWarning, setNoWeightWarning] = useState(false);
   const [weightMessage, setWeightMessage] = useState('');
 
   const goodSet = `Current weight is ${weight} lbs`
@@ -52,7 +53,7 @@ const SetWeight = (props: WeightTabProps) => {
         console.log('Failed to input weight', err);
       });
       setWeightMessage(goodSet)
-      setAlertType('success');
+      setAlertTypeWeight('success');
       alertOnClick();
     } else {
       const input = document.getElementById('weight-input');
@@ -61,30 +62,34 @@ const SetWeight = (props: WeightTabProps) => {
         input.blur();
       };
       setWeightMessage(badSet)
-      setAlertType('error');
+      setAlertTypeWeight('error');
       alertOnClick();
     }
 
   };
 
   useEffect(() => {
-    axios.get('/profile/weight').then(({ data }) => {
-      console.log(data);
-      setWeight(data.weight);
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+      console.log('Data', data.weight);
+        if ( data.weight === null) {
+        setWeightMessage(badSet)
+        setOpenWeight(true);
+        // setAlertTypeWeight('warning');
+      } else {
+        setWeight(data.weight)
+        setWeightMessage(goodSet)
+      }
     });
-    if (weightValue < 50 && weightValue > 0) {
-      setWeightMessage(badSet)
-    } else {
-      setWeightMessage(goodSet)
-    }
-    // setWeightMessage(goodSet)
   }, [weight]);
 
+
+
   const alertOnClick = () => {
-    setOpen(true);
+    setOpenWeight(true);
   };
 
-  const handleClose = (
+  const handleCloseWeight = (
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -92,7 +97,7 @@ const SetWeight = (props: WeightTabProps) => {
       return;
     }
 
-    setOpen(false);
+    setOpenWeight(false);
   };
 
   return (
@@ -112,7 +117,7 @@ const SetWeight = (props: WeightTabProps) => {
         autoComplete='off'
       >
         <div>
-          <Typography className='current-weight'>{weightMessage}</Typography>
+          <h4 className='current-weight'>{weightMessage}</h4>
         </div>
         <div className='weight-input'>
           <TextField
@@ -140,29 +145,44 @@ const SetWeight = (props: WeightTabProps) => {
       </Box>
     </div>
     <div className='custom-snackbar'>
-  {alertType === 'success' && (
+  {alertTypeWeight === 'success' && (
     <Snackbar
-      open={open}
+      open={openWeight}
       autoHideDuration={5000}
-      onClose={handleClose}
+      onClose={handleCloseWeight}
       // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       sx={{ bottom: '150px' }}
     >
-      <Alert onClose={handleClose} severity='success' sx={{ width: '100vw' }}>
+      <Alert onClose={handleCloseWeight} severity='success' sx={{ width: '100vw' }}>
         Weight successfully updated!
       </Alert>
     </Snackbar>
   )}
-  {alertType === 'error' && (
+  {alertTypeWeight === 'error' && (
     <Snackbar
-      open={open}
+      open={openWeight}
       autoHideDuration={5000}
-      onClose={handleClose}
+      onClose={handleCloseWeight}
       // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       sx={{ bottom: '150px' }}
     >
-      <Alert onClose={handleClose} severity='error' sx={{ width: '100%' }}>
+      <Alert onClose={handleCloseWeight} severity='error' sx={{ width: '100%' }}>
         Weight must be above 50 lbs to track calories!
+      </Alert>
+    </Snackbar>
+  )}
+
+{/* {noWeightWarning === true && ( */}
+{alertTypeWeight === 'warning' && (
+    <Snackbar
+      open={openWeight}
+      autoHideDuration={5000}
+      onClose={handleCloseWeight}
+      // anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      sx={{ bottom: '150px' }}
+    >
+      <Alert onClose={handleCloseWeight} severity='warning' sx={{ width: '100%' }}>
+       Enter a weight so you can track your stats!
       </Alert>
     </Snackbar>
   )}
