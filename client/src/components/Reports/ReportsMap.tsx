@@ -1,18 +1,29 @@
-import React, { useEffect, useState, useContext, createContext} from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import axios from 'axios';
 import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
-import { Box, Fab, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  Fab,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
-import Icon from '@mui/material/Icon';
+import { Icon, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import ArchiveIcon from '@mui/icons-material/Archive';
 import { LatLngLiteral } from '../BikeRoutes/RouteM';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { Card, CardContent } from '@mui/material';
 
-
+dayjs.extend(utc);
 
 //  webpack url-loader
 // import roadHazardIcon from './images/hazard.png';
@@ -32,6 +43,8 @@ const ReportsMap: React.FC = () => {
     lat: 29.9511,
     lng: -90.0715,
   });
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+
   const onLoad = (map: google.maps.Map) => {
     setMap(map);
   };
@@ -65,6 +78,7 @@ const ReportsMap: React.FC = () => {
 
   const handleButtonClick = async (id: string) => {
     console.log(id);
+    setSelectedReport(null);
     setButtonClicked(true);
     try {
       await axios.patch(`/reports/${id}`, { published: false });
@@ -177,14 +191,19 @@ const ReportsMap: React.FC = () => {
           icon: getMarkerIconUrl(report.type),
         });
 
+        const isoDate = report.createdAt;
+        const formattedDate = dayjs.utc(isoDate).format('DD/MM/YYYY');
         const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
         const imageUrl: string | null = report.imgUrl;
         const imageElement = document.createElement('img');
         if (imageUrl !== null) {
-          imageElement.src = imageUrl; // imageUrl is now inferred as string
+          imageElement.src = imageUrl;
         }
+
         contentDiv.appendChild(imageElement);
+        const dateParagraph = document.createElement('p');
+        dateParagraph.textContent = formattedDate;
         const typeParagraph = document.createElement('p');
         typeParagraph.textContent = report.type;
         const titleParagraph = document.createElement('p');
@@ -202,15 +221,20 @@ const ReportsMap: React.FC = () => {
         if (buttonClicked) {
           buttonClickedParagraph.textContent = 'Button clicked';
         }
+        contentDiv.appendChild(dateParagraph);
         contentDiv.appendChild(typeParagraph);
+        contentDiv.appendChild(authorParagraph);
         contentDiv.appendChild(titleParagraph);
         contentDiv.appendChild(bodyParagraph);
         contentDiv.appendChild(button);
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);
 
+        // marker.addListener('click', () => {
+        //   infoWindow.open(map, marker);
+        // });
         marker.addListener('click', () => {
-          infoWindow.open(map, marker);
+          setSelectedReport(report);
         });
 
         return marker;
@@ -283,8 +307,7 @@ const ReportsMap: React.FC = () => {
             zIndex: 1,
           }}
         >
-          <Box sx={{ marginRight: 0 }}>
-          </Box>
+          <Box sx={{ marginRight: 0 }}></Box>
           <Box>
             <ToggleButtonGroup
               value={selectedType}
@@ -303,13 +326,52 @@ const ReportsMap: React.FC = () => {
         </Box>
 
         <Box height='87vh;'>
-          <GoogleMap
-            mapContainerStyle={{ height: '100%', width: '100%' }}
-            center={userCenter}
-            zoom={15}
-            onLoad={onLoad}
-            options={options as google.maps.MapOptions}
-          />
+          <Box sx={{ height: '87vh', display: 'flex', flexDirection: 'row' }}>
+            <Drawer
+              anchor='bottom'
+              open={selectedReport !== null}
+              onClose={() => setSelectedReport(null)}
+              sx={{ maxHeight: '80vh' }}
+            >
+              <Box sx={{ padding: 2 }}>
+                <IconButton
+                  onClick={() => setSelectedReport(null)}
+                  sx={{ position: 'absolute', bottom: 8, right: 8 }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                {selectedReport && (
+                  <>
+                    {selectedReport.imgUrl && (
+                      <img src={selectedReport.imgUrl} alt='Report image' />
+                    )}
+                    <p>
+                      {dayjs(selectedReport.createdAt).format('DD/MM/YYYY')}
+                    </p>
+                    <p>{selectedReport.type}</p>
+                    <p>{selectedReport.title}</p>
+                    <p>{selectedReport.userId}</p>
+                    <p>{selectedReport.body}</p>
+                    <ArchiveIcon
+                      onClick={() => handleButtonClick(selectedReport.id)}
+                    >
+                      Archive Report
+                    </ArchiveIcon>
+                  </>
+                )}
+              </Box>
+            </Drawer>
+
+            <Box sx={{ flexGrow: 1 }}>
+              <GoogleMap
+                mapContainerStyle={{ height: '100%', width: '100%' }}
+                center={userCenter}
+                zoom={15}
+                onLoad={onLoad}
+                options={options as google.maps.MapOptions}
+              />
+            </Box>
+          </Box>
         </Box>
       </div>
     </BandAid>
@@ -317,4 +379,3 @@ const ReportsMap: React.FC = () => {
 };
 
 export default ReportsMap;
-
