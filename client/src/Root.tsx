@@ -19,7 +19,6 @@ import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import ReportsList from './components/Reports/ReportsList';
 import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 
