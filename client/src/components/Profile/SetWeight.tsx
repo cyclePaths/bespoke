@@ -61,7 +61,7 @@ const SetWeight = (props: WeightTabProps) => {
         input.value = '';
         input.blur();
       };
-      setWeightMessage(badSet)
+      // setWeightMessage(badSet)
       setAlertTypeWeight('error');
       alertOnClick();
     }

@@ -151,6 +151,13 @@ The code below is for the scroll wheel
   border-radius: 50%;
 }
 
+.invisible-scroller {
+  height: 100px;
+  width: 50px;
+  max-height: 100vh;
+  border-radius: 50%;
+}
+
 .sliderWrapper {
   height: 100px; /* Adjust the height value as needed */
   position: relative;
@@ -166,9 +173,14 @@ The code below is for the scroll wheel
 }
 
 .buttonContainer {
+  position: fixed;
   display: flex;
   justify-content: center;
-  width: 100%; /* set the width to 100% */
+  width: 100%;
+  height: 280px;
+  bottom: 0;
+  /* transform: translateX(-50%); */
+  z-index: 1;
 }
 
 .backButton {
@@ -182,7 +194,8 @@ The code below is for the scroll wheel
 }
 
 .rideStatsButton {
-  display: flex;
+  position: fixed;
+  /* display: flex; */
   justify-content: center;
 }
 
@@ -214,8 +227,8 @@ The code below is for the scroll wheel
   background: rgb(64, 175, 255);
   background: linear-gradient(
     128deg,
-    rgba(64, 175, 255, 1) 0%,
-    rgba(63, 97, 255, 1) 100%
+    rgb(69, 174, 249) 0%,
+    rgb(52, 87, 239) 100%
   );
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
@@ -276,11 +289,38 @@ The code below is for the scroll wheel
   display: none;
 }
 
+.scroller-parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  min-height: 150px;
+  position: relative;
+}
+
+.current-scroller {
+  position: fixed;
+  /* top: calc(0% - 60px); */
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.selected-stats-state {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  margin: 5px;
+  text-align: center;
+  white-space: nowrap;
+}
 
 /*
 The code above is for the scroll wheel
 */
-
 
 [class^="leaderboard-view"],
 [class*=" leaderboard-view"] {
@@ -450,12 +490,8 @@ The code below is for the Profile set weight feature
 
 .current-weight {
   position: absolute;
-  top: calc(15% - 60px); 
-  /* top: calc(30% - 100px);  */
+  top: calc(15% - 60px);
   left: 50%;
-  /* justify-content:center;
-  margin-left: 20;
-  margin-right: 20; */
   transform: translateX(-50%);
 }
 
