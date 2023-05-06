@@ -13,7 +13,7 @@ import {
 import { Button } from '@mui/material';
 import { PlaceProps } from './RouteM';
 
-const Places = ({ setStartingPoint, saveMessage }: PlaceProps) => {
+const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
 
   // Handle the input box //
@@ -86,4 +86,4 @@ const Places = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   );
 };
 
-export default Places;
+export default MapInputandButtons;
