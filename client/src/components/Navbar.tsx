@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { AppProps } from './App';
 import { UserContext } from '../Root';
 import {
   BottomNavigation,
@@ -21,11 +20,7 @@ import LeaderBoard from './LeaderBoard/LeaderBoard';
 import { NavBarTop } from '../StyledComp';
 import DirectMessages from './DirectMessages/DirectMessages';
 
-export interface NavbarProps {
-  appPropsObj: AppProps;
-}
-
-const Navbar = ({ appPropsObj }: NavbarProps) => {
+const Navbar = () => {
   const [value, setValue] = useState<any>(null);
   const [userProfilePic, setUserProfilePic] = useState<any>(
     <AccountCircleIcon />

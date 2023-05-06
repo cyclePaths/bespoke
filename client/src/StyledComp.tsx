@@ -197,6 +197,20 @@ const AchievementBadgeTooltip = styled.span`
   text-align: center;
   position: absolute;
   z-index: 1;
+  width: 120px;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 1s;
+`;
+
+const TooltipBox = styled.div`
+  width: 150px;
+  border: 10px solid green;
+  padding: 25px;
+  margin: 10px;
+  background-color: #ea960e;
 `;
 
 const AchievementBadge = styled.img`
@@ -211,6 +225,7 @@ const AchievementBadgeAndTooltipContainer = styled.div`
   display: inline-block;
   &:hover ${AchievementBadgeTooltip} {
     visibility: visible;
+    opacity: 1;
   }
 `;
 
@@ -233,6 +248,10 @@ const GoHomeIcon = styled.img`
   top: 59%;
 `;
 
+const ToastBuffer = styled.div`
+  padding-top: 30px;
+`;
+
 export {
   ForecastBit,
   ForecastText,
@@ -252,6 +271,7 @@ export {
   RouteList,
   AchievementBadgeByName,
   AchievementBadgeTooltip,
+  TooltipBox,
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
@@ -262,4 +282,5 @@ export {
   GoHomeIcon,
   ForecastRowContainerforHome,
   StatsDivs,
+  ToastBuffer,
 };
