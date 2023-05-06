@@ -96,12 +96,11 @@ const CreateReport: React.FC = () => {
         } else {
           user.addBadge('Safety Sentinel', 1);
         }
-
+        setOpen(false);
         setReports([...reports, response.data]);
         setBody('');
         setType('');
         setImage(null);
-        setOpen(false);
       } catch (error: any) {
         console.error(error.message);
         setError(error.message);
