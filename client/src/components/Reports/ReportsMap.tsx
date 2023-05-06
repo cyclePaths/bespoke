@@ -313,6 +313,7 @@ const ReportsMap: React.FC = () => {
               value={selectedType}
               onChange={handleTypeChange}
               aria-label='Report Type'
+              sx={{ backgroundColor: 'white' }}
             >
               <ToggleButton value='All'>All</ToggleButton>
               <ToggleButton value='Road Hazard'>Road Hazard</ToggleButton>
