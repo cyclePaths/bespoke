@@ -14,6 +14,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
+import Report from './components/Reports/Report';
 import RouteM, { LatLngLiteral } from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
@@ -593,7 +594,7 @@ const Root = () => {
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {
-    console.log('use effect watching user/allBadges has been called');
+    // console.log('use effect watching user/allBadges has been called');
   }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
@@ -735,6 +736,7 @@ const Root = () => {
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='report' element={<Report />} />
             </Route>
             <Route path='signIn' element={<SignIn />} />
           </Routes>

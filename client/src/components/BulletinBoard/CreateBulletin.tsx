@@ -47,7 +47,7 @@ const CreateBulletin = () => {
     <ThemeProvider theme={themeBulletin}>
         <div id='topicField' style={{ display: 'inline-block '}}>
           <OutlinedInput
-            style={{ backgroundColor: '#94edd7', marginTop: '10px',
+            style={{ backgroundColor: 'rgb(115, 216, 139)', marginTop: '10px',
                      maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
@@ -60,7 +60,7 @@ const CreateBulletin = () => {
             />
         </div>
         <div id='textField' style={{ display: 'inline-block '}}>
-        <OutlinedInput style={{ backgroundColor: '#94edd7', marginTop: '5px',
+        <OutlinedInput style={{ backgroundColor: 'rgb(115, 216, 139)', marginTop: '5px',
                                maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
@@ -73,7 +73,7 @@ const CreateBulletin = () => {
             />
         </div>
         <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
-                          minWidth: '75px', minHeight: '25px', marginLeft: '15px'}}
+                          minWidth: '75px', minHeight: '25px', marginLeft: '0px', marginTop: '5px'}}
           onClick={() => handleBulletinSubmission()}
           >
           <h5>Submit</h5>
