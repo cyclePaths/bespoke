@@ -14,6 +14,7 @@ import BulletinBoard from './components/BulletinBoard/BulletinBoard';
 import Weather from './components/Weather/Weather';
 import Profile from './components/Profile/Profile';
 import CreateReport from './components/Reports/CreateReport';
+import Report from './components/Reports/Report';
 import RouteM, { LatLngLiteral } from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
@@ -670,6 +671,7 @@ const Root = () => {
           addBadge,
           tierCheck,
           updateAchievements,
+          isDark,
         }}
       >
         <BrowserRouter>
@@ -734,6 +736,7 @@ const Root = () => {
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
               <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='report' element={<Report />} />
             </Route>
             <Route path='signIn' element={<SignIn />} />
           </Routes>

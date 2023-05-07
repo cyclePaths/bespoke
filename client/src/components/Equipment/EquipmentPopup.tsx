@@ -46,10 +46,10 @@ const EquipmentPopup = ({
   };
 
   return (
-    <Dialog open={openEquipmentEntry} style={{ backgroundColor: '#5555556e' }}>
+    <Dialog open={openEquipmentEntry} PaperProps={{ style: { backgroundColor: '#555555ff'}}}>
       <OutlinedInput
         style={{
-          backgroundColor: '#87BBDC',
+          backgroundColor: 'rgb(133, 211, 255)',
           marginTop: '10px',
           maxWidth: '175px',
           maxHeight: '25px',
@@ -67,7 +67,7 @@ const EquipmentPopup = ({
       />
       <OutlinedInput
         style={{
-          backgroundColor: '#87BBDC',
+          backgroundColor: 'rgb(133, 211, 255)',
           marginTop: '5px',
           maxWidth: '175px',
           maxHeight: '25px',
@@ -84,7 +84,7 @@ const EquipmentPopup = ({
         }}
       />
       <Button
-        style={{ backgroundColor: '#17332c', marginTop: '5px' }}
+        style={{color:'rgb(133, 211, 255)', backgroundColor: '#17332c', marginTop: '5px' }}
         onClick={() => handleEquipmentSubmission()}
       >
         Add Equipment
