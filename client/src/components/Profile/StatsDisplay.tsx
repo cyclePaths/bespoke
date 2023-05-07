@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 
@@ -10,8 +11,7 @@ const columns: GridColDef[] = [
   { field: 'rideDate',
   headerName: 'Date',
   width: 120,
-  valueFormatter: (params) => dayjs(params.value).format('MM/DD/YYYY'), // Update the format as needed
-
+  valueFormatter: (params) => dayjs(params.value).format('MM/DD/YYYY'),
 },
   {
     field: 'duration',
@@ -34,13 +34,24 @@ const columns: GridColDef[] = [
   },
 ];
 
-//
 
-const StatsDisplay = ({ stats }) => {
+const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
+
+
+  const handleBackClick = () => {
+    handleGridClose();
+  };
+
+
+
   return (
     // <Box sx={{ height: 400, width: '100%' }}>
     <Box style={{ width: '100%', overflow: 'hidden' }}>
-
+<div style={{ backgroundColor: '#333', padding: '16px' }}>
+{/* <ReturnToDialogButton onClick={handleGridClose} /> */}
+<Button variant="outlined" color="primary" onClick={() => {handleBackClick(); handleClickOpen()}}>
+      &lt; &lt;  Back to Select
+    </Button>
       <DataGrid
         rows={stats}
         columns={columns}
@@ -53,8 +64,13 @@ const StatsDisplay = ({ stats }) => {
         }}
         pageSizeOptions={[5]}
         // checkboxSelection
-        // disableRowSelectionOnClick
+        disableRowSelectionOnClick
+        style={{
+          opacity: 1,
+          backgroundColor: '#111',
+        }}
       />
+      </div>
     </Box>
   );
 }

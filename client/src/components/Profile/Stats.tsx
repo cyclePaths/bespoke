@@ -21,8 +21,8 @@ const Stats = () => {
   const [isStatsDisplayed, setIsStatsDisplayed] = React.useState(false);
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
+
   const handleChange = (event: SelectChangeEvent<typeof speed>) => {
-    // setAge(Number(event.target.value) || '');
     setSpeed(event.target.value);
   };
 
@@ -57,6 +57,10 @@ const Stats = () => {
       });
   };
 
+  const handleGridClose = () => {
+    setIsStatsDisplayed(false);
+  };
+
   return (
     <>
       <div className='select-stats'>
@@ -65,7 +69,7 @@ const Stats = () => {
         </Button>
       </div>
       <div>
-        <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+        <Dialog  open={open} onClose={handleClose}>
           <DialogTitle>Fill the form</DialogTitle>
           <DialogContent>
             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -102,7 +106,11 @@ const Stats = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        {isStatsDisplayed && <StatsDisplay stats={stats} />}
+        {isStatsDisplayed && <StatsDisplay
+        stats={stats}
+        handleGridClose={handleGridClose}
+        handleClickOpen={handleClickOpen}
+        />}
       </div>
     </>
   );
