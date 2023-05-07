@@ -139,7 +139,6 @@ export interface BadgeWithAdditions extends Badge {
 
 export const UserContext = createContext<any>(Object());
 
-
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
   const [isDark, setIsDark] = useState(false);
@@ -184,7 +183,8 @@ const Root = () => {
   ]);
   //holds URL of badge to display by username
   const [selectedBadge, setSelectedBadge] = useState<string>(
-    'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'  );
+    'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+  );
 
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
@@ -563,7 +563,6 @@ const Root = () => {
     }
   };
 
-
   const updateUserLocation = (geoObj: geoLocation) => {
     const id = user?.id;
     const updatedData = {
@@ -594,7 +593,7 @@ const Root = () => {
 
   //function to watch userBadges and allBadges so that if badges update (new badge earned) it will update the displayed badges too
   useEffect(() => {
-    console.log('use effect watching user/allBadges has been called');
+    // console.log('use effect watching user/allBadges has been called');
   }, [userBadges, allBadges]);
 
   //sets user's displayed icon to their selected one; should update when the state variable for the badge URL changes
