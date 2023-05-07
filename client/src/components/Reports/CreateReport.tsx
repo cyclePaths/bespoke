@@ -93,6 +93,11 @@ const CreateReport: React.FC = () => {
           },
         });
 
+        // if (type === 'Point of Interest') {
+        //   user.addBadge('Tour Guide', 1);
+        // } else {
+        //   user.addBadge('Safety Sentinel', 1);
+        // }
         if (type === 'Point of Interest') {
           addBadge('Tour Guide', 1);
         } else {
