@@ -40,7 +40,6 @@ const Stats = () => {
     }
   };
 
-
   const getStats = () => {
     axios
       .get('/profile/stats', {
@@ -49,7 +48,7 @@ const Stats = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        console.log(data);
         setStats(data);
         setIsStatsDisplayed(true);
       })
@@ -59,47 +58,53 @@ const Stats = () => {
   };
 
   return (
-    <div>
-      <Button onClick={handleClickOpen}>Select Stats</Button>
-      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-        <DialogTitle>Fill the form</DialogTitle>
-        <DialogContent>
-          <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
-              <Select
-                native
-                value={speed}
-                onChange={handleChange}
-                input={
-                  <OutlinedInput label='Ride Speed' id='demo-dialog-native' />
-                }
-              >
-                <option aria-label='None' value='' />
-                {workout.map((activity) => {
-                  return (
-                    <React.Fragment key={activity.value}>
-                      <option value={activity.label}>{activity.label}</option>
-                    </React.Fragment>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            onClick={(event) => {
-              handleClose(event, 'ok'), getStats();
-            }}
-          >
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {isStatsDisplayed && <StatsDisplay stats={stats} />}
-    </div>
+    <>
+      <div className='select-stats'>
+        <Button variant='contained' color='success' onClick={handleClickOpen}>
+          Select Stats
+        </Button>
+      </div>
+      <div>
+        <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+          <DialogTitle>Fill the form</DialogTitle>
+          <DialogContent>
+            <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
+                <Select
+                  native
+                  value={speed}
+                  onChange={handleChange}
+                  input={
+                    <OutlinedInput label='Ride Speed' id='demo-dialog-native' />
+                  }
+                >
+                  <option aria-label='None' value='' />
+                  {workout.map((activity) => {
+                    return (
+                      <React.Fragment key={activity.value}>
+                        <option value={activity.label}>{activity.label}</option>
+                      </React.Fragment>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button
+              onClick={(event) => {
+                handleClose(event, 'ok'), getStats();
+              }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {isStatsDisplayed && <StatsDisplay stats={stats} />}
+      </div>
+    </>
   );
 };
 

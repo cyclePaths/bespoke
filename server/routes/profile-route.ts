@@ -101,6 +101,7 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
+  console.log(req.query)
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
