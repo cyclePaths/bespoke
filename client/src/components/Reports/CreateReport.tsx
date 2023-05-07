@@ -41,6 +41,7 @@ const CreateReport: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const { user, geoLocation, addBadge } = useContext(UserContext);
 
@@ -70,6 +71,7 @@ const CreateReport: React.FC = () => {
   ): Promise<void> => {
     event.preventDefault();
     if (currentLocation) {
+      setSubmitting(true);
       try {
         const { email, id } = user;
 
@@ -105,6 +107,8 @@ const CreateReport: React.FC = () => {
       } catch (error: any) {
         console.error(error.message);
         setError(error.message);
+      } finally {
+        setSubmitting(false);
       }
     }
   };

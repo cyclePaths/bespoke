@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { useStyles, inputTextStyle } from './DMStyles';
 import SearchUsers, { Users } from './SearchUsers';
 import { ThemeProvider } from '@mui/material/styles';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';

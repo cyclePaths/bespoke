@@ -47,7 +47,7 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
             <InputLayout
               id='address-input'
               {...getInputProps({
-                placeholder: 'Set Staring Location ...',
+                placeholder: 'Set Starting Location ...',
                 className: 'location-search-input',
               })}
             />

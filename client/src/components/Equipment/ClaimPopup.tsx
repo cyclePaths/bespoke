@@ -1,23 +1,23 @@
-import React, { useState, useContext, useEffect} from 'react';
-import { UserContext } from '../../Root';
-import axios from 'axios';
-import { Button, OutlinedInput, Dialog, DialogContent, DialogTitle } from '@mui/material';
+// import React, { useState, useContext, useEffect} from 'react';
+// import { UserContext } from '../../Root';
+// import axios from 'axios';
+// import { Button, OutlinedInput, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 
-const ClaimPopup = ({ children, openEquipmentClaim, setOpenEquipmentClaim }) => {
-    const context = useContext(UserContext)
+// const ClaimPopup = ({ children, openEquipmentClaim, setOpenEquipmentClaim }) => {
+//     const context = useContext(UserContext)
 
 
 
 
-    return (
+//     return (
 
 
-        <Dialog open={openEquipmentClaim} style={{backgroundColor: '#5555556e'}}>
+//         <Dialog open={openEquipmentClaim} style={{backgroundColor: '#5555556e'}}>
 
-        <DialogContent>{children}</DialogContent>
-        </Dialog>
+//         <DialogContent>{children}</DialogContent>
+//         </Dialog>
 
-      )
-}
-export default ClaimPopup
+//       )
+// }
+// export default ClaimPopup

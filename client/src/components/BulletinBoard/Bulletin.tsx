@@ -21,9 +21,11 @@ useEffect(() => {
 }, [context])
 
    return (
-    <div  className='bulletin' style={{ backgroundColor: '#94edd7', fontFamily: 'roboto'}}>
-      <h4 className='bulletinTopic'>{topic} -- <i>{creator} -- {formattedDate}</i></h4>
-      <div style={{ display: 'inline-block' }} className='bulletinText'>{text}
+    <div  className='bulletin' style={{ fontFamily: 'roboto',
+          borderRadius: '5px', background: '#73d88b', boxShadow: '3px 3px 10px #62b876, -3px -3px 10px #84f8a0' }}>
+
+      <h4 className='bulletinTopic' style={{ paddingLeft:'10px', paddingRight:'10px', paddingTop: '3px'}}>{topic} -- <i>{creator} -- {formattedDate}</i></h4>
+      <div style={{ display: 'inline-block', paddingLeft:'10px', paddingRight:'10px' }}  className='bulletinText'>{text}
       <CreateComment bulletinOrigin={ id }/>
       </div>
       {filteredComments.map((comment, i) => (<Comment comment={comment} key={ i }/>))}

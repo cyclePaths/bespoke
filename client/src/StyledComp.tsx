@@ -29,7 +29,7 @@ const PopoutSaveForm = styled.form`
   flex-direction: column;
   align-items: center;
   flex-wrap: nowrap;
-  width: 255px;
+  width: 91%;
 `;
 
 const CategorySelector = styled.select`
@@ -61,7 +61,7 @@ const InputLayout = styled.input`
 const StartRouteContainer = styled.div`
   text-align: center;
   z-index: 1000;
-  position: fixed;
+  position: absolute;
   width: 100%;
   top: 12%;
 `;
@@ -291,8 +291,8 @@ const NavBarTop = styled.span`
 `;
 
 const BandAid = styled.div`
-  padding-top: 6.6vh;
-  padding-bottom: 6.6vh;
+  padding-top: 6.4vh;
+  padding-bottom: 2vh;
 `;
 
 const AchievementBadgeByName = styled.img`

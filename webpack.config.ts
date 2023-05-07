@@ -1,18 +1,19 @@
-import path from 'path';
-import { Configuration } from 'webpack';
+const path = require('path');
+const { Configuration } = require('webpack');
+const { merge } = require('webpack-merge');
 
-
-const config: Configuration = {
+const baseConfig = {
   entry: ['./client/src/index.tsx', './node_modules/react-scrollable-picker/src/style.less'],
+  output: {
+    path: path.resolve(__dirname, 'client', 'dist'),
+    filename: 'bundle.js',
+    assetModuleFilename: 'images/[hash][ext][query]'
+  },
   module: {
     rules: [
       {
         test: /\.less$/,
         use: ['style-loader', 'css-loader', 'less-loader']
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.(ts|tsx|js)?$/,
@@ -28,6 +29,7 @@ const config: Configuration = {
           },
         },
       },
+
     ],
   },
   resolve: {
@@ -36,15 +38,21 @@ const config: Configuration = {
       "@emotion/react": path.resolve(__dirname, "node_modules/@emotion/react"),
     },
   },
-  output: {
-    path: path.resolve(__dirname, 'client', 'dist'),
-    filename: 'bundle.js',
-  },
-  // devServer: {
-  //   static: path.join(__dirname, "client", "dist"),
-  //   compress: true,
-  //   port: 4000,
-  // },
 };
 
-export default config;
+const additionalConfig = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
+        type: "asset",
+      },
+    ],
+  },
+};
+
+module.exports = merge(baseConfig, additionalConfig);

@@ -5,6 +5,7 @@ import Root from './Root';
 
 
 
+
 const root: any = createRoot(document.getElementById('app'));
 // export const UserContext = React.createContext();
 //below here, the HTML should eventually be wrapped in <UserContextProvider> tags
