@@ -212,14 +212,14 @@ const Addresses = ({
                       ? 'suggestion-item--active'
                       : 'suggestion-item';
                     // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: '#b01e1e', cursor: 'pointer' }
-                      : { backgroundColor: '#21a136', cursor: 'pointer' };
+                    // const style = suggestion.active
+                    //   ? { backgroundColor: '#b01e1e', cursor: 'pointer' }
+                    //   : { backgroundColor: '#21a136', cursor: 'pointer' };
                     return (
                       <div
                         {...getSuggestionItemProps(suggestion, {
                           className,
-                          style,
+                          // style,
                         })}
                       >
                         <span>{suggestion.description}</span>
@@ -233,9 +233,13 @@ const Addresses = ({
                       className='saveHome'
                       variant='contained'
                       color='success'
+                      style={{
+                        backgroundColor: 'green',
+                        color: 'white',
+                        boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
+                      }}
                       onClick={() => {
                         handleSetHomeClick();
-                        // if ()
                       }}
                     >
                       Set Home
