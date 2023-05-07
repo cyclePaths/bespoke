@@ -5,9 +5,19 @@ import Root, { UserContext } from '../../Root';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+// import Alert from '@mui/material/Alert';
+// import AlertTitle from '@mui/material/AlertTitle';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+});
 
 const Scrollers = () => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
@@ -42,35 +52,43 @@ const Scrollers = () => {
   const [rideSpeed, setRideSpeed] = useState('');
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
-  const [clickedHours, setClickedHours] = useState(false);
-  const [clickedMinutes, setClickedMinutes] = useState(false);
+  const [activityMessage, setActivityMessage] = useState('');
+  const [hoursMessage, setHoursMessage] = useState('');
+  const [minutesMessage, setMinutesMessage] = useState('');
   const [activityVisible, setActivityVisible] = useState(true);
   const [hoursVisible, setHoursVisible] = useState(false);
   const [minutesVisible, setMinutesVisible] = useState(false);
   const [sliderStage, setSliderStage] = useState(0);
-  const [showAlert, setShowAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [show2ndErrorAlert, setShow2ndErrorAlert] = useState(false);
   const [weight, setWeight] = useState(0);
   const [user, setUser] = useState();
+  const [showStack, setShowStack] = useState(true);
 
   let rideSpeedValue = '';
+  let hoursValue = hours;
+  let minutesValue = minutes;
 
   const { workout, durationHours, durationMinutes } =
     exiledRedHeadedStepChildrenOptionGroups;
 
-  // const user = useContext(UserContext);
-  // console.log(user);
-
-  // let weight = user?.weight ?? 0;
-  // console.log('Weight', weight)
-
   let totalTime = Number(hours) * 60 + Number(minutes);
 
   useEffect(() => {
-    if (clickedHours && clickedMinutes) {
-      totalTime = Number(hours) * 60 + Number(minutes);
-      console.log(totalTime);
+    if (hours[0] === '1' && hours[1] === '') {
+      hoursValue = '1';
+    } else {
+      hoursValue = hours.slice(0, -6);
     }
-  }, [clickedHours, clickedMinutes]);
+    if (minutes[0] === '1' && minutes[1] === '') {
+      minutesValue = '1';
+    } else {
+      minutesValue = minutes.slice(0, -7);
+    }
+
+    totalTime = Number(hoursValue) * 60 + Number(minutesValue);
+  }, [hours, minutes]);
 
   useEffect(() => {
     for (let i = 0; i < workout.length; i++) {
@@ -78,47 +96,57 @@ const Scrollers = () => {
         rideSpeedValue = workout[i].value;
       }
     }
+    console.log('Speed', rideSpeedValue);
   });
 
   useEffect(() => {
-    axios.get('/profile/weight')
+    axios
+      .get('/profile/weight')
       .then(({ data }) => {
-        setWeight(data.weight)
+        setWeight(data.weight);
       })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, [])
-
-  console.log('weight', weight)
-  const enterWorkout = () => {
-    if (weight >= 50) {
-      axios
-      .get('/profile/workout', {
-        params: {
-          activity: rideSpeedValue,
-          duration: totalTime,
-          weight: weight,
-        },
-      })
-      .then(({ data }) => {
-        const { total_calories } = data;
-        axios.post('profile/workout', {
-          activity: rideSpeed,
-          duration: totalTime,
-          weight: weight,
-          calories: total_calories,
-        });
-      })
-
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  console.log('weight', weight);
+
+  const enterWorkout = () => {
+    if (weight >= 50) {
+      axios
+        .get('/profile/workout', {
+          params: {
+            activity: rideSpeedValue,
+            duration: totalTime,
+            weight: weight,
+          },
+        })
+        .then(({ data }) => {
+          // setShowSuccessAlert(true);
+          const { total_calories } = data;
+          axios
+            .post('/profile/workout', {
+              activity: rideSpeed,
+              duration: totalTime,
+              weight: weight,
+              calories: total_calories,
+            })
+            .then(() => {})
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      setShowAlert(true);
+      setShowErrorAlert(true);
+      setTimeout(() => {
+        setShowErrorAlert(false);
+      }, 6000);
     }
-
-
   };
 
   const handleBackButtonClick = () => {
@@ -143,142 +171,258 @@ const Scrollers = () => {
     setSliderStage(sliderStage + 1);
   };
 
+  const successfullyEnteredStats = () => {
+    setTimeout(() => {
+      setActivityMessage('');
+      setHoursMessage('');
+      setMinutesMessage('');
+    }, 8000);
+  };
+
+  const unsuccessfullyEnteredStats = () => {
+    setTimeout(() => {
+      setActivityMessage('');
+      setHoursMessage('');
+      setMinutesMessage('');
+    }, 2000);
+  };
+
+  const handleGetRideStatsButton = () => {
+    if (rideSpeedValue === '') {
+      setShow2ndErrorAlert(true);
+      unsuccessfullyEnteredStats();
+      setTimeout(() => {
+        setShow2ndErrorAlert(false);
+      }, 6000);
+    } else if (hoursValue === '' && minutesValue === '') {
+      setShow2ndErrorAlert(true);
+      unsuccessfullyEnteredStats();
+      setTimeout(() => {
+        setShow2ndErrorAlert(false);
+      }, 6000);
+    } else {
+      enterWorkout();
+      setShowSuccessAlert(true);
+      setTimeout(() => {
+        setShowSuccessAlert(false);
+      }, 6000);
+      successfullyEnteredStats();
+      setShowStack(false);
+    }
+  };
+
   return (
-    <div>
-      <div>
-        {rideSpeed}
-        {hours}
-        {minutes}
-      </div>
-      {sliderStage === 0 && (
-        <div
-          ref={refActivity}
-          className='keen-slider'
-          style={{
-            visibility: sliderStage === 0 ? 'visible' : 'hidden',
-            opacity: sliderStage === 0 ? 1 : 0,
-          }}
-        >
-          {workout.map((activity) => {
-            return (
-              <React.Fragment key={activity.value}>
-                <div className='keen-slider__slide number-slide1'>
-                  <button
-
-                    type='button'
-                    className='customButton'
-                    onClick={() => {
-                      setRideSpeed(activity.label);
-                      setSliderStage(1);
-                    }}
-                  >
-                    {activity.label}
-                  </button>
-                </div>
-              </React.Fragment>
-            );
-          })}
+    <>
+      <div className='scroller-parent'>
+        <div className='selected-stats-state'>
+          {activityMessage}
+          <br />
+          {hoursMessage}
+          <br />
+          {minutesMessage}
         </div>
-      )}
-      {sliderStage === 1 && (
-        <div
-          ref={refHours}
-          className='keen-slider'
-          style={{
-            visibility: sliderStage === 1 ? 'visible' : 'hidden',
-            opacity: sliderStage === 1 ? 1 : 0,
-          }}
-        >
-          {durationHours.map((hour) => {
-            return (
-              <React.Fragment key={`${hour.value}-hour`}>
-                <div className='keen-slider__slide number-slide2'
-                // style={{ backgroundColor: 'red' }}
-                >
-                  <button
-                    type='button'
-                    className='customButton'
-                    onClick={() => {
-                      setHours(hour.label);
-                      setSliderStage(2);
-                    }}
-                  >
-                    {hour.label}
-                  </button>
-                </div>
-              </React.Fragment>
-            );
-          })}
-        </div>
-      )}
-
-      {sliderStage === 2 && (
-        <div
-          ref={refMinutes}
-          className='keen-slider'
-          style={{
-            visibility: sliderStage === 2 ? 'visible' : 'hidden',
-            opacity: sliderStage === 2 ? 1 : 0,
-          }}
-        >
-          {durationMinutes.map((minute) => {
-            return (
-              <React.Fragment key={`${minute.value}-minute`}>
-                <div className='keen-slider__slide number-slide6'>
-                  <button
-                    type='button'
-                    className='customButton'
-                    onClick={() => {
-                      setMinutes(minute.label);
-                      setSliderStage(3);
-                    }}
-                  >
-                    {minute.label}
-                  </button>
-                </div>
-              </React.Fragment>
-            );
-          })}
-        </div>
-      )}
-      <div className='buttonContainer'>
-        {sliderStage > 0 && (
-          <button
-            type='button'
-            className='backButton'
-            onClick={handleBackButtonClick}
+        {sliderStage === 0 && (
+          <div
+            ref={refActivity}
+            className='keen-slider current-scroller'
+            style={{
+              visibility: sliderStage === 0 ? 'visible' : 'hidden',
+              opacity: sliderStage === 0 ? 1 : 0,
+            }}
           >
-            &lt; &lt;
-          </button>
+            {workout.map((activity) => {
+              return (
+                <React.Fragment key={activity.value}>
+                  <div className='keen-slider__slide number-slide1'>
+                    <button
+                      type='button'
+                      className='customButton'
+                      onClick={() => {
+                        setRideSpeed(activity.label);
+                        setActivityMessage(`You chose: ${activity.label}`);
+                        setSliderStage(1);
+                      }}
+                    >
+                      {activity.label}
+                    </button>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
         )}
-        {sliderStage < 3 && (
-          <button
-            type='button'
-            className='forwardButton'
-            onClick={handleForwardButtonClick}
+        {sliderStage === 1 && (
+          <div
+            ref={refHours}
+            className='keen-slider current-scroller'
+            style={{
+              visibility: sliderStage === 1 ? 'visible' : 'hidden',
+              opacity: sliderStage === 1 ? 1 : 0,
+            }}
           >
-            &gt; &gt;
-          </button>
+            {durationHours.map((hour) => {
+              return (
+                <React.Fragment key={`${hour.value}-hour`}>
+                  <div className='keen-slider__slide number-slide2'>
+                    <button
+                      type='button'
+                      className='customButton'
+                      onClick={() => {
+                        setHours(hour.label);
+                        setHoursMessage(`Hours riding: ${hour.label}`);
+                        setSliderStage(2);
+                      }}
+                    >
+                      {hour.label}
+                    </button>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
         )}
-        {sliderStage === 3 && (
-          <button
-            type='button'
-            className='rideStatsButton'
-            onClick={() => enterWorkout()}
+
+        {sliderStage === 2 && (
+          <div
+            ref={refMinutes}
+            className='keen-slider current-scroller'
+            style={{
+              visibility: sliderStage === 2 ? 'visible' : 'hidden',
+              opacity: sliderStage === 2 ? 1 : 0,
+            }}
           >
-            Get Ride Stats
-          </button>
+            {durationMinutes.map((minute) => {
+              return (
+                <React.Fragment key={`${minute.value}-minute`}>
+                  <div className='keen-slider__slide number-slide6'>
+                    <button
+                      type='button'
+                      className='customButton'
+                      onClick={() => {
+                        setMinutes(minute.label);
+                        setMinutesMessage(`Minutes riding: ${minute.label}`);
+                        setSliderStage(3);
+                      }}
+                    >
+                      {minute.label}
+                    </button>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
         )}
       </div>
-      {showAlert && (
-  <Stack sx={{ width: '100%', marginTop: 2 }}>
-    <Alert severity="error" onClose={() => setShowAlert(false)}>
-      <AlertTitle>Error</AlertTitle>
-      This is an error alert — <strong>Must enter weight to track stats</strong>
-    </Alert>
-  </Stack>
-)}
-    </div>
+      {showStack && (
+        <Stack direction='row' spacing={2}>
+          <div className='buttonContainer'>
+            {sliderStage > 0 && (
+              <Button
+                type='button'
+                variant='contained'
+                className='backButton'
+                sx={{ position: 'fixed', left: 0 }}
+                onClick={handleBackButtonClick}
+              >
+                &lt; &lt;
+              </Button>
+            )}
+
+            {sliderStage === 0 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                className='backButton'
+                sx={{ position: 'fixed', left: 0 }}
+              >
+                &lt; &lt;
+              </Button>
+            )}
+
+            {sliderStage < 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                className='forwardButton'
+                sx={{ position: 'fixed', right: 0 }}
+                onClick={handleForwardButtonClick}
+              >
+                &gt; &gt;
+              </Button>
+            )}
+
+            {sliderStage === 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                className='forwardButton'
+                sx={{ position: 'fixed', right: 0 }}
+              >
+                &gt; &gt;
+              </Button>
+            )}
+
+            {sliderStage < 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                disabled
+                color='success'
+                className='rideStatsButton'
+                sx={{ position: 'fixed', center: 0 }}
+              >
+                Get Ride Stats
+              </Button>
+            )}
+
+            {sliderStage === 3 && (
+              <Button
+                type='button'
+                variant='contained'
+                color='success'
+                className='rideStatsButton'
+                sx={{ position: 'fixed', center: 0 }}
+                onClick={handleGetRideStatsButton}
+              >
+                Get Ride Stats
+              </Button>
+            )}
+          </div>
+        </Stack>
+      )}
+      <>
+        {showErrorAlert && (
+          <Stack className='error-success-alert'>
+            <Alert severity='error' onClose={() => setShowErrorAlert(false)}>
+              <strong>Must enter weight to track stats</strong>
+            </Alert>
+          </Stack>
+        )}
+
+        {showSuccessAlert && (
+          <Stack className='error-success-alert'>
+            <Alert
+              severity='success'
+              onClose={() => setShowSuccessAlert(false)}
+            >
+              <strong>Stats successfully saved!</strong>
+            </Alert>
+          </Stack>
+        )}
+
+        {show2ndErrorAlert && (
+          <Stack className='error-success-alert'>
+            <Alert severity='error' onClose={() => setShow2ndErrorAlert(false)}>
+              <strong>
+                Must enter average speed to and a time to track stats
+              </strong>
+            </Alert>
+          </Stack>
+        )}
+      </>
+    </>
   );
 };
 
