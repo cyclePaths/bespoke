@@ -29,7 +29,6 @@ dayjs.extend(utc);
 //   reports: Report[];
 // }
 
-
 //  webpack url-loader
 // import roadHazardIcon from './images/hazard.png';
 // import theftAlertIcon from './icons/theft.png';
@@ -164,8 +163,6 @@ const ReportsMap: React.FC = () => {
           }
         };
 
-
-
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
         const marker = new google.maps.Marker({
           position: latLng,
@@ -247,7 +244,6 @@ const ReportsMap: React.FC = () => {
     }
   }, [map, reports, selectedType, buttonClicked]);
 
-
   // Sets the center of the map upon page loading //
   useEffect(() => {
     if (geoLocation) {
@@ -258,90 +254,97 @@ const ReportsMap: React.FC = () => {
   return (
     <BandAid>
       <div>
-      <Box
-  sx={{
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 80,
-    right: 2,
-    left: 2,
-    zIndex: 1,
-  }}
->
-<ToggleButtonGroup
-  value={selectedType}
-  onChange={handleTypeChange}
-  aria-label='Report Type'
-  sx={{ backgroundColor: 'white' }}
->
-  <ToggleButton
-    value='All'
-    sx={{
-      flexGrow: 1,
-      color: selectedType === 'All' ? 'white' : 'grey',
-      backgroundColor: selectedType === 'All' ? 'white' : 'lightgrey',
-    }}
-  >
-    All
-  </ToggleButton>
-  <ToggleButton
-    value='Road Hazard'
-    sx={{
-      flexGrow: 1,
-      color: selectedType === 'Road Hazard' ? 'white' : 'grey',
-      backgroundColor:
-        selectedType === 'Road Hazard' ? 'white' : 'lightgrey',
-    }}
-  >
-    Road
-  </ToggleButton>
-  <ToggleButton
-    value='Theft Alert'
-    sx={{
-      flexGrow: 1,
-      color: selectedType === 'Theft Alert' ? 'white' : 'grey',
-      backgroundColor:
-        selectedType === 'Theft Alert' ? 'white' : 'lightgrey',
-    }}
-  >
-    Theft
-  </ToggleButton>
-  <ToggleButton
-    value='Collision'
-    sx={{
-      flexGrow: 1,
-      color: selectedType === 'Collision' ? 'white' : 'grey',
-      backgroundColor: selectedType === 'Collision' ? 'white' : 'lightgrey',
-    }}
-  >
-    Collision
-  </ToggleButton>
-  <ToggleButton
-    value='Point of Interest'
-    sx={{
-      flexGrow: 1,
-      color: selectedType === 'Point of Interest' ? 'white' : 'grey',
-      backgroundColor:
-        selectedType === 'Point of Interest' ? 'white' : 'lightgrey',
-    }}
-  >
-    POI
-  </ToggleButton>
-</ToggleButtonGroup>
-
-</Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 80,
+            right: 2,
+            left: 2,
+            zIndex: 1,
+          }}
+        >
+          <ToggleButtonGroup
+            value={selectedType}
+            onChange={handleTypeChange}
+            aria-label='Report Type'
+            sx={{ backgroundColor: 'white' }}
+          >
+            <ToggleButton
+              value='All'
+              sx={{
+                flexGrow: 1,
+                color: selectedType === 'All' ? 'white' : 'grey',
+                backgroundColor: selectedType === 'All' ? 'white' : 'lightgrey',
+              }}
+            >
+              All
+            </ToggleButton>
+            <ToggleButton
+              value='Road Hazard'
+              sx={{
+                flexGrow: 1,
+                color: selectedType === 'Road Hazard' ? 'white' : 'grey',
+                backgroundColor:
+                  selectedType === 'Road Hazard' ? 'white' : 'lightgrey',
+              }}
+            >
+              Road
+            </ToggleButton>
+            <ToggleButton
+              value='Theft Alert'
+              sx={{
+                flexGrow: 1,
+                color: selectedType === 'Theft Alert' ? 'white' : 'grey',
+                backgroundColor:
+                  selectedType === 'Theft Alert' ? 'white' : 'lightgrey',
+              }}
+            >
+              Theft
+            </ToggleButton>
+            <ToggleButton
+              value='Collision'
+              sx={{
+                flexGrow: 1,
+                color: selectedType === 'Collision' ? 'white' : 'grey',
+                backgroundColor:
+                  selectedType === 'Collision' ? 'white' : 'lightgrey',
+              }}
+            >
+              Collision
+            </ToggleButton>
+            <ToggleButton
+              value='Point of Interest'
+              sx={{
+                flexGrow: 1,
+                color: selectedType === 'Point of Interest' ? 'white' : 'grey',
+                backgroundColor:
+                  selectedType === 'Point of Interest' ? 'white' : 'lightgrey',
+              }}
+            >
+              POI
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
 
         <Box height='87vh;'>
-          <Box sx={{ height: '87vh', display: 'flex', flexDirection: 'row', backgroundColor: 'grey' }}>
+          <Box
+            sx={{
+              height: '87vh',
+              display: 'flex',
+              flexDirection: 'row',
+              backgroundColor: 'grey',
+            }}
+          >
             <Drawer
               anchor='bottom'
               open={selectedReport !== null}
               onClose={() => setSelectedReport(null)}
               sx={{ maxHeight: '80vh' }}
             >
-              <Box sx={{ padding: 2 }}>
+              <Box sx={{ padding: 2, backgroundColor: 'lightgrey'}}>
                 <IconButton
                   onClick={() => setSelectedReport(null)}
                   sx={{ position: 'absolute', bottom: 8, right: 8 }}
@@ -388,27 +391,27 @@ const ReportsMap: React.FC = () => {
 
 export default ReportsMap;
 
-        //   return {
-        //     url: roadHazardIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Theft Alert':
-        //   return {
-        //     url: theftAlertIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Collision':
-        //   return {
-        //     url: collisionIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Point of Interest':
-        //   return {
-        //     url: pointOfInterestIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // default:
-        //   return {
-        //     url: roadHazardIcon,
-        //     scaledSize: markerSize,
-        //   };
+//   return {
+//     url: roadHazardIcon,
+//     scaledSize: markerSize,
+//   };
+// case 'Theft Alert':
+//   return {
+//     url: theftAlertIcon,
+//     scaledSize: markerSize,
+//   };
+// case 'Collision':
+//   return {
+//     url: collisionIcon,
+//     scaledSize: markerSize,
+//   };
+// case 'Point of Interest':
+//   return {
+//     url: pointOfInterestIcon,
+//     scaledSize: markerSize,
+//   };
+// default:
+//   return {
+//     url: roadHazardIcon,
+//     scaledSize: markerSize,
+//   };
