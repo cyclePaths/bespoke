@@ -156,6 +156,20 @@ reportRouter.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
+
+//  get most recent report
+reportRouter.get('/reports/most-recent', async (req, res) => {
+  try {
+    const mostRecentReport = await prisma.report.findFirst({
+      orderBy: { createdAt: 'desc' },
+    });
+    console.log(mostRecentReport);
+    res.json(mostRecentReport);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving most recent report');
+  }
+});
 // reportRouter.patch('/publish', async (req: Request, res: Response) => {
 
 //   try {
