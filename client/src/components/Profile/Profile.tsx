@@ -218,7 +218,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         <div>Achievement Badges:</div>
 
         <button onClick={badgesToggle}>Show Badges</button>
-        <button
+        {/* <button
           onClick={() => {
             addBadge(inputBox, tier);
           }}
@@ -243,7 +243,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           <option value={4}>4</option>
           <option value={5}>5</option>
           <option value={6}>6</option>
-        </select>
+        </select> */}
 
         <AchievementBadgeHolder id='badges'>
           {userBadges.map((badge) => {
@@ -256,7 +256,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
                   src={badge.badgeIcon}
                 />
                 <AchievementBadgeTooltip>
-                  <TooltipBox>
+                  <TooltipBox isDark={isDark}>
                     <h3>{badge.name}</h3>
                     <div>{badge.description}</div>
                   </TooltipBox>

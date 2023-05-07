@@ -44,7 +44,7 @@ const CreateReport: React.FC = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
 
-  const { user, geoLocation } = useContext(UserContext);
+  const { user, geoLocation, addBadge } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -92,12 +92,12 @@ const CreateReport: React.FC = () => {
           },
         });
 
-        // if (type === 'Point of Interest') {
-        //   user.addBadge('Tour Guide', 1);
-        // } else {
-        //   user.addBadge('Safety Sentinel', 1);
-        // }
-
+        if (type === 'Point of Interest') {
+          addBadge('Tour Guide', 1);
+        } else {
+          addBadge('Safety Sentinel', 1);
+        }
+ 
         setReports([...reports, response.data]);
         setBody('');
         setType('');
@@ -147,8 +147,6 @@ const CreateReport: React.FC = () => {
                 justifyContent: 'center',
                 width: '100%',
               }}
-
-
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
                 Hazard

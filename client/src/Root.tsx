@@ -671,6 +671,7 @@ const Root = () => {
           addBadge,
           tierCheck,
           updateAchievements,
+          isDark,
         }}
       >
         <BrowserRouter>

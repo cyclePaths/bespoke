@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import { Link } from 'react-router-dom'
 import Navbar from './Navbar';
-import { StopwatchTime } from '../Root';
+import { StopwatchTime, UserContext } from '../Root';
 // import Stopwatch from './Stopwatch';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +9,10 @@ import { ToastBuffer } from '../StyledComp';
 
 //We will eventually use Link to allow us to create clickable routing
 const App = () => {
+  const { isDark } = useContext(UserContext);
+
+  const theme = isDark ? 'dark' : 'light';
+
   return (
     <div>
       <div>
@@ -25,7 +29,7 @@ const App = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme='dark'
+          theme={theme}
         />
       </ToastBuffer>
       <div></div>

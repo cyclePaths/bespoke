@@ -1,5 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
+type DarkModeHelperProps = {
+  isDark: boolean;
+};
+
 const Button = styled.button`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
@@ -116,19 +120,6 @@ const RouteList = styled.div`
   align-content: space-between;
 `;
 
-const ForecastRowContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-// Specifically for the home page //
-const ForecastRowContainerforHome = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: auto;
-  width: 52.7%;
-`;
-
 const StatsDivs = styled.div`
   background-color: white;
   margin: 5px;
@@ -136,13 +127,35 @@ const StatsDivs = styled.div`
   border-radius: 2px;
 `;
 
-const ForecastEntry = styled.div`
-  border-style: solid;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(115, 216, 139); //this is the light mode color
+//For use in Forecasts/Weather
+const ForecastRowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
-//this is the dark mode color for ForecastEntry: rgb(59, 143, 77)
+
+// Specifically for the home page
+const ForecastRowContainerforHome = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  width: 52.7%;
+`;
+
+const ForecastEntry = styled.div<DarkModeHelperProps>`
+  justify-content: center;
+  margin-top: 80px;
+  margin-right: 20px;
+  align-items: center;
+  border-radius: 50px;
+  box-shadow: ${(props) =>
+    props.isDark
+      ? '20px 20px 60px #327a41, -10px -10px 5px #44a459'
+      : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, #3f9952, #358145)'
+      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+`;
 
 const WeatherIcon = styled.img`
   display: flex;
@@ -150,21 +163,118 @@ const WeatherIcon = styled.img`
   width: 100px;
 `;
 
+const WeatherIconFrame = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  background: #73d88b;
+  box-shadow: inset 25px 25px 9px #6ccb83, inset -25px -25px 9px #7ae593;
+  margin-top: -60px;
+  margin-left: -35px;
+`;
+
 const ForecastBit = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
   width: 200px;
+  margin-left: 15px;
+`;
+
+const ForecastStatsBox = styled.div`
+  height: 95px;
+  width: 150px;
+  margin-left: 28px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  border-radius: 0px;
+  background: #73d88b;
+  box-shadow: inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c;
+`;
+
+const WeatherDescription = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 130px;
+  margin-left: 64px;
 `;
 
 const ForecastText = styled.p`
   margin: 0;
 `;
 
+const ForecastTime = styled.p`
+  margin: 0;
+  font-size: 30px;
+`;
+
+const MainTemperature = styled.div`
+  display: flex;
+  margin-top: 25px;
+  align-items: center;
+  font-size: 50px;
+`;
+
+const MainTemperatureFrame = styled.div`
+  height: 100px;
+  width: 100px;
+  margin-top: 55px;
+  margin-left: 35px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #7be795, #68c27d);
+`;
+
+const MainTemperatureText = styled.p`
+  margin: -5px 0px -5px 7px;
+`;
+
+const AdjustedTemperature = styled.div`
+  display: flex;
+  margin-top: 30px;
+  margin-left: 40px;
+  align-items: center;
+`;
+
+const AdjustedTemperatureText = styled.p`
+  margin: -5px 0px -5px 8px;
+`;
+
+const AdjustedTemperatureHelperIcon = styled.img`
+  margin-top: 22px;
+  margin-left: -15px;
+  height: 30px;
+  width: 45px;
+`;
+
 const ForecastHelperIcon = styled.img`
+  margin-top: -10px;
   margin-left: -13px;
   height: 45px;
   width: 46px;
+`;
+
+const ConditionalHelperIcon = styled.img`
+  position: absolute;
+  margin-top: 26px;
+  margin-left: -34px;
+  height: 45px;
+  width: 46px;
+`;
+
+const BigTemperatureHelperIcon = styled.img`
+  position: absolute;
+  margin-left: 27px;
+  margin-top: -15px;
+  max-height: 80px;
+  max-width: 100px;
+  height: 100%;
+  width: 100%;
 `;
 
 const NavBarTop = styled.span`
@@ -205,12 +315,13 @@ const AchievementBadgeTooltip = styled.span`
   transition: opacity 1s;
 `;
 
-const TooltipBox = styled.div`
+const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 150px;
   border: 10px solid green;
   padding: 25px;
   margin: 10px;
-  background-color: #ea960e;
+  background-color: ${(props) =>
+    props.isDark ? '#191a35' : 'rgb(133, 211, 255)'};
 `;
 
 const AchievementBadge = styled.img`
@@ -254,14 +365,26 @@ const ToastBuffer = styled.div`
 
 export {
   ForecastBit,
+  ForecastStatsBox,
+  WeatherDescription,
   ForecastText,
+  ForecastTime,
+  MainTemperature,
+  MainTemperatureFrame,
+  MainTemperatureText,
+  AdjustedTemperature,
+  AdjustedTemperatureText,
+  AdjustedTemperatureHelperIcon,
   ForecastHelperIcon,
+  ConditionalHelperIcon,
+  BigTemperatureHelperIcon,
   InputLayout,
   AutoCompleteDropdownLayout,
   RouteButtonContainer,
   ForecastRowContainer,
   ForecastEntry,
   WeatherIcon,
+  WeatherIconFrame,
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
