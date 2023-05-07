@@ -214,10 +214,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       {/* <Scrollers /> */}
 
       {/* </div> */}
-      <div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
+      {/* <div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
         <div>Achievement Badges:</div>
 
-        <button onClick={badgesToggle}>Show Badges</button>
+        <button onClick={badgesToggle}>Show Badges</button> */}
         {/* <button
           onClick={() => {
             addBadge(inputBox, tier);
@@ -278,7 +278,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
             right: 0,
           }}
         ></div>
-      </div>
+      {/* </div> */}
     </BandAid>
   );
 };
