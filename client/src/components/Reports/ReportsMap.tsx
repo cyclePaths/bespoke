@@ -24,6 +24,11 @@ import utc from 'dayjs/plugin/utc';
 import { Card, CardContent } from '@mui/material';
 
 dayjs.extend(utc);
+//  added so reports can be passed as props from CreateReport to re-render after a report is created
+// interface ReportsMapProps {
+//   reports: Report[];
+// }
+
 
 //  webpack url-loader
 // import roadHazardIcon from './images/hazard.png';
@@ -159,30 +164,7 @@ const ReportsMap: React.FC = () => {
           }
         };
 
-        //   return {
-        //     url: roadHazardIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Theft Alert':
-        //   return {
-        //     url: theftAlertIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Collision':
-        //   return {
-        //     url: collisionIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // case 'Point of Interest':
-        //   return {
-        //     url: pointOfInterestIcon,
-        //     scaledSize: markerSize,
-        //   };
-        // default:
-        //   return {
-        //     url: roadHazardIcon,
-        //     scaledSize: markerSize,
-        //   };
+
 
         const latLng = { lat: report.location_lat!, lng: report.location_lng! };
         const marker = new google.maps.Marker({
@@ -265,26 +247,6 @@ const ReportsMap: React.FC = () => {
     }
   }, [map, reports, selectedType, buttonClicked]);
 
-  // useEffect(() => {
-  //   if (map) {
-  //     if (navigator.geolocation) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           const pos = new google.maps.LatLng(
-  //             position.coords.latitude,
-  //             position.coords.longitude
-  //           );
-  //           setCenter(pos);
-  //         },
-  //         () => {
-  //           setLocationError(true);
-  //         }
-  //       );
-  //     } else {
-  //       setLocationError(true);
-  //     }
-  //   }
-  // }, center? [map, selectedType] : [map]);
 
   // Sets the center of the map upon page loading //
   useEffect(() => {
@@ -296,38 +258,83 @@ const ReportsMap: React.FC = () => {
   return (
     <BandAid>
       <div>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: 80,
-            right: 2,
-            zIndex: 1,
-          }}
-        >
-          <Box sx={{ marginRight: 0 }}></Box>
-          <Box>
-            <ToggleButtonGroup
-              value={selectedType}
-              onChange={handleTypeChange}
-              aria-label='Report Type'
-              sx={{ backgroundColor: 'white' }}
-            >
-              <ToggleButton value='All'>All</ToggleButton>
-              <ToggleButton value='Road Hazard'>Road Hazard</ToggleButton>
-              <ToggleButton value='Theft Alert'>Theft Alert</ToggleButton>
-              <ToggleButton value='Collision'>Collision</ToggleButton>
-              <ToggleButton value='Point of Interest'>
-                Point of Interest
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Box>
-        </Box>
+      <Box
+  sx={{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 80,
+    right: 2,
+    left: 2,
+    zIndex: 1,
+  }}
+>
+<ToggleButtonGroup
+  value={selectedType}
+  onChange={handleTypeChange}
+  aria-label='Report Type'
+  sx={{ backgroundColor: 'white' }}
+>
+  <ToggleButton
+    value='All'
+    sx={{
+      flexGrow: 1,
+      color: selectedType === 'All' ? 'white' : 'grey',
+      backgroundColor: selectedType === 'All' ? 'white' : 'lightgrey',
+    }}
+  >
+    All
+  </ToggleButton>
+  <ToggleButton
+    value='Road Hazard'
+    sx={{
+      flexGrow: 1,
+      color: selectedType === 'Road Hazard' ? 'white' : 'grey',
+      backgroundColor:
+        selectedType === 'Road Hazard' ? 'white' : 'lightgrey',
+    }}
+  >
+    Road
+  </ToggleButton>
+  <ToggleButton
+    value='Theft Alert'
+    sx={{
+      flexGrow: 1,
+      color: selectedType === 'Theft Alert' ? 'white' : 'grey',
+      backgroundColor:
+        selectedType === 'Theft Alert' ? 'white' : 'lightgrey',
+    }}
+  >
+    Theft
+  </ToggleButton>
+  <ToggleButton
+    value='Collision'
+    sx={{
+      flexGrow: 1,
+      color: selectedType === 'Collision' ? 'white' : 'grey',
+      backgroundColor: selectedType === 'Collision' ? 'white' : 'lightgrey',
+    }}
+  >
+    Collision
+  </ToggleButton>
+  <ToggleButton
+    value='Point of Interest'
+    sx={{
+      flexGrow: 1,
+      color: selectedType === 'Point of Interest' ? 'white' : 'grey',
+      backgroundColor:
+        selectedType === 'Point of Interest' ? 'white' : 'lightgrey',
+    }}
+  >
+    POI
+  </ToggleButton>
+</ToggleButtonGroup>
+
+</Box>
 
         <Box height='87vh;'>
-          <Box sx={{ height: '87vh', display: 'flex', flexDirection: 'row' }}>
+          <Box sx={{ height: '87vh', display: 'flex', flexDirection: 'row', backgroundColor: 'grey' }}>
             <Drawer
               anchor='bottom'
               open={selectedReport !== null}
@@ -380,3 +387,28 @@ const ReportsMap: React.FC = () => {
 };
 
 export default ReportsMap;
+
+        //   return {
+        //     url: roadHazardIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Theft Alert':
+        //   return {
+        //     url: theftAlertIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Collision':
+        //   return {
+        //     url: collisionIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // case 'Point of Interest':
+        //   return {
+        //     url: pointOfInterestIcon,
+        //     scaledSize: markerSize,
+        //   };
+        // default:
+        //   return {
+        //     url: roadHazardIcon,
+        //     scaledSize: markerSize,
+        //   };
