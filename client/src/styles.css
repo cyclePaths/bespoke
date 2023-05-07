@@ -432,7 +432,9 @@ The code below is for the Profile search Home address feature
 
 .saveHome {
   margin-top: 10px !important;
-   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+  z-index: 9999;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+  outline: 1px solid red;
 }
 
 .displayedAddress {
@@ -497,6 +499,11 @@ The code below is for the Profile set weight feature
   padding: 8px;
 }
 
+.address-alert-stack {
+  position: absolute;
+   bottom: 165px;
+}
+
 .current-weight {
   position: absolute;
   top: calc(15% - 60px);
@@ -509,6 +516,25 @@ The code below is for the Profile set weight feature
 /*
 The code above is for the Profile set weight feature
 */
+
+/*
+The code below is for the Profile Stats feature
+*/
+
+.select-stats {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+/*
+The code above is for the Profile Stats feature
+*/
+
+
+
 
 /* This is the disable some of the google watermarks */
 
