@@ -139,7 +139,6 @@ export interface BadgeWithAdditions extends Badge {
 
 export const UserContext = createContext<any>(Object());
 
-
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
   const [isDark, setIsDark] = useState(false);
@@ -184,7 +183,8 @@ const Root = () => {
   ]);
   //holds URL of badge to display by username
   const [selectedBadge, setSelectedBadge] = useState<string>(
-    'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'  );
+    'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+  );
 
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
@@ -562,7 +562,6 @@ const Root = () => {
       setError('Geolocation is not supported by this browser.');
     }
   };
-
 
   const updateUserLocation = (geoObj: geoLocation) => {
     const id = user?.id;
