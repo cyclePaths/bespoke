@@ -1,10 +1,20 @@
-import React from 'react';
-import { Hourly } from '../../Root';
+import React, { useContext } from 'react';
+import { Hourly, UserContext } from '../../Root';
 import {
   WeatherIcon,
+  WeatherIconFrame,
   ForecastBit,
   ForecastText,
+  ForecastTime,
+  MainTemperature,
+  MainTemperatureFrame,
+  MainTemperatureText,
+  AdjustedTemperature,
+  AdjustedTemperatureText,
+  AdjustedTemperatureHelperIcon,
   ForecastHelperIcon,
+  ConditionalHelperIcon,
+  BigTemperatureHelperIcon,
   ForecastEntry,
 } from '../../StyledComp';
 import { weatherIcons } from '../../../assets';
@@ -45,6 +55,7 @@ const Forecast = ({
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
 }: ForecastProps) => {
+  const { isDark } = useContext(UserContext);
   //setting measurement units for temperature/depth/precipitation amount to user selected ones
   let temperatureUnit: string = '';
   let speedUnit: string = windSpeedMeasurementUnit;
@@ -68,13 +79,13 @@ const Forecast = ({
   const hour = dateObj.getHours();
   let displayTime = '';
   if (hour === 0) {
-    displayTime = '12:00AM';
+    displayTime = '12AM';
   } else if (hour === 12) {
-    displayTime = '12:00PM';
+    displayTime = '12PM';
   } else if (hour > 0 && hour < 12) {
-    displayTime = hour.toString() + ':00AM';
+    displayTime = hour.toString() + 'AM';
   } else if (hour > 12) {
-    displayTime = (hour - 12).toString() + ':00PM';
+    displayTime = (hour - 12).toString() + 'PM';
   }
 
   let weatherIcon = prepareWeatherIcon(
@@ -87,11 +98,34 @@ const Forecast = ({
   );
 
   return (
-    <ForecastEntry>
-      <div>
-        <WeatherIcon src={weatherIcon} />
-      </div>
-      <ForecastText>Time: {displayTime}</ForecastText>
+    <ForecastEntry isDark={isDark}>
+      <ForecastBit>
+        <WeatherIconFrame>
+          <WeatherIcon src={weatherIcon} />
+        </WeatherIconFrame>
+        <ForecastTime>{displayTime}</ForecastTime>
+      </ForecastBit>
+      <ForecastBit>
+        <MainTemperatureFrame>
+          <MainTemperature>
+            <MainTemperatureText>
+              <strong>{Math.round(temperature)}</strong>
+            </MainTemperatureText>
+            <BigTemperatureHelperIcon src={temperatureUnit} />
+          </MainTemperature>
+        </MainTemperatureFrame>
+      </ForecastBit>
+      <AdjustedTemperature>
+        <ConditionalHelperIcon
+          src={weatherIcons.day.sunrise}
+        ></ConditionalHelperIcon>
+        <AdjustedTemperature>
+          <AdjustedTemperatureText>
+            <strong>{Math.round(apparentTemperature)}</strong>
+          </AdjustedTemperatureText>
+        </AdjustedTemperature>
+        <AdjustedTemperatureHelperIcon src={temperatureUnit} />
+      </AdjustedTemperature>
       <ForecastBit>Weather Description: {weatherDescription}</ForecastBit>
       <ForecastBit>
         <ForecastText>
@@ -99,14 +133,7 @@ const Forecast = ({
         </ForecastText>
         <ForecastHelperIcon src={weatherIcons.misc.humidity} />
       </ForecastBit>
-      <ForecastBit>
-        <ForecastText>Temperature: {temperature}</ForecastText>
-        <ForecastHelperIcon src={temperatureUnit} />
-      </ForecastBit>
-      <ForecastBit>
-        <ForecastText>Adj Temp: {apparentTemperature}</ForecastText>
-        <ForecastHelperIcon src={temperatureUnit} />
-      </ForecastBit>
+
       <ForecastBit>
         <ForecastText>Humidity: {humidity}</ForecastText>
         <ForecastHelperIcon src={weatherIcons.misc.humidity} />

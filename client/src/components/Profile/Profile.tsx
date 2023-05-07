@@ -256,7 +256,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
                   src={badge.badgeIcon}
                 />
                 <AchievementBadgeTooltip>
-                  <TooltipBox>
+                  <TooltipBox isDark={isDark}>
                     <h3>{badge.name}</h3>
                     <div>{badge.description}</div>
                   </TooltipBox>
