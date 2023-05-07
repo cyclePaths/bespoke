@@ -34,10 +34,10 @@ const CreateComment = (props) => {
 
 
     return (
-    <div style={{ textAlign: 'left', marginBottom: '5px', maxHeight: '10px', minHeight: '10px' }}>
+    <div style={{ textAlign: 'left', marginBottom: '35px', maxHeight: '10px', minHeight: '10px' }}>
     <ThemeProvider theme={themeBulletin}>
         <div id='commentTextField' style={{ display: 'inline-block'}}>
-        <OutlinedInput style={{ backgroundColor: 'rgb(115, 216, 138)', marginTop: '20px',
+        <OutlinedInput style={{ backgroundColor: 'rgb(115, 216, 138)', marginTop: '20px', marginBottom: '0px',
                                 maxHeight: '20px', minHeight: '20px', maxWidth: '200px' }}
             multiline={false}
             rows='1'
