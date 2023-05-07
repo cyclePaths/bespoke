@@ -4,6 +4,8 @@ import {
   WeatherIcon,
   WeatherIconFrame,
   ForecastBit,
+  ForecastStatsBox,
+  WeatherDescription,
   ForecastText,
   ForecastTime,
   MainTemperature,
@@ -126,18 +128,17 @@ const Forecast = ({
         </AdjustedTemperature>
         <AdjustedTemperatureHelperIcon src={temperatureUnit} />
       </AdjustedTemperature>
-      <ForecastBit>Weather Description: {weatherDescription}</ForecastBit>
-      <ForecastBit>
-        <ForecastText>
-          Precipitation Chance: {precipitationProbability}
-        </ForecastText>
-        <ForecastHelperIcon src={weatherIcons.misc.humidity} />
-      </ForecastBit>
-
-      <ForecastBit>
-        <ForecastText>Humidity: {humidity}</ForecastText>
-        <ForecastHelperIcon src={weatherIcons.misc.humidity} />
-      </ForecastBit>
+      <WeatherDescription>{weatherDescription}</WeatherDescription>
+      <ForecastStatsBox>
+        <ForecastBit>
+          <ForecastText>Precipitation {precipitationProbability}</ForecastText>
+          <ForecastHelperIcon src={weatherIcons.misc.humidity} />
+        </ForecastBit>
+        <ForecastBit>
+          <ForecastText>Humidity: {humidity}</ForecastText>
+          <ForecastHelperIcon src={weatherIcons.misc.humidity} />
+        </ForecastBit>
+      </ForecastStatsBox>
     </ForecastEntry>
   );
 };

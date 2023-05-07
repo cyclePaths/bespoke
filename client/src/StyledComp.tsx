@@ -127,7 +127,7 @@ const StatsDivs = styled.div`
   border-radius: 2px;
 `;
 
-//For use related to Forecasts and Weather
+//For use in Forecasts/Weather
 const ForecastRowContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -185,6 +185,26 @@ const ForecastBit = styled.div`
   margin-left: 15px;
 `;
 
+const ForecastStatsBox = styled.div`
+  height: 95px;
+  width: 150px;
+  margin-left: 28px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  border-radius: 0px;
+  background: #73d88b;
+  box-shadow: inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c;
+`;
+
+const WeatherDescription = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 130px;
+  margin-left: 64px;
+`;
+
 const ForecastText = styled.p`
   margin: 0;
 `;
@@ -222,7 +242,7 @@ const AdjustedTemperature = styled.div`
 `;
 
 const AdjustedTemperatureText = styled.p`
-  margin: -5px 0px -5px -3px;
+  margin: -5px 0px -5px 8px;
 `;
 
 const AdjustedTemperatureHelperIcon = styled.img`
@@ -240,6 +260,7 @@ const ForecastHelperIcon = styled.img`
 `;
 
 const ConditionalHelperIcon = styled.img`
+  position: absolute;
   margin-top: 26px;
   margin-left: -34px;
   height: 45px;
@@ -344,6 +365,8 @@ const ToastBuffer = styled.div`
 
 export {
   ForecastBit,
+  ForecastStatsBox,
+  WeatherDescription,
   ForecastText,
   ForecastTime,
   MainTemperature,
