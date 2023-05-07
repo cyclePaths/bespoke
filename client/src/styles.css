@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+
+html, body {
+  margin: 0px;
+  font-family: 'Roboto', sans-serif;
+}
+
 #sign-in {
   display: flex;
   flex-direction: column;
@@ -35,10 +41,6 @@
   display: flex;
 }
 
-body {
-  margin: 0px;
-  font-family: 'Roboto', sans-serif;
-}
 
 #profilePic {
   border-radius: 100px;
@@ -338,6 +340,8 @@ The code above is for the scroll wheel
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
+  width: 100%;
   height: 87vh;
 }
 
@@ -451,7 +455,7 @@ The code below is for the Profile set weight feature
 
 .current-weight {
   position: absolute;
-  top: calc(15% - 60px); 
+  top: calc(15% - 60px);
   /* top: calc(30% - 100px);  */
   left: 50%;
   /* justify-content:center;
