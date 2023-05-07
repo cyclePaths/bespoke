@@ -41,8 +41,10 @@ const CreateReport: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const { user, geoLocation, addBadge } = useContext(UserContext);
+
+  const { user, geoLocation } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -65,11 +67,10 @@ const CreateReport: React.FC = () => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (currentLocation) {
+      setSubmitting(true);
       try {
         const { email, id } = user;
 
@@ -91,11 +92,11 @@ const CreateReport: React.FC = () => {
           },
         });
 
-        if (type === 'Point of Interest') {
-          addBadge('Tour Guide', 1);
-        } else {
-          addBadge('Safety Sentinel', 1);
-        }
+        // if (type === 'Point of Interest') {
+        //   user.addBadge('Tour Guide', 1);
+        // } else {
+        //   user.addBadge('Safety Sentinel', 1);
+        // }
 
         setReports([...reports, response.data]);
         setBody('');
@@ -105,6 +106,8 @@ const CreateReport: React.FC = () => {
       } catch (error: any) {
         console.error(error.message);
         setError(error.message);
+      } finally {
+        setSubmitting(false);
       }
     }
   };
@@ -144,6 +147,8 @@ const CreateReport: React.FC = () => {
                 justifyContent: 'center',
                 width: '100%',
               }}
+
+
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
                 Hazard
