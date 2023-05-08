@@ -69,11 +69,22 @@ const Stats = () => {
         </Button>
       </div>
       <div>
-        <Dialog  open={open} onClose={handleClose}>
-          <DialogTitle>Fill the form</DialogTitle>
-          <DialogContent>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+
+          >
+          <DialogTitle
+    className='select-stats-dialog'
+
+          >Select Rides By Speed</DialogTitle>
+          <DialogContent
+          className='select-stats-dialog'
+          >
             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{ m: 1, minWidth: 120 }}
+
+              >
                 <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
                 <Select
                   native
@@ -95,7 +106,9 @@ const Stats = () => {
               </FormControl>
             </Box>
           </DialogContent>
-          <DialogActions>
+          <DialogActions
+            className='select-stats-dialog'
+          >
             <Button onClick={handleClose}>Cancel</Button>
             <Button
               onClick={(event) => {

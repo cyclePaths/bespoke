@@ -19,7 +19,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-const Scrollers = () => {
+const Scrollers = ({ setShowScrollers }) => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
@@ -214,6 +214,9 @@ const Scrollers = () => {
         }, 6000);
         successfullyEnteredStats();
         setShowStack(false);
+        // setShowScrollers(true);
+        setSliderStage(0);
+        setShowStack(true);
       }
       }
 
@@ -424,7 +427,7 @@ const Scrollers = () => {
           <Stack className='error-success-alert'>
             <Alert severity='error' onClose={() => setShow2ndErrorAlert(false)}>
               <strong>
-                Must enter average speed to and a time to track stats
+                Must enter average speed and a time to track stats
               </strong>
             </Alert>
           </Stack>

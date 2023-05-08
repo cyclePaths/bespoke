@@ -1,3 +1,200 @@
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import Tabs from '@mui/material/Tabs';
+// import Tab from '@mui/material/Tab';
+// import Typography from '@mui/material/Typography';
+// import Box from '@mui/material/Box';
+// import IconButton from '@mui/material/IconButton';
+// import DarkModeIcon from '@mui/icons-material/DarkMode';
+// import NightlightRoundTwoToneIcon from '@mui/icons-material/NightlightRoundTwoTone';
+// import SetHome from './SetHome';
+// import SetWeight from './SetWeight';
+// import Scrollers from './Scrollers';
+// import Stats from './Stats';
+// import { ToggleSwitch } from '../../ThemeStyles';
+// import StatsDisplay from './StatsDisplay';
+// import { ThemeProvider } from './ThemeContext';
+
+// interface TabPanelProps {
+//   children?: React.ReactNode;
+//   index: number;
+//   value: number;
+// }
+
+// const TabPanel = (props: TabPanelProps) => {
+//   const { children, value, index, ...other } = props;
+
+//   return (
+//     <div
+//       role='tabpanel'
+//       hidden={value !== index}
+//       id={`simple-tabpanel-${index}`}
+//       aria-labelledby={`simple-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && (
+//         <Box sx={{ p: 3 }}>
+//           <Typography>{children}</Typography>
+//         </Box>
+//       )}
+//     </div>
+//   );
+// };
+
+// function a11yProps(index: number) {
+//   return {
+//     id: `simple-tab-${index}`,
+//     'aria-controls': `simple-tabpanel-${index}`,
+//   };
+// }
+
+// const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
+//   const [value, setValue] = useState(-1);
+//   const [activeTab, setActiveTab] = useState<number>(0);
+//   const [weight, setWeight] = useState(0);
+//   const [showScrollers, setShowScrollers] = useState(false);
+//   const [tabVisibility, setTabVisibility] = useState([
+//     false,
+//     false,
+//     false,
+//     false,
+//   ]);
+//   const [stats, setStats] = useState([]);
+//   const [appTheme, setAppTheme] = useState();
+//   // const [open, setOpen] = useState(false);
+//   // const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>
+//   // const [alertTypeAddress, setAlertTypeAddress] = useState<'success' | 'warning' | null>(
+//   //   null
+//   // );
+
+
+//   const handleThemeIconClick = () => {
+//     {appTheme ? <DarkModeIcon/> : <NightlightRoundTwoToneIcon />}
+
+//     handleToggleStyle();
+//     saveTheme();
+//   }
+
+//   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+//     // setValue(newValue);
+//     // setActiveTab(newValue);
+//     toggleTabVisibility(newValue);
+
+//     if (newValue === 2) {
+//       setShowScrollers(!tabVisibility[2]);
+//     } else {
+//       setShowScrollers(false);
+//     }
+//   };
+
+//   const handleWeightChange = (value: number) => {
+//     setWeight(value);
+//   };
+
+//   useEffect(() => {
+//     setAppTheme(theme);
+//     // console.log('profile nav', theme)
+//   }, [theme]);
+
+//   const toggleTabVisibility = (tabIndex: number) => {
+//     setTabVisibility((prevState) => {
+//       const newState = prevState.map((visible, index) => {
+//         return index === tabIndex ? !visible : false;
+//       });
+//       return newState;
+//     });
+//   };
+
+//   return (
+//     <div>
+//       <Box sx={{ width: '100%' }}>
+//         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+//           <Tabs
+//             value={value}
+//             onChange={handleChange}
+//             aria-label='basic tabs example'
+//           >
+//             <Tab label='Set Home' {...a11yProps(0)} />
+//             <Tab label='Weight' {...a11yProps(1)} />
+//             <Tab label='Add Ride' {...a11yProps(2)} />
+//             <Tab label='Stats' {...a11yProps(3)} />
+//           </Tabs>
+//         </Box>
+
+//         <div
+//           style={{
+//             display: 'flex',
+//             flexDirection: 'column',
+//             alignItems: 'stretch',
+//           }}
+//         >
+//           {/* Below is the Greeting and Profile Pic and Theme Selection*/}
+//           <div>{`Hello ${user}!`}</div>
+//           <img
+//             style={{ borderRadius: '50%', width: '100px', height: '100px' }}
+//             src={photo}
+//             alt='avatar'
+//           />
+
+//           <ThemeProvider>
+//             <div id='profile' className='themeIcon'>
+//               <IconButton
+//                 // onClick={() => {
+//                 //   handleToggleStyle();
+//                 //   saveTheme();
+//                 // }}
+
+//                 onClick={handleThemeIconClick}
+//               >
+//                 <DarkModeIcon />
+//               </IconButton>
+//             </div>
+//           </ThemeProvider>
+//           {/* Above is the Greeting and Profile Pic and Theme Selection*/}
+
+//           <div hidden={!tabVisibility[0]}>
+//             <SetHome />
+//           </div>
+//           <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
+//             <div style={{ width: '100%' }}>
+//               {/* {`My current weight is ${weight} lbs`} */}
+//               <SetWeight
+//                 weight={weight}
+//                 onWeightChange={handleWeightChange}
+//                 // open={open}
+//                 // setOpen={setOpen}
+//                 // alertTypeWeight={alertTypeWeight}
+//                 // setAlertTypeWeight={setAlertTypeWeight}
+//               />
+//             </div>
+//           </div>
+//           <div hidden={!tabVisibility[2]} />
+
+//           {showScrollers && <Scrollers setShowScrollers={setShowScrollers} />}
+
+//           <div hidden={!tabVisibility[3]}>
+//             <Stats />
+//             {/* <StatsDisplay stats={stats} /> */}
+//           </div>
+//         </div>
+//       </Box>
+//     </div>
+//   );
+// };
+
+// export default ProfileNav;
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
@@ -6,6 +203,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import NightlightRoundTwoToneIcon from '@mui/icons-material/NightlightRoundTwoTone';
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
@@ -20,11 +218,32 @@ interface TabPanelProps {
   value: number;
 }
 
+const LightModeIcon = (props) => {
+  return(
+    <DarkModeIcon
+    {...props}
+    />
+  )
+}
+
+const DarkMode = (props) => {
+  return(
+    <DarkModeIcon
+    {...props}
+    style={{
+      color: '#5e89f0', // replace with your desired color
+    }}
+    />
+  )
+
+}
+
+
+
 const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
-
     <div
       role='tabpanel'
       hidden={value !== index}
@@ -48,13 +267,20 @@ function a11yProps(index: number) {
   };
 }
 
-const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
+const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
   const [value, setValue] = useState(-1);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [weight, setWeight] = useState(0);
   const [showScrollers, setShowScrollers] = useState(false);
-  const [tabVisibility, setTabVisibility] = useState([false, false, false, false]);
+  const [tabVisibility, setTabVisibility] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [stats, setStats] = useState([]);
+  const [appTheme, setAppTheme] = useState(false);
+  const [themeIcon, setThemeIcon] = useState(false);
   // const [open, setOpen] = useState(false);
   // const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>
   // const [alertTypeAddress, setAlertTypeAddress] = useState<'success' | 'warning' | null>(
@@ -62,37 +288,40 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
   // );
 
 
+  const handleThemeIconClick = () => {
+    // {appTheme ? <DarkModeIcon/> : <LightModeIcon />}
+    // if (appTheme === true) {
+      // <DarkModeIcon /> = <LightModeIcon/>;
+    // }
+    setAppTheme(!appTheme);
+    // setThemeIcon(!appTheme);
+    handleToggleStyle();
+    saveTheme();
+  }
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     // setValue(newValue);
     // setActiveTab(newValue);
     toggleTabVisibility(newValue);
-
 
     if (newValue === 2) {
       setShowScrollers(!tabVisibility[2]);
     } else {
       setShowScrollers(false);
     }
-
   };
 
   const handleWeightChange = (value: number) => {
     setWeight(value);
   };
 
+  useEffect(() => {
+    setAppTheme(theme);
+    setThemeIcon(theme);
+    // console.log('profile nav', theme)
+  }, [theme]);
 
-
-
-  // useEffect(() => {
-  //   axios.get('/profile/weight')
-  //     .then(({ data }) => {
-  //       console.log(data)
-  //       setWeight(data.weight);
-  //   });
-  //     }, []);
-
-      const toggleTabVisibility = (tabIndex: number) => {
-
+  const toggleTabVisibility = (tabIndex: number) => {
     setTabVisibility((prevState) => {
       const newState = prevState.map((visible, index) => {
         return index === tabIndex ? !visible : false;
@@ -101,75 +330,80 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle }) => {
     });
   };
 
-
   return (
     <div>
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label='basic tabs example'
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label='basic tabs example'
+          >
+            <Tab label='Set Home' {...a11yProps(0)} />
+            <Tab label='Weight' {...a11yProps(1)} />
+            <Tab label='Add Ride' {...a11yProps(2)} />
+            <Tab label='Stats' {...a11yProps(3)} />
+          </Tabs>
+        </Box>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+          }}
         >
-          <Tab label='Set Home' {...a11yProps(0)} />
-          <Tab label='Weight' {...a11yProps(1)} />
-          <Tab label='Add Ride' {...a11yProps(2)} />
-          <Tab label='Stats' {...a11yProps(3)} />
-        </Tabs>
-      </Box>
+          {/* Below is the Greeting and Profile Pic and Theme Selection*/}
+          <div>{`Hello ${user}!`}</div>
+          <img
+            style={{ borderRadius: '50%', width: '100px', height: '100px' }}
+            src={photo}
+            alt='avatar'
+          />
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+          <ThemeProvider>
+            <div id='profile' className='themeIcon'>
+              <IconButton
+                // onClick={() => {
+                //   handleToggleStyle();
+                //   saveTheme();
+                // }}
 
-{/* Below is the Greeting and Profile Pic and Theme Selection*/}
-      <div>{`Hello ${user}!`}</div>
-      <img
-        style={{ borderRadius: '50%', width: '100px', height: '100px' }}
-        src={photo}
-        alt='avatar'
-      />
+                onClick={handleThemeIconClick}
+              >
+                {appTheme ? <LightModeIcon /> : <DarkMode /> }
+                {/* <DarkModeIcon /> */}
+              </IconButton>
+            </div>
+          </ThemeProvider>
+          {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 
-<ThemeProvider>
-<div id='profile' className='themeIcon'>
+          <div hidden={!tabVisibility[0]}>
+            <SetHome />
+          </div>
+          <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
+            <div style={{ width: '100%' }}>
+              {/* {`My current weight is ${weight} lbs`} */}
+              <SetWeight
+                weight={weight}
+                onWeightChange={handleWeightChange}
+                // open={open}
+                // setOpen={setOpen}
+                // alertTypeWeight={alertTypeWeight}
+                // setAlertTypeWeight={setAlertTypeWeight}
+              />
+            </div>
+          </div>
+          <div hidden={!tabVisibility[2]} />
 
-       <IconButton onClick={() => {
-    handleToggleStyle();
-    saveTheme();
-  }}>
-    <DarkModeIcon />
-  </IconButton>
-    </div>
-    </ThemeProvider>
-{/* Above is the Greeting and Profile Pic and Theme Selection*/}
+          {showScrollers && <Scrollers setShowScrollers={setShowScrollers} />}
 
-      <div hidden={!tabVisibility[0]}>
-
-        <SetHome />
-      </div>
-      <div hidden={!tabVisibility[1]} style={{ width: "100%" }}>
-        <div style={{ width: "100%" }}>
-          {/* {`My current weight is ${weight} lbs`} */}
-        <SetWeight
-        weight={weight}
-        onWeightChange={handleWeightChange}
-        // open={open}
-        // setOpen={setOpen}
-        // alertTypeWeight={alertTypeWeight}
-        // setAlertTypeWeight={setAlertTypeWeight}
-        />
+          <div hidden={!tabVisibility[3]}>
+            <Stats />
+            {/* <StatsDisplay stats={stats} /> */}
+          </div>
         </div>
-      </div>
-      <div hidden={!tabVisibility[2]} />
-
-
-      {showScrollers && <Scrollers />}
-
-      <div hidden={!tabVisibility[3]}>
-      <Stats />
-      {/* <StatsDisplay stats={stats} /> */}
-      </div>
-
-      </div>
-    </Box>
+      </Box>
     </div>
   );
 };

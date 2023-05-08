@@ -162,8 +162,15 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
       setRideStats(data);
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
+
+
     });
   }, []);
+
+  useEffect(() => {
+    setTheme(theme)
+    console.log(theme)
+  }, [theme])
 
   useEffect(() => {}, [inputBox]);
 
@@ -178,6 +185,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         photo={photo}
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
+        theme={theme}
       />
 
       <div>{displayNoBadgeIfEmpty()}</div>

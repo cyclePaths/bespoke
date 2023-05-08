@@ -79,6 +79,9 @@ const Addresses = ({
   const [alertTypeAddress, setAlertTypeAddress] = useState<
     'success' | 'warning' | null
   >(null);
+  const [alertTypeSuccess, setAlertTypeSuccess] = React.useState(false);
+  const [alertTypeWarning, setAlertTypeWarning] = React.useState(false);
+  const [alertTypeError, setAlertTypeError] = React.useState(false);
 
   const handlePlaceSelect = (selectedPlace: string) => {
     setPlace(selectedPlace);
@@ -118,8 +121,11 @@ const Addresses = ({
       .then(({ data }) => {
         if (data.homeAddress === null || data.homeAddress === '') {
           setHomeAddress('Save a home address to find a quick route home.');
-          setAlertTypeAddress('warning');
-          handleAlertClick();
+          setAlertTypeWarning(true);
+          setTimeout(() => {
+            setAlertTypeWarning(false);
+          }, 6000)
+          // handleAlertClick();
         } else {
           const home = data.homeAddress;
           console.log('Address', data.homeAddress);
@@ -129,23 +135,26 @@ const Addresses = ({
       .catch((err) => console.log(err));
   }, []);
 
-  const handleAlertClick = () => {
-    setOpenAddress(true);
-  };
+  // const handleAlertClick = () => {
+  //   setOpenAddress(true);
+  // };
 
   const handleSetHomeClick = () => {
     if (selectedAddress === '') {
-      setSaveAddressAlert(true);
+      setAlertTypeError(true);
       setTimeout(() => {
-        setSaveAddressAlert(false);
+        setAlertTypeError(false);
       }, 6000);
       setTimeout(() => {
         setHomeAddress('');
       }, 2000);
     } else {
       saveHome();
-      setAlertTypeAddress('success');
-      handleAlertClick();
+      setAlertTypeSuccess(true);
+      setTimeout(() => {
+        setAlertTypeSuccess(false);
+      }, 6000);
+      // handleAlertClick();
     }
   };
 
@@ -252,7 +261,7 @@ const Addresses = ({
         </Box>
       </div>
       <>
-        <div className='custom-snackbar-addresses'>
+        {/* <div className='custom-snackbar-addresses'>
           {alertTypeAddress === 'success' && (
             <Snackbar
               open={openAddress}
@@ -287,14 +296,49 @@ const Addresses = ({
             </Snackbar>
           )}
 
-
-
-
-
           {saveAddressAlert && (
             <Stack className='address-alert-stack'>
               <Alert
                onClose={() => setSaveAddressAlert(false)}
+                severity='error'
+                sx={{ width: '100%', bottom: '300px'  }}
+              >
+                <strong>Must enter location to save home address.</strong>
+              </Alert>
+            </Stack>
+          )}
+        </div> */}
+
+
+
+<div className='custom-snackbar-addresses'>
+          {alertTypeSuccess && (
+            <Stack>
+              <Alert
+                onClose={() => setAlertTypeSuccess(false)}
+                severity='success'
+                sx={{ width: '100vw' }}
+              >
+                Home address successfully updated!
+              </Alert>
+            </Stack>
+          )}
+          {alertTypeWarning && (
+            <Stack>
+              <Alert
+                onClose={() => setAlertTypeWarning(false)}
+                severity='warning'
+                sx={{ width: '100%' }}
+              >
+                Set an address so you can find your way home, wherever you are!
+              </Alert>
+              </Stack>
+          )}
+
+          {alertTypeError && (
+            <Stack className='address-alert-stack'>
+              <Alert
+               onClose={() => setAlertTypeError(false)}
                 severity='error'
                 sx={{ width: '100%', bottom: '300px'  }}
               >

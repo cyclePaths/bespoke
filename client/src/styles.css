@@ -535,6 +535,13 @@ The code below is for the Profile Stats feature
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
+
+.select-stats-dialog {
+  opacity: 1;
+  background: rgb(218, 211, 213);;
+  color: '#1d1c1c';
+}
+
 /*
 The code above is for the Profile Stats feature
 */
