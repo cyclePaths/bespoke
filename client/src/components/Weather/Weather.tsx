@@ -8,6 +8,8 @@ const Weather = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  sunriseHour,
+  sunsetHour,
   hourlyForecasts,
   prepareWeatherIcon,
   setWindSpeedMeasurementUnit,
@@ -40,6 +42,8 @@ const Weather = ({
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
+            sunriseHour={sunriseHour}
+            sunsetHour={sunsetHour}
             prepareWeatherIcon={prepareWeatherIcon}
             rowData={weatherRow}
           />

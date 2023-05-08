@@ -25,6 +25,8 @@ interface ForecastProps extends Hourly {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
+  sunriseHour: number;
+  sunsetHour: number;
   prepareWeatherIcon: (
     weather: string,
     isDay: boolean,
@@ -56,6 +58,8 @@ const Forecast = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  sunriseHour,
+  sunsetHour,
 }: ForecastProps) => {
   const { isDark } = useContext(UserContext);
   //setting measurement units for temperature/depth/precipitation amount to user selected ones
@@ -99,16 +103,45 @@ const Forecast = ({
     snowfall
   );
 
+  //sets conditional icon for sunrise, sunset, etc.
+  const displayConditionalIcon = () => {
+    if (hour === sunriseHour) {
+      return (
+        <ConditionalHelperIcon
+          src={weatherIcons.day.sunrise}
+        ></ConditionalHelperIcon>
+      );
+    } else if (hour === sunsetHour) {
+      return (
+        <ConditionalHelperIcon
+          src={weatherIcons.day.sunset}
+        ></ConditionalHelperIcon>
+      );
+    } else if (hour === sunsetHour + 1) {
+      return (
+        <ConditionalHelperIcon
+          src={weatherIcons.night.moonrise}
+        ></ConditionalHelperIcon>
+      );
+    } else if (hour === sunriseHour - 1) {
+      return (
+        <ConditionalHelperIcon
+          src={weatherIcons.night.moonset}
+        ></ConditionalHelperIcon>
+      );
+    }
+  };
+
   return (
     <ForecastEntry isDark={isDark}>
       <ForecastBit>
-        <WeatherIconFrame>
+        <WeatherIconFrame isDark={isDark}>
           <WeatherIcon src={weatherIcon} />
         </WeatherIconFrame>
         <ForecastTime>{displayTime}</ForecastTime>
       </ForecastBit>
       <ForecastBit>
-        <MainTemperatureFrame>
+        <MainTemperatureFrame isDark={isDark}>
           <MainTemperature>
             <MainTemperatureText>
               <strong>{Math.round(temperature)}</strong>
@@ -118,9 +151,7 @@ const Forecast = ({
         </MainTemperatureFrame>
       </ForecastBit>
       <AdjustedTemperature>
-        <ConditionalHelperIcon
-          src={weatherIcons.day.sunrise}
-        ></ConditionalHelperIcon>
+        {displayConditionalIcon()}
         <AdjustedTemperature>
           <AdjustedTemperatureText>
             <strong>{Math.round(apparentTemperature)}</strong>
@@ -129,9 +160,9 @@ const Forecast = ({
         <AdjustedTemperatureHelperIcon src={temperatureUnit} />
       </AdjustedTemperature>
       <WeatherDescription>{weatherDescription}</WeatherDescription>
-      <ForecastStatsBox>
+      <ForecastStatsBox isDark={isDark}>
         <ForecastBit>
-          <ForecastText>Precipitation {precipitationProbability}</ForecastText>
+          <ForecastText>Precipitation: {precipitationProbability}</ForecastText>
           <ForecastHelperIcon src={weatherIcons.misc.humidity} />
         </ForecastBit>
         <ForecastBit>

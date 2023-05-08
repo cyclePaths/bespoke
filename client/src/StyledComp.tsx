@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-type DarkModeHelperProps = {
+export type DarkModeHelperProps = {
   isDark: boolean;
 };
 
@@ -18,11 +18,10 @@ const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
 
-const PopoutSaveForm = styled.form`
+const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   display: flex;
-  -webkit-box-pack: center;
   justify-content: center;
-  background-color: white;
+  background: ${(props) => (props.isDark ? '#646464' : 'white')};
   border-radius: 4px;
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
@@ -144,12 +143,13 @@ const ForecastRowContainerforHome = styled.div`
 const ForecastEntry = styled.div<DarkModeHelperProps>`
   justify-content: center;
   margin-top: 80px;
-  margin-right: 20px;
+  margin-left: 25px;
+  margin-bottom: 40px;
   align-items: center;
   border-radius: 50px;
   box-shadow: ${(props) =>
     props.isDark
-      ? '20px 20px 60px #327a41, -10px -10px 5px #44a459'
+      ? '20px 20px 60px #171830, -10px -10px 5px #1b1c3a'
       : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
   background: ${(props) =>
     props.isDark
@@ -163,7 +163,7 @@ const WeatherIcon = styled.img`
   width: 100px;
 `;
 
-const WeatherIconFrame = styled.div`
+const WeatherIconFrame = styled.div<DarkModeHelperProps>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -171,8 +171,11 @@ const WeatherIconFrame = styled.div`
   height: 130px;
   width: 130px;
   border-radius: 50%;
-  background: #73d88b;
-  box-shadow: inset 25px 25px 9px #6ccb83, inset -25px -25px 9px #7ae593;
+  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
+      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
   margin-top: -60px;
   margin-left: -35px;
 `;
@@ -185,15 +188,18 @@ const ForecastBit = styled.div`
   margin-left: 15px;
 `;
 
-const ForecastStatsBox = styled.div`
+const ForecastStatsBox = styled.div<DarkModeHelperProps>`
   height: 95px;
   width: 150px;
   margin-left: 28px;
   margin-top: 50px;
   margin-bottom: 20px;
-  border-radius: 0px;
-  background: #73d88b;
-  box-shadow: inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c;
+  border-radius: 30px;
+  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
+      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
 `;
 
 const WeatherDescription = styled.div`
@@ -221,13 +227,16 @@ const MainTemperature = styled.div`
   font-size: 50px;
 `;
 
-const MainTemperatureFrame = styled.div`
+const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
   height: 100px;
   width: 100px;
   margin-top: 55px;
   margin-left: 35px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #7be795, #68c27d);
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, #3f9952, #358145)'
+      : 'linear-gradient(145deg, #7be795, #68c27d)'};
 `;
 
 const MainTemperatureText = styled.p`

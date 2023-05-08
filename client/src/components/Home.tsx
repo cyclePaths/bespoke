@@ -20,6 +20,8 @@ const Home = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  sunriseHour,
+  sunsetHour,
   prepareWeatherIcon,
   setHomeCoordinates,
 }: RootPropsToHome) => {
@@ -55,15 +57,17 @@ const Home = ({
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
+            sunriseHour={sunriseHour}
+            sunsetHour={sunsetHour}
           />
-          <Button
+          {/* <Button
             onClick={() => {
               handleRoutingHome();
             }}
           >
             <GoHomeIcon src='https://cdn-icons-png.flaticon.com/512/69/69947.png' />
-          </Button>
-          <Modal
+          </Button> */}
+          {/* <Modal
             open={showWarning}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'
@@ -77,16 +81,16 @@ const Home = ({
                 current home
               </Typography>
             </Box>
-          </Modal>
+          </Modal> */}
         </HomePageCompWrapper>
-        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
+        {/* <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
           <StatsDivs>
             This is a new Element. Dont know what will go here?
           </StatsDivs>
           <StatsDivs>
             This is another New Element. Again dont know what do display here?
           </StatsDivs>
-        </div>
+        </div> */}
       </BandAid>
     </div>
   );

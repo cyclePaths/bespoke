@@ -86,6 +86,8 @@ export interface RootPropsToHome {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
+  sunriseHour: number;
+  sunsetHour: number;
   prepareWeatherIcon: (
     weather: string,
     isDay: boolean,
@@ -312,24 +314,24 @@ const Root = () => {
     ) {
       weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
     }
-    //control for sunrise/sunset
-    const moonriseHour = sunsetHour + 1;
-    const moonsetHour = sunriseHour - 1;
-    const pertinentWeather = !(
-      weather === 'Clear Sky' ||
-      weather === 'Mainly Clear' ||
-      weather === 'Fog' ||
-      weather === 'Partly Cloudy'
-    );
-    if (hour === sunriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunrise;
-    } else if (hour === sunsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunset;
-    } else if (hour === moonriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonrise;
-    } else if (hour === moonsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonset;
-    }
+    //control for sunrise/sunset (no longer needed due to weather card changes)
+    // const moonriseHour = sunsetHour + 1;
+    // const moonsetHour = sunriseHour - 1;
+    // const pertinentWeather = !(
+    //   weather === 'Clear Sky' ||
+    //   weather === 'Mainly Clear' ||
+    //   weather === 'Fog' ||
+    //   weather === 'Partly Cloudy'
+    // );
+    // if (hour === sunriseHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.day.sunrise;
+    // } else if (hour === sunsetHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.day.sunset;
+    // } else if (hour === moonriseHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.night.moonrise;
+    // } else if (hour === moonsetHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.night.moonset;
+    // }
     return weatherIcon;
   };
 
@@ -687,6 +689,8 @@ const Root = () => {
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
                     prepareWeatherIcon={prepareWeatherIcon}
                     setHomeCoordinates={setHomeCoordinates}
+                    sunriseHour={sunriseHour}
+                    sunsetHour={sunsetHour}
                   />
                 }
               />
