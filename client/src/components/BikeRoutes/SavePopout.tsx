@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../../styles.css';
 import { SavePopoutProps } from './RouteM';
+import { UserContext } from '../../Root';
 
 const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
+  const { isDark } = useContext(UserContext);
   return (
     <Dialog open={openPopup}>
-      <div style={{ backgroundColor: 'rgb(133, 211, 255)' }}>
-        <CloseIcon onClick={() => setOpenPopup(false)} />
+      <div
+        style={{ backgroundColor: isDark ? '#191a35' : 'rgb(133, 211, 255)' }}
+      >
+        <CloseIcon
+          sx={{ color: isDark ? '#e0e0e0' : 'black' }}
+          onClick={() => setOpenPopup(false)}
+        />
       </div>
       <DialogContent
         style={{
@@ -16,7 +23,7 @@ const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
           paddingBottom: '25px',
           paddingRight: '25px',
           paddingTop: '10px',
-          backgroundColor: 'rgb(133, 211, 255)',
+          backgroundColor: isDark ? '#191a35' : 'rgb(133, 211, 255)',
         }}
       >
         {children}
