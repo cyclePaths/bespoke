@@ -1,3 +1,5 @@
+import { DarkModeHelperProps } from 'client/src/StyledComp';
+
 const defaultMapContainerStyle = {
   height: '90vh',
   width: '100%',

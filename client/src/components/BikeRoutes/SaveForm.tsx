@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   PopoutSaveForm,
   InputLayout,
@@ -8,6 +8,7 @@ import {
 import Button from '@mui/material/Button';
 import '../../styles.css';
 import { SaveProps } from './RouteM';
+import { UserContext } from '../../Root';
 
 const SaveForm = ({
   routeName,
@@ -21,6 +22,8 @@ const SaveForm = ({
   saveRoute,
   setSaveMessage,
 }: SaveProps) => {
+  const { isDark } = useContext(UserContext);
+
   const handleSave = () => {
     saveRoute(routeName, category, isPrivate);
     setRouteName('');
@@ -54,7 +57,7 @@ const SaveForm = ({
             <div
               style={{
                 display: 'flex',
-                backgroundColor: '#e0e0e0',
+                backgroundColor: isDark ? '#5f5f5f' : '#e0e0e0',
                 padding: '3px',
                 borderRadius: '3px',
                 border: '1px solid',

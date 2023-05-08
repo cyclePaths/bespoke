@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-type DarkModeHelperProps = {
+export type DarkModeHelperProps = {
   isDark: boolean;
 };
 
@@ -18,11 +18,10 @@ const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
 
-const PopoutSaveForm = styled.form`
+const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   display: flex;
-  -webkit-box-pack: center;
   justify-content: center;
-  background-color: white;
+  background: ${(props) => (props.isDark ? '#646464' : 'white')};
   border-radius: 4px;
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
