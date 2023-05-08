@@ -20,6 +20,8 @@ const Home = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  sunriseHour,
+  sunsetHour,
   prepareWeatherIcon,
   setHomeCoordinates,
 }: RootPropsToHome) => {
@@ -55,6 +57,8 @@ const Home = ({
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
+            sunriseHour={sunriseHour}
+            sunsetHour={sunsetHour}
           />
           <Button
             onClick={() => {

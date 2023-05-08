@@ -43,7 +43,6 @@ const CreateReport: React.FC = () => {
   };
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-
   const { user, geoLocation, addBadge } = useContext(UserContext);
 
   const handleTypeText = (
@@ -67,7 +66,9 @@ const CreateReport: React.FC = () => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     if (currentLocation) {
       setSubmitting(true);
@@ -92,12 +93,17 @@ const CreateReport: React.FC = () => {
           },
         });
 
+        // if (type === 'Point of Interest') {
+        //   user.addBadge('Tour Guide', 1);
+        // } else {
+        //   user.addBadge('Safety Sentinel', 1);
+        // }
         if (type === 'Point of Interest') {
           addBadge('Tour Guide', 1);
         } else {
           addBadge('Safety Sentinel', 1);
         }
- 
+
         setReports([...reports, response.data]);
         setBody('');
         setType('');
