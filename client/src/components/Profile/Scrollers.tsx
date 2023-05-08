@@ -201,14 +201,22 @@ const Scrollers = () => {
         setShow2ndErrorAlert(false);
       }, 6000);
     } else {
-      enterWorkout();
-      setShowSuccessAlert(true);
-      setTimeout(() => {
-        setShowSuccessAlert(false);
-      }, 6000);
-      successfullyEnteredStats();
-      setShowStack(false);
-    }
+      if (weight < 50) {
+        setShowErrorAlert(true);
+        setTimeout(() => {
+          setShowErrorAlert(false);
+        }, 6000);
+      } else {
+        enterWorkout();
+        setShowSuccessAlert(true);
+        setTimeout(() => {
+          setShowSuccessAlert(false);
+        }, 6000);
+        successfullyEnteredStats();
+        setShowStack(false);
+      }
+      }
+
   };
 
   return (
