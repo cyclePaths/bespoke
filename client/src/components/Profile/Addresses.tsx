@@ -200,12 +200,17 @@ const Addresses = ({
               <div id='address' className='address'>
                 <TextField
                   id='address-input'
+                  className='search-places'
                   type='search'
                   variant='standard'
+                  inputProps={{
+                    style: { color: "#ffffff" },
+                  }}
                   {...getInputProps({
                     placeholder: 'Search Places ...',
-                    className: 'location-search-input',
+
                   })}
+
                 />
 
                 {/* <input id='address-input'

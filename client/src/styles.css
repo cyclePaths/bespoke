@@ -433,7 +433,9 @@ The code below is for the Profile search Home address feature
   position: absolute; /* Position the element relative to the parent element */
   top: 30%; /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%); /* Center the element vertically */
+  color: #f1e2e2;
 }
+
 
 .saveHome {
   margin-top: 10px !important;

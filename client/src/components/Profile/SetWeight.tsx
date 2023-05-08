@@ -123,6 +123,9 @@ const SetWeight = (props: WeightTabProps) => {
           <TextField
             id='weight-input'
             variant='standard'
+            inputProps={{
+              style: { color: "#ffffff"},
+            }}
             placeholder='update weight...'
             onChange={(event) => setWeightValue(Number(event.target.value))}
           />
