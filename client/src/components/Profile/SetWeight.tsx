@@ -126,7 +126,7 @@ const SetWeight = (props: WeightTabProps) => {
             inputProps={{
               style: { color: "#ffffff"},
             }}
-            placeholder='update weight...'
+            placeholder='Update Weight...'
             onChange={(event) => setWeightValue(Number(event.target.value))}
           />
 

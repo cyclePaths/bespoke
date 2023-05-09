@@ -133,6 +133,26 @@ html, body {
   z-index: 9999;
 }
 
+.profile-pic {
+  border-radius: 50%;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 100px;
+  height: 100px;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.theme-icon {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+
+.profile-pic-Theme-icon {
+  display: flex;
+    justify-content: space-between;
+  /* align-items: center; */
+}
 
 /*
 The code below is for the scroll wheel
@@ -322,11 +342,13 @@ The code below is for the scroll wheel
 
 .error-success-alert {
   position: fixed;
-  top: 50%;
+  /* top: 50%; */
+  bottom: 50px;
   left: 50%;
   width: 300px;
   height: 100px;
   transform: translate(-50%, -50%);
+  z-index: 100;
 }
 
 /*
@@ -414,6 +436,18 @@ The code above is for the scroll wheel
 The code below is for the Profile search Home address feature
 */
 
+.address-alerts {
+  position: fixed;
+  /* top: 50%; */
+  bottom: 50px;
+  left: 50%;
+  width: 300px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+
 .setAddress {
   display: flex;
   flex-direction: column;
@@ -421,7 +455,7 @@ The code below is for the Profile search Home address feature
   align-items: center;
   /* top: 100x;
   bottom: 0px; */
-  height: 50vh;
+  height: 60vh;
   position: relative;
 }
 
@@ -431,7 +465,10 @@ The code below is for the Profile search Home address feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 30%; /* Adjust the top value to position the element where you want it */
+  /* top: 30%; Adjust the top value to position the element where you want it */
+  /* margin-bottom: 10px; */
+  /* margin-top:200px; */
+  bottom: 200px;
   transform: translateY(-50%); /* Center the element vertically */
   color: #f1e2e2;
 }
@@ -439,6 +476,8 @@ The code below is for the Profile search Home address feature
 
 .saveHome {
   margin-top: 10px !important;
+  position: absolute;
+  /* margin-bottom: 10px; */
   z-index: 9999;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
   outline: 1px solid red;
@@ -446,19 +485,21 @@ The code below is for the Profile search Home address feature
 
 .displayedAddress {
   position: absolute;
-  top: calc(15% - 60px); /* Adjust the value to position the element where you want it */
+
+  top: calc(35% - 60px); /* Adjust the value to position the element where you want it */
   left: 50%;
   transform: translateX(-50%);
 }
 
 .address-input {
   margin-bottom: 10px;
+  /* position:sticky; */
 }
 
 .autocomplete-dropdown-container {
   /* position: relative; */
-  position:sticky;
-  top: 0;
+  position: absolute;
+  top: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -479,7 +520,7 @@ The code below is for the Profile set weight feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 60vh;
   position: relative;
 }
 
@@ -489,7 +530,7 @@ The code below is for the Profile set weight feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 30%; /* Adjust the top value to position the element where you want it */
+  bottom: 130px;
   transform: translateY(-50%); /* Center the element vertically */
 
 }
@@ -513,7 +554,7 @@ The code below is for the Profile set weight feature
 
 .current-weight {
   position: absolute;
-  top: calc(15% - 60px);
+  top: calc(35% - 60px);
   /* top: calc(30% - 100px);  */
   left: 50%;
   transform: translateX(-50%);
@@ -540,7 +581,13 @@ The code below is for the Profile Stats feature
 
 .select-stats-dialog {
   opacity: 1;
-  background: rgb(218, 211, 213);;
+  /* background: rgb(250, 250, 250); */
+  background: rgb(123, 231, 149);
+  background: linear-gradient(
+    128deg,
+    rgb(42, 164, 71) 0%,
+    rgb(104, 194, 125) 100%
+  );
   color: '#1d1c1c';
 }
 

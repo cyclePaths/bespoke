@@ -80,8 +80,10 @@ const Addresses = ({
     'success' | 'warning' | null
   >(null);
   const [alertTypeSuccess, setAlertTypeSuccess] = React.useState(false);
-  const [alertTypeWarning, setAlertTypeWarning] = React.useState(false);
+  const [alertTypeWarning, setAlertTypeWarning] = React.useState(true);
   const [alertTypeError, setAlertTypeError] = React.useState(false);
+  const [hasHomeAddress, setHasHomeAddress] = useState(false);
+  // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
 
   const handlePlaceSelect = (selectedPlace: string) => {
     setPlace(selectedPlace);
@@ -103,7 +105,7 @@ const Addresses = ({
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
       setSelectedAddress(address);
-      setAddress('');
+
       // setAlertType('success');
       // handleAlertClick();
       const input = document.getElementById('address-input');
@@ -115,29 +117,32 @@ const Addresses = ({
     }
   }, []);
 
+
   useEffect(() => {
     axios
       .get('/profile/address')
       .then(({ data }) => {
         if (data.homeAddress === null || data.homeAddress === '') {
           setHomeAddress('Save a home address to find a quick route home.');
+          setHasHomeAddress(false);
           setAlertTypeWarning(true);
           setTimeout(() => {
             setAlertTypeWarning(false);
           }, 6000)
-          // handleAlertClick();
-        } else {
+        }
+        else {
           const home = data.homeAddress;
           console.log('Address', data.homeAddress);
+          setAlertTypeWarning(false);
           setHomeAddress(`Your home is ${home}`);
+          setHasHomeAddress(true);
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [homeAddress, setAlertTypeWarning]);
 
-  // const handleAlertClick = () => {
-  //   setOpenAddress(true);
-  // };
+
+
 
   const handleSetHomeClick = () => {
     if (selectedAddress === '') {
@@ -150,11 +155,11 @@ const Addresses = ({
       }, 2000);
     } else {
       saveHome();
+      setAddress('');
       setAlertTypeSuccess(true);
       setTimeout(() => {
         setAlertTypeSuccess(false);
       }, 6000);
-      // handleAlertClick();
     }
   };
 
@@ -212,13 +217,6 @@ const Addresses = ({
                   })}
 
                 />
-
-                {/* <input id='address-input'
-            {...getInputProps({
-              placeholder: 'Search Places ...',
-              className: 'location-search-input',
-            })}
-          /> */}
                 <div className='autocomplete-dropdown-container'>
                   {loading && <div>Loading...</div>}
                   {suggestions.map((suggestion) => {
@@ -241,6 +239,8 @@ const Addresses = ({
                     );
                   })}
                   <div>{selectedAddress}</div>
+
+
 
                   <Stack direction='row' spacing={5}>
                     <Button
@@ -265,75 +265,24 @@ const Addresses = ({
           </PlacesAutocomplete>
         </Box>
       </div>
+
       <>
-        {/* <div className='custom-snackbar-addresses'>
-          {alertTypeAddress === 'success' && (
-            <Snackbar
-              open={openAddress}
-              autoHideDuration={5000}
-              onClose={handleClose}
-
-              sx={{ bottom: '150px' }}
-            >
-              <Alert
-                onClose={handleClose}
-                severity='success'
-                sx={{ width: '100vw' }}
-              >
-                Home address successfully updated!
-              </Alert>
-            </Snackbar>
-          )}
-          {alertTypeAddress === 'warning' && (
-            <Snackbar
-              open={openAddress}
-              autoHideDuration={5000}
-              onClose={handleClose}
-              sx={{ bottom: '150px' }}
-            >
-              <Alert
-                onClose={handleClose}
-                severity='warning'
-                sx={{ width: '100%' }}
-              >
-                Set an address so you can find your way home, wherever you are!
-              </Alert>
-            </Snackbar>
-          )}
-
-          {saveAddressAlert && (
-            <Stack className='address-alert-stack'>
-              <Alert
-               onClose={() => setSaveAddressAlert(false)}
-                severity='error'
-                sx={{ width: '100%', bottom: '300px'  }}
-              >
-                <strong>Must enter location to save home address.</strong>
-              </Alert>
-            </Stack>
-          )}
-        </div> */}
-
-
-
 <div className='custom-snackbar-addresses'>
           {alertTypeSuccess && (
-            <Stack>
+            <Stack className='address-alerts'>
               <Alert
                 onClose={() => setAlertTypeSuccess(false)}
                 severity='success'
-                sx={{ width: '100vw' }}
               >
                 Home address successfully updated!
               </Alert>
             </Stack>
           )}
           {alertTypeWarning && (
-            <Stack>
+           <Stack className='address-alerts'>
               <Alert
                 onClose={() => setAlertTypeWarning(false)}
                 severity='warning'
-                sx={{ width: '100%' }}
               >
                 Set an address so you can find your way home, wherever you are!
               </Alert>
@@ -341,11 +290,10 @@ const Addresses = ({
           )}
 
           {alertTypeError && (
-            <Stack className='address-alert-stack'>
+            <Stack className='address-alerts'>
               <Alert
                onClose={() => setAlertTypeError(false)}
                 severity='error'
-                sx={{ width: '100%', bottom: '300px'  }}
               >
                 <strong>Must enter location to save home address.</strong>
               </Alert>

@@ -5,8 +5,6 @@ import Root, { UserContext } from '../../Root';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
-// import Alert from '@mui/material/Alert';
-// import AlertTitle from '@mui/material/AlertTitle';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import Stack from '@mui/material/Stack';
@@ -65,30 +63,22 @@ const Scrollers = ({ setShowScrollers }) => {
   const [weight, setWeight] = useState(0);
   const [user, setUser] = useState();
   const [showStack, setShowStack] = useState(true);
+  const [hoursValue, setHoursValue] = useState('');
+  const [minutesValue, setMinutesValue] = useState('');
 
   let rideSpeedValue = '';
-  let hoursValue = hours;
-  let minutesValue = minutes;
 
   const { workout, durationHours, durationMinutes } =
     exiledRedHeadedStepChildrenOptionGroups;
 
-  let totalTime = Number(hours) * 60 + Number(minutes);
+  let totalTime = 0;
 
-  useEffect(() => {
-    if (hours[0] === '1' && hours[1] === '') {
-      hoursValue = '1';
-    } else {
-      hoursValue = hours.slice(0, -6);
-    }
-    if (minutes[0] === '1' && minutes[1] === '') {
-      minutesValue = '1';
-    } else {
-      minutesValue = minutes.slice(0, -7);
-    }
+  if (hoursValue !== '' || minutesValue !== '') {
+    const rideHours = Number(hoursValue);
+    const rideMinutes = Number(minutesValue);
 
-    totalTime = Number(hoursValue) * 60 + Number(minutesValue);
-  }, [hours, minutes]);
+    totalTime = rideHours + rideMinutes;
+  }
 
   useEffect(() => {
     for (let i = 0; i < workout.length; i++) {
@@ -172,14 +162,22 @@ const Scrollers = ({ setShowScrollers }) => {
   };
 
   const successfullyEnteredStats = () => {
+    setRideSpeed('');
+    setHoursValue('');
+    setMinutesValue('');
     setTimeout(() => {
       setActivityMessage('');
       setHoursMessage('');
       setMinutesMessage('');
+      setSliderStage(0);
+      setShowStack(true);
     }, 8000);
   };
 
   const unsuccessfullyEnteredStats = () => {
+    setRideSpeed('');
+    setHoursValue('');
+    setMinutesValue('');
     setTimeout(() => {
       setActivityMessage('');
       setHoursMessage('');
@@ -215,11 +213,8 @@ const Scrollers = ({ setShowScrollers }) => {
         successfullyEnteredStats();
         setShowStack(false);
         // setShowScrollers(true);
-        setSliderStage(0);
-        setShowStack(true);
       }
-      }
-
+    }
   };
 
   return (
@@ -272,19 +267,24 @@ const Scrollers = ({ setShowScrollers }) => {
             }}
           >
             {durationHours.map((hour) => {
+              const { value, label } = hour;
               return (
-                <React.Fragment key={`${hour.value}-hour`}>
+                <React.Fragment key={`${value}-hour`}>
                   <div className='keen-slider__slide number-slide2'>
                     <button
                       type='button'
                       className='customButton'
                       onClick={() => {
-                        setHours(hour.label);
-                        setHoursMessage(`Hours riding: ${hour.label}`);
+                        setHours(label);
+                        setHoursValue(value);
+                        console.log('hour', hoursValue);
+                        // filterHours(hours.label);
+                        // console.log('hour label', hour.label)
+                        setHoursMessage(`Hours riding: ${label}`);
                         setSliderStage(2);
                       }}
                     >
-                      {hour.label}
+                      {label}
                     </button>
                   </div>
                 </React.Fragment>
@@ -303,19 +303,22 @@ const Scrollers = ({ setShowScrollers }) => {
             }}
           >
             {durationMinutes.map((minute) => {
+              const { value, label } = minute;
               return (
-                <React.Fragment key={`${minute.value}-minute`}>
+                <React.Fragment key={`${value}-minute`}>
                   <div className='keen-slider__slide number-slide6'>
                     <button
                       type='button'
                       className='customButton'
                       onClick={() => {
-                        setMinutes(minute.label);
-                        setMinutesMessage(`Minutes riding: ${minute.label}`);
+                        setMinutes(label);
+                        setMinutesValue(value);
+                        console.log('minute', minutesValue);
+                        setMinutesMessage(`Minutes riding: ${label}`);
                         setSliderStage(3);
                       }}
                     >
-                      {minute.label}
+                      {label}
                     </button>
                   </div>
                 </React.Fragment>
@@ -345,7 +348,13 @@ const Scrollers = ({ setShowScrollers }) => {
                 variant='contained'
                 disabled
                 className='backButton'
-                sx={{ position: 'fixed', left: 0 }}
+                sx={{
+                  position: 'fixed',
+                  left: 0,
+                  color: 'white !important',
+                  opacity: 0.4,
+                  backgroundColor: 'rgb(30, 136, 229) !important',
+                }}
               >
                 &lt; &lt;
               </Button>
@@ -369,7 +378,13 @@ const Scrollers = ({ setShowScrollers }) => {
                 variant='contained'
                 disabled
                 className='forwardButton'
-                sx={{ position: 'fixed', right: 0 }}
+                sx={{
+                  position: 'fixed',
+                  right: 0,
+                  color: 'white !important',
+                  opacity: 0.4,
+                  backgroundColor: 'rgb(30, 136, 229) !important',
+                }}
               >
                 &gt; &gt;
               </Button>
@@ -382,7 +397,13 @@ const Scrollers = ({ setShowScrollers }) => {
                 disabled
                 color='success'
                 className='rideStatsButton'
-                sx={{ position: 'fixed', center: 0 }}
+                sx={{
+                  position: 'fixed',
+                  center: 0,
+                  color: 'white !important',
+                  opacity: 0.4,
+                  backgroundColor: 'rgb(76, 175, 80) !important',
+                }}
               >
                 Get Ride Stats
               </Button>

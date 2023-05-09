@@ -22,26 +22,19 @@ interface TabPanelProps {
 }
 
 const LightModeIcon = (props) => {
-  return(
-    <DarkModeIcon
-    {...props}
-    />
-  )
-}
+  return <DarkModeIcon {...props} />;
+};
 
 const DarkMode = (props) => {
-  return(
+  return (
     <DarkModeIcon
-    {...props}
-    style={{
-      color: '#5e89f0', // replace with your desired color
-    }}
+      {...props}
+      style={{
+        color: '#5e89f0', // replace with your desired color
+      }}
     />
-  )
-
-}
-
-
+  );
+};
 
 const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
@@ -84,27 +77,14 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
   const [stats, setStats] = useState([]);
   const [appTheme, setAppTheme] = useState(false);
   const [themeIcon, setThemeIcon] = useState(false);
-  // const [open, setOpen] = useState(false);
-  // const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>
-  // const [alertTypeAddress, setAlertTypeAddress] = useState<'success' | 'warning' | null>(
-  //   null
-  // );
-
 
   const handleThemeIconClick = () => {
-    // {appTheme ? <DarkModeIcon/> : <LightModeIcon />}
-    // if (appTheme === true) {
-      // <DarkModeIcon /> = <LightModeIcon/>;
-    // }
     setAppTheme(!appTheme);
-    // setThemeIcon(!appTheme);
     handleToggleStyle();
     saveTheme();
-  }
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    // setValue(newValue);
-    // setActiveTab(newValue);
     toggleTabVisibility(newValue);
 
     if (newValue === 2) {
@@ -121,7 +101,6 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
   useEffect(() => {
     setAppTheme(theme);
     setThemeIcon(theme);
-    // console.log('profile nav', theme)
   }, [theme]);
 
   const toggleTabVisibility = (tabIndex: number) => {
@@ -142,10 +121,10 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
             onChange={handleChange}
             aria-label='basic tabs example'
           >
-            <Tab label='Set Home' sx={{color: '#f1e2e2'}} {...a11yProps(0)} />
-            <Tab label='Weight'  sx={{color: '#f1e2e2'}} {...a11yProps(1)} />
-            <Tab label='Add Ride'  sx={{color: '#f1e2e2'}} {...a11yProps(2)} />
-            <Tab label='Stats'  sx={{color: '#f1e2e2'}} {...a11yProps(3)} />
+            <Tab label='Set Home' sx={{ color: '#f1e2e2' }} {...a11yProps(0)} />
+            <Tab label='Weight' sx={{ color: '#f1e2e2' }} {...a11yProps(1)} />
+            <Tab label='Add Ride' sx={{ color: '#f1e2e2' }} {...a11yProps(2)} />
+            <Tab label='Stats' sx={{ color: '#f1e2e2' }} {...a11yProps(3)} />
           </Tabs>
         </Box>
 
@@ -157,28 +136,28 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
           }}
         >
           {/* Below is the Greeting and Profile Pic and Theme Selection*/}
-          <div>{`Hello ${user}!`}</div>
-          <img
-            style={{ borderRadius: '50%', width: '100px', height: '100px' }}
-            src={photo}
-            alt='avatar'
-          />
+          {/* <div>{`Hello ${user}!`}</div> */}
 
-          <ThemeProvider>
-            <div id='profile' className='themeIcon'>
-              <IconButton
-                // onClick={() => {
-                //   handleToggleStyle();
-                //   saveTheme();
-                // }}
+          <div className='profile-pic-Theme-icon'>
+            <img className='profile-pic' src={photo} alt='avatar' />
 
-                onClick={handleThemeIconClick}
-              >
-                {appTheme ? <LightModeIcon /> : <DarkMode /> }
-                {/* <DarkModeIcon /> */}
-              </IconButton>
-            </div>
-          </ThemeProvider>
+            <ThemeProvider>
+              <div id='profile' className='themeIcon'>
+                <IconButton
+                  // onClick={() => {
+                  //   handleToggleStyle();
+                  //   saveTheme();
+                  // }}
+
+                  onClick={handleThemeIconClick}
+                >
+                  {appTheme ? <LightModeIcon className='theme-icon' /> : <DarkMode className='theme-icon' />}
+                  {/* <DarkModeIcon /> */}
+                </IconButton>
+              </div>
+            </ThemeProvider>
+          </div>
+
           {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 
           <div hidden={!tabVisibility[0]}>
@@ -190,10 +169,6 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
               <SetWeight
                 weight={weight}
                 onWeightChange={handleWeightChange}
-                // open={open}
-                // setOpen={setOpen}
-                // alertTypeWeight={alertTypeWeight}
-                // setAlertTypeWeight={setAlertTypeWeight}
               />
             </div>
           </div>

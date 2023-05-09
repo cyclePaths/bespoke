@@ -153,8 +153,8 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
       : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
   background: ${(props) =>
     props.isDark
-      ? 'linear-gradient(145deg, #3f9952, #358145)'
-      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
+      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
 `;
 
 const WeatherIcon = styled.img`
