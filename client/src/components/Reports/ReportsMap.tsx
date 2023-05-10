@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext, createContext } from 'react';
+import UpdatedReportsContext from './UpdatedReportsContext';
 import axios from 'axios';
 import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
@@ -34,11 +35,19 @@ dayjs.extend(utc);
 // import theftAlertIcon from './icons/theft.png';
 // import collisionIcon from './images/collision.png';
 // import pointOfInterestIcon from './images/poi.png';
+interface ReportsMapProps {
+  updatedReports: Report[];
+}
 
-const ReportsMap: React.FC = () => {
+
+const ReportsMap = () => {
+  // console.log("updatedReports", updatedReports);
+  const updatedReports = useContext(UpdatedReportsContext);
+  const reports = updatedReports;
+
   const [map, setMap] = useState<google.maps.Map>();
   const [center, setCenter] = useState<google.maps.LatLng>();
-  const [reports, setReports] = useState<Report[]>([]);
+  // const [reports, setReports] = useState<Report[]>([]);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
@@ -81,13 +90,12 @@ const ReportsMap: React.FC = () => {
   };
 
   const handleButtonClick = async (id: string) => {
-    console.log(id);
     setSelectedReport(null);
     setButtonClicked(true);
     try {
       await axios.patch(`/reports/${id}`, { published: false });
-      // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
-      // fetchReports();
+      console.log(id);
+      setMarkers(markers => markers.filter(marker => marker.get("reportId") !== id));
     } catch (error) {
       console.error(error);
     } finally {
@@ -95,41 +103,43 @@ const ReportsMap: React.FC = () => {
     }
   };
 
+
+
+
   const handleTypeChange = (event) => {
     const value = event.target.value;
     setSelectedType(value === 'All' ? '' : value);
   };
+  // ****Commented out to move fetching to parent component ****
+  // useEffect(() => {
+  //   const fetchReports = async () => {
+  //     try {
+  //       const response = await axios.get('/reports');
+  //       const filteredReports = response.data.filter((report) => {
+  //         const reportCreatedAt = new Date(report.createdAt);
+  //         const currentDate = new Date();
+  //         const monthAgo = new Date(
+  //           currentDate.getFullYear(),
+  //           currentDate.getMonth() - 1,
+  //           currentDate.getDate()
+  //         );
+  //         return reportCreatedAt >= monthAgo;
+  //       });
+  //       setReports(filteredReports);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchReports();
+  // }, []);
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const response = await axios.get('/reports');
-        const filteredReports = response.data.filter((report) => {
-          const reportCreatedAt = new Date(report.createdAt);
-          const currentDate = new Date();
-          const monthAgo = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1,
-            currentDate.getDate()
-          );
-          return reportCreatedAt >= monthAgo;
-        });
-        setReports(filteredReports);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchReports();
-  }, []);
-
-  useEffect(() => {
-    if (map && reports) {
+    if (map && updatedReports) {
       const filteredReports = selectedType
-        ? reports.filter(
-            (report) =>
-              report.type === selectedType && report.published === true
+        ? updatedReports.filter(
+            (report) => report.type === selectedType && report.published === true
           )
-        : reports.filter((report) => report.published === true);
+        : updatedReports.filter((report) => report.published === true);
 
       const newMarkers = filteredReports.map((report) => {
         const getMarkerIconUrl = (reportType) => {
@@ -170,6 +180,10 @@ const ReportsMap: React.FC = () => {
           icon: getMarkerIconUrl(report.type),
         });
 
+        marker.set("reportId", report.id); // Store the reportId using the set method
+
+
+
         const isoDate = report.createdAt;
         const formattedDate = dayjs.utc(isoDate).format('DD/MM/YYYY');
         const infoWindow = new google.maps.InfoWindow();
@@ -178,7 +192,9 @@ const ReportsMap: React.FC = () => {
         const imageElement = document.createElement('img');
         if (imageUrl !== null) {
           imageElement.src = imageUrl;
+          imageElement.loading = "lazy";
         }
+
 
         contentDiv.appendChild(imageElement);
         const dateParagraph = document.createElement('p');
@@ -219,6 +235,11 @@ const ReportsMap: React.FC = () => {
         return marker;
       });
 
+      const filteredMarkers = newMarkers.filter((marker) => {
+        const reportId = marker.get("reportId");
+        return updatedReports.find((report) => report.id === reportId)?.published;
+      });
+
       const centerLatLng = center;
       const circle = new google.maps.Circle({
         center: centerLatLng!,
@@ -235,14 +256,18 @@ const ReportsMap: React.FC = () => {
         marker.setMap(null);
       });
 
-      setMarkers(newMarkers);
+      setMarkers(filteredMarkers);
+      console.log("Markers set", filteredMarkers);
 
       const bounds = circle.getBounds();
       if (bounds !== null) {
         map.fitBounds(bounds);
       }
     }
-  }, [map, reports, selectedType, buttonClicked]);
+  }, [map, updatedReports, selectedType, buttonClicked]);
+
+
+
 
   // Sets the center of the map upon page loading //
   useEffect(() => {
@@ -390,28 +415,3 @@ const ReportsMap: React.FC = () => {
 };
 
 export default ReportsMap;
-
-//   return {
-//     url: roadHazardIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Theft Alert':
-//   return {
-//     url: theftAlertIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Collision':
-//   return {
-//     url: collisionIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Point of Interest':
-//   return {
-//     url: pointOfInterestIcon,
-//     scaledSize: markerSize,
-//   };
-// default:
-//   return {
-//     url: roadHazardIcon,
-//     scaledSize: markerSize,
-//   };

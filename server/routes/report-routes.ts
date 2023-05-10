@@ -122,7 +122,7 @@ reportRouter.post(
           imgUrl: imageUrl ?? null,
         },
       });
-      res.sendStatus(201);
+      res.status(201).json(newReport);
     } catch (error) {
       console.error('Report Post Error: ', error);
       res

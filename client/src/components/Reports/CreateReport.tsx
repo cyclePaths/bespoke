@@ -18,6 +18,18 @@ import {
 } from '@mui/material';
 import { AttachFile, PhotoCamera } from '@mui/icons-material';
 import { LatLngLiteral } from '../BikeRoutes/RouteM';
+// Import the context
+import UpdatedReportsContext from './UpdatedReportsContext';
+
+/*
+The lifecycle of CreateReport is as follows:
+
+1. On initial render, the component initializes all state variables.
+2. When the user's geolocation is available, the component sets the current location state variable and fetches the reports using the `fetchReports` function.
+3. If the `geoLocation` state variable changes (e.g., the user moves), the component updates the `currentLocation` state variable and fetches the reports again.
+4. When the user submits a report, the component sends the report data to the server using Axios and updates the state variables accordingly.
+5. When the `open` state variable changes (e.g., the user closes the report dialog), the component updates the state variable accordingly.
+*/
 
 const CreateReport: React.FC = () => {
   // const navigate = useNavigate();
@@ -42,6 +54,7 @@ const CreateReport: React.FC = () => {
     setOpen(false);
   };
   const [submitting, setSubmitting] = useState<boolean>(false);
+
 
 
   const { user, geoLocation, addBadge } = useContext(UserContext);
@@ -97,8 +110,8 @@ const CreateReport: React.FC = () => {
         } else {
           addBadge('Safety Sentinel', 1);
         }
- 
-        setReports([...reports, response.data]);
+        console.log("Response.data:", response.data);
+        setReports(prevReports => [...prevReports, response.data]); // <-- use previous state
         setBody('');
         setType('');
         setImage(null);
@@ -107,32 +120,51 @@ const CreateReport: React.FC = () => {
         console.error(error.message);
         setError(error.message);
       } finally {
+
         setSubmitting(false);
       }
     }
   };
 
+    // ****Commented out to move fetching to parent component ****
+  // useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await axios.get('/reports');
+        const filteredReports = response.data.filter((report) => {
+          const reportCreatedAt = new Date(report.createdAt);
+          const currentDate = new Date();
+          const monthAgo = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 1,
+            currentDate.getDate()
+          );
+          return reportCreatedAt >= monthAgo;
+        });
+        setReports(filteredReports);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  //   fetchReports();
+  // }, []);
+  // useEffect(() => {
+  //   fetchReports();
+  // }, [])
+
   useEffect(() => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
+      fetchReports();
     }
   }, [geoLocation]);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setCurrentLocation({ lat: latitude, lng: longitude });
-      },
-      (error) => {
-        setError(error.message);
-      }
-    );
-  }, []);
 
   return (
     <div>
-      <ReportsMap />
+      <UpdatedReportsContext.Provider value={reports}>
+        <ReportsMap />
+      </UpdatedReportsContext.Provider>
       <Dialog open={open} onClose={handleClose}>
         <div id='make-report-container'>
           <form onSubmit={handleSubmit}>
