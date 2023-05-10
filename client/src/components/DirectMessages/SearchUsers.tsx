@@ -56,6 +56,7 @@ function SearchUsers({
   }, [loading]);
 
   return (
+    <div className={classes.searchContainer}>
     <div className={classes.search}>
       <Autocomplete
         id='asynchronous'
@@ -96,6 +97,7 @@ function SearchUsers({
           />
         )}
       />
+    </div>
     </div>
   );
 }

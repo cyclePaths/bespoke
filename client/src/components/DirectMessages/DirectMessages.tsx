@@ -224,7 +224,7 @@ function DirectMessages() {
 
   return (
     <BandAid>
-      <div>{`Hello ${name}!`}</div>
+      {/* <div>{`Hello ${name}!`}</div> */}
 
       <SearchUsers
         open={open}
@@ -241,7 +241,10 @@ function DirectMessages() {
       {/* <Conversations /> */}
       {isReceiverSelected && (
         <Paper className={classes.root}>
-          <div className={classes.messagesContainer} ref={messagesContainerRef}>
+          <div
+          className={classes.messagesContainer}
+          // className='dm-container'
+          ref={messagesContainerRef}>
             {messages.map((message) => (
               <Message
                 id={message.id}
@@ -257,6 +260,8 @@ function DirectMessages() {
 
           <div className={classes.inputContainer}>
             <TextField
+            fullWidth
+            id="fullWidth"
               // {...props}
               InputProps={{
                 classes: {
@@ -275,6 +280,7 @@ function DirectMessages() {
               inputRef={inputRef}
             />
             <Button
+            style={{left: 0}}
               variant='contained'
               color='primary'
               onClick={handleSendMessage}

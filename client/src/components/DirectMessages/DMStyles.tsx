@@ -50,12 +50,17 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
+// const heightSm = 390;
+// const heightMd = 900;
+const messagesContainerHeight = '80vh';
+
 // Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       color: 'white',
-      backgroundColor: '#212321',
+      // backgroundColor: '#212321',
+      background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -63,30 +68,40 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      marginBottom: theme.spacing(7),
+      marginBottom: theme.spacing(5),
     },
+
     messagesContainer: {
       flex: 1,
-      // flex: '0 0 auto',
+      top: 50,
       bottom: 0,
       overflowY: 'auto',
+      // marginTop: theme.spacing(35),
       padding: theme.spacing(1),
-      maxHeight: '560px',
       zIndex: 0,
+      // marginTop: theme.spacing(25),
+      maxHeight: messagesContainerHeight,
     },
+
+
+
+
     message: {
       color: 'white',
       padding: theme.spacing(1),
       wordWrap: 'break-word',
     },
     messageFromMe: {
-      color: 'white',
+      color: ' #f0f0f0',
       backgroundColor: theme.palette.primary.light,
+      // backgroundColor: '#1e212d',
       alignSelf: 'flex-end',
       marginLeft: 120,
       marginRight: 10,
       marginTop: 10,
       marginBottom: 10,
+      borderRadius: '20px',
+      boxShadow: '-8px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginLeft: 120,
         marginRight: 10,
@@ -98,12 +113,15 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     messageFromOther: {
       alignSelf: 'flex-start',
-      color: 'white',
-      backgroundColor: '#65CF22',
+      color: ' #e8e6e6',
+      // backgroundColor: '#65CF22',
+      backgroundColor: '#4b3464',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
       marginBottom: 10,
+      borderRadius: '20px',
+      boxShadow: '8px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginRight: 120,
         marginLeft: 10,
@@ -115,24 +133,47 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     inputContainer: {
       display: 'flex',
-      alignItems: 'center',
-      padding: theme.spacing(1),
+      // alignItems: 'center',
+
+      padding: theme.spacing(2.75),
       '& input': {
         color: 'white',
+        alignItems: 'left',
       },
     },
-    input: {},
-    search: {
+    input: {
+      left: 0,
+    },
+
+
+    searchContainer: {
+      height: 80,
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-evenly',
       position: 'absolute',
+      // top: 0,
+      left: 0,
+      right: 0,
+      width: '100%',
+      marginTop: theme.spacing(0.15),
+      borderRadius: '15px',
+      background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+      zIndex: 1000,
+    },
+
+    search: {
+      margin: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-evenly',
+      position: 'relative',
       top: 0,
       left: 0,
       right: 0,
       width: '100%',
-      marginTop: theme.spacing(12),
+      marginTop: theme.spacing(1.5),
       zIndex: 1000,
     },
   }),
