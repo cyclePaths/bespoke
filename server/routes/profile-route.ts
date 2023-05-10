@@ -360,7 +360,7 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
 
 
 profileRouter.get('/stats', async (req: Request, res: Response) => {
-  console.log(req.query)
+  // console.log(req.query)
   try {
     const { id } = req.user as { id: number };
     const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
@@ -383,7 +383,7 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
       }
 
     });
-    console.log('statsData', statsData)
+    // console.log('statsData', statsData)
     res.status(200).json(statsData);
   } catch (error) {
     console.error(error);

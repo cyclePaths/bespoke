@@ -86,7 +86,7 @@ const Scrollers = ({ setShowScrollers }) => {
         rideSpeedValue = workout[i].value;
       }
     }
-    console.log('Speed', rideSpeedValue);
+    console.log('Speed', rideSpeed);
   });
 
   useEffect(() => {

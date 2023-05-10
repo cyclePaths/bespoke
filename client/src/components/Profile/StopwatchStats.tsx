@@ -78,22 +78,22 @@ const StopwatchStats = ({
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
-          workout = 'Average Speed <10 mph';
+          workout = '<10 mph average';
         }
         if (workout === 'mph, light') {
-          workout = 'Average Speed 10-12 mph';
+          workout = '10-12 mph average';
         }
         if (`${workout}` === '13.9 mph, moderate') {
-          workout = 'Average Speed 12-14 mph';
+          workout = '12-14 mph average';
         }
         if (`${workout}` === '15.9 mph, vigorous') {
-          workout = 'Average Speed 14-16 mph';
+          workout = '14-16 mph average';
         }
         if (`${workout}` === 'very fast, racing') {
-          workout = 'Average Speed 16-19 mph';
+          workout = '16-19 mph average';
         }
         if (`${workout}` === '>20 mph, racing') {
-          workout = 'Average Speed 20+ mph';
+          workout = '20+ mph average';
         }
         if (`${workout}` === 'mountain bike') {
           workout = 'Mountain Biking';

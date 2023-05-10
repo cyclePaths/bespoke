@@ -591,6 +591,34 @@ The code below is for the Profile Stats feature
   color: '#1d1c1c';
 }
 
+.stats-grid {
+  height: 400px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media screen and (max-width: 420px) {
+  .stats-grid {
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .stats-grid {
+    margin-top: 75px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .stats-grid {
+    margin-top: 50px;
+  }
+}
+
+
+
 /*
 The code above is for the Profile Stats feature
 */

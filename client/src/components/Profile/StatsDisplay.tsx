@@ -45,9 +45,10 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
   const statsWithIds = stats.map((row, index) => ({ ...row, id: row.rideDate + '_' + index }));
 
   return (
-    // <Box sx={{ height: 400, width: '100%' }}>
-    <Box style={{ width: '100%', overflow: 'hidden' }}>
-<div style={{ backgroundColor: '#333', padding: '16px' }}>
+    <div className='stats-grid' >
+
+    <Box style={{ bottom: 0, width: '100%', overflow: 'hidden' }}>
+<div style={{  backgroundColor: 'rgb(51, 51, 51)', padding: '16px' }}>
 {/* <ReturnToDialogButton onClick={handleGridClose} /> */}
 <Button variant="outlined" color="primary" onClick={() => {handleBackClick(); handleClickOpen()}}>
       &lt; &lt;  Back to Select
@@ -73,6 +74,7 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
       />
       </div>
     </Box>
+    </div>
   );
 }
 
