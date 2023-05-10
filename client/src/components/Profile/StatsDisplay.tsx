@@ -68,7 +68,7 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
         disableRowSelectionOnClick
         style={{
           opacity: 1,
-          backgroundColor: '#8c8888',
+          background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
           color: '#1d1c1c',
         }}
       />

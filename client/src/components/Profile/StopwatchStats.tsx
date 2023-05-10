@@ -4,6 +4,7 @@ import axios from 'axios';
 import Profile, { RideStats } from './Profile';
 import Root, { UserContext } from '../../Root';
 import { exiledRedHeadedStepChildrenValueGroups } from '../../../profile-assets';
+import Button from '@mui/material/Button';
 
 export type StopwatchActivity = string;
 export type StopwatchDuration = number;
@@ -130,7 +131,8 @@ const StopwatchStats = ({
       <div>
         {isPickerVisible && (
           <div>
-            <button
+            <Button
+            variant="contained" size="small"
               type='button'
               onClick={() => {
                 workoutStats();
@@ -139,7 +141,7 @@ const StopwatchStats = ({
               }}
             >
               Get Stats
-            </button>
+            </Button>
           </div>
         )}
       </div>

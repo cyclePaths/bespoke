@@ -21,7 +21,6 @@ const Stats = () => {
   const [isStatsDisplayed, setIsStatsDisplayed] = React.useState(false);
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
-
   const handleChange = (event: SelectChangeEvent<typeof speed>) => {
     setSpeed(event.target.value);
   };
@@ -61,6 +60,11 @@ const Stats = () => {
     setIsStatsDisplayed(false);
   };
 
+  const handleOkClick = () => {
+    getStats();
+    setSpeed('');
+  };
+
   return (
     <>
       <div className='select-stats'>
@@ -69,22 +73,13 @@ const Stats = () => {
         </Button>
       </div>
       <div>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-
-          >
-          <DialogTitle
-    className='select-stats-dialog'
-
-          >Select Rides By Speed</DialogTitle>
-          <DialogContent
-          className='select-stats-dialog'
-          >
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle className='select-stats-dialog'>
+            Select Rides By Speed
+          </DialogTitle>
+          <DialogContent className='select-stats-dialog'>
             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}
-
-              >
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
                 <Select
                   native
@@ -106,24 +101,25 @@ const Stats = () => {
               </FormControl>
             </Box>
           </DialogContent>
-          <DialogActions
-            className='select-stats-dialog'
-          >
+          <DialogActions className='select-stats-dialog'>
             <Button onClick={handleClose}>Cancel</Button>
             <Button
               onClick={(event) => {
-                handleClose(event, 'ok'), getStats();
+                handleOkClick();
+                handleClose(event, 'ok');
               }}
             >
               Ok
             </Button>
           </DialogActions>
         </Dialog>
-        {isStatsDisplayed && <StatsDisplay
-        stats={stats}
-        handleGridClose={handleGridClose}
-        handleClickOpen={handleClickOpen}
-        />}
+        {isStatsDisplayed && (
+          <StatsDisplay
+            stats={stats}
+            handleGridClose={handleGridClose}
+            handleClickOpen={handleClickOpen}
+          />
+        )}
       </div>
     </>
   );
