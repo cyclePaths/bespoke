@@ -376,6 +376,7 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
         // ]
       },
       select: {
+        id: true,
         activity: true,
         duration: true,
         weight: true,
@@ -390,4 +391,25 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+profileRouter.delete('/deleteStat/:id', async(req: Request, res: Response) => {
+  console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteRide = await prisma.rides.delete({
+      where: {
+        id: Number(id),
+      }
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
 export default profileRouter;
