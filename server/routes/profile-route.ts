@@ -101,7 +101,7 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
-  console.log(req.query)
+  console.log('querey', req.query)
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -360,12 +360,13 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
 
 
 profileRouter.get('/stats', async (req: Request, res: Response) => {
+  console.log(req.query)
   try {
     const { id } = req.user as { id: number };
     const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
-    if (!speed) {
-      return res.status(400).json({ error: 'Invalid speed value' });
-    }
+    // if (!speed) {
+    //   return res.status(400).json({ error: 'Invalid speed value' });
+    // }
 
     const statsData = await prisma.rides.findMany({
       where: {
@@ -373,10 +374,16 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
            userId: id ,
            activity: speed,
         // ]
-
+      },
+      select: {
+        activity: true,
+        duration: true,
+        weight: true,
+        calories: true,
       }
 
     });
+    console.log('statsData', statsData)
     res.status(200).json(statsData);
   } catch (error) {
     console.error(error);

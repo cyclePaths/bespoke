@@ -26,13 +26,14 @@ const StopwatchStats = ({
   hours,
   minutes,
   seconds,
+  swActivity,
   isPickerVisible,
   setIsPickerVisible,
   setValueGroups,
 }) => {
   const user = useContext(UserContext);
 
-  let weight = user?.weight ?? 0;
+ const [weight, setWeight] = useState(0);
 
   let totalTime = 0;
 
@@ -44,19 +45,36 @@ const StopwatchStats = ({
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+        console.log(data)
+       setWeight(data.weight)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    console.log('h', hours)
+    console.log('m', minutes)
+  }, [])
+
   const workoutStats = () => {
     // const { workout } = valueGroups;
-    let workout = valueGroups.workout;
+    // let workout = valueGroups.workout;
+    let workout = swActivity;
 
     axios
       .get('/profile/workout', {
         params: {
-          activity: `${workout}`,
+          // activity: `${workout}`,
+          activity: swActivity,
           duration: totalTime,
           weight: weight,
         },
       })
       .then((response) => {
+
+        console.log('this response', response)
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
@@ -89,10 +107,10 @@ const StopwatchStats = ({
           },
         });
 
-        console.log(response);
+        console.log('check res', response);
         axios
           .post('profile/workout', {
-            activity: `${workout}`,
+            activity: workout,
             duration: totalTime,
             weight: weight,
             calories: total_calories,

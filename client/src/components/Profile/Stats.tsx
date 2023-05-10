@@ -48,7 +48,7 @@ const Stats = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
+        console.log('unique', data);
         setStats(data);
         setIsStatsDisplayed(true);
       })

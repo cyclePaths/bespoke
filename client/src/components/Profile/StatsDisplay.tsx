@@ -42,7 +42,7 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
     handleGridClose();
   };
 
-
+  const statsWithIds = stats.map((row, index) => ({ ...row, id: row.rideDate + '_' + index }));
 
   return (
     // <Box sx={{ height: 400, width: '100%' }}>
@@ -53,7 +53,7 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
       &lt; &lt;  Back to Select
     </Button>
       <DataGrid
-        rows={stats}
+        rows={statsWithIds}
         columns={columns}
         initialState={{
           pagination: {

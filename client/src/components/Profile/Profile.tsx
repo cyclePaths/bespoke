@@ -53,12 +53,12 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [rideStats, setRideStats] = useState<RideStats>({
-    activity: '',
-    duration: 0,
-    weight: 0,
-    calories: 0,
-  });
+  // const [rideStats, setRideStats] = useState<RideStats>({
+  //   activity: '',
+  //   duration: 0,
+  //   weight: 0,
+  //   calories: 0,
+  // });
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
@@ -78,21 +78,21 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
 
   /////////////////////////////////////////////////////////////////////////
   ////// This function grabs ride stats from StopwatchStats.tsx////////////
-  const location = useLocation();
-  let stopwatchActivity = location.state && location.state.stopwatchActivity;
-  const stopwatchDuration = location.state && location.state.stopwatchDuration;
-  const stopwatchCalories = location.state && location.state.stopwatchCalories;
+  // const location = useLocation();
+  // let stopwatchActivity = location.state && location.state.stopwatchActivity;
+  // const stopwatchDuration = location.state && location.state.stopwatchDuration;
+  // const stopwatchCalories = location.state && location.state.stopwatchCalories;
 
-  if (
-    stopwatchActivity !== '' &&
-    stopwatchDuration > 0 &&
-    stopwatchCalories > 0
-  ) {
-    rideStats.activity = stopwatchActivity;
-    rideStats.duration = stopwatchDuration;
-    rideStats.weight = weight;
-    rideStats.calories = stopwatchCalories;
-  }
+  // if (
+  //   stopwatchActivity !== '' &&
+  //   stopwatchDuration > 0 &&
+  //   stopwatchCalories > 0
+  // ) {
+  //   rideStats.activity = stopwatchActivity;
+  //   rideStats.duration = stopwatchDuration;
+  //   rideStats.weight = weight;
+  //   rideStats.calories = stopwatchCalories;
+  // }
   //.................................................
 
   //show/hide badges on user profile page
