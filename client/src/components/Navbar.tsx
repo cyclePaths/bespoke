@@ -234,6 +234,7 @@ const Navbar = () => {
       </LeaderBoardPopout>
       <Stopwatch
         openStopWatch={openStopWatch}
+        setOpenStopWatch={setOpenStopWatch}
         setActiveWatch={setActiveWatch}
         activity={activity}
         setActivity={setActivity}
