@@ -379,7 +379,7 @@ const Stopwatch = ({ openStopWatch, setActiveWatch, activity, setActivity, activ
         display: openStopWatch ? 'block' : 'none',
       }}
     >
-      <h3>
+      <h3 className='stopwatch-text'>
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
       </h3>

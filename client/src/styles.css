@@ -133,6 +133,10 @@ html, body {
   z-index: 9999;
 }
 
+.stopwatch-text {
+  color: black;
+}
+
 .profile-pic {
   border-radius: 50%;
   margin-top: 20px;
