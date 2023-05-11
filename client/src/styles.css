@@ -475,6 +475,7 @@ The code below is for the Profile search Home address feature
   bottom: 0px; */
   height: 60vh;
   position: relative;
+  top: 50%;
 }
 
 .address {
@@ -482,13 +483,10 @@ The code below is for the Profile search Home address feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Position the element relative to the parent element */
-  /* top: 30%; Adjust the top value to position the element where you want it */
-  /* margin-bottom: 10px; */
-  /* margin-top:200px; */
-  bottom: 200px;
   transform: translateY(-50%); /* Center the element vertically */
   color: #f1e2e2;
+  margin-top: 170px;
+  /* bottom: 200px; */
 }
 
 
@@ -505,13 +503,17 @@ The code below is for the Profile search Home address feature
   position: absolute;
   align-content: center;
   top: calc(
-    35% - 60px
+    30% - 60px
   );
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.delete-address {
+  margin-top: 10px;
 }
 
 @media screen and (max-height: 900px) {
@@ -528,7 +530,8 @@ The code below is for the Profile search Home address feature
 
 @media screen and (max-height: 700px) {
   .address {
-    bottom: 200px;
+    /* bottom: 200px; */
+    margin-top: 38px;
   }
   .displayedAddress {
     top: calc(
@@ -539,8 +542,7 @@ The code below is for the Profile search Home address feature
 }
 
 .address-input {
-  margin-bottom: 10px;
-  /* position:sticky; */
+  margin-top: 60px;
 }
 
 .autocomplete-dropdown-container {
@@ -582,7 +584,7 @@ The code below is for the Profile set weight feature
 }
 
 .saveWeight {
-  margin-top: 10px !important;
+  margin-top: 17px !important;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 

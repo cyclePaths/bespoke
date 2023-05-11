@@ -86,6 +86,7 @@ const Addresses = ({
   const [userId, setUserId] = useState(0);
   const [userAddress, setUserAddress] = useState('');
   const [showDelete, setShowDelete] = useState(false);
+  const [selectedAddressPlaceholder, setSelectedAddressPlaceholder] = useState('');
   // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
 
   const handlePlaceSelect = (selectedPlace: string) => {
@@ -108,6 +109,7 @@ const Addresses = ({
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
       setSelectedAddress(address);
+      setSelectedAddressPlaceholder('');
 
       // setAlertType('success');
       // handleAlertClick();
@@ -154,6 +156,7 @@ const Addresses = ({
     } else {
       saveHome();
       setAddress('');
+      setSelectedAddressPlaceholder('');
       setShowDelete(true);
       setAlertTypeSuccess(true);
       setTimeout(() => {
@@ -218,6 +221,7 @@ const Addresses = ({
           <div className='displayedAddress'>
             {homeAddress}
             {showDelete && (
+              <div className='delete-address'>
               <Button
                 size='small'
                 variant='outlined'
@@ -227,6 +231,7 @@ const Addresses = ({
               >
                 DELETE
               </Button>
+              </div>
             )}
           </div>
           <PlacesAutocomplete
@@ -274,9 +279,21 @@ const Addresses = ({
                       </div>
                     );
                   })}
+                  {/* <div>{selectedAddress}</div> */}
+                  {selectedAddress && (
                   <div>{selectedAddress}</div>
+                )}
 
-                  <Stack direction='row' spacing={5}>
+                {!selectedAddress && (
+                  <div className='placeholder' style={{ opacity: 0 }}>
+                    Placeholder Text
+                  </div>
+                )}
+
+                </div>
+
+
+                <Stack direction='row' spacing={5}>
                     <Button
                       className='saveHome'
                       variant='contained'
@@ -293,10 +310,32 @@ const Addresses = ({
                       Set Home
                     </Button>
                   </Stack>
-                </div>
+
+
               </div>
             )}
           </PlacesAutocomplete>
+
+
+
+          {/* <Stack direction='row' spacing={5}>
+                    <Button
+                      className='saveHome'
+                      variant='contained'
+                      color='success'
+                      style={{
+                        backgroundColor: 'green',
+                        color: 'white',
+                        boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
+                      }}
+                      onClick={() => {
+                        handleSetHomeClick();
+                      }}
+                    >
+                      Set Home
+                    </Button>
+                  </Stack> */}
+
         </Box>
       </div>
 
