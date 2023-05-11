@@ -160,7 +160,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         data.activity = 'Mountain Biking';
       }
 
-      setRideStats(data);
+      // setRideStats(data);
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
 
 

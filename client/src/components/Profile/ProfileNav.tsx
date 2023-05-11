@@ -117,9 +117,15 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
+          // sx={{ justifyContent: 'space-between' }}
             value={value}
             onChange={handleChange}
             aria-label='basic tabs example'
+            sx={{
+              '& .MuiTabs-flexContainer': {
+                justifyContent: 'space-evenly',
+              },
+            }}
           >
             <Tab label='Set Home' sx={{ color: '#f1e2e2' }} {...a11yProps(0)} />
             <Tab label='Weight' sx={{ color: '#f1e2e2' }} {...a11yProps(1)} />

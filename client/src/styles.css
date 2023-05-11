@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-
-html, body {
+html,
+body {
   margin: 0px;
   font-family: 'Roboto', sans-serif;
 }
@@ -27,7 +27,7 @@ html, body {
   margin: 5px;
 }
 
-.route-saver-headers{
+.route-saver-headers {
   text-align: center;
   font-size: xx-large;
   margin-top: 10px;
@@ -41,13 +41,12 @@ html, body {
   display: flex;
 }
 
-
 #profilePic {
   border-radius: 100px;
   height: 30px;
 }
 
-#list{
+#list {
   text-align: center;
   background-color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -69,36 +68,36 @@ html, body {
 }
 
 #saveMessage {
-  left: 58%
+  left: 58%;
 }
 
 @media screen and (min-width: 425px) {
   #saveMessage {
-    left: 60%
+    left: 60%;
   }
 }
 
 @media screen and (min-width: 768px) {
   #saveMessage {
-    left: 78%
+    left: 78%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   #saveMessage {
-    left: 84%
+    left: 84%;
   }
 }
 
 @media screen and (min-width: 1440px) {
   #saveMessage {
-    left: 88%
+    left: 88%;
   }
 }
 
 @media screen and (min-width: 2560) {
   #saveMessage {
-    left: 98%
+    left: 98%;
   }
 }
 
@@ -123,7 +122,7 @@ html, body {
   font-size: 25px;
 }
 
-#set-private{
+#set-private {
   font-family: 'Roboto', sans-serif;
   /* font-weight: bold; */
   font-size: 14px;
@@ -131,7 +130,6 @@ html, body {
 
 .stopwatch-container {
   z-index: 9999;
-
 }
 
 .stopwatch {
@@ -174,10 +172,9 @@ html, body {
   margin-right: 10px;
 }
 
-
 .profile-pic-Theme-icon {
   display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
   /* align-items: center; */
 }
 
@@ -185,8 +182,8 @@ html, body {
 The code below is for the scroll wheel
 */
 
-[class^="number-slide"],
-[class*=" number-slide"] {
+[class^='number-slide'],
+[class*=' number-slide'] {
   background: grey;
   display: flex;
   align-items: center;
@@ -218,7 +215,6 @@ The code below is for the scroll wheel
   height: 100px;
   bottom: 0;
   transition: opacity 0.5s;
-
 }
 
 .buttonContainer {
@@ -264,11 +260,7 @@ The code below is for the scroll wheel
 
 .customButton:active {
   background-color: rgb(32, 31, 31);
-  background: linear-gradient(
-    128deg,
-    rgb(125, 125, 125) 0%,
-    rgb(6, 6, 6) 100%
-  );
+  background: linear-gradient(128deg, rgb(125, 125, 125) 0%, rgb(6, 6, 6) 100%);
   color: white;
 }
 
@@ -382,8 +374,8 @@ The code below is for the scroll wheel
 The code above is for the scroll wheel
 */
 
-[class^="leaderboard-view"],
-[class*=" leaderboard-view"] {
+[class^='leaderboard-view'],
+[class*=' leaderboard-view'] {
   display: flex;
   justify-content: center;
 }
@@ -445,7 +437,7 @@ The code above is for the scroll wheel
 
 @media screen {
   .container {
-    height: 87vh
+    height: 87vh;
   }
 }
 
@@ -474,7 +466,6 @@ The code below is for the Profile search Home address feature
   z-index: 100;
 }
 
-
 .setAddress {
   display: flex;
   flex-direction: column;
@@ -500,7 +491,6 @@ The code below is for the Profile search Home address feature
   color: #f1e2e2;
 }
 
-
 .saveHome {
   margin-top: 10px !important;
   position: absolute;
@@ -512,10 +502,15 @@ The code below is for the Profile search Home address feature
 
 .displayedAddress {
   position: absolute;
-
-  top: calc(35% - 60px); /* Adjust the value to position the element where you want it */
+  align-content: center;
+  top: calc(
+    35% - 60px
+  );
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .address-input {
@@ -559,7 +554,6 @@ The code below is for the Profile set weight feature
   position: absolute; /* Position the element relative to the parent element */
   bottom: 130px;
   transform: translateY(-50%); /* Center the element vertically */
-
 }
 
 .saveWeight {
@@ -576,7 +570,7 @@ The code below is for the Profile set weight feature
 
 .address-alert-stack {
   position: absolute;
-   bottom: 165px;
+  bottom: 165px;
 }
 
 .current-weight {
@@ -586,8 +580,6 @@ The code below is for the Profile set weight feature
   left: 50%;
   transform: translateX(-50%);
 }
-
-
 
 /*
 The code above is for the Profile set weight feature
@@ -657,12 +649,9 @@ The code below is for the Profile Stats feature
   color: '#1d1c1c';
 }
 
-
-
 /*
 The code above is for the Profile Stats feature
 */
-
 
 /* This is the disable some of the google watermarks */
 

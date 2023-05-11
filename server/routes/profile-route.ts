@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import axios from 'axios';
-import { PrismaClient, User, Rides } from '@prisma/client';
+import { Prisma, PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
 import { CALORIES_BURNED_API } from '../../config';
 
@@ -394,7 +394,7 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
 
 
 profileRouter.delete('/deleteStat/:id', async(req: Request, res: Response) => {
-  console.log(req)
+  // console.log(req)
   try {
     const { id } = req.params as { id?: number };
 
@@ -402,6 +402,28 @@ profileRouter.delete('/deleteStat/:id', async(req: Request, res: Response) => {
       where: {
         id: Number(id),
       }
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
+profileRouter.delete('/deleteAddress/:id', async(req: Request, res: Response) => {
+  console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteAddress = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        homeAddress: null,
+      } as Prisma.UserUpdateInput,
     });
     console.log('success')
     res.sendStatus(200);
