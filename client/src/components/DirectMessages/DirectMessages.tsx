@@ -237,6 +237,7 @@ function DirectMessages() {
         // setReceiverId={setReceiverId}
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
+        setIsReceiverSelected={setIsReceiverSelected}
       ></SearchUsers>
       {/* <Conversations /> */}
       {isReceiverSelected && (

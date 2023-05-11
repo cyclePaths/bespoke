@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Fab from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
 
@@ -26,13 +30,16 @@ function SearchUsers({
   setReceiver,
   loadMessages,
   handleSetReceiver,
+  setIsReceiverSelected,
 }) {
   const [findUser, setFindUser] = useState('');
+  const [showAutoComplete, setShowAutoComplete] = useState(true);
 
   const classes = useStyles();
 
   useEffect(() => {
     let active = true;
+    setShowAutoComplete(true);
 
     const getUsers = async () => {
       try {
@@ -55,51 +62,70 @@ function SearchUsers({
     };
   }, [loading]);
 
+
   return (
-    <div className={classes.searchContainer}>
     <div className={classes.search}>
-      <Autocomplete
-        id='asynchronous'
-        // sx={{ width: 300 }}
-        open={open}
-        onOpen={() => {
-          setOpen(true);
-        }}
-        onClose={() => {
-          setOpen(false);
-        }}
-        isOptionEqualToValue={(option: Users, value) =>
-          option.name === value.name
-        }
-        getOptionLabel={(option) => option.name}
-        // onChange={(event, newValue) => setReceiver(newValue)}
-        onChange={(event, newValue) => {
-          setReceiver(newValue);
-          handleSetReceiver(newValue);
-        }}
-        options={options}
-        loading={loading}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label='Search Bikers'
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color='inherit' size={20} />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
-          />
-        )}
-      />
-    </div>
+      {showAutoComplete ? (
+        // {/* {showAutoComplete && ( */}
+        <Autocomplete
+          sx={{
+            background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+            borderRadius: '5px',
+          }}
+          id='asynchronous'
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          isOptionEqualToValue={(option: Users, value) =>
+            option.name === value.name
+          }
+          getOptionLabel={(option) => option.name}
+          onChange={(event, newValue) => {
+            setReceiver(newValue);
+            handleSetReceiver(newValue);
+            setShowAutoComplete(false);
+          }}
+          options={options}
+          loading={loading}
+          renderInput={(params) => (
+            <TextField
+              sx={{ borderRadius: '25px' }}
+              {...params}
+              label='Search Bikers'
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? (
+                      <CircularProgress color='inherit' size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
+            />
+          )}
+        />
+      )
+      : (
+        <Fab color="secondary" size='small' aria-label="back"
+        onClick={() => {
+          setShowAutoComplete(true);
+          setIsReceiverSelected(false)
+          }}>
+        {/* <IconButton onClick={() => setShowAutoComplete(true)}> */}
+          <ArrowBackIosNewIcon fontSize='small'/>
+        {/* </IconButton> */}
+        </Fab>
+      )
+      }
     </div>
   );
+
 }
 
 const dbUsers = [

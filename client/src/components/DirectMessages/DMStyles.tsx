@@ -52,7 +52,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
 
 // const heightSm = 390;
 // const heightMd = 900;
-const messagesContainerHeight = '80vh';
+const messagesContainerHeight = '75vh';
 
 // Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
@@ -83,7 +83,26 @@ export const useStyles = makeStyles((theme: Theme) =>
       maxHeight: messagesContainerHeight,
     },
 
-
+    '@media screen and (max-height: 920px)': {
+      messagesContainer: {
+        maxHeight: '80vh',
+      },
+    },
+    '@media screen and (max-height: 900px)': {
+      messagesContainer: {
+        maxHeight: '79vh',
+      },
+    },
+    '@media screen and (max-height: 750px)': {
+      messagesContainer: {
+        maxHeight: '76vh',
+      },
+    },
+    '@media screen and (max-height: 700px)': {
+      messagesContainer: {
+        maxHeight: '75vh',
+      },
+    },
 
 
     message: {
@@ -146,22 +165,22 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
 
-    searchContainer: {
-      height: 80,
-      margin: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      position: 'absolute',
-      // top: 0,
-      left: 0,
-      right: 0,
-      width: '100%',
-      marginTop: theme.spacing(0.15),
-      borderRadius: '15px',
-      background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-      zIndex: 1000,
-    },
+    // searchContainer: {
+    //   height: 80,
+    //   margin: 'auto',
+    //   display: 'flex',
+    //   flexDirection: 'column',
+    //   justifyContent: 'space-evenly',
+    //   position: 'absolute',
+    //   // top: 0,
+    //   left: 0,
+    //   right: 0,
+    //   width: '100%',
+    //   marginTop: theme.spacing(0.15),
+    //   borderRadius: '15px',
+    //   background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+    //   zIndex: 1000,
+    // },
 
     search: {
       margin: 'auto',
@@ -173,7 +192,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       width: '100%',
-      marginTop: theme.spacing(1.5),
+      marginTop: theme.spacing(0),
       zIndex: 1000,
     },
   }),
