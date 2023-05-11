@@ -434,4 +434,26 @@ profileRouter.delete('/deleteAddress/:id', async(req: Request, res: Response) =>
 })
 
 
+profileRouter.delete('/deleteWeight/:id', async(req: Request, res: Response) => {
+  console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteWeight = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        weight: null,
+      } as Prisma.UserUpdateInput,
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
 export default profileRouter;

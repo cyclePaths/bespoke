@@ -491,6 +491,7 @@ The code below is for the Profile search Home address feature
   color: #f1e2e2;
 }
 
+
 .saveHome {
   margin-top: 10px !important;
   position: absolute;
@@ -511,6 +512,30 @@ The code below is for the Profile search Home address feature
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media screen and (max-height: 900px) {
+  .address {
+    bottom: 200px;
+  }
+}
+
+@media screen and (max-height: 850px) {
+  .address {
+    bottom: 200px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .address {
+    bottom: 200px;
+  }
+  .displayedAddress {
+    top: calc(
+      20% - 60px
+    );
+    /* top: 0; */
+  }
 }
 
 .address-input {
@@ -552,13 +577,45 @@ The code below is for the Profile set weight feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  bottom: 130px;
+  bottom: 140px;
   transform: translateY(-50%); /* Center the element vertically */
 }
 
 .saveWeight {
   margin-top: 10px !important;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.current-weight {
+  position: absolute;
+  top: calc(30% - 60px);
+  /* top: calc(30% - 100px);  */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: -24px;
+}
+
+.delete-weight {
+  position: absolute;
+  bottom: calc(55% + 30px); /* Adjust this value according to your needs */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+@media screen and (max-height: 700px) {
+  .delete-weight {
+    position: absolute;
+  bottom: calc(62% + 30px); /* Adjust this value according to your needs */
+  left: 50%;
+  transform: translateX(-50%);
+  }
+  .current-weight {
+    top: calc(
+      20% - 60px
+    );
+    /* top: 0; */
+  }
 }
 
 .custom-snackbar {
@@ -571,14 +628,6 @@ The code below is for the Profile set weight feature
 .address-alert-stack {
   position: absolute;
   bottom: 165px;
-}
-
-.current-weight {
-  position: absolute;
-  top: calc(35% - 60px);
-  /* top: calc(30% - 100px);  */
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 /*

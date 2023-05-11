@@ -31,6 +31,8 @@ const SetWeight = (props: WeightTabProps) => {
   const [alertTypeWeight, setAlertTypeWeight] = useState<'success' | 'error' | 'warning' | null>(null);
   // const [noWeightWarning, setNoWeightWarning] = useState(false);
   const [weightMessage, setWeightMessage] = useState('');
+  const [userId, setUserId] = useState(0);
+  const [showDelete, setShowDelete] = useState(false);
 
   const goodSet = `Current weight is ${weight} lbs`
   const badSet = 'Weight must be 50 lbs or higher to track calories!'
@@ -53,6 +55,7 @@ const SetWeight = (props: WeightTabProps) => {
         console.log('Failed to input weight', err);
       });
       setWeightMessage(goodSet)
+      setShowDelete(true);
       setAlertTypeWeight('success');
       alertOnClick();
     } else {
@@ -79,10 +82,22 @@ const SetWeight = (props: WeightTabProps) => {
       } else {
         setWeight(data.weight)
         setWeightMessage(goodSet)
+        setShowDelete(true);
       }
     });
   }, [weight]);
 
+  useEffect(() => {
+    axios
+      .get('/profile/user')
+      .then(({ data }) => {
+        console.log('my id', data.id);
+        setUserId(data.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
 
   const alertOnClick = () => {
@@ -100,6 +115,21 @@ const SetWeight = (props: WeightTabProps) => {
     setOpenWeight(false);
   };
 
+
+  const deleteWeight = () => {
+    axios
+      .delete(`/profile/deleteWeight/${userId}`, {
+      })
+      .then(() => {
+        setWeightMessage(badSet)
+        setShowDelete(false);
+        console.log('successful delete');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
 
 <>
@@ -111,13 +141,22 @@ const SetWeight = (props: WeightTabProps) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          // alignItems: 'center',
+          // '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
         noValidate
         autoComplete='off'
       >
-        <div>
-          <h4 className='current-weight'>{weightMessage}</h4>
+        <h4 className='current-weight'>{weightMessage}</h4>
+        <div className='delete-weight'>
+
+          {showDelete && (
+            <Button size='small' variant='outlined' color='error'
+            onClick={deleteWeight}
+            >
+              DELETE
+            </Button>
+        )}
         </div>
         <div className='weight-input'>
           <TextField

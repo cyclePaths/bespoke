@@ -133,7 +133,7 @@ const Addresses = ({
           }, 6000);
         } else {
           const home = data.homeAddress;
-          // console.log('Address', data.homeAddress);
+          setShowDelete(true);
           setAlertTypeWarning(false);
           setHomeAddress(`Your home is ${home}`);
           setHasHomeAddress(true);
@@ -173,31 +173,32 @@ const Addresses = ({
     setOpenAddress(false);
   };
 
-
   useEffect(() => {
-    axios.get('/profile/user')
+    axios
+      .get('/profile/user')
       .then(({ data }) => {
         console.log('my id', data.id);
         setUserId(data.id);
-        setUserAddress(data.address)
+        setUserAddress(data.address);
       })
-      .catch((err)=> {
+      .catch((err) => {
         console.log(err);
-      })
-  })
-
+      });
+  }, []);
 
   const deleteAddress = () => {
-    axios.delete(`/profile/deleteAddress/${userId}`, {
-      params: { address: userAddress }
-    })
+    axios
+      .delete(`/profile/deleteAddress/${userId}`, {
+      })
       .then(() => {
         setShowDelete(false);
         setHomeAddress('Save a home address to find a quick route home.');
-        console.log('successful delete')})
-      .catch((err) => {console.log(err)})
-
-  }
+        console.log('successful delete');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -217,12 +218,16 @@ const Addresses = ({
           <div className='displayedAddress'>
             {homeAddress}
             {showDelete && (
-            <Button size='small' variant='outlined' color='error' sx={{marginTop: '15px',}}
-            onClick={deleteAddress}
-            >
-              DELETE
-            </Button>
-)}
+              <Button
+                size='small'
+                variant='outlined'
+                color='error'
+                sx={{ marginTop: '15px' }}
+                onClick={deleteAddress}
+              >
+                DELETE
+              </Button>
+            )}
           </div>
           <PlacesAutocomplete
             value={address}
