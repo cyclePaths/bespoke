@@ -88,6 +88,8 @@ function DirectMessages() {
   const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
   const [isReceiverSelected, setIsReceiverSelected] = useState(false);
+  const [showMessageContainer, setShowMessageContainer] = useState(false);
+
 
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
@@ -97,6 +99,7 @@ function DirectMessages() {
     if (receiver !== null) {
       setReceiver(receiver);
       setIsReceiverSelected(true);
+      setShowMessageContainer(false);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
@@ -168,6 +171,7 @@ function DirectMessages() {
       });
       const { data } = thread;
       setMessages(data);
+      setShowMessageContainer(true);
     } catch (err) {
       console.log(err);
     }
@@ -242,7 +246,7 @@ function DirectMessages() {
         setIsReceiverSelected={setIsReceiverSelected}
       ></SearchUsers>
       {/* <Conversations /> */}
-      {isReceiverSelected && (
+      {isReceiverSelected && showMessageContainer && (
         <Paper className={classes.root}>
           <div
           className={classes.messagesContainer}

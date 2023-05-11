@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Fab from '@mui/material/Fab';
@@ -36,33 +36,64 @@ function SearchUsers({
 }) {
   const [findUser, setFindUser] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(true);
+  const [active, setActive] = useState(true); // Add active state
 
   const classes = useStyles();
 
-  useEffect(() => {
-    let active = true;
-    setShowAutoComplete(true);
+  // useEffect(() => {
+  //   let active = true;
+  //   setShowAutoComplete(true);
 
-    const getUsers = async () => {
-      try {
-        const response = await axios.get('/dms/findUsers');
-        console.log('RESPONSO', response);
-        if (active) {
-          setOptions([...response.data]);
-        }
-      } catch (error) {
-        console.error(error);
+  //   const getUsers = async () => {
+  //     try {
+  //       const response = await axios.get('/dms/findUsers');
+  //       console.log('RESPONSO', response);
+  //       if (active) {
+  //         setOptions([...response.data]);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   if (!loading) {
+  //     getUsers();
+  //   }
+
+  //   return () => {
+  //     active = false;
+  //   };
+  // }, [loading]);
+
+
+  const getUsers = useCallback(async () => {
+    try {
+      const response = await axios.get('/dms/findUsers');
+      console.log('RESPONSO', response);
+      if (active) {
+        setOptions([...response.data]);
       }
-    };
-
-    if (!loading) {
-      getUsers();
+    } catch (error) {
+      console.error(error);
     }
+  }, [active, setOptions]);
+
+  useEffect(() => {
+    setShowAutoComplete(true);
+    getUsers();
 
     return () => {
-      active = false;
+      setActive(false);
     };
-  }, [loading]);
+  }, [getUsers]);
+
+
+  useEffect(() => {
+    if (receiver) {
+      loadMessages(receiver); // Load messages for the selected receiver
+    }
+  }, [receiver]);
+
 
   return (
     <div className={classes.search}>

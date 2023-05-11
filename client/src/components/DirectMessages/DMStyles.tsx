@@ -52,6 +52,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
 
 // const heightSm = 390;
 // const heightMd = 900;
+
 const messagesContainerHeight = '75vh';
 
 // Define the component styles
@@ -76,6 +77,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       top: 50,
       bottom: 0,
       overflowY: 'auto',
+      // overscrollBehavior: 'contain',
       // marginTop: theme.spacing(35),
       padding: theme.spacing(1),
       zIndex: 0,
@@ -83,26 +85,28 @@ export const useStyles = makeStyles((theme: Theme) =>
       maxHeight: messagesContainerHeight,
     },
 
-    '@media screen and (max-height: 920px)': {
-      messagesContainer: {
-        maxHeight: '80vh',
-      },
-    },
-    '@media screen and (max-height: 900px)': {
-      messagesContainer: {
-        maxHeight: '79vh',
-      },
-    },
-    '@media screen and (max-height: 750px)': {
-      messagesContainer: {
-        maxHeight: '76vh',
-      },
-    },
-    '@media screen and (max-height: 700px)': {
-      messagesContainer: {
-        maxHeight: '75vh',
-      },
-    },
+
+
+    // '@media screen and (max-height: 920px)': {
+    //   messagesContainer: {
+    //     maxHeight: '80vh',
+    //   },
+    // },
+    // '@media screen and (max-height: 900px)': {
+    //   messagesContainer: {
+    //     maxHeight: '79vh',
+    //   },
+    // },
+    // '@media screen and (max-height: 750px)': {
+    //   messagesContainer: {
+    //     maxHeight: '76vh',
+    //   },
+    // },
+    // '@media screen and (max-height: 700px)': {
+    //   messagesContainer: {
+    //     maxHeight: '75vh',
+    //   },
+    // },
 
 
     message: {
