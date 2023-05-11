@@ -10,6 +10,8 @@ import { io } from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 interface Message {
   id: number;

@@ -3,8 +3,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Fab from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton';
-// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
@@ -13,6 +11,10 @@ export interface Users {
   id: number;
   name: string;
 }
+
+const ItemTypes = {
+  BUTTON: 'button',
+};
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -62,14 +64,13 @@ function SearchUsers({
     };
   }, [loading]);
 
-
   return (
     <div className={classes.search}>
       {showAutoComplete ? (
-        // {/* {showAutoComplete && ( */}
         <Autocomplete
           sx={{
-            background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+            background:
+              'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
             borderRadius: '5px',
           }}
           id='asynchronous'
@@ -110,30 +111,22 @@ function SearchUsers({
             />
           )}
         />
-      )
-      : (
-        <Fab color="secondary" size='small' aria-label="back"
-        onClick={() => {
-          setShowAutoComplete(true);
-          setIsReceiverSelected(false)
-          }}>
-        {/* <IconButton onClick={() => setShowAutoComplete(true)}> */}
-          <ArrowBackIosNewIcon fontSize='small'/>
-        {/* </IconButton> */}
+      ) : (
+        <Fab
+          sx={{ top: '20px' }}
+          color='secondary'
+          size='small'
+          aria-label='back'
+          onClick={() => {
+            setShowAutoComplete(true);
+            setIsReceiverSelected(false);
+          }}
+        >
+          <ArrowBackIosNewIcon fontSize='small' />
         </Fab>
-      )
-      }
+      )}
     </div>
   );
-
 }
-
-const dbUsers = [
-  { id: 1, name: 'Jordan Mann' },
-  { id: 2, name: 'Andrew Vasquez' },
-  { id: 3, name: 'Ernest Quiambao' },
-  { id: 4, name: 'Marcus Ager' },
-  { id: 5, name: 'Brendan Carmichael' },
-];
 
 export default SearchUsers;
