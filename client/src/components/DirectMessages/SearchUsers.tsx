@@ -40,31 +40,6 @@ function SearchUsers({
 
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   let active = true;
-  //   setShowAutoComplete(true);
-
-  //   const getUsers = async () => {
-  //     try {
-  //       const response = await axios.get('/dms/findUsers');
-  //       console.log('RESPONSO', response);
-  //       if (active) {
-  //         setOptions([...response.data]);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   if (!loading) {
-  //     getUsers();
-  //   }
-
-  //   return () => {
-  //     active = false;
-  //   };
-  // }, [loading]);
-
 
   const getUsers = useCallback(async () => {
     try {
@@ -144,7 +119,7 @@ function SearchUsers({
         />
       ) : (
         <Fab
-          sx={{ top: '20px' }}
+          sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)', }}
           color='secondary'
           size='small'
           aria-label='back'

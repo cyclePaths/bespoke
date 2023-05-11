@@ -87,26 +87,26 @@ export const useStyles = makeStyles((theme: Theme) =>
 
 
 
-    // '@media screen and (max-height: 920px)': {
-    //   messagesContainer: {
-    //     maxHeight: '80vh',
-    //   },
-    // },
-    // '@media screen and (max-height: 900px)': {
-    //   messagesContainer: {
-    //     maxHeight: '79vh',
-    //   },
-    // },
-    // '@media screen and (max-height: 750px)': {
-    //   messagesContainer: {
-    //     maxHeight: '76vh',
-    //   },
-    // },
-    // '@media screen and (max-height: 700px)': {
-    //   messagesContainer: {
-    //     maxHeight: '75vh',
-    //   },
-    // },
+    '@media screen and (max-height: 920px)': {
+      messagesContainer: {
+        maxHeight: '80vh',
+      },
+    },
+    '@media screen and (max-height: 900px)': {
+      messagesContainer: {
+        maxHeight: '79vh',
+      },
+    },
+    '@media screen and (max-height: 750px)': {
+      messagesContainer: {
+        maxHeight: '76vh',
+      },
+    },
+    '@media screen and (max-height: 700px)': {
+      messagesContainer: {
+        maxHeight: '75vh',
+      },
+    },
 
 
     message: {
@@ -156,6 +156,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     inputContainer: {
       display: 'flex',
+      boxShadow: '6px -6px 6px rgba(0, 0, 0, 0.2)',
       // alignItems: 'center',
 
       padding: theme.spacing(2.75),
