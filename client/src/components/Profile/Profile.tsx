@@ -219,7 +219,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       </div> */}
       </div>
 
-      {/* <Scrollers /> */}
+      {/* <Scrollers theme={theme} /> */}
 
       {/* </div> */}
       {/* <div style={{ position: 'fixed', bottom: 100, width: '100%' }}>

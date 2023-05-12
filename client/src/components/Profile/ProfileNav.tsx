@@ -180,7 +180,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
           </div>
           <div hidden={!tabVisibility[2]} />
 
-          {showScrollers && <Scrollers setShowScrollers={setShowScrollers} />}
+          {showScrollers && <Scrollers setShowScrollers={setShowScrollers} theme={theme} saveTheme={saveTheme} appTheme={appTheme} />}
 
           <div hidden={!tabVisibility[3]}>
             <Stats />

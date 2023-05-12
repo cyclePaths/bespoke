@@ -170,23 +170,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
 
-    // searchContainer: {
-    //   height: 80,
-    //   margin: 'auto',
-    //   display: 'flex',
-    //   flexDirection: 'column',
-    //   justifyContent: 'space-evenly',
-    //   position: 'absolute',
-    //   // top: 0,
-    //   left: 0,
-    //   right: 0,
-    //   width: '100%',
-    //   marginTop: theme.spacing(0.15),
-    //   borderRadius: '15px',
-    //   background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-    //   zIndex: 1000,
-    // },
-
     search: {
       margin: 'auto',
       display: 'flex',

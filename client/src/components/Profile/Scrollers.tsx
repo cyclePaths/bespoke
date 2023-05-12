@@ -6,9 +6,10 @@ import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-
+import Profile from './Profile';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { WaveHighlight, HighlightText } from '../../StyledComp';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -17,7 +18,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-const Scrollers = ({ setShowScrollers }) => {
+const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
@@ -65,6 +66,19 @@ const Scrollers = ({ setShowScrollers }) => {
   const [showStack, setShowStack] = useState(true);
   const [hoursValue, setHoursValue] = useState('');
   const [minutesValue, setMinutesValue] = useState('');
+  // const [appTheme, setAppTheme] = useState(false);
+
+  // useEffect(() => {
+  //   setAppTheme(theme);
+  //   // setThemeIcon(theme);
+  //   console.log('theme', theme)
+  // }, [appTheme]);
+
+
+  useEffect(() => {
+    console.log('appTheme', appTheme)
+  }, [appTheme]);
+
 
   let rideSpeedValue = '';
 
@@ -100,7 +114,6 @@ const Scrollers = ({ setShowScrollers }) => {
       });
   }, []);
 
-  console.log('weight', weight);
 
   const enterWorkout = () => {
     if (weight >= 50) {
@@ -227,104 +240,126 @@ const Scrollers = ({ setShowScrollers }) => {
           <br />
           {minutesMessage}
         </div>
+
         {sliderStage === 0 && (
-          <div
-            ref={refActivity}
-            className='keen-slider current-scroller'
-            style={{
-              visibility: sliderStage === 0 ? 'visible' : 'hidden',
-              opacity: sliderStage === 0 ? 1 : 0,
-            }}
-          >
-            {workout.map((activity) => {
-              return (
-                <React.Fragment key={activity.value}>
-                  <div className='keen-slider__slide number-slide1'>
-                    <button
-                      type='button'
-                      className='customButton'
-                      onClick={() => {
-                        setRideSpeed(activity.label);
-                        setActivityMessage(`You chose: ${activity.label}`);
-                        setSliderStage(1);
-                      }}
-                    >
-                      {activity.label}
-                    </button>
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-        )}
-        {sliderStage === 1 && (
-          <div
-            ref={refHours}
-            className='keen-slider current-scroller'
-            style={{
-              visibility: sliderStage === 1 ? 'visible' : 'hidden',
-              opacity: sliderStage === 1 ? 1 : 0,
-            }}
-          >
-            {durationHours.map((hour) => {
-              const { value, label } = hour;
-              return (
-                <React.Fragment key={`${value}-hour`}>
-                  <div className='keen-slider__slide number-slide2'>
-                    <button
-                      type='button'
-                      className='customButton'
-                      onClick={() => {
-                        setHours(label);
-                        setHoursValue(value);
-                        console.log('hour', hoursValue);
-                        // filterHours(hours.label);
-                        // console.log('hour label', hour.label)
-                        setHoursMessage(`Hours riding: ${label}`);
-                        setSliderStage(2);
-                      }}
-                    >
-                      {label}
-                    </button>
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
+          <>
+              <WaveHighlight>
+              <HighlightText theme={appTheme ? 'light' : 'dark'}>
+              &lt; &lt; Swipe to select your speed &gt; &gt;
+                </HighlightText>
+              </WaveHighlight>
+            <div
+              ref={refActivity}
+              className='keen-slider current-scroller'
+              style={{
+                visibility: sliderStage === 0 ? 'visible' : 'hidden',
+                opacity: sliderStage === 0 ? 1 : 0,
+              }}
+            >
+              {workout.map((activity) => {
+                return (
+                  <React.Fragment key={activity.value}>
+                    <div className='keen-slider__slide number-slide1'>
+                      <button
+                        type='button'
+                        className='customButton'
+                        onClick={() => {
+                          setRideSpeed(activity.label);
+                          setActivityMessage(`You chose: ${activity.label}`);
+                          setSliderStage(1);
+                        }}
+                      >
+                        {activity.label}
+                      </button>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </>
         )}
 
+        {sliderStage === 1 && (
+          <>
+           <WaveHighlight>
+              <HighlightText theme={appTheme ? 'light' : 'dark'}>
+                &lt; &lt; Swipe to select your hours &gt; &gt;
+                </HighlightText>
+              </WaveHighlight>
+            <div
+              ref={refHours}
+              className='keen-slider current-scroller'
+              style={{
+                visibility: sliderStage === 1 ? 'visible' : 'hidden',
+                opacity: sliderStage === 1 ? 1 : 0,
+              }}
+            >
+              {durationHours.map((hour) => {
+                const { value, label } = hour;
+                return (
+                  <React.Fragment key={`${value}-hour`}>
+                    <div className='keen-slider__slide number-slide2'>
+                      <button
+                        type='button'
+                        className='customButton'
+                        onClick={() => {
+                          setHours(label);
+                          setHoursValue(value);
+                          console.log('hour', hoursValue);
+                          // filterHours(hours.label);
+                          // console.log('hour label', hour.label)
+                          setHoursMessage(`Hours riding: ${label}`);
+                          setSliderStage(2);
+                        }}
+                      >
+                        {label}
+                      </button>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </>
+        )}
         {sliderStage === 2 && (
-          <div
-            ref={refMinutes}
-            className='keen-slider current-scroller'
-            style={{
-              visibility: sliderStage === 2 ? 'visible' : 'hidden',
-              opacity: sliderStage === 2 ? 1 : 0,
-            }}
-          >
-            {durationMinutes.map((minute) => {
-              const { value, label } = minute;
-              return (
-                <React.Fragment key={`${value}-minute`}>
-                  <div className='keen-slider__slide number-slide6'>
-                    <button
-                      type='button'
-                      className='customButton'
-                      onClick={() => {
-                        setMinutes(label);
-                        setMinutesValue(value);
-                        console.log('minute', minutesValue);
-                        setMinutesMessage(`Minutes riding: ${label}`);
-                        setSliderStage(3);
-                      }}
-                    >
-                      {label}
-                    </button>
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
+          <>
+            <WaveHighlight>
+              <HighlightText theme={appTheme ? 'light' : 'dark'}>
+              &lt; &lt; Swipe to select your minutes &gt; &gt;
+                </HighlightText>
+              </WaveHighlight>
+            <div
+              ref={refMinutes}
+              className='keen-slider current-scroller'
+              style={{
+                visibility: sliderStage === 2 ? 'visible' : 'hidden',
+                opacity: sliderStage === 2 ? 1 : 0,
+              }}
+            >
+              {durationMinutes.map((minute) => {
+                const { value, label } = minute;
+                return (
+                  <React.Fragment key={`${value}-minute`}>
+                    <div className='keen-slider__slide number-slide6'>
+                      <button
+                        type='button'
+                        className='customButton'
+                        onClick={() => {
+                          setMinutes(label);
+                          setMinutesValue(value);
+                          console.log('minute', minutesValue);
+                          setMinutesMessage(`Minutes riding: ${label}`);
+                          setSliderStage(3);
+                        }}
+                      >
+                        {label}
+                      </button>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
       {showStack && (
