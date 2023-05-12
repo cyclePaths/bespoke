@@ -66,19 +66,6 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
   const [showStack, setShowStack] = useState(true);
   const [hoursValue, setHoursValue] = useState('');
   const [minutesValue, setMinutesValue] = useState('');
-  // const [appTheme, setAppTheme] = useState(false);
-
-  // useEffect(() => {
-  //   setAppTheme(theme);
-  //   // setThemeIcon(theme);
-  //   console.log('theme', theme)
-  // }, [appTheme]);
-
-
-  useEffect(() => {
-    console.log('appTheme', appTheme)
-  }, [appTheme]);
-
 
   let rideSpeedValue = '';
 
