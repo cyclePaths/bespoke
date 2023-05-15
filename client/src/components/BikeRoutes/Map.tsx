@@ -568,28 +568,28 @@ const Map = ({
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={fetchDirections}
         >
-          <NavigationIcon sx={{ color: '#2e7d32' }} />
+          <NavigationIcon sx={{ color: isDark ? '#35af3b' : '#29922f' }} />
         </Button>
         <Button
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={() => {
@@ -598,38 +598,38 @@ const Map = ({
             }
           }}
         >
-          <SaveAltIcon sx={{ color: '#546e7a' }} />
+          <SaveAltIcon sx={{ color: isDark ? '#4c9fc5' : '#2e5b70' }} />
         </Button>
         <Button
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={() => setOpenSearch(true)}
         >
-          <SearchIcon sx={{ color: 'black' }} />
+          <SearchIcon sx={{ color: isDark ? '#ececec' : '#000000' }} />
         </Button>
         <Button
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
         >
-          <ClearAllIcon sx={{ color: 'black' }} />
+          <ClearAllIcon sx={{ color: isDark ? '#e74141' : '#bd0000' }} />
         </Button>
       </RouteButtonContainer>
 
