@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 
 export type DarkModeHelperProps = {
   isDark: boolean;
@@ -176,8 +176,8 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
       : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
   background: ${(props) =>
     props.isDark
-      ? 'linear-gradient(145deg, #3f9952, #358145)'
-      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
+      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
 `;
 
 const WeatherIcon = styled.img`
@@ -395,6 +395,57 @@ const ToastBuffer = styled.div`
   padding-top: 30px;
 `;
 
+
+//This is for the instruction text in the Scrollers in Profile //
+
+const lightModeText = 'rgb(47, 132, 66)';
+// const lightModeText = '#7e29d8';
+// const darkModeText = '#ffffff';
+// const darkModeText = '#ac7ede';
+const darkModeText = 'rgb(123, 231, 149)';
+
+const lightModeShadow = 'rgb(11, 11, 11)';
+const darkModeShadow = 'rgb(112, 247, 143)';
+
+const waveHighlightAnimation = keyframes`
+  0% {
+    text-shadow: 0 0 2px ${lightModeShadow};
+  }
+  50% {
+    text-shadow: 0 0 10px ${lightModeShadow};
+  }
+  100% {
+    text-shadow: 0 0 2px ${lightModeShadow};
+  }
+`;
+
+const WaveHighlight = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const HighlightText = styled.h4`
+  display: inline-block;
+  margin-bottom: 30px;
+  color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
+  text-shadow: ${(props) =>
+    props.theme === 'dark' ? `0 0 2px ${darkModeShadow}` : `0 0 2px ${lightModeShadow}`};
+
+  animation: ${(props) => keyframes`
+    0% {
+      text-shadow: 0 0 2px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+    }
+    50% {
+      text-shadow: 0 0 10px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+    }
+    100% {
+      text-shadow: 0 0 2px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+    }
+  `} 2s infinite;
+`;
+
+
+
 export {
   ForecastBit,
   ForecastStatsBox,
@@ -438,6 +489,8 @@ export {
   ForecastRowContainerforHome,
   StatsDivs,
   ToastBuffer,
+  WaveHighlight,
+  HighlightText,
   LoadingDiv,
   PrivacySelector,
 };

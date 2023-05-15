@@ -37,6 +37,8 @@ const Navbar = () => {
   const [messages, setMessages] = useState<boolean>(false);
   const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
+  const [activity, setActivity] = useState('');
+  const [activityValue, setActivityValue] = useState('');
 
   // User Context //
   const { user, isDark } = useContext(UserContext);
@@ -232,7 +234,12 @@ const Navbar = () => {
       </LeaderBoardPopout>
       <Stopwatch
         openStopWatch={openStopWatch}
+        setOpenStopWatch={setOpenStopWatch}
         setActiveWatch={setActiveWatch}
+        activity={activity}
+        setActivity={setActivity}
+        activityValue={activityValue}
+        setActivityValue={setActivityValue}
       />
       <Outlet />
     </div>
