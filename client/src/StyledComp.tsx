@@ -19,23 +19,38 @@ const RouteCreatorComponent = styled.div`
 `;
 
 const PopoutSaveForm = styled.form<DarkModeHelperProps>`
-  display: flex;
-  justify-content: center;
-  background: ${(props) => (props.isDark ? '#646464' : 'white')};
-  border-radius: 4px;
-  padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
-  flex-direction: column;
-  align-items: center;
-  flex-wrap: nowrap;
-  width: 91%;
+    display: flex;
+    justify-content: center;
+    background: #ececec;
+    border-radius: 4px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+    flex-flow: column nowrap;
+    align-items: center;
 `;
 
-const CategorySelector = styled.select`
+const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: #e0e0e0;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  color: ${({ isDark }) => isDark ? '#ececec' : '#000000'};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
+`;
+
+const PrivacySelector = styled.div<DarkModeHelperProps>`
+  display: flex;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#e0e0e0'};
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
+  box-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+  align-items: center;
+  margin-left: 10px;
+  color: ${(isDark) => isDark ? '#e0e0e0' : '#000000'};
 `;
 
 const OptionsDiv = styled.div`
@@ -46,15 +61,19 @@ const OptionsDiv = styled.div`
   flex-direction: column;
 `;
 
-const InputLayout = styled.input`
+const InputLayout = styled.input<DarkModeHelperProps>`
   height: 30px;
   width: 75%;
   margin: 5px;
   border-radius: 2px;
-  background-color: #e0e0e0;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
+  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  ::placeholder {
+    color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  }
 `;
 
 const StartRouteContainer = styled.div`
@@ -62,30 +81,30 @@ const StartRouteContainer = styled.div`
   z-index: 1000;
   position: absolute;
   width: 100%;
-  top: 12%;
+  top: 1%;
 `;
 
-const SaveAlert = styled.span`
-  background-color: white;
+const RouteAlerts = styled.span<DarkModeHelperProps>`
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   z-index: 1005;
-  width: 141px;
+  width: 130px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   position: fixed;
-  bottom: 88.5%;
+  bottom: 83%;
   border-radius: 6px;
   padding: 5px;
-  font-weight: bold;
+  color: ${({isDark}) => isDark ? '#ececec' : 'black'};
 `;
 
-const AutoCompleteDropdownLayout = styled.div`
+const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   text-align: center;
   position: absolute;
   top: 100%;
   left: 50%;
-  background-color: #ffffff;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   transform: translateX(-50%);
   z-index: 1000;
   border: 1px solid #d3d3d3;
@@ -94,6 +113,11 @@ const AutoCompleteDropdownLayout = styled.div`
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
+`;
+
+const LoadingDiv = styled.div<DarkModeHelperProps>`
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
 `;
 
 const RouteButtonContainer = styled.div`
@@ -122,7 +146,6 @@ const RouteList = styled.div`
 const StatsDivs = styled.div`
   background-color: white;
   margin: 5px;
-  /* box-shadow: 0px 1px 3px #121212; */
   border-radius: 2px;
 `;
 
@@ -286,10 +309,10 @@ const BigTemperatureHelperIcon = styled.img`
   width: 100%;
 `;
 
-const NavBarTop = styled.span`
-  background-color: rgb(218, 220, 218);
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+const NavBarTop = styled.span<DarkModeHelperProps>`
+  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  border-bottom: 1px solid;
+  border-color:${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
   justify-content: space-around;
@@ -460,7 +483,7 @@ export {
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
-  SaveAlert,
+  RouteAlerts,
   HomePageCompWrapper,
   GoHomeIcon,
   ForecastRowContainerforHome,
@@ -468,4 +491,6 @@ export {
   ToastBuffer,
   WaveHighlight,
   HighlightText,
+  LoadingDiv,
+  PrivacySelector,
 };

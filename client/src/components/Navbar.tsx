@@ -41,7 +41,7 @@ const Navbar = () => {
   const [activityValue, setActivityValue] = useState('');
 
   // User Context //
-  const { user } = useContext(UserContext);
+  const { user, isDark } = useContext(UserContext);
 
   const handleLeaderBoard = () => {
     setOpenLeaderBoard(true);
@@ -114,7 +114,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <NavBarTop>
+      <NavBarTop isDark={isDark}>
         <Link
           style={{ fontSize: '35px' }}
           to='/home'
@@ -125,7 +125,7 @@ const Navbar = () => {
         <span style={{ display: 'contents' }}>
           <IconButton onClick={() => handleLeaderBoard()}>
             <EmojiEventsIcon
-              sx={{ color: leaderBoard ? '#ffff00' : '#757575' }}
+              sx={{ color: isDark ? (leaderBoard ? '#ffff00' : '#ececec') : (leaderBoard ? '#ffff00' : '#757575') }}
             />
           </IconButton>
           <Link to='/directMessages'>
@@ -133,7 +133,7 @@ const Navbar = () => {
               onClick={() => toMessages()}
               sx={{ color: messages ? '#673ab7' : '#757575' }}
             >
-              <MessageIcon sx={{ color: messages ? '#673ab7' : '#757575' }} />
+              <MessageIcon sx={{ color: isDark ? (messages ? '#673ab7' : '#ececec') : (messages ? '#673ab7' : '#757575') }} />
             </IconButton>
           </Link>
           <IconButton
@@ -145,7 +145,7 @@ const Navbar = () => {
               }
             }}
           >
-            <TimerIcon sx={{ color: activeWatch ? '#d81b60' : '#757575' }} />
+            <TimerIcon sx={{ color: isDark ? (activeWatch ? '#d81b60' : '#ececec') : (activeWatch ? '#d81b60' : '#757575') }} />
           </IconButton>
         </span>
       </NavBarTop>
@@ -166,9 +166,9 @@ const Navbar = () => {
             setValue(newValue);
           }}
           style={{
-            backgroundColor: '#dadcda',
-            borderTopLeftRadius: '8px',
-            borderTopRightRadius: '8px',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            borderTop: `1px solid`,
+            borderColor: isDark ? '#ececec' : 'black',
             height: '6.6vh',
             zIndex: 1000,
           }}
@@ -177,7 +177,7 @@ const Navbar = () => {
             label='Navigate'
             style={{ minWidth: '0px', color: navigate ? '#f44336' : '#757575' }}
             icon={
-              <PlaceIcon sx={{ color: navigate ? '#f44336' : '#757575' }} />
+              <PlaceIcon sx={{ color: isDark ? (navigate ? '#f44336' : '#ececec') : (navigate ? '#f44336' : '#757575') }} />
             }
             component={Link}
             onClick={() => toNav()}
@@ -185,8 +185,8 @@ const Navbar = () => {
           />
           <BottomNavigationAction
             label='Weather'
-            style={{ minWidth: '0px', color: weather ? 'black' : '#757575' }}
-            icon={<CloudIcon sx={{ color: weather ? '#fafafa' : '#757575' }} />}
+            style={{ minWidth: '0px', color: isDark ? (weather ? '#fafafa' : '#757575') : (weather ? 'black' : '#757575') }}
+            icon={<CloudIcon sx={{ color: isDark ? (weather ? '#fafafa' : '#ececec') : (weather ? '#fafafa' : '#757575') }} />}
             component={Link}
             onClick={() => toWeather()}
             to='/weather'
@@ -196,7 +196,7 @@ const Navbar = () => {
             style={{ minWidth: '0px', color: report ? '#f9a825' : '#757575' }}
             icon={
               <ReportProblemIcon
-                sx={{ color: report ? '#f9a825' : '#757575' }}
+                sx={{ color: isDark ? (report ? '#f9a825' : '#ececec') : (report ? '#f9a825' : '#757575') }}
               />
             }
             component={Link}
@@ -205,10 +205,10 @@ const Navbar = () => {
           />
           <BottomNavigationAction
             label='Bulletin'
-            style={{ minWidth: '0px', color: bulletin ? '#81c784' : '#757575' }}
+            style={{ minWidth: '0px', color: bulletin ? '#7be795' : '#757575' }}
             icon={
               <FormatListBulletedIcon
-                sx={{ color: bulletin ? '#81c784' : '#757575' }}
+                sx={{ color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#7be795' : '#757575') }}
               />
             }
             component={Link}

@@ -62,13 +62,20 @@ body {
   display: flex;
 }
 
-#checkmark {
+.checkmark {
   height: 17px;
   border-radius: 6px;
 }
 
 #saveMessage {
-  left: 58%;
+  left: 62%;
+}
+
+#Delete-Alert {
+  top: 13%;
+  left: 51%;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+  height: 2vh;
 }
 
 @media screen and (min-width: 425px) {
@@ -136,11 +143,9 @@ body {
   opacity: 1;
   /* background: rgb(250, 250, 250); */
   background: rgb(123, 231, 149);
-  background: linear-gradient(
-    128deg,
-    rgb(42, 164, 71) 0%,
-    rgb(104, 194, 125) 100%
-  );
+  background: linear-gradient(128deg,
+      rgb(42, 164, 71) 0%,
+      rgb(104, 194, 125) 100%);
   color: '#1d1c1c';
 }
 
@@ -199,9 +204,11 @@ The code below is for the scroll wheel
   0% {
     text-shadow: 0 0 2px rgb(14, 30, 17);
   }
+
   50% {
     text-shadow: 0 0 10px rgb(14, 30, 17);
   }
+
   100% {
     text-shadow: 0 0 2px rgb(14, 30, 17);
   }
@@ -231,7 +238,8 @@ The code below is for the scroll wheel
 }
 
 .sliderWrapper {
-  height: 100px; /* Adjust the height value as needed */
+  height: 100px;
+  /* Adjust the height value as needed */
   position: relative;
 }
 
@@ -292,63 +300,49 @@ The code below is for the scroll wheel
 
 .number-slide1 {
   background: rgb(64, 175, 255);
-  background: linear-gradient(
-    128deg,
-    rgb(69, 174, 249) 0%,
-    rgb(52, 87, 239) 100%
-  );
+  background: linear-gradient(128deg,
+      rgb(69, 174, 249) 0%,
+      rgb(52, 87, 239) 100%);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .number-slide2 {
   background: rgb(255, 75, 64);
-  background: linear-gradient(
-    128deg,
-    rgba(255, 154, 63, 1) 0%,
-    rgba(255, 63, 63, 1) 100%
-  );
+  background: linear-gradient(128deg,
+      rgba(255, 154, 63, 1) 0%,
+      rgba(255, 63, 63, 1) 100%);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .number-slide3 {
   background: rgb(182, 255, 64);
-  background: linear-gradient(
-    128deg,
-    rgba(182, 255, 64, 1) 0%,
-    rgba(63, 255, 71, 1) 100%
-  );
-  background: linear-gradient(
-    128deg,
-    rgba(189, 255, 83, 1) 0%,
-    rgba(43, 250, 82, 1) 100%
-  );
+  background: linear-gradient(128deg,
+      rgba(182, 255, 64, 1) 0%,
+      rgba(63, 255, 71, 1) 100%);
+  background: linear-gradient(128deg,
+      rgba(189, 255, 83, 1) 0%,
+      rgba(43, 250, 82, 1) 100%);
 }
 
 .number-slide4 {
   background: rgb(64, 255, 242);
-  background: linear-gradient(
-    128deg,
-    rgba(64, 255, 242, 1) 0%,
-    rgba(63, 188, 255, 1) 100%
-  );
+  background: linear-gradient(128deg,
+      rgba(64, 255, 242, 1) 0%,
+      rgba(63, 188, 255, 1) 100%);
 }
 
 .number-slide5 {
   background: rgb(255, 64, 156);
-  background: linear-gradient(
-    128deg,
-    rgba(255, 64, 156, 1) 0%,
-    rgba(255, 63, 63, 1) 100%
-  );
+  background: linear-gradient(128deg,
+      rgba(255, 64, 156, 1) 0%,
+      rgba(255, 63, 63, 1) 100%);
 }
 
 .number-slide6 {
   background: rgb(64, 76, 255);
-  background: linear-gradient(
-    128deg,
-    rgba(64, 76, 255, 1) 0%,
-    rgba(174, 63, 255, 1) 100%
-  );
+  background: linear-gradient(128deg,
+      rgba(64, 76, 255, 1) 0%,
+      rgba(174, 63, 255, 1) 100%);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -509,7 +503,12 @@ The code below is for the Profile search Home address feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: translateY(-50%); /* Center the element vertically */
+  position: absolute;
+  /* Position the element relative to the parent element */
+  top: 30%;
+  /* Adjust the top value to position the element where you want it */
+  transform: translateY(-50%);
+  /* Center the element vertically */
   color: #f1e2e2;
   margin-top: 170px;
   /* bottom: 200px; */
@@ -527,10 +526,9 @@ The code below is for the Profile search Home address feature
 
 .displayedAddress {
   position: absolute;
+  /* Adjust the value to position the element where you want it */
   align-content: center;
-  top: calc(
-    30% - 60px
-  );
+  top: calc(30% - 60px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -559,10 +557,9 @@ The code below is for the Profile search Home address feature
     /* bottom: 200px; */
     margin-top: 38px;
   }
+
   .displayedAddress {
-    top: calc(
-      20% - 60px
-    );
+    top: calc(20% - 60px);
     /* top: 0; */
   }
 }
@@ -573,6 +570,7 @@ The code below is for the Profile search Home address feature
 
 .autocomplete-dropdown-container {
   /* position: relative; */
+
   position: absolute;
   top: 100%;
   display: flex;
@@ -582,6 +580,7 @@ The code below is for the Profile search Home address feature
   max-height: 500px;
   overflow-y: auto;
 }
+
 /*
 The code above is for the Profile search Home address feature
 */
@@ -604,9 +603,11 @@ The code below is for the Profile set weight feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Position the element relative to the parent element */
+  position: absolute;
+  /* Position the element relative to the parent element */
   bottom: 140px;
-  transform: translateY(-50%); /* Center the element vertically */
+  transform: translateY(-50%);
+  /* Center the element vertically */
 }
 
 .saveWeight {
@@ -625,7 +626,8 @@ The code below is for the Profile set weight feature
 
 .delete-weight {
   position: absolute;
-  bottom: calc(55% + 30px); /* Adjust this value according to your needs */
+  bottom: calc(55% + 30px);
+  /* Adjust this value according to your needs */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -634,14 +636,14 @@ The code below is for the Profile set weight feature
 @media screen and (max-height: 700px) {
   .delete-weight {
     position: absolute;
-  bottom: calc(62% + 30px); /* Adjust this value according to your needs */
-  left: 50%;
-  transform: translateX(-50%);
+    bottom: calc(62% + 30px);
+    /* Adjust this value according to your needs */
+    left: 50%;
+    transform: translateX(-50%);
   }
+
   .current-weight {
-    top: calc(
-      20% - 60px
-    );
+    top: calc(20% - 60px);
     /* top: 0; */
   }
 }
@@ -678,11 +680,9 @@ The code below is for the Profile Stats feature
   opacity: 1;
   /* background: rgb(250, 250, 250); */
   background: rgb(123, 231, 149);
-  background: linear-gradient(
-    128deg,
-    rgb(42, 164, 71) 0%,
-    rgb(104, 194, 125) 100%
-  );
+  background: linear-gradient(128deg,
+      rgb(42, 164, 71) 0%,
+      rgb(104, 194, 125) 100%);
   color: '#1d1c1c';
 }
 
@@ -718,11 +718,9 @@ The code below is for the Profile Stats feature
   opacity: 1;
   /* background: rgb(250, 250, 250); */
   background: rgb(123, 231, 149);
-  background: linear-gradient(
-    128deg,
-    rgb(42, 164, 71) 0%,
-    rgb(104, 194, 125) 100%
-  );
+  background: linear-gradient(128deg,
+      rgb(42, 164, 71) 0%,
+      rgb(104, 194, 125) 100%);
   color: '#1d1c1c';
 }
 

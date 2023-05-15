@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { RouteList } from '../../StyledComp';
-import { IconButton, Box } from '@mui/material';
+import { RouteAlerts, RouteList } from '../../StyledComp';
+import {
+  IconButton,
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import { Coordinates, RouteProps } from './RouteM';
@@ -15,11 +25,14 @@ const RouteInfo = ({
   setRouteList,
   likeList,
   setMarkers,
+  deleteRoute,
 }: RouteProps) => {
   const { user } = useContext(UserContext);
   const [date, setDate] = useState<string>(route.createdAt);
   const [like, setLike] = useState<boolean>(false);
   const [likeNumber, setLikeNumber] = useState<number>(route.likes);
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [deleteMessage, setDeleteMessage] = useState<boolean>(false);
 
   const updateLikes = (isClicked: boolean) => {
     axios
@@ -62,6 +75,16 @@ const RouteInfo = ({
     }
   };
 
+  const handleDeleteRoute = () => {
+    deleteRoute(route.id, route.likes);
+    setDeleteMessage(true);
+    setDeleteOpen(false);
+
+    setTimeout(() => {
+      setDeleteMessage(false);
+    }, 2400);
+  };
+
   useEffect(() => {
     const date = new Date(route.createdAt);
     const readableDate = date.toLocaleDateString();
@@ -80,6 +103,17 @@ const RouteInfo = ({
 
   return (
     <div style={{ width: '130%' }}>
+      {deleteMessage ? (
+        <RouteAlerts id='Delete-Alert'>
+          Route Deleted{' '}
+          <img
+            src='https://cdn.discordapp.com/attachments/187823430295355392/1103162661111336970/icons8-done.gif'
+            className='checkmark'
+          />
+        </RouteAlerts>
+      ) : (
+        <></>
+      )}
       <Box
         component='span'
         sx={{
@@ -108,35 +142,63 @@ const RouteInfo = ({
         <span
           style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
             alignItems: 'center',
           }}
         >
           <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>
-          {route.userId === user.id ? (
-            <IconButton disabled>
-              <ThumbUpAltOutlinedIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                if (!like) {
-                  setLike(true);
-                  updateLikes(true);
-                } else {
-                  setLike(false);
-                  updateLikes(false);
-                }
-              }}
-            >
-              {like === true ? (
-                <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
-              ) : (
+          <span style={{ display: 'flex', flexDirection: 'row' }}>
+            {route.userId === user.id ? (
+              <IconButton disabled sx={{ marginRight: '10px' }}>
                 <ThumbUpAltOutlinedIcon />
-              )}
-            </IconButton>
-          )}
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  if (!like) {
+                    setLike(true);
+                    updateLikes(true);
+                  } else {
+                    setLike(false);
+                    updateLikes(false);
+                  }
+                }}
+                sx={{ marginRight: '10px' }}
+              >
+                {like === true ? (
+                  <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
+                ) : (
+                  <ThumbUpAltOutlinedIcon />
+                )}
+              </IconButton>
+            )}
+            {route.userId === user.id ? (
+              <IconButton
+                sx={{ marginLeft: '10px' }}
+                onClick={() => setDeleteOpen(true)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            ) : (
+              <IconButton disabled sx={{ marginLeft: '10px' }}>
+                <DeleteIcon />
+              </IconButton>
+            )}
+          </span>
         </span>
+        <Dialog open={deleteOpen}>
+          <DialogTitle>Delete this route?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this route (any likes by other
+              users will be deleted as well)?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
+            <Button onClick={handleDeleteRoute}>Confirm</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </div>
   );
