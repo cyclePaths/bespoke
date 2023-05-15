@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   geocodeByPlaceId,
@@ -7,7 +7,7 @@ import PlacesAutocomplete, {
 import {
   InputLayout,
   AutoCompleteDropdownLayout,
-  RouteButtonContainer,
+  LoadingDiv
 } from '../../StyledComp';
 import { Button } from '@mui/material';
 import { PlaceProps } from './RouteM';
@@ -15,8 +15,8 @@ import { UserContext } from '../../Root';
 
 const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
-
   const {isDark} = useContext(UserContext);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Handle the input box //
   const handleChange = (value: string): void => {
@@ -24,7 +24,6 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   };
 
   const handleSelect = (value: string): void => {
-    // setCurrAdd(value);
     geocodeByAddress(value).then((result: any): void => {
       setCurrAdd(result[0].formatted_address);
       getLatLng(result[0]).then((coordinates) => {
@@ -33,6 +32,8 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
           lng: coordinates.lng,
         });
       });
+      inputRef.current?.blur();
+      setCurrAdd('');
     });
   };
   // End of the input handlers //
@@ -48,6 +49,9 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
           <div>
             <InputLayout
               id='address-input'
+              ref={(ref) => {
+                inputRef.current = ref;
+              }}
               {...getInputProps({
                 placeholder: 'Set Starting Location ...',
                 className: 'location-search-input',
@@ -57,7 +61,7 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
 
             {suggestions.length > 0 && (
               <AutoCompleteDropdownLayout>
-                {loading && <div>Loading...</div>}
+                {loading && <LoadingDiv isDark={isDark}>Loading...</LoadingDiv>}
                 {suggestions.map((suggestion) => {
                   const className = suggestion.active
                     ? 'suggestion-item--active'

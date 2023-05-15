@@ -100,6 +100,11 @@ const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   overflow-y: auto;
 `;
 
+const LoadingDiv = styled.div<DarkModeHelperProps>`
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+`;
+
 const RouteButtonContainer = styled.div`
   position: fixed;
   bottom: 96px;
@@ -419,4 +424,5 @@ export {
   ForecastRowContainerforHome,
   StatsDivs,
   ToastBuffer,
+  LoadingDiv
 };
