@@ -69,19 +69,19 @@ const StartRouteContainer = styled.div`
   top: 1%;
 `;
 
-const RouteAlerts = styled.span`
-  background-color: white;
+const RouteAlerts = styled.span<DarkModeHelperProps>`
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   z-index: 1005;
-  width: 141px;
+  width: 130px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   position: fixed;
-  bottom: 88.5%;
+  bottom: 83%;
   border-radius: 6px;
   padding: 5px;
-  font-weight: bold;
+  color: ${({isDark}) => isDark ? '#ececec' : 'black'};
 `;
 
 const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`

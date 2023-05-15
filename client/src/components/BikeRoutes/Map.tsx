@@ -18,12 +18,7 @@ import {
   StartRouteContainer,
 } from '../../StyledComp';
 import {
-  defaultMapContainerStyle,
-  Theft,
-  Collision,
-  POI,
-  RoadHazard,
-  Default,
+  defaultMapContainerStyle, darkModeOptions, defaultOptions, Theft, Collision, POI, RoadHazard, Default
 } from './Utils';
 import MapInputandButton from './MapInputandButtons';
 import FetchedRoutes from './FetchedRoutes';
@@ -50,13 +45,12 @@ import { report } from 'process';
 // Sets the map to not be google styled //
 
 const Map = ({
-  options,
   homeCoordinates,
   setHomeCoordinates,
 }: MapOptionsProp) => {
   /////////////// CONTEXT AND STATE //////////////////
   // Pull user and geoLocation from context //
-  const { user, geoLocation } = useContext(UserContext);
+  const { user, geoLocation, isDark } = useContext(UserContext);
   // Import the start icon //
   const startIcon = {
     url: 'https://cdn.discordapp.com/attachments/187823430295355392/1103112961192636587/green_flag.png',
@@ -374,10 +368,10 @@ const Map = ({
   return (
     <div className='container'>
       {saveMessage ? (
-        <RouteAlerts id='saveMessage'>
+        <RouteAlerts id='saveMessage' isDark={isDark}>
           Route Saved{' '}
           <img
-            src='https://cdn.discordapp.com/attachments/187823430295355392/1103162661111336970/icons8-done.gif'
+            src='https://cdn.discordapp.com/attachments/187823430295355392/1107720593916317738/output-onlinegiftools.gif'
             className='checkmark'
           />
         </RouteAlerts>
@@ -398,7 +392,7 @@ const Map = ({
       {/* This is the map rendering on screen */}
       <GoogleMap
         mapContainerStyle={defaultMapContainerStyle}
-        options={options as google.maps.MapOptions}
+        options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
         center={userCenter}
         zoom={14}
         onLoad={onLoad}
