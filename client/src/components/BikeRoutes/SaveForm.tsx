@@ -35,8 +35,9 @@ const SaveForm = ({
   return (
     <div>
       <PopoutSaveForm>
-        <header className='centered-header-Save'>Save Route:</header>
+        <header className='centered-header-Save'>Save Route</header>
         <InputLayout
+          isDark={isDark}
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
           type='text'
@@ -46,18 +47,19 @@ const SaveForm = ({
         <OptionsDiv>
           <div className='route-options'>
             <CategorySelector
+              isDark={isDark}
               defaultValue='None'
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option disabled>None</option>
-              <option>Casual</option>
-              <option>Speedy</option>
-              <option>Scenic</option>
+              <option disabled style={{color: isDark ? '#ececec' : '#000000'}}>None</option>
+              <option style={{color: isDark ? '#ececec' : '#000000'}}>Casual</option>
+              <option style={{color: isDark ? '#ececec' : '#000000'}}>Speedy</option>
+              <option style={{color: isDark ? '#ececec' : '#000000'}}>Scenic</option>
             </CategorySelector>
             <div
               style={{
                 display: 'flex',
-                backgroundColor: isDark ? '#5f5f5f' : '#e0e0e0',
+                backgroundColor: '#e0e0e0',
                 padding: '3px',
                 borderRadius: '3px',
                 border: '1px solid',

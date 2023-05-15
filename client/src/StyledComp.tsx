@@ -19,21 +19,23 @@ const RouteCreatorComponent = styled.div`
 `;
 
 const PopoutSaveForm = styled.form<DarkModeHelperProps>`
-  display: flex;
-  justify-content: center;
-  background: ${(props) => (props.isDark ? '#646464' : 'white')};
-  border-radius: 4px;
-  padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
-  flex-direction: column;
-  align-items: center;
-  flex-wrap: nowrap;
-  width: 91%;
+    display: flex;
+    justify-content: center;
+    background: #ececec;
+    border-radius: 4px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+    flex-flow: column nowrap;
+    align-items: center;
 `;
 
-const CategorySelector = styled.select`
+const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: #e0e0e0;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  color: ${({ isDark }) => isDark ? '#ececec' : '#000000'};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
@@ -131,7 +133,6 @@ const RouteList = styled.div`
 const StatsDivs = styled.div`
   background-color: white;
   margin: 5px;
-  /* box-shadow: 0px 1px 3px #121212; */
   border-radius: 2px;
 `;
 

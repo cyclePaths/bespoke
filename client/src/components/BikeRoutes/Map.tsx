@@ -39,6 +39,7 @@ import {
   MapOptionsProp,
   RouteInfo
 } from './RouteM';
+import { BikeRoutes, Report } from '@prisma/client';
 import { report } from 'process';
 
 // Sets the map to not be google styled //
@@ -76,8 +77,8 @@ const Map = ({
   const [selected, setSelected] = useState<LatLngLiteral | null>(null);
   const [directions, setDirections] = useState<DirectionsResult | undefined>(undefined);
   const [address, setAddress] = useState<any>({});
-  const [routeList, setRouteList] = useState<any[]>([]);
-  const [reportsList, setReportsList] = useState<any[]>([]);
+  const [routeList, setRouteList] = useState<BikeRoutes[]>([]);
+  const [reportsList, setReportsList] = useState<Report[]>([]);
   const [userCenter, setUserCenter] = useState<LatLngLiteral>({
     lat: 29.9511,
     lng: -90.0715,
@@ -255,8 +256,8 @@ const Map = ({
             Reports in Area:{' '}
             {reportsList.length > 0
               ? reportsList.map((report) =>
-                  report.location_lat >= routeInfo.centerLat - 0.007 &&
-                  report.location_lat <= routeInfo.centerLat + 0.007
+                  report.location_lat! >= routeInfo.centerLat - 0.007 &&
+                  report.location_lat! <= routeInfo.centerLat + 0.007
                     ? report.type + ', '
                     : ''
                 )
@@ -334,6 +335,10 @@ const Map = ({
     if (geoLocation) {
       setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
+
+    return () => {
+      console.log('unmounted');
+    }
   }, [geoLocation]);
 
   useEffect(() => {
@@ -352,6 +357,10 @@ const Map = ({
       fetchDirections();
     }
     setRouteClicked(false);
+
+    return () => {
+      console.log('unmounted');
+    }
   }, [startingPoint, destination, markers, routeClicked]);
 
   useEffect(() => {
@@ -425,8 +434,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -442,8 +451,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -459,8 +468,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -476,8 +485,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -493,8 +502,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -563,7 +572,7 @@ const Map = ({
               setSelected(null);
             }}
           >
-            <div>
+            <div style={{color: 'black'}}>
               <p>{address.formatted_address}</p>
             </div>
           </InfoWindow>

@@ -5,15 +5,15 @@ import '../../styles.css';
 import { SavePopoutProps } from './RouteM';
 import { UserContext } from '../../Root';
 
-const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
+const SavePopout = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
   const { isDark } = useContext(UserContext);
   return (
     <Dialog open={openPopup}>
       <div
-        style={{ backgroundColor: isDark ? '#191a35' : 'rgb(133, 211, 255)' }}
+        style={{ backgroundColor: isDark ? '#191a35' : '#85d3ff' }}
       >
         <CloseIcon
-          sx={{ color: isDark ? '#e0e0e0' : 'black' }}
+          sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }}
           onClick={() => setOpenPopup(false)}
         />
       </div>
@@ -23,7 +23,7 @@ const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
           paddingBottom: '25px',
           paddingRight: '25px',
           paddingTop: '10px',
-          backgroundColor: isDark ? '#191a35' : 'rgb(133, 211, 255)',
+          backgroundColor: isDark ? '#191a35' : '#85d3ff',
         }}
       >
         {children}
@@ -32,4 +32,4 @@ const Popup = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
   );
 };
 
-export default Popup;
+export default SavePopout;
