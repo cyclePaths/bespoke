@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   geocodeByPlaceId,
@@ -8,13 +8,15 @@ import {
   InputLayout,
   AutoCompleteDropdownLayout,
   RouteButtonContainer,
-  SaveAlert,
 } from '../../StyledComp';
 import { Button } from '@mui/material';
 import { PlaceProps } from './RouteM';
+import { UserContext } from '../../Root';
 
 const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
+
+  const {isDark} = useContext(UserContext);
 
   // Handle the input box //
   const handleChange = (value: string): void => {
@@ -50,6 +52,7 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
                 placeholder: 'Set Starting Location ...',
                 className: 'location-search-input',
               })}
+              isDark={isDark}
             />
 
             {suggestions.length > 0 && (
@@ -61,8 +64,8 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
                     : 'suggestion-item';
                   // inline style for demonstration purpose
                   const style = suggestion.active
-                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                    ? { backgroundColor: isDark ? '#707070' : '#fafafa', cursor: 'pointer' }
+                    : { backgroundColor: isDark ? '#707070' : '#fafafa', cursor: 'pointer' };
                   const key = suggestion.placeId;
 
                   return (

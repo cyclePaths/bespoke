@@ -39,7 +39,7 @@ const Navbar = () => {
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
 
   // User Context //
-  const { user } = useContext(UserContext);
+  const { user, isDark } = useContext(UserContext);
 
   const handleLeaderBoard = () => {
     setOpenLeaderBoard(true);
@@ -112,7 +112,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <NavBarTop>
+      <NavBarTop isDark={isDark}>
         <Link
           style={{ fontSize: '35px' }}
           to='/home'
@@ -164,9 +164,9 @@ const Navbar = () => {
             setValue(newValue);
           }}
           style={{
-            backgroundColor: '#dadcda',
-            borderTopLeftRadius: '8px',
-            borderTopRightRadius: '8px',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            borderTop: `1px solid`,
+            borderColor: isDark ? '#ececec' : 'black',
             height: '6.6vh',
             zIndex: 1000,
           }}
@@ -175,7 +175,7 @@ const Navbar = () => {
             label='Navigate'
             style={{ minWidth: '0px', color: navigate ? '#f44336' : '#757575' }}
             icon={
-              <PlaceIcon sx={{ color: navigate ? '#f44336' : '#757575' }} />
+              <PlaceIcon sx={{ color: navigate ? '#f44336' : '#757575', boxShadow: '0px 0px 0px #000000' }} />
             }
             component={Link}
             onClick={() => toNav()}

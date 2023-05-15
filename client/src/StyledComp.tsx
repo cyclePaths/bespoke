@@ -46,15 +46,19 @@ const OptionsDiv = styled.div`
   flex-direction: column;
 `;
 
-const InputLayout = styled.input`
+const InputLayout = styled.input<DarkModeHelperProps>`
   height: 30px;
   width: 75%;
   margin: 5px;
   border-radius: 2px;
-  background-color: #e0e0e0;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
+  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  ::placeholder {
+    color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  }
 `;
 
 const StartRouteContainer = styled.div`
@@ -62,10 +66,10 @@ const StartRouteContainer = styled.div`
   z-index: 1000;
   position: absolute;
   width: 100%;
-  top: 12%;
+  top: 1%;
 `;
 
-const SaveAlert = styled.span`
+const RouteAlerts = styled.span`
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   z-index: 1005;
@@ -80,12 +84,12 @@ const SaveAlert = styled.span`
   font-weight: bold;
 `;
 
-const AutoCompleteDropdownLayout = styled.div`
+const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   text-align: center;
   position: absolute;
   top: 100%;
   left: 50%;
-  background-color: #ffffff;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
   transform: translateX(-50%);
   z-index: 1000;
   border: 1px solid #d3d3d3;
@@ -286,10 +290,10 @@ const BigTemperatureHelperIcon = styled.img`
   width: 100%;
 `;
 
-const NavBarTop = styled.span`
-  background-color: rgb(218, 220, 218);
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+const NavBarTop = styled.span<DarkModeHelperProps>`
+  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  border-bottom: 1px solid;
+  border-color:${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
   justify-content: space-around;
@@ -409,7 +413,7 @@ export {
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
-  SaveAlert,
+  RouteAlerts,
   HomePageCompWrapper,
   GoHomeIcon,
   ForecastRowContainerforHome,

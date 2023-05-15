@@ -1,4 +1,5 @@
 import { DarkModeHelperProps } from 'client/src/StyledComp';
+import { DirectionsResult, LatLngLiteral } from './RouteM';
 
 const defaultMapContainerStyle = {
   height: '90vh',

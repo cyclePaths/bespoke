@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useMemo,
   useContext,
 } from 'react';
 import {
@@ -13,7 +14,7 @@ import {
 } from '@react-google-maps/api';
 import {
   RouteButtonContainer,
-  SaveAlert,
+  RouteAlerts,
   StartRouteContainer,
 } from '../../StyledComp';
 import {
@@ -35,6 +36,7 @@ import { Button } from '@mui/material';
 import NavigationIcon from '@mui/icons-material/Navigation';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SearchIcon from '@mui/icons-material/Search';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import {
   Coordinates,
   LatLngLiteral,
@@ -105,7 +107,7 @@ const Map = ({
   // This function is for fetching a direction from point A to B. Refactor for past B //
   const fetchDirections = () => {
     if (!startingPoint || !destination) {
-      return;
+      return null;
     }
     // Refactored to do more than point A and B //
     if (markers.length > 0) {
@@ -125,7 +127,7 @@ const Map = ({
         (result, status) => {
           if (status === 'OK' && result) {
             setDirections(result);
-            // setMarkers([]);
+            renderRouteInfo();
           }
         }
       );
@@ -140,7 +142,7 @@ const Map = ({
         (result, status) => {
           if (status === 'OK' && result) {
             setDirections(result);
-            // setMarkers([]);
+            renderRouteInfo();
           }
         }
       );
@@ -311,6 +313,7 @@ const Map = ({
     const searchBar = document.getElementById('route-searcher');
     const findHeader = document.getElementById('list');
     const resultHeader = document.getElementById('results');
+    const emptyResult = document.getElementById('no-list');
 
     setOpenSearch(false);
     setCategory('');
@@ -319,6 +322,7 @@ const Map = ({
     findHeader!.style.display = 'none';
     searchBar!.style.display = 'none';
     resultHeader!.style.display = '';
+    emptyResult!.style.display = 'none';
     setRouteList([]);
   };
 
@@ -335,7 +339,7 @@ const Map = ({
 
   useEffect(() => {
     if (startingPoint && destination && markers.length > 0 && routeClicked) {
-      fetchDirections();
+      // fetchDirections();
     } else if (
       startingPoint &&
       destination &&
@@ -362,7 +366,7 @@ const Map = ({
   useEffect(() => {
     if (homeCoordinates === undefined) {
       setTimeout(() => {
-        fetchDirections();
+        // fetchDirections();
       }, 1000);
     }
   }, [homeCoordinates]);
@@ -370,13 +374,13 @@ const Map = ({
   return (
     <div className='container'>
       {saveMessage ? (
-        <SaveAlert id='saveMessage'>
+        <RouteAlerts id='saveMessage'>
           Route Saved{' '}
           <img
             src='https://cdn.discordapp.com/attachments/187823430295355392/1103162661111336970/icons8-done.gif'
-            id='checkmark'
+            className='checkmark'
           />
-        </SaveAlert>
+        </RouteAlerts>
       ) : (
         <></>
       )}
@@ -617,6 +621,21 @@ const Map = ({
           onClick={() => setOpenSearch(true)}
         >
           <SearchIcon sx={{ color: 'black' }} />
+        </Button>
+        <Button
+          variant='contained'
+          sx={{
+            margin: '4px',
+            backgroundColor: '#e0e0e0',
+            '&:hover, &:active': {
+              backgroundColor: '#8b8b8b',
+            },
+            '&:focus': {
+              backgroundColor: '#e0e0e0',
+            },
+          }}
+        >
+          <ClearAllIcon sx={{ color: 'black' }} />
         </Button>
       </RouteButtonContainer>
 

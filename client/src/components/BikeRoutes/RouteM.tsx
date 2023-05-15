@@ -68,6 +68,7 @@ export interface RouteProps {
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
   likeList: any[];
   setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
+  deleteRoute: (routeNum: number, likeCount: number) => void;
 }
 //////////////////////////////////////////////// ->
 
