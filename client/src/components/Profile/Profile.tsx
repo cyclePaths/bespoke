@@ -53,12 +53,12 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  // const [rideStats, setRideStats] = useState<RideStats>({
-  //   activity: '',
-  //   duration: 0,
-  //   weight: 0,
-  //   calories: 0,
-  // });
+  const [lastRide, setLastRide] = useState<RideStats>({
+    activity: '',
+    duration: 0,
+    weight: 0,
+    calories: 0,
+  });
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
@@ -129,6 +129,9 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setPhoto(data.thumbnail);
         setTheme(data.theme);
         setWeight(data.weight);
+        setHomeAddress(data.homeAddress);
+
+
       })
       .catch((err) => {
         console.log(err);
@@ -160,7 +163,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         data.activity = 'Mountain Biking';
       }
 
-      // setRideStats(data);
+      setLastRide(data);
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
 
 
@@ -186,6 +189,12 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
+        homeAddress={homeAddress}
+        weightForProfileDisplay={weight}
+        lastRideActivity={lastRide.activity}
+        lastRideDuration={lastRide.duration}
+        lastRideWeight={lastRide.weight}
+        lastRideCalories={lastRide.calories}
       />
 
       <div>{displayNoBadgeIfEmpty()}</div>

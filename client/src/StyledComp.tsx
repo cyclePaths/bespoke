@@ -421,6 +421,14 @@ const HighlightText = styled.h4`
   `} 2s infinite;
 `;
 
+//Above is for the instruction text in the Scrollers in Profile //
+
+
+const ProfileDisplays = styled.div`
+   display: flex;
+  justify-content: center;
+`
+
 
 
 export {
@@ -468,4 +476,5 @@ export {
   ToastBuffer,
   WaveHighlight,
   HighlightText,
+  ProfileDisplays,
 };
