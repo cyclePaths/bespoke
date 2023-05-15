@@ -40,6 +40,19 @@ const CategorySelector = styled.select<DarkModeHelperProps>`
   margin-right: 10px;
 `;
 
+const PrivacySelector = styled.div<DarkModeHelperProps>`
+  display: flex;
+  background-color: ${({isDark}) => isDark ? '#707070' : '#e0e0e0'};
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
+  box-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+  align-items: center;
+  margin-left: 10px;
+  color: ${(isDark) => isDark ? '#e0e0e0' : '#000000'};
+`;
+
 const OptionsDiv = styled.div`
   display: flex;
   place-content: flex-start space-evenly;
@@ -425,5 +438,6 @@ export {
   ForecastRowContainerforHome,
   StatsDivs,
   ToastBuffer,
-  LoadingDiv
+  LoadingDiv,
+  PrivacySelector,
 };
