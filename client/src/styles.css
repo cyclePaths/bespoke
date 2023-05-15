@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-
-html, body {
+html,
+body {
   margin: 0px;
   font-family: 'Roboto', sans-serif;
 }
@@ -27,7 +27,7 @@ html, body {
   margin: 5px;
 }
 
-.route-saver-headers{
+.route-saver-headers {
   text-align: center;
   font-size: xx-large;
   margin-top: 10px;
@@ -41,13 +41,12 @@ html, body {
   display: flex;
 }
 
-
 #profilePic {
   border-radius: 100px;
   height: 30px;
 }
 
-#list{
+#list {
   text-align: center;
   background-color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -69,36 +68,36 @@ html, body {
 }
 
 #saveMessage {
-  left: 58%
+  left: 58%;
 }
 
 @media screen and (min-width: 425px) {
   #saveMessage {
-    left: 60%
+    left: 60%;
   }
 }
 
 @media screen and (min-width: 768px) {
   #saveMessage {
-    left: 78%
+    left: 78%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   #saveMessage {
-    left: 84%
+    left: 84%;
   }
 }
 
 @media screen and (min-width: 1440px) {
   #saveMessage {
-    left: 88%
+    left: 88%;
   }
 }
 
 @media screen and (min-width: 2560) {
   #saveMessage {
-    left: 98%
+    left: 98%;
   }
 }
 
@@ -123,7 +122,7 @@ html, body {
   font-size: 25px;
 }
 
-#set-private{
+#set-private {
   font-family: 'Roboto', sans-serif;
   /* font-weight: bold; */
   font-size: 14px;
@@ -133,13 +132,84 @@ html, body {
   z-index: 9999;
 }
 
+.stopwatch {
+  opacity: 1;
+  /* background: rgb(250, 250, 250); */
+  background: rgb(123, 231, 149);
+  background: linear-gradient(
+    128deg,
+    rgb(42, 164, 71) 0%,
+    rgb(104, 194, 125) 100%
+  );
+  color: '#1d1c1c';
+}
+
+.stopwatch-text {
+  color: black;
+}
+
+.stopwatch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.profile-pic {
+  border-radius: 50%;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 100px;
+  height: 100px;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.theme-icon {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.profile-pic-Theme-icon {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+}
 
 /*
 The code below is for the scroll wheel
 */
+.wave-highlight {
+  position: relative;
+  display: inline-block;
 
-[class^="number-slide"],
-[class*=" number-slide"] {
+}
+
+.highlight-text {
+  display: inline-block;
+  animation: wave-highlight 2s infinite;
+  margin-bottom: 30px;
+  color: #ac7ede;
+  /* box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2); */
+}
+
+@keyframes wave-highlight {
+  0% {
+    text-shadow: 0 0 2px rgb(14, 30, 17);
+  }
+  50% {
+    text-shadow: 0 0 10px rgb(14, 30, 17);
+  }
+  100% {
+    text-shadow: 0 0 2px rgb(14, 30, 17);
+  }
+}
+
+
+[class^='number-slide'],
+[class*=' number-slide'] {
   background: grey;
   display: flex;
   align-items: center;
@@ -171,7 +241,6 @@ The code below is for the scroll wheel
   height: 100px;
   bottom: 0;
   transition: opacity 0.5s;
-
 }
 
 .buttonContainer {
@@ -217,11 +286,7 @@ The code below is for the scroll wheel
 
 .customButton:active {
   background-color: rgb(32, 31, 31);
-  background: linear-gradient(
-    128deg,
-    rgb(125, 125, 125) 0%,
-    rgb(6, 6, 6) 100%
-  );
+  background: linear-gradient(128deg, rgb(125, 125, 125) 0%, rgb(6, 6, 6) 100%);
   color: white;
 }
 
@@ -322,19 +387,21 @@ The code below is for the scroll wheel
 
 .error-success-alert {
   position: fixed;
-  top: 50%;
+  /* top: 50%; */
+  bottom: 50px;
   left: 50%;
   width: 300px;
   height: 100px;
   transform: translate(-50%, -50%);
+  z-index: 100;
 }
 
 /*
 The code above is for the scroll wheel
 */
 
-[class^="leaderboard-view"],
-[class*=" leaderboard-view"] {
+[class^='leaderboard-view'],
+[class*=' leaderboard-view'] {
   display: flex;
   justify-content: center;
 }
@@ -396,7 +463,7 @@ The code above is for the scroll wheel
 
 @media screen {
   .container {
-    height: 87vh
+    height: 87vh;
   }
 }
 
@@ -414,6 +481,17 @@ The code above is for the scroll wheel
 The code below is for the Profile search Home address feature
 */
 
+.address-alerts {
+  position: fixed;
+  /* top: 50%; */
+  bottom: 50px;
+  left: 50%;
+  width: 300px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
 .setAddress {
   display: flex;
   flex-direction: column;
@@ -421,8 +499,9 @@ The code below is for the Profile search Home address feature
   align-items: center;
   /* top: 100x;
   bottom: 0px; */
-  height: 50vh;
+  height: 60vh;
   position: relative;
+  top: 50%;
 }
 
 .address {
@@ -430,13 +509,17 @@ The code below is for the Profile search Home address feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Position the element relative to the parent element */
-  top: 30%; /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%); /* Center the element vertically */
+  color: #f1e2e2;
+  margin-top: 170px;
+  /* bottom: 200px; */
 }
+
 
 .saveHome {
   margin-top: 10px !important;
+  position: absolute;
+  /* margin-bottom: 10px; */
   z-index: 9999;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
   outline: 1px solid red;
@@ -444,19 +527,54 @@ The code below is for the Profile search Home address feature
 
 .displayedAddress {
   position: absolute;
-  top: calc(15% - 60px); /* Adjust the value to position the element where you want it */
+  align-content: center;
+  top: calc(
+    30% - 60px
+  );
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.delete-address {
+  margin-top: 10px;
+}
+
+@media screen and (max-height: 900px) {
+  .address {
+    bottom: 200px;
+  }
+}
+
+@media screen and (max-height: 850px) {
+  .address {
+    bottom: 200px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .address {
+    /* bottom: 200px; */
+    margin-top: 38px;
+  }
+  .displayedAddress {
+    top: calc(
+      20% - 60px
+    );
+    /* top: 0; */
+  }
 }
 
 .address-input {
-  margin-bottom: 10px;
+  margin-top: 60px;
 }
 
 .autocomplete-dropdown-container {
   /* position: relative; */
-  position:sticky;
-  top: 0;
+  position: absolute;
+  top: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -477,7 +595,7 @@ The code below is for the Profile set weight feature
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 60vh;
   position: relative;
 }
 
@@ -487,14 +605,45 @@ The code below is for the Profile set weight feature
   justify-content: center;
   align-items: center;
   position: absolute; /* Position the element relative to the parent element */
-  top: 30%; /* Adjust the top value to position the element where you want it */
+  bottom: 140px;
   transform: translateY(-50%); /* Center the element vertically */
-
 }
 
 .saveWeight {
-  margin-top: 10px !important;
+  margin-top: 17px !important;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.current-weight {
+  position: absolute;
+  top: calc(30% - 60px);
+  /* top: calc(30% - 100px);  */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: -24px;
+}
+
+.delete-weight {
+  position: absolute;
+  bottom: calc(55% + 30px); /* Adjust this value according to your needs */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+@media screen and (max-height: 700px) {
+  .delete-weight {
+    position: absolute;
+  bottom: calc(62% + 30px); /* Adjust this value according to your needs */
+  left: 50%;
+  transform: translateX(-50%);
+  }
+  .current-weight {
+    top: calc(
+      20% - 60px
+    );
+    /* top: 0; */
+  }
 }
 
 .custom-snackbar {
@@ -506,18 +655,8 @@ The code below is for the Profile set weight feature
 
 .address-alert-stack {
   position: absolute;
-   bottom: 165px;
+  bottom: 165px;
 }
-
-.current-weight {
-  position: absolute;
-  top: calc(15% - 60px);
-  /* top: calc(30% - 100px);  */
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-
 
 /*
 The code above is for the Profile set weight feature
@@ -535,12 +674,61 @@ The code below is for the Profile Stats feature
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
+.select-stats-dialog {
+  opacity: 1;
+  /* background: rgb(250, 250, 250); */
+  background: rgb(123, 231, 149);
+  background: linear-gradient(
+    128deg,
+    rgb(42, 164, 71) 0%,
+    rgb(104, 194, 125) 100%
+  );
+  color: '#1d1c1c';
+}
+
+.stats-grid-container {
+  height: 400px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* background-color: rgb(51, 51, 51); */
+  padding: 16px;
+}
+
+@media screen and (max-width: 420px) {
+  .stats-grid {
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .stats-grid {
+    margin-top: 75px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .stats-grid {
+    margin-top: 50px;
+  }
+}
+
+.stats-grid {
+  opacity: 1;
+  /* background: rgb(250, 250, 250); */
+  background: rgb(123, 231, 149);
+  background: linear-gradient(
+    128deg,
+    rgb(42, 164, 71) 0%,
+    rgb(104, 194, 125) 100%
+  );
+  color: '#1d1c1c';
+}
+
 /*
 The code above is for the Profile Stats feature
 */
-
-
-
 
 /* This is the disable some of the google watermarks */
 

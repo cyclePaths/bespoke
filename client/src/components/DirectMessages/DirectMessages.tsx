@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -10,6 +10,8 @@ import { io } from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 interface Message {
   id: number;
@@ -86,13 +88,20 @@ function DirectMessages() {
   const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
   const [isReceiverSelected, setIsReceiverSelected] = useState(false);
+  const [showMessageContainer, setShowMessageContainer] = useState(false);
+  const [loadingM, setLoadingM] = useState(false);
+
+
 
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleSetReceiver = (receiver: SelectedUser | null) => {
+  const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
+      setLoadingM(true);
+      setMessages([]);
+      await setShowMessageContainer(false);
       setReceiver(receiver);
       setIsReceiverSelected(true);
     } else {
@@ -158,18 +167,28 @@ function DirectMessages() {
     }
   }, [message]);
 
-  /// This loads the messages of the selected user you have ///
+
   const loadMessages = async () => {
+    // Clear out previous messages and hide the container
+    setMessages([]);
+    setShowMessageContainer(false);
+
     try {
       const thread = await axios.get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
       });
       const { data } = thread;
+      // Now set the new messages and show the container
       setMessages(data);
+      setShowMessageContainer(true);
+      setLoadingM(false);
     } catch (err) {
       console.log(err);
+      setLoadingM(false);
     }
   };
+
+
 
   useEffect(() => {
     if (receiverId !== 0) {
@@ -224,7 +243,7 @@ function DirectMessages() {
 
   return (
     <BandAid>
-      <div>{`Hello ${name}!`}</div>
+      {/* <div>{`Hello ${name}!`}</div> */}
 
       <SearchUsers
         open={open}
@@ -237,11 +256,17 @@ function DirectMessages() {
         // setReceiverId={setReceiverId}
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
+        setIsReceiverSelected={setIsReceiverSelected}
+        setShowMessageContainer={setShowMessageContainer}
+        setMessages={setMessages}
       ></SearchUsers>
       {/* <Conversations /> */}
-      {isReceiverSelected && (
-        <Paper className={classes.root}>
-          <div className={classes.messagesContainer} ref={messagesContainerRef}>
+      {isReceiverSelected && showMessageContainer && (
+        <Paper className={classes.root} key={receiver?.id} >
+          <div
+          className={classes.messagesContainer}
+          // className='dm-container'
+          ref={messagesContainerRef}>
             {messages.map((message) => (
               <Message
                 id={message.id}
@@ -257,6 +282,8 @@ function DirectMessages() {
 
           <div className={classes.inputContainer}>
             <TextField
+            fullWidth
+            id="fullWidth"
               // {...props}
               InputProps={{
                 classes: {
@@ -275,6 +302,7 @@ function DirectMessages() {
               inputRef={inputRef}
             />
             <Button
+            style={{left: 0}}
               variant='contained'
               color='primary'
               onClick={handleSendMessage}

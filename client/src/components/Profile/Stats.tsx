@@ -22,7 +22,6 @@ const Stats = () => {
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
   const handleChange = (event: SelectChangeEvent<typeof speed>) => {
-    // setAge(Number(event.target.value) || '');
     setSpeed(event.target.value);
   };
 
@@ -48,13 +47,22 @@ const Stats = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
+        console.log('unique', data);
         setStats(data);
         setIsStatsDisplayed(true);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleGridClose = () => {
+    setIsStatsDisplayed(false);
+  };
+
+  const handleOkClick = () => {
+    getStats();
+    setSpeed('');
   };
 
   return (
@@ -65,9 +73,11 @@ const Stats = () => {
         </Button>
       </div>
       <div>
-        <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-          <DialogTitle>Fill the form</DialogTitle>
-          <DialogContent>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle className='select-stats-dialog'>
+            Select Rides By Speed
+          </DialogTitle>
+          <DialogContent className='select-stats-dialog'>
             <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
@@ -91,18 +101,25 @@ const Stats = () => {
               </FormControl>
             </Box>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className='select-stats-dialog'>
             <Button onClick={handleClose}>Cancel</Button>
             <Button
               onClick={(event) => {
-                handleClose(event, 'ok'), getStats();
+                handleOkClick();
+                handleClose(event, 'ok');
               }}
             >
               Ok
             </Button>
           </DialogActions>
         </Dialog>
-        {isStatsDisplayed && <StatsDisplay stats={stats} />}
+        {isStatsDisplayed && (
+          <StatsDisplay
+            stats={stats}
+            handleGridClose={handleGridClose}
+            handleClickOpen={handleClickOpen}
+          />
+        )}
       </div>
     </>
   );
