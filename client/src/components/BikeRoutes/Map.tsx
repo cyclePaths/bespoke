@@ -33,12 +33,11 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import {
-  Coordinates,
   LatLngLiteral,
   DirectionsResult,
-  MapOptions,
   geocoder,
   MapOptionsProp,
+  RouteInfo
 } from './RouteM';
 import { report } from 'process';
 
@@ -75,7 +74,7 @@ const Map = ({
   const [markers, setMarkers] = useState<LatLngLiteral[]>([]);
   const [destination, setDestination] = useState<LatLngLiteral | null>(null);
   const [selected, setSelected] = useState<LatLngLiteral | null>(null);
-  const [directions, setDirections] = useState<DirectionsResult>();
+  const [directions, setDirections] = useState<DirectionsResult | undefined>(undefined);
   const [address, setAddress] = useState<any>({});
   const [routeList, setRouteList] = useState<any[]>([]);
   const [reportsList, setReportsList] = useState<any[]>([]);
@@ -83,7 +82,7 @@ const Map = ({
     lat: 29.9511,
     lng: -90.0715,
   });
-  const [routeInfo, setRouteInfo] = useState<any>();
+  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
   const [routeClicked, setRouteClicked] = useState<boolean>(false);
 
   // For Popup Route Save Action and Selector Action //
@@ -185,6 +184,7 @@ const Map = ({
           lat: event.latLng!.lat(),
           lng: event.latLng!.lng(),
         });
+        setUserCenter({lat: event.latLng!.lat(), lng: event.latLng!.lng()});
       } else {
         if (destination === null) {
           setDestination({
@@ -227,19 +227,28 @@ const Map = ({
   };
   // End of routes list //
 
+  const handleClearMap = (): void => {
+    setStartingPoint(null);
+    setMarkers([]);
+    setDestination(null);
+    setDirections(undefined);
+    setRouteInfo(null);
+  }
+
   // Render Distance and Duration //
   const renderRouteInfo = () => {
-    if (!directions) return null;
+    if (!directions || routeInfo === null) return null;
     return (
       <InfoWindow
         position={
           {
             lat: routeInfo.centerLat,
             lng: routeInfo.centerLng,
-          } as google.maps.LatLng
+          }
         }
+        onCloseClick={() => setRouteInfo(null)}
       >
-        <div>
+        <div style={{color: 'black'}}>
           <p>Duration: {routeInfo.duration}</p>
           <p>Distance: {routeInfo.distance}</p>
           <p>
@@ -628,6 +637,7 @@ const Map = ({
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
+          onClick={handleClearMap}
         >
           <ClearAllIcon sx={{ color: isDark ? '#e74141' : '#bd0000' }} />
         </Button>

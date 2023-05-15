@@ -17,6 +17,14 @@ export type MapOptions = google.maps.MapOptions;
 
 export const geocoder = new google.maps.Geocoder();
 
+export interface RouteInfo {
+  distance: string;
+  duration: string;
+  centerLat: number;
+  centerLng: number;
+  warnings: string[];
+};
+
 export interface MapOptionsProp {
   homeCoordinates: LatLngLiteral;
   setHomeCoordinates: React.Dispatch<

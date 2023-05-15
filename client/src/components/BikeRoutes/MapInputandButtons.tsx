@@ -23,6 +23,8 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
     setCurrAdd(value);
   };
 
+  // Once enter is pressed, it gets the address then converts the address to a lat and lng //
+  // Once Lat and Lng are gotten, it sets the startingPoint to be what was put in //
   const handleSelect = (value: string): void => {
     geocodeByAddress(value).then((result: any): void => {
       setCurrAdd(result[0].formatted_address);
@@ -32,6 +34,7 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
           lng: coordinates.lng,
         });
       });
+      // Finally the input is unfocused and then clear //
       inputRef.current?.blur();
       setCurrAdd('');
     });
