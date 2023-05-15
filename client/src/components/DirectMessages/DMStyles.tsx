@@ -28,7 +28,6 @@ const theme = createTheme({
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {
-    // width: '100%',
   },
   input: {
     color: 'white',
@@ -50,18 +49,15 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
-// const heightSm = 390;
-// const heightMd = 900;
 
-const messagesContainerHeight = '75vh';
+const messagesContainerHeight = '70vh';
 
 // Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       color: 'white',
-      // backgroundColor: '#212321',
-      background: 'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+      backgroundColor: 'transparent',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -77,34 +73,31 @@ export const useStyles = makeStyles((theme: Theme) =>
       top: 50,
       bottom: 0,
       overflowY: 'auto',
-      // overscrollBehavior: 'contain',
-      // marginTop: theme.spacing(35),
       padding: theme.spacing(1),
       zIndex: 0,
-      // marginTop: theme.spacing(25),
       maxHeight: messagesContainerHeight,
     },
 
 
 
-    '@media screen and (max-height: 920px)': {
-      messagesContainer: {
-        maxHeight: '80vh',
-      },
-    },
     '@media screen and (max-height: 900px)': {
       messagesContainer: {
-        maxHeight: '79vh',
+        maxHeight: '72vh',
+      },
+    },
+    '@media screen and (max-height: 860px)': {
+      messagesContainer: {
+        maxHeight: '71vh',
       },
     },
     '@media screen and (max-height: 750px)': {
       messagesContainer: {
-        maxHeight: '76vh',
+        maxHeight: '69vh',
       },
     },
     '@media screen and (max-height: 700px)': {
       messagesContainer: {
-        maxHeight: '75vh',
+        maxHeight: '65vh',
       },
     },
 
@@ -116,7 +109,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     messageFromMe: {
       color: ' #f0f0f0',
-      backgroundColor: theme.palette.primary.light,
+      // backgroundColor: theme.palette.primary.light,
+      backgroundColor:'rgb(0, 122, 255)',
       // backgroundColor: '#1e212d',
       alignSelf: 'flex-end',
       marginLeft: 120,
@@ -124,7 +118,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: 10,
       marginBottom: 10,
       borderRadius: '20px',
-      boxShadow: '-8px 6px 6px rgba(0, 0, 0, 0.2)',
+      boxShadow: '-4px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginLeft: 120,
         marginRight: 10,
@@ -138,13 +132,14 @@ export const useStyles = makeStyles((theme: Theme) =>
       alignSelf: 'flex-start',
       color: ' #e8e6e6',
       // backgroundColor: '#65CF22',
-      backgroundColor: '#4b3464',
+      // backgroundColor: '#4b3464',
+      backgroundColor:'#3dca3d',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
       marginBottom: 10,
       borderRadius: '20px',
-      boxShadow: '8px 6px 6px rgba(0, 0, 0, 0.2)',
+      boxShadow: '4px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginRight: 120,
         marginLeft: 10,
@@ -157,7 +152,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     inputContainer: {
       display: 'flex',
       boxShadow: '6px -6px 6px rgba(0, 0, 0, 0.2)',
-      // alignItems: 'center',
 
       padding: theme.spacing(2.75),
       '& input': {

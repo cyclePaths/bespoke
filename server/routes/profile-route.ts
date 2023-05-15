@@ -144,7 +144,7 @@ profileRouter.post('/workout', async (req, res) => {
         duration,
         weight,
         calories,
-        userId: id,
+        userId: Number(id),
       },
     });
     res.status(201).send(newRide);

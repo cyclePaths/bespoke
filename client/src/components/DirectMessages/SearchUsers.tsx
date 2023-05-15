@@ -346,7 +346,8 @@ function SearchUsers({
 
   return (
     <div className={classes.search}>
-      {showAutoComplete ? (
+      {/* {showAutoComplete ? ( */}
+        {/* {showAutoComplete && ( */}
         <Autocomplete
           sx={{
             background:
@@ -396,22 +397,24 @@ function SearchUsers({
             />
           )}
         />
-      ) : (
-        <Fab
-          sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)', }}
-          color='secondary'
-          size='small'
-          aria-label='back'
-          onClick={() => {
-            setMessages([]);
-            setShowMessageContainer(false);
-            setShowAutoComplete(true);
-            setIsReceiverSelected(false);
-          }}
-        >
-          <ArrowBackIosNewIcon fontSize='small' />
-        </Fab>
-      )}
+      {/* // )} */}
+
+      {/* // : (
+      //   <Fab
+      //     sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)', }}
+      //     color='secondary'
+      //     size='small'
+      //     aria-label='back'
+      //     onClick={() => {
+      //       setMessages([]);
+      //       setShowMessageContainer(false);
+      //       setShowAutoComplete(true);
+      //       setIsReceiverSelected(false);
+      //     }}
+      //   >
+      //     <ArrowBackIosNewIcon fontSize='small' />
+      //   </Fab>
+      // )} */}
     </div>
   );
 }
