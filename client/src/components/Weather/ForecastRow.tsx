@@ -7,6 +7,8 @@ interface forecastRowProps {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
+  sunriseHour: number;
+  sunsetHour: number;
   prepareWeatherIcon: (
     weather: string,
     isDay: boolean,
@@ -23,6 +25,8 @@ const ForecastRow = ({
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
   prepareWeatherIcon,
+  sunriseHour,
+  sunsetHour,
   rowData,
 }: forecastRowProps) => {
   return (
@@ -52,6 +56,8 @@ const ForecastRow = ({
               windSpeedMeasurementUnit={windSpeedMeasurementUnit}
               temperatureMeasurementUnit={temperatureMeasurementUnit}
               precipitationMeasurementUnit={precipitationMeasurementUnit}
+              sunriseHour={sunriseHour}
+              sunsetHour={sunsetHour}
             ></Forecast>
           );
         })}
@@ -81,6 +87,8 @@ const ForecastRow = ({
               windSpeedMeasurementUnit={windSpeedMeasurementUnit}
               temperatureMeasurementUnit={temperatureMeasurementUnit}
               precipitationMeasurementUnit={precipitationMeasurementUnit}
+              sunriseHour={sunriseHour}
+              sunsetHour={sunsetHour}
             ></Forecast>
           );
         })}

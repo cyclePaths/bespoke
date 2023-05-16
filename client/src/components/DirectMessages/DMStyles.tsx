@@ -28,7 +28,6 @@ const theme = createTheme({
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {
-    // width: '100%',
   },
   input: {
     color: 'white',
@@ -50,12 +49,15 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
+
+const messagesContainerHeight = '70vh';
+
 // Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       color: 'white',
-      backgroundColor: '#212321',
+      backgroundColor: 'transparent',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -63,30 +65,60 @@ export const useStyles = makeStyles((theme: Theme) =>
       bottom: 0,
       left: 0,
       right: 0,
-      marginBottom: theme.spacing(7),
+      marginBottom: theme.spacing(5),
     },
+
     messagesContainer: {
       flex: 1,
-      // flex: '0 0 auto',
+      top: 50,
       bottom: 0,
       overflowY: 'auto',
       padding: theme.spacing(1),
-      maxHeight: '560px',
       zIndex: 0,
+      maxHeight: messagesContainerHeight,
     },
+
+
+
+    '@media screen and (max-height: 900px)': {
+      messagesContainer: {
+        maxHeight: '72vh',
+      },
+    },
+    '@media screen and (max-height: 860px)': {
+      messagesContainer: {
+        maxHeight: '71vh',
+      },
+    },
+    '@media screen and (max-height: 750px)': {
+      messagesContainer: {
+        maxHeight: '69vh',
+      },
+    },
+    '@media screen and (max-height: 700px)': {
+      messagesContainer: {
+        maxHeight: '65vh',
+      },
+    },
+
+
     message: {
       color: 'white',
       padding: theme.spacing(1),
       wordWrap: 'break-word',
     },
     messageFromMe: {
-      color: 'white',
-      backgroundColor: theme.palette.primary.light,
+      color: ' #f0f0f0',
+      // backgroundColor: theme.palette.primary.light,
+      backgroundColor:'rgb(0, 122, 255)',
+      // backgroundColor: '#1e212d',
       alignSelf: 'flex-end',
       marginLeft: 120,
       marginRight: 10,
       marginTop: 10,
       marginBottom: 10,
+      borderRadius: '20px',
+      boxShadow: '-4px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginLeft: 120,
         marginRight: 10,
@@ -98,12 +130,16 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     messageFromOther: {
       alignSelf: 'flex-start',
-      color: 'white',
-      backgroundColor: '#65CF22',
+      color: ' #e8e6e6',
+      // backgroundColor: '#65CF22',
+      // backgroundColor: '#4b3464',
+      backgroundColor:'#3dca3d',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
       marginBottom: 10,
+      borderRadius: '20px',
+      boxShadow: '4px 6px 6px rgba(0, 0, 0, 0.2)',
       [theme.breakpoints.down('sm')]: {
         marginRight: 120,
         marginLeft: 10,
@@ -115,24 +151,30 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     inputContainer: {
       display: 'flex',
-      alignItems: 'center',
-      padding: theme.spacing(1),
+      boxShadow: '6px -6px 6px rgba(0, 0, 0, 0.2)',
+
+      padding: theme.spacing(2.75),
       '& input': {
         color: 'white',
+        alignItems: 'left',
       },
     },
-    input: {},
+    input: {
+      left: 0,
+    },
+
+
     search: {
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-evenly',
-      position: 'absolute',
+      position: 'relative',
       top: 0,
       left: 0,
       right: 0,
       width: '100%',
-      marginTop: theme.spacing(12),
+      marginTop: theme.spacing(0),
       zIndex: 1000,
     },
   }),

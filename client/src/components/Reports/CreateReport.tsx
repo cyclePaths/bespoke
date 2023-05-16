@@ -81,7 +81,9 @@ const CreateReport = ({fetchThisMonthReports}) => {
     setImage(event.target.files?.[0] || null);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     if (currentLocation) {
       setSubmitting(true);
@@ -106,11 +108,18 @@ const CreateReport = ({fetchThisMonthReports}) => {
           },
         });
 
+        // if (type === 'Point of Interest') {
+        //   user.addBadge('Tour Guide', 1);
+        // } else {
+        //   user.addBadge('Safety Sentinel', 1);
+        // }
         if (type === 'Point of Interest') {
           addBadge('Tour Guide', 1);
         } else {
           addBadge('Safety Sentinel', 1);
         }
+
+        setReports([...reports, response.data]);
         // console.log("Response.data:", response.data);
         setReports(prevReports => [...prevReports, response.data]); // <-- use previous state
         setBody('');

@@ -20,7 +20,6 @@ import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 
 
@@ -88,6 +87,8 @@ export interface RootPropsToHome {
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
+  sunriseHour: number;
+  sunsetHour: number;
   prepareWeatherIcon: (
     weather: string,
     isDay: boolean,
@@ -316,24 +317,24 @@ const Root = () => {
     ) {
       weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
     }
-    //control for sunrise/sunset
-    const moonriseHour = sunsetHour + 1;
-    const moonsetHour = sunriseHour - 1;
-    const pertinentWeather = !(
-      weather === 'Clear Sky' ||
-      weather === 'Mainly Clear' ||
-      weather === 'Fog' ||
-      weather === 'Partly Cloudy'
-    );
-    if (hour === sunriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunrise;
-    } else if (hour === sunsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.day.sunset;
-    } else if (hour === moonriseHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonrise;
-    } else if (hour === moonsetHour && !pertinentWeather) {
-      weatherIcon = weatherIcons.night.moonset;
-    }
+    //control for sunrise/sunset (no longer needed due to weather card changes)
+    // const moonriseHour = sunsetHour + 1;
+    // const moonsetHour = sunriseHour - 1;
+    // const pertinentWeather = !(
+    //   weather === 'Clear Sky' ||
+    //   weather === 'Mainly Clear' ||
+    //   weather === 'Fog' ||
+    //   weather === 'Partly Cloudy'
+    // );
+    // if (hour === sunriseHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.day.sunrise;
+    // } else if (hour === sunsetHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.day.sunset;
+    // } else if (hour === moonriseHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.night.moonrise;
+    // } else if (hour === moonsetHour && !pertinentWeather) {
+    //   weatherIcon = weatherIcons.night.moonset;
+    // }
     return weatherIcon;
   };
 
@@ -706,6 +707,8 @@ const fetchThisMonthReports = async () => {
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
                     prepareWeatherIcon={prepareWeatherIcon}
                     setHomeCoordinates={setHomeCoordinates}
+                    sunriseHour={sunriseHour}
+                    sunsetHour={sunsetHour}
                   />
                 }
               />
@@ -763,7 +766,6 @@ const fetchThisMonthReports = async () => {
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='report' element={<Report />} />
             </Route>
-            <Route path='signIn' element={<SignIn />} />
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
         </BrowserRouter>

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Profile, { RideStats } from './Profile';
 import Root, { UserContext } from '../../Root';
 import { exiledRedHeadedStepChildrenValueGroups } from '../../../profile-assets';
+import Button from '@mui/material/Button';
 
 export type StopwatchActivity = string;
 export type StopwatchDuration = number;
@@ -26,13 +27,14 @@ const StopwatchStats = ({
   hours,
   minutes,
   seconds,
+  swActivity,
   isPickerVisible,
   setIsPickerVisible,
   setValueGroups,
 }) => {
   const user = useContext(UserContext);
 
-  let weight = user?.weight ?? 0;
+ const [weight, setWeight] = useState(0);
 
   let totalTime = 0;
 
@@ -44,38 +46,55 @@ const StopwatchStats = ({
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios.get('/profile/weight')
+      .then(({ data }) => {
+        console.log(data)
+       setWeight(data.weight)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    console.log('h', hours)
+    console.log('m', minutes)
+  }, [])
+
   const workoutStats = () => {
     // const { workout } = valueGroups;
-    let workout = valueGroups.workout;
+    // let workout = valueGroups.workout;
+    let workout = swActivity;
 
     axios
       .get('/profile/workout', {
         params: {
-          activity: `${workout}`,
+          // activity: `${workout}`,
+          activity: swActivity,
           duration: totalTime,
           weight: weight,
         },
       })
       .then((response) => {
+
+        console.log('this response', response)
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
-          workout = 'Average Speed <10 mph';
+          workout = '<10 mph average';
         }
         if (workout === 'mph, light') {
-          workout = 'Average Speed 10-12 mph';
+          workout = '10-12 mph average';
         }
         if (`${workout}` === '13.9 mph, moderate') {
-          workout = 'Average Speed 12-14 mph';
+          workout = '12-14 mph average';
         }
         if (`${workout}` === '15.9 mph, vigorous') {
-          workout = 'Average Speed 14-16 mph';
+          workout = '14-16 mph average';
         }
         if (`${workout}` === 'very fast, racing') {
-          workout = 'Average Speed 16-19 mph';
+          workout = '16-19 mph average';
         }
         if (`${workout}` === '>20 mph, racing') {
-          workout = 'Average Speed 20+ mph';
+          workout = '20+ mph average';
         }
         if (`${workout}` === 'mountain bike') {
           workout = 'Mountain Biking';
@@ -89,10 +108,10 @@ const StopwatchStats = ({
           },
         });
 
-        console.log(response);
+        console.log('check res', response);
         axios
           .post('profile/workout', {
-            activity: `${workout}`,
+            activity: workout,
             duration: totalTime,
             weight: weight,
             calories: total_calories,
@@ -112,7 +131,8 @@ const StopwatchStats = ({
       <div>
         {isPickerVisible && (
           <div>
-            <button
+            <Button
+            variant="contained" size="small"
               type='button'
               onClick={() => {
                 workoutStats();
@@ -121,7 +141,7 @@ const StopwatchStats = ({
               }}
             >
               Get Stats
-            </button>
+            </Button>
           </div>
         )}
       </div>
