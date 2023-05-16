@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../Root';
 import {
   InputLabel,
@@ -28,34 +28,28 @@ const FetchedRoutes = ({
   likeList,
   setMarkers,
 }: FetchedRoutesProps) => {
+
+  const [searched, setSearched] = useState(false);
   const handleNewRoutes = () => {
     const searchBar = document.getElementById('route-searcher');
     const findHeader = document.getElementById('list');
     const resultHeader = document.getElementById('results');
-    const emptyResult = document.getElementById('no-list');
 
     fetchRoutes(isPrivate, category);
+    setSearched(true)
+
     findHeader!.style.display = 'none';
     searchBar!.style.display = 'none';
     resultHeader!.style.display = '';
-
-    if (routeList.length === 0) {
-      emptyResult!.style.display = '';
-    }
   };
 
   const deleteRoute = (routeNum: number, likesCount: number) => {
-    const defaultText = document.getElementById('no-list');
     axios
       .delete(`bikeRoutes/deleteRoute/${routeNum}`, { data: { likesCount } })
       .then(() => {
         setRouteList(() => routeList.filter((route) => route.id !== routeNum));
       })
       .catch((err) => console.error('Failed Delete Request: ', err));
-
-    if (routeList.length === 0) {
-      defaultText!.style.display = '';
-    }
   };
 
   return (
@@ -97,8 +91,8 @@ const FetchedRoutes = ({
           label='User Routes Only'
         />
       </RouteListOptions>
-      {routeList.length === 0 ? (
-        <div id='no-list' style={{ display: 'none' }}>
+      {(routeList.length === 0 && searched) || routeList.length === 0 ? (
+        <div id='no-list'>
           No Routes were found
         </div>
       ) : (
@@ -112,6 +106,7 @@ const FetchedRoutes = ({
               handleRouteClick={handleRouteClick}
               setOpenSearch={setOpenSearch}
               fetchDirections={fetchDirections}
+              routeList={routeList}
               setRouteList={setRouteList}
               likeList={likeList}
               setMarkers={setMarkers}

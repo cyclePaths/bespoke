@@ -161,6 +161,7 @@ const Map = ({
         })
         .then(() => {
           setSaveMessage(true);
+          // Timeout to make the message disappear correctly //
           setTimeout(() => {
             setSaveMessage(false);
           }, 2400);
@@ -171,8 +172,8 @@ const Map = ({
     }
   };
 
+  // Map Ref for displaying a map
   const mapRef = useRef<GoogleMap>();
-
   const onLoad = useCallback((map): void => (mapRef.current = map), []);
 
   // End of Map Rendering //
@@ -322,12 +323,12 @@ const Map = ({
     setOpenSearch(false);
     setCategory('');
     setIsPrivate(false);
+    setRouteList([]);
 
     findHeader!.style.display = 'none';
     searchBar!.style.display = 'none';
     resultHeader!.style.display = '';
     emptyResult!.style.display = 'none';
-    setRouteList([]);
   };
 
   // Sets the center of the map upon page loading //
