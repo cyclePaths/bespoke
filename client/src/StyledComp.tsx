@@ -1,6 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 
-type DarkModeHelperProps = {
+export type DarkModeHelperProps = {
   isDark: boolean;
 };
 
@@ -18,25 +18,38 @@ const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
 
-const PopoutSaveForm = styled.form`
+const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   display: flex;
-  -webkit-box-pack: center;
   justify-content: center;
-  background-color: white;
+  background: #ececec;
   border-radius: 4px;
-  padding: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
-  flex-direction: column;
+  flex-flow: column nowrap;
   align-items: center;
-  flex-wrap: nowrap;
-  width: 91%;
 `;
 
-const CategorySelector = styled.select`
+const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: #e0e0e0;
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
+`;
+
+const PrivacySelector = styled.div<DarkModeHelperProps>`
+  display: flex;
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#e0e0e0')};
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid;
+  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  margin-left: 10px;
+  color: ${(isDark) => (isDark ? '#e0e0e0' : '#000000')};
 `;
 
 const OptionsDiv = styled.div`
@@ -47,15 +60,19 @@ const OptionsDiv = styled.div`
   flex-direction: column;
 `;
 
-const InputLayout = styled.input`
+const InputLayout = styled.input<DarkModeHelperProps>`
   height: 30px;
   width: 75%;
   margin: 5px;
   border-radius: 2px;
-  background-color: #e0e0e0;
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
+  ::placeholder {
+    color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
+  }
 `;
 
 const StartRouteContainer = styled.div`
@@ -63,30 +80,30 @@ const StartRouteContainer = styled.div`
   z-index: 1000;
   position: absolute;
   width: 100%;
-  top: 12%;
+  top: 1%;
 `;
 
-const SaveAlert = styled.span`
-  background-color: white;
+const RouteAlerts = styled.span<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   z-index: 1005;
-  width: 141px;
+  width: 130px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   position: fixed;
-  bottom: 88.5%;
+  bottom: 83%;
   border-radius: 6px;
   padding: 5px;
-  font-weight: bold;
+  color: ${({ isDark }) => (isDark ? '#ececec' : 'black')};
 `;
 
-const AutoCompleteDropdownLayout = styled.div`
+const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   text-align: center;
   position: absolute;
   top: 100%;
   left: 50%;
-  background-color: #ffffff;
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   transform: translateX(-50%);
   z-index: 1000;
   border: 1px solid #d3d3d3;
@@ -95,6 +112,11 @@ const AutoCompleteDropdownLayout = styled.div`
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
+`;
+
+const LoadingDiv = styled.div<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
 `;
 
 const RouteButtonContainer = styled.div`
@@ -123,7 +145,6 @@ const RouteList = styled.div`
 const StatsDivs = styled.div`
   background-color: white;
   margin: 5px;
-  /* box-shadow: 0px 1px 3px #121212; */
   border-radius: 2px;
 `;
 
@@ -199,8 +220,8 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
       : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
   background: ${(props) =>
     props.isDark
-      ? 'linear-gradient(145deg, #3f9952, #358145)'
-      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
+      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
 `;
 
 const WeatherIcon = styled.img`
@@ -350,6 +371,8 @@ const BigTemperatureHelperIcon = styled.img`
   width: 100%;
 `;
 
+// Misc styled components
+
 // This is the start of the home page //
 
 const ForecastRowContainerforHome = styled.div`
@@ -374,10 +397,10 @@ const GoHomeIcon = styled.img`
 
 // Misc styled components
 
-const NavBarTop = styled.span`
-  background-color: rgb(218, 220, 218);
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+const NavBarTop = styled.span<DarkModeHelperProps>`
+  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  border-bottom: 1px solid;
+  border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
   justify-content: space-around;
@@ -394,9 +417,65 @@ const BandAid = styled.div`
 
 //tried to use this to get Toast notifications to display below
 //the navbar, but it didn't work
-
 const ToastBuffer = styled.div`
   padding-top: 30px;
+`;
+
+//This is for the instruction text in the Scrollers in Profile //
+
+const lightModeText = 'rgb(47, 132, 66)';
+// const lightModeText = '#7e29d8';
+// const darkModeText = '#ffffff';
+// const darkModeText = '#ac7ede';
+const darkModeText = 'rgb(123, 231, 149)';
+
+const lightModeShadow = 'rgb(11, 11, 11)';
+const darkModeShadow = 'rgb(112, 247, 143)';
+
+const waveHighlightAnimation = keyframes`
+  0% {
+    text-shadow: 0 0 2px ${lightModeShadow};
+  }
+  50% {
+    text-shadow: 0 0 10px ${lightModeShadow};
+  }
+  100% {
+    text-shadow: 0 0 2px ${lightModeShadow};
+  }
+`;
+
+const WaveHighlight = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const HighlightText = styled.h4`
+  display: inline-block;
+  margin-bottom: 30px;
+  color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
+  text-shadow: ${(props) =>
+    props.theme === 'dark'
+      ? `0 0 2px ${darkModeShadow}`
+      : `0 0 2px ${lightModeShadow}`};
+
+  animation: ${(props) => keyframes`
+    0% {
+      text-shadow: 0 0 2px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
+    }
+    50% {
+      text-shadow: 0 0 10px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
+    }
+    100% {
+      text-shadow: 0 0 2px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
+    }
+  `}
+    2s infinite;
 `;
 
 export {
@@ -438,10 +517,14 @@ export {
   AchievementBadgeHolder,
   NavBarTop,
   BandAid,
-  SaveAlert,
+  RouteAlerts,
   HomePageCompWrapper,
   GoHomeIcon,
   ForecastRowContainerforHome,
   StatsDivs,
   ToastBuffer,
+  WaveHighlight,
+  HighlightText,
+  LoadingDiv,
+  PrivacySelector,
 };

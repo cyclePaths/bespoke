@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import axios from 'axios';
-import { PrismaClient, User, Rides } from '@prisma/client';
+import { Prisma, PrismaClient, User, Rides } from '@prisma/client';
 import { Request, Response } from 'express';
 import { CALORIES_BURNED_API } from '../../config';
 
@@ -101,7 +101,7 @@ profileRouter.get('/user', async (req: Request, res: Response) => {
 });
 
 profileRouter.get('/workout', (req: Request, res: Response) => {
-  console.log(req.query)
+  console.log('querey', req.query)
   const { activity, duration, weight } = req.query;
   const options = {
     method: 'GET',
@@ -144,7 +144,7 @@ profileRouter.post('/workout', async (req, res) => {
         duration,
         weight,
         calories,
-        userId: id,
+        userId: Number(id),
       },
     });
     res.status(201).send(newRide);
@@ -360,12 +360,13 @@ profileRouter.get('/address', async (req: Request, res: Response) => {
 
 
 profileRouter.get('/stats', async (req: Request, res: Response) => {
+  // console.log(req.query)
   try {
     const { id } = req.user as { id: number };
     const speed = typeof req.query.speed === 'string' ? req.query.speed : undefined;
-    if (!speed) {
-      return res.status(400).json({ error: 'Invalid speed value' });
-    }
+    // if (!speed) {
+    //   return res.status(400).json({ error: 'Invalid speed value' });
+    // }
 
     const statsData = await prisma.rides.findMany({
       where: {
@@ -373,14 +374,86 @@ profileRouter.get('/stats', async (req: Request, res: Response) => {
            userId: id ,
            activity: speed,
         // ]
-
+      },
+      select: {
+        id: true,
+        activity: true,
+        duration: true,
+        weight: true,
+        calories: true,
       }
 
     });
+    // console.log('statsData', statsData)
     res.status(200).json(statsData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+profileRouter.delete('/deleteStat/:id', async(req: Request, res: Response) => {
+  // console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteRide = await prisma.rides.delete({
+      where: {
+        id: Number(id),
+      }
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
+profileRouter.delete('/deleteAddress/:id', async(req: Request, res: Response) => {
+  console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteAddress = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        homeAddress: null,
+      } as Prisma.UserUpdateInput,
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
+profileRouter.delete('/deleteWeight/:id', async(req: Request, res: Response) => {
+  console.log(req)
+  try {
+    const { id } = req.params as { id?: number };
+
+    const deleteWeight = await prisma.user.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        weight: null,
+      } as Prisma.UserUpdateInput,
+    });
+    console.log('success')
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(404);
+    console.log(err);
+  }
+})
+
+
 export default profileRouter;

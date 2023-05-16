@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Map from './Map';
 import { BandAid, RouteCreatorComponent } from '../../StyledComp';
+import { darkModeOptions, defaultOptions, defaultMapContainerStyle } from './Utils'
 
 // Exports to be used throughout the Bike Route Component //
 
@@ -16,21 +17,21 @@ export type MapOptions = google.maps.MapOptions;
 
 export const geocoder = new google.maps.Geocoder();
 
+export interface RouteInfo {
+  distance: string;
+  duration: string;
+  centerLat: number;
+  centerLng: number;
+  warnings: string[];
+};
+
 export interface MapOptionsProp {
-  options: {
-    disableDefaultUI: boolean;
-    zoomControl: boolean;
-  };
   homeCoordinates: LatLngLiteral;
   setHomeCoordinates: React.Dispatch<
     React.SetStateAction<google.maps.LatLngLiteral | undefined>
   >;
 }
 
-const options = {
-  disableDefaultUI: true,
-  zoomControl: false,
-};
 ////////////////////////////////////////////////// ->
 
 // FOR MAPINPUTANDBUTTONS.TSX //
@@ -68,6 +69,7 @@ export interface RouteProps {
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
   likeList: any[];
   setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
+  deleteRoute: (routeNum: number, likeCount: number) => void;
 }
 //////////////////////////////////////////////// ->
 
@@ -113,7 +115,6 @@ const RouteM = ({ homeCoordinates, setHomeCoordinates }: RouteMProps) => {
     <BandAid>
       <RouteCreatorComponent>
         <Map
-          options={options}
           homeCoordinates={homeCoordinates}
           setHomeCoordinates={setHomeCoordinates}
         />

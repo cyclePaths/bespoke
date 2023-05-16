@@ -20,7 +20,6 @@ import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 
 export interface CurrentWeather {
@@ -742,7 +741,6 @@ const Root = () => {
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='report' element={<Report />} />
             </Route>
-            <Route path='signIn' element={<SignIn />} />
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
         </BrowserRouter>
