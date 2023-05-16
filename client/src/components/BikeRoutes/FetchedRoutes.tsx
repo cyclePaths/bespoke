@@ -30,13 +30,14 @@ const FetchedRoutes = ({
 }: FetchedRoutesProps) => {
 
   const [searched, setSearched] = useState(false);
+
   const handleNewRoutes = () => {
     const searchBar = document.getElementById('route-searcher');
     const findHeader = document.getElementById('list');
     const resultHeader = document.getElementById('results');
 
     fetchRoutes(isPrivate, category);
-    setSearched(true)
+    setSearched(true);
 
     findHeader!.style.display = 'none';
     searchBar!.style.display = 'none';
@@ -91,30 +92,24 @@ const FetchedRoutes = ({
           label='User Routes Only'
         />
       </RouteListOptions>
-      {(routeList.length === 0 && searched) || routeList.length === 0 ? (
-        <div id='no-list'>
-          No Routes were found
-        </div>
-      ) : (
-        routeList.map((route, i) => {
-          const index = i;
-          return (
-            <RouteInfo
-              key={i}
-              route={route}
-              index={index}
-              handleRouteClick={handleRouteClick}
-              setOpenSearch={setOpenSearch}
-              fetchDirections={fetchDirections}
-              routeList={routeList}
-              setRouteList={setRouteList}
-              likeList={likeList}
-              setMarkers={setMarkers}
-              deleteRoute={deleteRoute}
-            />
-          );
-        })
-      )}
+      {searched ? (routeList.length === 0 ? <div id='no-list'>No Routes Found</div> : routeList.map((route, i) => {
+        const index = i;
+        return (
+          <RouteInfo
+            key={i}
+            route={route}
+            index={index}
+            handleRouteClick={handleRouteClick}
+            setOpenSearch={setOpenSearch}
+            fetchDirections={fetchDirections}
+            routeList={routeList}
+            setRouteList={setRouteList}
+            likeList={likeList}
+            setMarkers={setMarkers}
+            deleteRoute={deleteRoute}
+          />
+        );
+      })) : <></>}
     </div>
   );
 };

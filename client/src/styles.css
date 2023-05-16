@@ -108,6 +108,13 @@ body {
   }
 }
 
+#no-list {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 .search-form {
   display: flex;
   background-color: white;
@@ -118,7 +125,7 @@ body {
   align-items: center;
   padding-inline: 39px;
   flex-wrap: wrap;
-  max-height: 51vh;
+  max-height: 17vh;
   overflow: scroll;
 }
 

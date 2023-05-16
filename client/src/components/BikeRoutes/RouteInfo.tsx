@@ -104,7 +104,7 @@ const RouteInfo = ({
   }, []);
 
   return (
-    <div style={{ width: '130%' }}>
+    <div style={{ width: '130%', paddingLeft: '15px', paddingRight: '15px' }}>
       {deleteMessage ? (
         <RouteAlerts id='Delete-Alert'>
           Route Deleted{' '}
@@ -146,6 +146,8 @@ const RouteInfo = ({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            paddingLeft: '20px',
+            paddingRight: '20px',
           }}
         >
           <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>
