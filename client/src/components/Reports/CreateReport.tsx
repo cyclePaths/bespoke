@@ -86,7 +86,7 @@ const CreateReport = ({fetchThisMonthReports}) => {
     if (currentLocation) {
       setSubmitting(true);
       try {
-        const { email, id } = user;
+        const { email, id, name } = user;
 
         const formData = new FormData();
         formData.append('userId', id);
