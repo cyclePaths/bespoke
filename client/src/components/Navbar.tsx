@@ -199,7 +199,7 @@ const Navbar = () => {
             }
             component={Link}
             onClick={() => toReport()}
-            to='/createReport'
+            to='/reportsMap'
           />
           <BottomNavigationAction
             label='Bulletin'

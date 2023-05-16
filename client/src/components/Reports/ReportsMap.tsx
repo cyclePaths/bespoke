@@ -23,31 +23,25 @@ import { LatLngLiteral } from '../BikeRoutes/RouteM';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { Card, CardContent } from '@mui/material';
+import CreateReport from './CreateReport';
 
 dayjs.extend(utc);
-//  added so reports can be passed as props from CreateReport to re-render after a report is created
-// interface ReportsMapProps {
-//   reports: Report[];
-// }
 
-//  webpack url-loader
-// import roadHazardIcon from './images/hazard.png';
-// import theftAlertIcon from './icons/theft.png';
-// import collisionIcon from './images/collision.png';
-// import pointOfInterestIcon from './images/poi.png';
 interface ReportsMapProps {
   updatedReports: Report[];
 }
+// type CreateReportProps = {
+//   fetchReports: () => Promise<void>;
+// };
 
+const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
+  // console.log("ReportsMap", props);
 
-const ReportsMap = () => {
-  // console.log("updatedReports", updatedReports);
   const updatedReports = useContext(UpdatedReportsContext);
-  const reports = updatedReports;
 
   const [map, setMap] = useState<google.maps.Map>();
   const [center, setCenter] = useState<google.maps.LatLng>();
-  // const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<Report[]>(monthReports); // Assign monthReports to reports state
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
@@ -95,7 +89,9 @@ const ReportsMap = () => {
     try {
       await axios.patch(`/reports/${id}`, { published: false });
       console.log(id);
-      setMarkers(markers => markers.filter(marker => marker.get("reportId") !== id));
+      fetchThisMonthReports();
+
+      // setMarkers(prevMarkers => prevMarkers.filter(marker => marker.get("reportId") !== id));
     } catch (error) {
       console.error(error);
     } finally {
@@ -106,42 +102,42 @@ const ReportsMap = () => {
 
 
 
+
   const handleTypeChange = (event) => {
     const value = event.target.value;
     setSelectedType(value === 'All' ? '' : value);
   };
+  const addNewReport = (newReport: Report) => {
+    setReports((prevReports) => [...prevReports, newReport]);
+  };
   // ****Commented out to move fetching to parent component ****
   // useEffect(() => {
-  //   const fetchReports = async () => {
-  //     try {
-  //       const response = await axios.get('/reports');
-  //       const filteredReports = response.data.filter((report) => {
-  //         const reportCreatedAt = new Date(report.createdAt);
-  //         const currentDate = new Date();
-  //         const monthAgo = new Date(
-  //           currentDate.getFullYear(),
-  //           currentDate.getMonth() - 1,
-  //           currentDate.getDate()
-  //         );
-  //         return reportCreatedAt >= monthAgo;
-  //       });
-  //       setReports(filteredReports);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchReports();
-  // }, []);
+  // const fetchThisMonthReports = async () => {
+  //   try {
+  //     const response = await axios.get('/reports/thisMonth');
+  //     const filteredReports = response.data;
+  //     // console.log("reports:", response.data);
+  //     setReports(filteredReports);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //       fetchReports();
+
+  // }, [])
 
   useEffect(() => {
-    if (map && updatedReports) {
-      const filteredReports = selectedType
-        ? updatedReports.filter(
-            (report) => report.type === selectedType && report.published === true
-          )
-        : updatedReports.filter((report) => report.published === true);
+    setReports(monthReports);
+  }, [monthReports]);
 
-      const newMarkers = filteredReports.map((report) => {
+  useEffect(() => {
+
+    if (map && reports) {
+      console.log("setting Markers: ", reports);
+      const newMarkers = reports.map((report) => {
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {
@@ -225,9 +221,7 @@ const ReportsMap = () => {
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);
 
-        // marker.addListener('click', () => {
-        //   infoWindow.open(map, marker);
-        // });
+
         marker.addListener('click', () => {
           setSelectedReport(report);
         });
@@ -235,10 +229,10 @@ const ReportsMap = () => {
         return marker;
       });
 
-      const filteredMarkers = newMarkers.filter((marker) => {
-        const reportId = marker.get("reportId");
-        return updatedReports.find((report) => report.id === reportId)?.published;
-      });
+      // const filteredMarkers = newMarkers.filter((marker) => {
+      //   const reportId = marker.get("reportId");
+      //   return updatedReports.find((report) => report.id === reportId)?.published;
+      // });
 
       const centerLatLng = center;
       const circle = new google.maps.Circle({
@@ -256,15 +250,19 @@ const ReportsMap = () => {
         marker.setMap(null);
       });
 
-      setMarkers(filteredMarkers);
-      console.log("Markers set", filteredMarkers);
+          // Set the new markers on the map
+    newMarkers.forEach((marker) => {
+      marker.setMap(map);
+    });
+
+      setMarkers(newMarkers);
 
       const bounds = circle.getBounds();
       if (bounds !== null) {
         map.fitBounds(bounds);
       }
     }
-  }, [map, updatedReports, selectedType, buttonClicked]);
+  }, [map, selectedType, buttonClicked, reports]);
 
 
 
@@ -410,6 +408,7 @@ const ReportsMap = () => {
           </Box>
         </Box>
       </div>
+      <CreateReport fetchThisMonthReports={fetchThisMonthReports}/>
     </BandAid>
   );
 };

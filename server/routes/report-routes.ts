@@ -30,6 +30,31 @@ reportRouter.get('/', async (req, res) => {
   }
 });
 
+//  GET PAST MONTH REPORTS
+reportRouter.get('/thisMonth', async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+    const reports = await prisma.report.findMany({
+      where: {
+        published: true,
+        createdAt: {
+          gte: oneMonthAgo.toISOString(), // Greater than or equal to the one month ago date
+          lte: currentDate.toISOString()  // Less than or equal to the current date
+        }
+      }
+    });
+
+    res.status(200).json(reports);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
 // GET BY ID
 reportRouter.get('/:id', async (req: Request, res: Response) => {
   const id = req.params.id;

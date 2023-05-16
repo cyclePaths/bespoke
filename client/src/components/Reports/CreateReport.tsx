@@ -31,8 +31,9 @@ The lifecycle of CreateReport is as follows:
 5. When the `open` state variable changes (e.g., the user closes the report dialog), the component updates the state variable accordingly.
 */
 
-const CreateReport: React.FC = () => {
-  // const navigate = useNavigate();
+
+const CreateReport = ({fetchThisMonthReports}) => {
+    // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -110,12 +111,14 @@ const CreateReport: React.FC = () => {
         } else {
           addBadge('Safety Sentinel', 1);
         }
-        console.log("Response.data:", response.data);
+        // console.log("Response.data:", response.data);
         setReports(prevReports => [...prevReports, response.data]); // <-- use previous state
         setBody('');
         setType('');
         setImage(null);
         setOpen(false);
+        await fetchThisMonthReports();
+        // await addNewReport();
       } catch (error: any) {
         console.error(error.message);
         setError(error.message);
@@ -128,24 +131,24 @@ const CreateReport: React.FC = () => {
 
     // ****Commented out to move fetching to parent component ****
   // useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const response = await axios.get('/reports');
-        const filteredReports = response.data.filter((report) => {
-          const reportCreatedAt = new Date(report.createdAt);
-          const currentDate = new Date();
-          const monthAgo = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1,
-            currentDate.getDate()
-          );
-          return reportCreatedAt >= monthAgo;
-        });
-        setReports(filteredReports);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    // const fetchReports = async () => {
+    //   try {
+    //     const response = await axios.get('/reports');
+    //     const filteredReports = response.data.filter((report) => {
+    //       const reportCreatedAt = new Date(report.createdAt);
+    //       const currentDate = new Date();
+    //       const monthAgo = new Date(
+    //         currentDate.getFullYear(),
+    //         currentDate.getMonth() - 1,
+    //         currentDate.getDate()
+    //       );
+    //       return reportCreatedAt >= monthAgo;
+    //     });
+    //     setReports(filteredReports);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // };
   //   fetchReports();
   // }, []);
   // useEffect(() => {
@@ -155,16 +158,13 @@ const CreateReport: React.FC = () => {
   useEffect(() => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
-      fetchReports();
+      // fetchReports();
     }
-  }, [geoLocation]);
+  }, []);
 
 
   return (
     <div>
-      <UpdatedReportsContext.Provider value={reports}>
-        <ReportsMap />
-      </UpdatedReportsContext.Provider>
       <Dialog open={open} onClose={handleClose}>
         <div id='make-report-container'>
           <form onSubmit={handleSubmit}>
