@@ -15,6 +15,8 @@ import Scrollers from './Scrollers';
 import '../../styles.css';
 import { UserContext } from '../../Root';
 import { BandAid } from '../../StyledComp';
+import { SocketContext } from '../../SocketContext';
+import { Socket } from 'socket.io-client';
 import {
   AchievementBadgeByName,
   AchievementBadgeTooltip,
@@ -65,6 +67,19 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   //temporary - used for manually adding badges
   const [tier, setTier] = useState(0);
   const [inputBox, setInputBox] = useState('');
+
+
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  useEffect(() => {
+    if (socket) {
+      // Listen for incoming 'message' events
+      socket.on('message', (newMessage) => {
+        // Handle the incoming message
+        console.log('Received message:', newMessage);
+      });
+    }
+  }, [socket]);
 
   //functions
 

@@ -23,6 +23,7 @@ import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;

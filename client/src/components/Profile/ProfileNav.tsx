@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -15,6 +15,8 @@ import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
 import { ProfileDisplays } from '../../StyledComp';
+import { SocketContext } from '../../SocketContext';
+import { Socket } from 'socket.io-client';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -92,6 +94,19 @@ const ProfileNav = ({
   const [themeIcon, setThemeIcon] = useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(true);
 
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  // useEffect(() => {
+  //   if (socket) {
+  //     // Listen for incoming 'message' events
+  //     socket.on('message', (newMessage) => {
+  //       // Handle the incoming message
+  //       console.log('Received message:', newMessage);
+  //     });
+  //   }
+  // }, [socket]);
+
+
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
     handleToggleStyle();
@@ -146,32 +161,46 @@ const ProfileNav = ({
             }}
           >
             <Tab
-              label='Set Home'
-              sx={{ color: appTheme ? '#3c3636' : '#f1e2e2' }}
+              label='Home'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
               {...a11yProps(0)}
             />
             <Tab
               label='Weight'
-              sx={{ color: appTheme ? '#3c3636' : '#f1e2e2' }}
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
               {...a11yProps(1)}
             />
             <Tab
-              label='Add Ride'
-              sx={{ color: appTheme ? '#3c3636' : '#f1e2e2' }}
+              label='Rides'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
               {...a11yProps(2)}
             />
             <Tab
               label='Stats'
-              sx={{ color: appTheme ? '#3c3636' : '#f1e2e2' }}
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
               {...a11yProps(3)}
             />
-               <Tab
+            <Tab
               label='Badges'
-              sx={{ color: appTheme ? '#3c3636' : '#f1e2e2' }}
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+              minWidth: '0px',
+            }}
               {...a11yProps(4)}
             />
           </Tabs>
-
         </Box>
 
         <div
@@ -236,9 +265,6 @@ const ProfileNav = ({
           </div>
         </div>
         <div className={`holder ${areTabsVisible ? '' : 'hidden'}`}>
-        <ProfileDisplays>
-          <button> Badges</button>
-          </ProfileDisplays>
           <ProfileDisplays>
             <h4>{homeAddress}</h4>
           </ProfileDisplays>
@@ -247,16 +273,16 @@ const ProfileNav = ({
           </ProfileDisplays>
           <div>
             <ProfileDisplays>
-            <h4>{lastRideActivity}</h4>
+              <h4>{lastRideActivity}</h4>
             </ProfileDisplays>
             <ProfileDisplays>
-            <h4>{lastRideDuration}</h4>
+              <h4>{lastRideDuration}</h4>
             </ProfileDisplays>
             <ProfileDisplays>
-            <h4>{lastRideWeight}</h4>
+              <h4>{lastRideWeight}</h4>
             </ProfileDisplays>
             <ProfileDisplays>
-            <h4>{lastRideCalories}</h4>
+              <h4>{lastRideCalories}</h4>
             </ProfileDisplays>
           </div>
         </div>
