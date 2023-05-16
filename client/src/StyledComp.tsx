@@ -241,8 +241,8 @@ const WeatherIconFrame = styled.div<DarkModeHelperProps>`
   background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
   box-shadow: ${(props) =>
     props.isDark
-      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
-      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
+      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54, -5px -5px 15px #15162d,'
+      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
   margin-top: 10px;
   margin-left: -45px;
 `;
@@ -261,7 +261,7 @@ const ForecastStatsBox = styled.div<DarkModeHelperProps>`
   width: 150px;
   margin-left: 0px;
   margin-top: 65px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   border-radius: 30px;
 `;
 
@@ -277,6 +277,14 @@ const ForecastStatHolder = styled.p`
 //    box-shadow: ${(props) => props.isDark
 //       ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
 //       : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
+
+const ForecastStatHolderWithBuffer = styled.p`
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+  font-size: 11px;
+  margin-right: 7px;
+`;
 
 const WeatherDescription = styled.div`
   position: absolute;
@@ -342,7 +350,7 @@ const AdjustedTemperatureHelperIcon = styled.img`
 const ForecastHelperIcon = styled.img`
   margin-top: -5px;
   margin-left: -10px;
-  height: 35px;
+  height: 30px;
   width: 35px;
 `;
 
@@ -355,10 +363,10 @@ const WindspeedHelperIcon = styled.img`
 
 const ConditionalHelperIcon = styled.img`
   position: absolute;
-  margin-top: 26px;
-  margin-left: -34px;
-  height: 45px;
-  width: 46px;
+  margin-top: 35px;
+  margin-left: -30px;
+  height: 30px;
+  width: 50px;
 `;
 
 const BigTemperatureHelperIcon = styled.img`
@@ -482,6 +490,7 @@ export {
   ForecastBit,
   ForecastStatsBox,
   ForecastStatHolder,
+  ForecastStatHolderWithBuffer,
   WeatherDescription,
   ForecastText,
   ForecastTime,

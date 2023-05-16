@@ -45,6 +45,8 @@ export interface Hourly {
   temperature: number;
   humidity: number;
   apparentTemperature: number;
+  directRadiation: number;
+  diffuseRadiation: number;
   cloudcover: number;
   windspeed: number;
   precipitation: number;
@@ -624,6 +626,8 @@ const Root = () => {
     temperature: 0,
     humidity: 0,
     apparentTemperature: 0,
+    directRadiation: 0,
+    diffuseRadiation: 0,
     cloudcover: 0,
     windspeed: 0,
     precipitation: 0,

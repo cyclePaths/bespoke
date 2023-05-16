@@ -6,6 +6,7 @@ import {
   ForecastBit,
   ForecastStatsBox,
   ForecastStatHolder,
+  ForecastStatHolderWithBuffer,
   WeatherDescription,
   ForecastText,
   ForecastTime,
@@ -46,6 +47,8 @@ const Forecast = ({
   temperature,
   humidity,
   apparentTemperature,
+  directRadiation,
+  diffuseRadiation,
   cloudcover,
   windspeed,
   precipitation,
@@ -149,7 +152,7 @@ const Forecast = ({
     }
   };
 
-  //sets the wind speed icon based on the ranking of the wind speed
+  //sets the wind speed icon based on the Beaufort Wind Scale
   const setWindSpeedIcon = (windSpeed) => {
     if (windSpeed === 0) {
       return weatherIcons.generic.wind.ranked[0];
@@ -177,6 +180,34 @@ const Forecast = ({
       return weatherIcons.generic.wind.ranked[11];
     } else if (windSpeed > 73) {
       return weatherIcons.generic.wind.ranked[12];
+    }
+  };
+
+  //set radiation icon based on UV Index
+  const setRadiationIcon = (rad) => {
+    const UVIndexFinder = Math.round(rad * 0.032);
+    if (UVIndexFinder < 2) {
+      return weatherIcons.misc.UV.ranked[1];
+    } else if (UVIndexFinder >= 2 && UVIndexFinder < 3) {
+      return weatherIcons.misc.UV.ranked[2];
+    } else if (UVIndexFinder >= 3 && UVIndexFinder < 4) {
+      return weatherIcons.misc.UV.ranked[3];
+    } else if (UVIndexFinder >= 4 && UVIndexFinder < 5) {
+      return weatherIcons.misc.UV.ranked[4];
+    } else if (UVIndexFinder >= 5 && UVIndexFinder < 6) {
+      return weatherIcons.misc.UV.ranked[5];
+    } else if (UVIndexFinder >= 6 && UVIndexFinder < 7) {
+      return weatherIcons.misc.UV.ranked[6];
+    } else if (UVIndexFinder >= 7 && UVIndexFinder < 8) {
+      return weatherIcons.misc.UV.ranked[7];
+    } else if (UVIndexFinder >= 8 && UVIndexFinder < 9) {
+      return weatherIcons.misc.UV.ranked[8];
+    } else if (UVIndexFinder >= 9 && UVIndexFinder < 10) {
+      return weatherIcons.misc.UV.ranked[9];
+    } else if (UVIndexFinder >= 10 && UVIndexFinder < 11) {
+      return weatherIcons.misc.UV.ranked[10];
+    } else if (UVIndexFinder >= 11) {
+      return weatherIcons.misc.UV.ranked[11];
     }
   };
 
@@ -220,9 +251,19 @@ const Forecast = ({
           <ForecastHelperIcon src={weatherIcons.misc.humidity} />
         </ForecastBit>
         <ForecastBit>
-          <ForecastText>Wind Speed: </ForecastText>
-          <ForecastStatHolder>{adjustedWindSpeed}</ForecastStatHolder>
+          <ForecastText>Wind: </ForecastText>
+          <ForecastStatHolderWithBuffer>
+            {adjustedWindSpeed}
+            {windSpeedMeasurementUnit}
+          </ForecastStatHolderWithBuffer>
           <WindspeedHelperIcon src={setWindSpeedIcon(adjustedWindSpeed)} />
+        </ForecastBit>
+        <ForecastBit>
+          <ForecastText>UVI: </ForecastText>
+          <ForecastStatHolderWithBuffer>
+            {directRadiation}W/m²
+          </ForecastStatHolderWithBuffer>
+          <ForecastHelperIcon src={setRadiationIcon(diffuseRadiation)} />
         </ForecastBit>
       </ForecastStatsBox>
     </ForecastEntry>
