@@ -19,38 +19,37 @@ const RouteCreatorComponent = styled.div`
 `;
 
 const PopoutSaveForm = styled.form<DarkModeHelperProps>`
-    display: flex;
-    justify-content: center;
-    background: #ececec;
-    border-radius: 4px;
-    padding-right: 30px;
-    padding-left: 30px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
-    flex-flow: column nowrap;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  background: #ececec;
+  border-radius: 4px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+  flex-flow: column nowrap;
+  align-items: center;
 `;
 
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
-  color: ${({ isDark }) => isDark ? '#ececec' : '#000000'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
 
 const PrivacySelector = styled.div<DarkModeHelperProps>`
   display: flex;
-  background-color: ${({isDark}) => isDark ? '#707070' : '#e0e0e0'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#e0e0e0')};
   padding: 3px;
   border-radius: 3px;
   border: 1px solid;
   border-color: rgb(118, 118, 118) rgb(133, 133, 133);
-  box-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   align-items: center;
   margin-left: 10px;
-  color: ${(isDark) => isDark ? '#e0e0e0' : '#000000'};
+  color: ${(isDark) => (isDark ? '#e0e0e0' : '#000000')};
 `;
 
 const OptionsDiv = styled.div`
@@ -66,13 +65,13 @@ const InputLayout = styled.input<DarkModeHelperProps>`
   width: 75%;
   margin: 5px;
   border-radius: 2px;
-  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
-  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   ::placeholder {
-    color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+    color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   }
 `;
 
@@ -85,7 +84,7 @@ const StartRouteContainer = styled.div`
 `;
 
 const RouteAlerts = styled.span<DarkModeHelperProps>`
-  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   z-index: 1005;
   width: 130px;
@@ -96,7 +95,7 @@ const RouteAlerts = styled.span<DarkModeHelperProps>`
   bottom: 83%;
   border-radius: 6px;
   padding: 5px;
-  color: ${({isDark}) => isDark ? '#ececec' : 'black'};
+  color: ${({ isDark }) => (isDark ? '#ececec' : 'black')};
 `;
 
 const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
@@ -104,7 +103,7 @@ const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   position: absolute;
   top: 100%;
   left: 50%;
-  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   transform: translateX(-50%);
   z-index: 1000;
   border: 1px solid #d3d3d3;
@@ -116,8 +115,8 @@ const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
 `;
 
 const LoadingDiv = styled.div<DarkModeHelperProps>`
-  background-color: ${({isDark}) => isDark ? '#707070' : '#ececec'};
-  color: ${({isDark}) => isDark ? '#ececec' : '#707070'};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
 `;
 
 const RouteButtonContainer = styled.div`
@@ -149,183 +148,7 @@ const StatsDivs = styled.div`
   border-radius: 2px;
 `;
 
-//For use in Forecasts/Weather
-const ForecastRowContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-// Specifically for the home page
-const ForecastRowContainerforHome = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: auto;
-  width: 52.7%;
-`;
-
-const ForecastEntry = styled.div<DarkModeHelperProps>`
-  justify-content: center;
-  margin-top: 80px;
-  margin-left: 25px;
-  margin-bottom: 40px;
-  align-items: center;
-  border-radius: 50px;
-  box-shadow: ${(props) =>
-    props.isDark
-      ? '20px 20px 60px #171830, -10px -10px 5px #1b1c3a'
-      : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
-  background: ${(props) =>
-    props.isDark
-      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
-      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
-`;
-
-const WeatherIcon = styled.img`
-  display: flex;
-  height: 100px;
-  width: 100px;
-`;
-
-const WeatherIconFrame = styled.div<DarkModeHelperProps>`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 130px;
-  width: 130px;
-  border-radius: 50%;
-  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
-  box-shadow: ${(props) =>
-    props.isDark
-      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
-      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
-  margin-top: -60px;
-  margin-left: -35px;
-`;
-
-const ForecastBit = styled.div`
-  display: flex;
-  align-items: center;
-  height: 50px;
-  width: 200px;
-  margin-left: 15px;
-`;
-
-const ForecastStatsBox = styled.div<DarkModeHelperProps>`
-  height: 95px;
-  width: 150px;
-  margin-left: 28px;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  border-radius: 30px;
-  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
-  box-shadow: ${(props) =>
-    props.isDark
-      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
-      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
-`;
-
-const WeatherDescription = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  width: 130px;
-  margin-left: 64px;
-`;
-
-const ForecastText = styled.p`
-  margin: 0;
-`;
-
-const ForecastTime = styled.p`
-  margin: 0;
-  font-size: 30px;
-`;
-
-const MainTemperature = styled.div`
-  display: flex;
-  margin-top: 25px;
-  align-items: center;
-  font-size: 50px;
-`;
-
-const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
-  height: 100px;
-  width: 100px;
-  margin-top: 55px;
-  margin-left: 35px;
-  border-radius: 50%;
-  background: ${(props) =>
-    props.isDark
-      ? 'linear-gradient(145deg, #3f9952, #358145)'
-      : 'linear-gradient(145deg, #7be795, #68c27d)'};
-`;
-
-const MainTemperatureText = styled.p`
-  margin: -5px 0px -5px 7px;
-`;
-
-const AdjustedTemperature = styled.div`
-  display: flex;
-  margin-top: 30px;
-  margin-left: 40px;
-  align-items: center;
-`;
-
-const AdjustedTemperatureText = styled.p`
-  margin: -5px 0px -5px 8px;
-`;
-
-const AdjustedTemperatureHelperIcon = styled.img`
-  margin-top: 22px;
-  margin-left: -15px;
-  height: 30px;
-  width: 45px;
-`;
-
-const ForecastHelperIcon = styled.img`
-  margin-top: -10px;
-  margin-left: -13px;
-  height: 45px;
-  width: 46px;
-`;
-
-const ConditionalHelperIcon = styled.img`
-  position: absolute;
-  margin-top: 26px;
-  margin-left: -34px;
-  height: 45px;
-  width: 46px;
-`;
-
-const BigTemperatureHelperIcon = styled.img`
-  position: absolute;
-  margin-left: 27px;
-  margin-top: -15px;
-  max-height: 80px;
-  max-width: 100px;
-  height: 100%;
-  width: 100%;
-`;
-
-const NavBarTop = styled.span<DarkModeHelperProps>`
-  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
-  border-bottom: 1px solid;
-  border-color:${(props) => (props.isDark ? '#ececec' : 'black')};
-  position: fixed;
-  display: inline-flex;
-  justify-content: space-around;
-  width: 100%;
-  align-items: center;
-  height: 6.6vh;
-  z-index: 1000;
-`;
-
-const BandAid = styled.div`
-  padding-top: 6.4vh;
-  padding-bottom: 2vh;
-`;
+//Related to Badges and Achievements
 
 const AchievementBadgeByName = styled.img`
   height: 30px;
@@ -376,7 +199,188 @@ const AchievementBadgeHolder = styled.span`
   display: none;
 `;
 
+//For use in Forecasts/Weather
+
+const ForecastRowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const ForecastEntry = styled.div<DarkModeHelperProps>`
+  justify-content: center;
+  margin-top: 35px;
+  margin-left: 35px;
+  margin-bottom: 5px;
+  width: 145px;
+  align-items: center;
+  border-radius: 50px;
+  box-shadow: ${(props) =>
+    props.isDark
+      ? '20px 20px 60px #171830, -10px -10px 5px #1b1c3a'
+      : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
+      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
+`;
+
+const WeatherIcon = styled.img`
+  display: flex;
+  height: 65px;
+  width: 65px;
+`;
+
+const WeatherIconFrame = styled.div<DarkModeHelperProps>`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
+      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
+  margin-top: 10px;
+  margin-left: -45px;
+`;
+
+const ForecastBit = styled.div`
+  display: flex;
+  align-items: center;
+  height: 20px;
+  width: 115px;
+  margin-left: 15px;
+  margin-top: 7px;
+`;
+
+const ForecastStatsBox = styled.div<DarkModeHelperProps>`
+  height: 95px;
+  width: 150px;
+  margin-left: 0px;
+  margin-top: 65px;
+  margin-bottom: 15px;
+  border-radius: 30px;
+`;
+
+const ForecastStatHolder = styled.p`
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+  font-size: 11px;
+`;
+
+// old ForecastStatsBox visual stuff
+//    background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+//    box-shadow: ${(props) => props.isDark
+//       ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
+//       : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
+
+const WeatherDescription = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100px;
+  margin-left: 31px;
+`;
+
+const ForecastText = styled.p`
+  margin-left: 0px;
+  margin-right: auto;
+  font-size: 11px;
+`;
+
+const ForecastTime = styled.p`
+  font-size: 20px;
+  margin-left: 8px;
+`;
+
+const MainTemperature = styled.div`
+  display: flex;
+  margin-top: 22px;
+  align-items: center;
+  font-size: 34px;
+`;
+
+const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
+  height: 75px;
+  width: 75px;
+  margin-top: 61px;
+  margin-left: 20px;
+  border-radius: 50%;
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, #3f9952, #358145)'
+      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+`;
+
+const MainTemperatureText = styled.p`
+  margin: -5px 0px -1px 9px;
+`;
+
+const AdjustedTemperature = styled.div`
+  display: flex;
+  margin-top: 32px;
+  margin-left: 26px;
+  align-items: center;
+`;
+
+const AdjustedTemperatureText = styled.p`
+  margin: -5px 0px -5px 8px;
+`;
+
+const AdjustedTemperatureHelperIcon = styled.img`
+  margin-top: 27px;
+  margin-left: -15px;
+  height: 30px;
+  width: 45px;
+`;
+
+const ForecastHelperIcon = styled.img`
+  margin-top: -5px;
+  margin-left: -10px;
+  height: 35px;
+  width: 35px;
+`;
+
+const WindspeedHelperIcon = styled.img`
+  margin-top: -5px;
+  margin-left: -10px;
+  height: 35px;
+  width: 35px;
+`;
+
+const ConditionalHelperIcon = styled.img`
+  position: absolute;
+  margin-top: 26px;
+  margin-left: -34px;
+  height: 45px;
+  width: 46px;
+`;
+
+const BigTemperatureHelperIcon = styled.img`
+  position: absolute;
+  margin-left: 24px;
+  margin-top: -14px;
+  max-height: 50px;
+  max-width: 66px;
+  height: 100%;
+  width: 100%;
+`;
+
+// Misc styled components
+
 // This is the start of the home page //
+
+const ForecastRowContainerforHome = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  width: 52.7%;
+`;
 
 const HomePageCompWrapper = styled.div`
   display: flex;
@@ -391,10 +395,31 @@ const GoHomeIcon = styled.img`
   top: 59%;
 `;
 
+// Misc styled components
+
+const NavBarTop = styled.span<DarkModeHelperProps>`
+  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  border-bottom: 1px solid;
+  border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
+  position: fixed;
+  display: inline-flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+  height: 6.6vh;
+  z-index: 1000;
+`;
+
+const BandAid = styled.div`
+  padding-top: 6.4vh;
+  padding-bottom: 2vh;
+`;
+
+//tried to use this to get Toast notifications to display below
+//the navbar, but it didn't work
 const ToastBuffer = styled.div`
   padding-top: 30px;
 `;
-
 
 //This is for the instruction text in the Scrollers in Profile //
 
@@ -429,26 +454,34 @@ const HighlightText = styled.h4`
   margin-bottom: 30px;
   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
   text-shadow: ${(props) =>
-    props.theme === 'dark' ? `0 0 2px ${darkModeShadow}` : `0 0 2px ${lightModeShadow}`};
+    props.theme === 'dark'
+      ? `0 0 2px ${darkModeShadow}`
+      : `0 0 2px ${lightModeShadow}`};
 
   animation: ${(props) => keyframes`
     0% {
-      text-shadow: 0 0 2px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+      text-shadow: 0 0 2px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
     }
     50% {
-      text-shadow: 0 0 10px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+      text-shadow: 0 0 10px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
     }
     100% {
-      text-shadow: 0 0 2px ${props.theme === 'dark' ? darkModeShadow : lightModeShadow};
+      text-shadow: 0 0 2px ${
+        props.theme === 'dark' ? darkModeShadow : lightModeShadow
+      };
     }
-  `} 2s infinite;
+  `}
+    2s infinite;
 `;
-
-
 
 export {
   ForecastBit,
   ForecastStatsBox,
+  ForecastStatHolder,
   WeatherDescription,
   ForecastText,
   ForecastTime,
@@ -459,6 +492,7 @@ export {
   AdjustedTemperatureText,
   AdjustedTemperatureHelperIcon,
   ForecastHelperIcon,
+  WindspeedHelperIcon,
   ConditionalHelperIcon,
   BigTemperatureHelperIcon,
   InputLayout,

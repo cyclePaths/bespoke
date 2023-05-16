@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
 import ForecastRow from './Weather/ForecastRow';
+import Forecast from './Weather/Forecast';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import {
   BandAid,
@@ -51,9 +52,24 @@ const Home = ({
     <div>
       <BandAid>
         <HomePageCompWrapper>
-          <ForecastRow
-            rowData={homeForecasts}
+          <Forecast
+            displayIcon={homeForecasts[0].displayIcon}
+            time={homeForecasts[0].time}
             prepareWeatherIcon={prepareWeatherIcon}
+            temperature={homeForecasts[0].temperature}
+            humidity={homeForecasts[0].humidity}
+            apparentTemperature={homeForecasts[0].apparentTemperature}
+            cloudcover={homeForecasts[0].cloudcover}
+            windspeed={homeForecasts[0].windspeed}
+            precipitation={homeForecasts[0].precipitation}
+            snowfall={homeForecasts[0].snowfall}
+            precipitationProbability={homeForecasts[0].precipitationProbability}
+            rain={homeForecasts[0].rain}
+            showers={homeForecasts[0].showers}
+            weatherDescription={homeForecasts[0].weatherDescription}
+            snowDepth={homeForecasts[0].snowDepth}
+            visibility={homeForecasts[0].visibility}
+            isDay={homeForecasts[0].isDay}
             windSpeedMeasurementUnit={windSpeedMeasurementUnit}
             temperatureMeasurementUnit={temperatureMeasurementUnit}
             precipitationMeasurementUnit={precipitationMeasurementUnit}
@@ -97,3 +113,15 @@ const Home = ({
 };
 
 export default Home;
+
+//old forecastRow on home page:
+
+// <ForecastRow
+// rowData={homeForecasts}
+// prepareWeatherIcon={prepareWeatherIcon}
+// windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+// temperatureMeasurementUnit={temperatureMeasurementUnit}
+// precipitationMeasurementUnit={precipitationMeasurementUnit}
+// sunriseHour={sunriseHour}
+// sunsetHour={sunsetHour}
+// />
