@@ -151,39 +151,39 @@ const StatsDivs = styled.div`
 //Related to Badges and Achievements
 
 const AchievementBadgeByName = styled.img`
-  height: 30px;
-  width: 30px;
+  height: 1.875em;
+  width: 1.875em;
 `;
 
 const AchievementBadgeTooltip = styled.span`
   visibility: hidden;
-  padding: 5px 0;
-  border-radius: 6px;
+  padding: 0.3125em 0;
+  border-radius: 0.375em;
   text-align: center;
   position: absolute;
   z-index: 1;
-  width: 120px;
+  width: 7.5em;
   bottom: 100%;
   left: 50%;
-  margin-left: -60px;
+  margin-left: -3.75em;
   opacity: 0;
   transition: opacity 1s;
 `;
 
 const TooltipBox = styled.div<DarkModeHelperProps>`
-  width: 150px;
-  border: 10px solid green;
-  padding: 25px;
-  margin: 10px;
+  width: 9.375em;
+  border: 0.625em solid green;
+  padding: 1.5625em;
+  margin: 0.625em;
   background-color: ${(props) =>
     props.isDark ? '#191a35' : 'rgb(133, 211, 255)'};
 `;
 
 const AchievementBadge = styled.img`
-  height: 35px;
-  width: 35px;
-  margin-left: 12px;
-  margin-right: 12px;
+  height: 2.1875em;
+  width: 2.1875em;
+  margin-left: 0.75em;
+  margin-right: 0.75em;
 `;
 
 const AchievementBadgeAndTooltipContainer = styled.div`
@@ -208,16 +208,16 @@ const ForecastRowContainer = styled.div`
 
 const ForecastEntry = styled.div<DarkModeHelperProps>`
   justify-content: center;
-  margin-top: 35px;
-  margin-left: 35px;
-  margin-bottom: 5px;
-  width: 145px;
+  margin-top: 2.1875em;
+  margin-left: 2.1875em;
+  margin-bottom: 1.3125em;
+  width: 9.0625em;
   align-items: center;
-  border-radius: 50px;
+  border-radius: 3.125em;
   box-shadow: ${(props) =>
     props.isDark
-      ? '20px 20px 60px #171830, -10px -10px 5px #1b1c3a'
-      : '20px 20px 60px #8adbff, -10px -10px 5px #80cbf5'};
+      ? '1.25em 1.25em 3.75em #171830, -0.625em -0.625em 0.3125em #1b1c3a'
+      : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 0.3125em #80cbf5'};
   background: ${(props) =>
     props.isDark
       ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
@@ -226,8 +226,8 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
 
 const WeatherIcon = styled.img`
   display: flex;
-  height: 65px;
-  width: 65px;
+  height: 4.0625em;
+  width: 4.0625em;
 `;
 
 const WeatherIconFrame = styled.div<DarkModeHelperProps>`
@@ -235,41 +235,41 @@ const WeatherIconFrame = styled.div<DarkModeHelperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 75px;
-  width: 75px;
+  height: 4.6875em;
+  width: 4.6875em;
   border-radius: 50%;
   background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
   box-shadow: ${(props) =>
     props.isDark
-      ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54, -5px -5px 15px #15162d,'
-      : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
-  margin-top: 10px;
-  margin-left: -45px;
+      ? 'inset 1.25em 1.25em 2.4375em #368246, inset -1.25em -1.25em 2.4375em #409c54, -5px -5px 15px #15162d,'
+      : 'inset 1.25em 1.25em 1.4375em #65be7a, inset -1.25em -1.25em 1.4375em #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
+  margin-top: 0.625em;
+  margin-left: -2.8125em;
 `;
 
 const ForecastBit = styled.div`
   display: flex;
   align-items: center;
-  height: 20px;
-  width: 115px;
-  margin-left: 15px;
-  margin-top: 7px;
+  height: 1.25em;
+  width: 7.1875em;
+  margin-left: 0.9375em;
+  margin-top: 0.4375em;
 `;
 
 const ForecastStatsBox = styled.div<DarkModeHelperProps>`
-  height: 95px;
-  width: 150px;
-  margin-left: 0px;
-  margin-top: 65px;
-  margin-bottom: 25px;
-  border-radius: 30px;
+  height: 5.9375em;
+  width: 9.375em;
+  margin-left: 0em;
+  margin-top: 4.0625em;
+  margin-bottom: 1.5625em;
+  border-radius: 1.875em;
 `;
 
 const ForecastStatHolder = styled.p`
   display: flex;
   position: relative;
   justify-content: flex-end;
-  font-size: 11px;
+  font-size: 0.6875em;
 `;
 
 // old ForecastStatsBox visual stuff
@@ -282,42 +282,42 @@ const ForecastStatHolderWithBuffer = styled.p`
   display: flex;
   position: relative;
   justify-content: flex-end;
-  font-size: 11px;
-  margin-right: 7px;
+  font-size: 0.6875em;
+  margin-right: 0.4375em;
 `;
 
 const WeatherDescription = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
-  height: 50px;
-  width: 100px;
-  margin-left: 31px;
+  height: 3.125em;
+  width: 6.25em;
+  margin-left: 1.9375em;
 `;
 
 const ForecastText = styled.p`
-  margin-left: 0px;
+  margin-left: 0em;
   margin-right: auto;
-  font-size: 11px;
+  font-size: 0.6875em;
 `;
 
 const ForecastTime = styled.p`
-  font-size: 20px;
-  margin-left: 8px;
+  font-size: 1.25em;
+  margin-left: 0.5em;
 `;
 
 const MainTemperature = styled.div`
   display: flex;
-  margin-top: 22px;
+  margin-top: 0.85em;
   align-items: center;
-  font-size: 34px;
+  font-size: 2.125em;
 `;
 
 const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
-  height: 75px;
-  width: 75px;
-  margin-top: 61px;
-  margin-left: 20px;
+  height: 4.6875em;
+  width: 4.6875em;
+  margin-top: 3.8125em;
+  margin-left: 1.25em;
   border-radius: 50%;
   background: ${(props) =>
     props.isDark
@@ -326,55 +326,55 @@ const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
 `;
 
 const MainTemperatureText = styled.p`
-  margin: -5px 0px -1px 9px;
+  margin: -0.3125em 0em -0.0625em 0.3025em;
 `;
 
 const AdjustedTemperature = styled.div`
   display: flex;
-  margin-top: 32px;
-  margin-left: 26px;
+  margin-top: 2em;
+  margin-left: 1.625em;
   align-items: center;
 `;
 
 const AdjustedTemperatureText = styled.p`
-  margin: -5px 0px -5px 8px;
+  margin: -0.3125em 0em -0.3125em 0.5em;
 `;
 
 const AdjustedTemperatureHelperIcon = styled.img`
-  margin-top: 27px;
-  margin-left: -15px;
-  height: 30px;
-  width: 45px;
+  margin-top: 1.6875em;
+  margin-left: -0.9375em;
+  height: 1.875em;
+  width: 2.8125em;
 `;
 
 const ForecastHelperIcon = styled.img`
-  margin-top: -5px;
-  margin-left: -10px;
-  height: 30px;
-  width: 35px;
+  margin-top: -0.3125em;
+  margin-left: -0.625em;
+  height: 1.875em;
+  width: 2.1875em;
 `;
 
 const WindspeedHelperIcon = styled.img`
-  margin-top: -5px;
-  margin-left: -10px;
-  height: 35px;
-  width: 35px;
+  margin-top: -0.3125em;
+  margin-left: -0.625em;
+  height: 2.1875em;
+  width: 2.1875em;
 `;
 
 const ConditionalHelperIcon = styled.img`
   position: absolute;
-  margin-top: 35px;
-  margin-left: -30px;
-  height: 30px;
-  width: 50px;
+  margin-top: 2.1875em;
+  margin-left: -1.875em;
+  height: 1.875em;
+  width: 3.125em;
 `;
 
 const BigTemperatureHelperIcon = styled.img`
   position: absolute;
-  margin-left: 24px;
-  margin-top: -14px;
-  max-height: 50px;
-  max-width: 66px;
+  margin-left: 0.705882em;
+  margin-top: -0.651765em;
+  max-height: 1.47059em;
+  max-width: 1.94118em;
   height: 100%;
   width: 100%;
 `;
@@ -383,12 +383,39 @@ const BigTemperatureHelperIcon = styled.img`
 
 // This is the start of the home page //
 
+// home screen weather widget components
+
 const ForecastRowContainerforHome = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow: auto;
   width: 52.7%;
 `;
+
+const HourlyForecastWrapper = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  scrollbar-width: thin;
+  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+const ForecastItem = styled.div`
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+  width: 100px;
+`;
+
+const ForecastHour = styled.div`
+  font-weight: bold;
+`;
+
+const ForecastTemperature = styled.div`
+  margin-top: 5px;
+`;
+
+//other home components
 
 const HomePageCompWrapper = styled.div`
   display: flex;
@@ -530,6 +557,10 @@ export {
   HomePageCompWrapper,
   GoHomeIcon,
   ForecastRowContainerforHome,
+  HourlyForecastWrapper,
+  ForecastItem,
+  ForecastHour,
+  ForecastTemperature,
   StatsDivs,
   ToastBuffer,
   WaveHighlight,

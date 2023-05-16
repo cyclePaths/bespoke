@@ -36,10 +36,10 @@ const ForecastRow = ({
           return (
             <Forecast
               key={i}
-              displayIcon={forecast.displayIcon}
               time={forecast.time}
               prepareWeatherIcon={prepareWeatherIcon}
               temperature={forecast.temperature}
+              previousTemperature={forecast.previousTemperature}
               humidity={forecast.humidity}
               apparentTemperature={forecast.apparentTemperature}
               directRadiation={forecast.directRadiation}
@@ -69,10 +69,10 @@ const ForecastRow = ({
           return (
             <Forecast
               key={i}
-              displayIcon={forecast.displayIcon}
               time={forecast.time}
               prepareWeatherIcon={prepareWeatherIcon}
               temperature={forecast.temperature}
+              previousTemperature={forecast.previousTemperature}
               humidity={forecast.humidity}
               apparentTemperature={forecast.apparentTemperature}
               directRadiation={forecast.directRadiation}

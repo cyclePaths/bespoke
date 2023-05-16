@@ -29,9 +29,9 @@ WeatherRoute.get('/forecast', (req, res) => {
         time: data.current_weather.time,
       };
       const hourly = new Array(24).fill(0).map(() => ({
-        displayIcon: true,
         time: new Date(),
         temperature: 0,
+        previousTemperature: 1000,
         humidity: 0,
         apparentTemperature: 0,
         directRadiation: 0,
@@ -57,6 +57,9 @@ WeatherRoute.get('/forecast', (req, res) => {
             hourly[i].humidity = ele;
           } else if (key === 'apparent_temperature') {
             hourly[i].apparentTemperature = ele;
+            if (hourly[i - 1]) {
+              hourly[i].previousTemperature = hourly[i - 1].apparentTemperature;
+            }
           } else if (key === 'windspeed_10m') {
             hourly[i].windspeed = ele;
           } else if (key === 'precipitation_probability') {
@@ -89,6 +92,7 @@ WeatherRoute.get('/forecast', (req, res) => {
         sunriseHour: sunriseHour,
         sunsetHour: sunsetHour,
       };
+      console.log(responseObj.hourly);
       res.status(200).send(responseObj);
     })
     .catch((err) => {

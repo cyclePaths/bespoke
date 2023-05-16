@@ -41,10 +41,10 @@ interface ForecastProps extends Hourly {
 }
 
 const Forecast = ({
-  displayIcon,
   time,
   prepareWeatherIcon,
   temperature,
+  previousTemperature,
   humidity,
   apparentTemperature,
   directRadiation,
@@ -149,6 +149,38 @@ const Forecast = ({
           src={weatherIcons.night.moonset}
         ></ConditionalHelperIcon>
       );
+    }
+    //show temperature +/- if significant gain/loss of temperature since last hour
+    if (previousTemperature !== 10000) {
+      if (temperatureMeasurementUnit === 'fahrenheit') {
+        if (apparentTemperature >= previousTemperature + 5) {
+          return (
+            <ConditionalHelperIcon
+              src={weatherIcons.misc.thermometer.warmer}
+            ></ConditionalHelperIcon>
+          );
+        } else if (apparentTemperature <= previousTemperature - 5) {
+          return (
+            <ConditionalHelperIcon
+              src={weatherIcons.misc.thermometer.colder}
+            ></ConditionalHelperIcon>
+          );
+        }
+      } else if (temperatureMeasurementUnit === 'celsius') {
+        if (apparentTemperature >= previousTemperature + 2.75) {
+          return (
+            <ConditionalHelperIcon
+              src={weatherIcons.misc.thermometer.warmer}
+            ></ConditionalHelperIcon>
+          );
+        } else if (apparentTemperature <= previousTemperature - 2.75) {
+          return (
+            <ConditionalHelperIcon
+              src={weatherIcons.misc.thermometer.colder}
+            ></ConditionalHelperIcon>
+          );
+        }
+      }
     }
   };
 

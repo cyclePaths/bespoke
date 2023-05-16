@@ -15,9 +15,10 @@ import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
 import { Box, Button, Modal, Typography } from '@mui/material';
+import WeatherWidget from './Weather/WeatherWidget';
 
 const Home = ({
-  homeForecasts,
+  hourlyForecasts,
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
@@ -52,30 +53,10 @@ const Home = ({
     <div>
       <BandAid>
         <HomePageCompWrapper>
-          <Forecast
-            displayIcon={homeForecasts[0].displayIcon}
-            time={homeForecasts[0].time}
+          <WeatherWidget
             prepareWeatherIcon={prepareWeatherIcon}
-            temperature={homeForecasts[0].temperature}
-            humidity={homeForecasts[0].humidity}
-            apparentTemperature={homeForecasts[0].apparentTemperature}
-            cloudcover={homeForecasts[0].cloudcover}
-            windspeed={homeForecasts[0].windspeed}
-            precipitation={homeForecasts[0].precipitation}
-            snowfall={homeForecasts[0].snowfall}
-            precipitationProbability={homeForecasts[0].precipitationProbability}
-            rain={homeForecasts[0].rain}
-            showers={homeForecasts[0].showers}
-            weatherDescription={homeForecasts[0].weatherDescription}
-            snowDepth={homeForecasts[0].snowDepth}
-            visibility={homeForecasts[0].visibility}
-            isDay={homeForecasts[0].isDay}
-            windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-            temperatureMeasurementUnit={temperatureMeasurementUnit}
-            precipitationMeasurementUnit={precipitationMeasurementUnit}
-            sunriseHour={sunriseHour}
-            sunsetHour={sunsetHour}
-          />
+            hourlyForecasts={hourlyForecasts}
+          ></WeatherWidget>
           {/* <Button
             onClick={() => {
               handleRoutingHome();
