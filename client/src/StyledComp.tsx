@@ -50,7 +50,7 @@ const PrivacySelector = styled.div<DarkModeHelperProps>`
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   align-items: center;
   margin-left: 10px;
-  color: ${(isDark) => (isDark ? '#e0e0e0' : '#000000')};
+  color: ${({ isDark }) => (isDark ? '#e0e0e0' : '#000000')};
 `;
 
 const OptionsDiv = styled.div`
