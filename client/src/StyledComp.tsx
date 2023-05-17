@@ -35,6 +35,7 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
@@ -49,7 +50,7 @@ const PrivacySelector = styled.div<DarkModeHelperProps>`
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   align-items: center;
   margin-left: 10px;
-  color: ${(isDark) => (isDark ? '#e0e0e0' : '#000000')};
+  color: ${({ isDark }) => (isDark ? '#e0e0e0' : '#000000')};
 `;
 
 const OptionsDiv = styled.div`
@@ -142,10 +143,17 @@ const RouteList = styled.div`
   align-content: space-between;
 `;
 
-const StatsDivs = styled.div`
-  background-color: white;
-  margin: 5px;
-  border-radius: 2px;
+// Home Page stuff //
+const StatsWrapper = styled.div<DarkModeHelperProps>`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  max-width: 50%;
+  margin-left: 20px;
+`;
+
+const RecentRidesHeader = styled.header<DarkModeHelperProps>`
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
 `;
 
 //Related to Badges and Achievements
@@ -431,7 +439,7 @@ const HomePageCompWrapper = styled.div`
   justify-content: center;
 `;
 
-const GoHomeIcon = styled.img`
+const GoHomeIcon = styled.img<DarkModeHelperProps>`
   width: 77%;
   position: absolute;
   top: 59%;
@@ -520,6 +528,16 @@ const HighlightText = styled.h4`
     2s infinite;
 `;
 
+//Above is for the instruction text in the Scrollers in Profile //
+
+
+const ProfileDisplays = styled.div`
+   display: flex;
+  justify-content: center;
+`
+
+
+
 export {
   ForecastBit,
   ForecastStatsBox,
@@ -569,10 +587,12 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
-  StatsDivs,
   ToastBuffer,
   WaveHighlight,
   HighlightText,
+  ProfileDisplays,
   LoadingDiv,
   PrivacySelector,
+  RecentRidesHeader,
+  StatsWrapper
 };

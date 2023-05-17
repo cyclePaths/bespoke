@@ -186,7 +186,9 @@ io.on('connection', (socket) => {
     socket.join(room);
 
     socket.on('message', (message) => {
-      io.to(room).emit('message', message);
+      // io.to(room).emit('message', message);
+      // socket.to(room).emit('message', message);
+      socket.broadcast.to(room).emit('message', message);
     });
   });
 

@@ -15,6 +15,8 @@ import Scrollers from './Scrollers';
 import '../../styles.css';
 import { UserContext } from '../../Root';
 import { BandAid } from '../../StyledComp';
+import { SocketContext } from '../../SocketContext';
+import { Socket } from 'socket.io-client';
 import {
   AchievementBadgeByName,
   AchievementBadgeTooltip,
@@ -53,18 +55,31 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  // const [rideStats, setRideStats] = useState<RideStats>({
-  //   activity: '',
-  //   duration: 0,
-  //   weight: 0,
-  //   calories: 0,
-  // });
+  const [lastRide, setLastRide] = useState<RideStats>({
+    activity: '',
+    duration: 0,
+    weight: 0,
+    calories: 0,
+  });
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
   //temporary - used for manually adding badges
   const [tier, setTier] = useState(0);
   const [inputBox, setInputBox] = useState('');
+
+
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  useEffect(() => {
+    if (socket) {
+      // Listen for incoming 'message' events
+      socket.on('message', (newMessage) => {
+        // Handle the incoming message
+        console.log('Received message:', newMessage);
+      });
+    }
+  }, [socket]);
 
   //functions
 
@@ -129,6 +144,9 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setPhoto(data.thumbnail);
         setTheme(data.theme);
         setWeight(data.weight);
+        setHomeAddress(data.homeAddress);
+
+
       })
       .catch((err) => {
         console.log(err);
@@ -160,7 +178,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         data.activity = 'Mountain Biking';
       }
 
-      // setRideStats(data);
+      setLastRide(data);
       badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
 
 
@@ -186,6 +204,12 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
+        homeAddress={homeAddress}
+        weightForProfileDisplay={weight}
+        lastRideActivity={lastRide.activity}
+        lastRideDuration={lastRide.duration}
+        lastRideWeight={lastRide.weight}
+        lastRideCalories={lastRide.calories}
       />
 
       <div>{displayNoBadgeIfEmpty()}</div>

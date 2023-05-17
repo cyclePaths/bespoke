@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../../styles.css';
 import { RoutesPopoutProps } from './RouteM';
+import {UserContext} from '../../Root';
 
 const RoutesListPopup = ({
   children,
@@ -10,15 +11,17 @@ const RoutesListPopup = ({
   setOpenSearch,
   exitListForm,
 }: RoutesPopoutProps) => {
+
+  const {isDark} = useContext(UserContext);
   return (
     <Dialog open={openSearch}>
-      <div style={{ backgroundColor: 'rgb(133, 211, 255)' }}>
-        <CloseIcon sx={{}} onClick={() => exitListForm()} />
+      <div style={{ backgroundColor: isDark ? '#191a35' : '#85d3ff' }}>
+        <CloseIcon sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }} onClick={() => exitListForm()} />
       </div>
       <DialogTitle
         style={{
-          backgroundColor: 'rgb(133, 211, 255)',
-          border: '5px solid rgb(133, 211, 255)',
+          backgroundColor: isDark ? '#191a35' : '#85d3ff',
+          padding: '16px 29px'
         }}
       >
         <header
@@ -51,7 +54,7 @@ const RoutesListPopup = ({
       <DialogContent
         style={{
           padding: '30px',
-          backgroundColor: 'rgb(133, 211, 255)',
+          backgroundColor: isDark ? '#191a35' : '#85d3ff',
         }}
       >
         {children}
