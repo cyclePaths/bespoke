@@ -390,7 +390,7 @@ const HomePageCompWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const GoHomeIcon = styled.img`
+const GoHomeIcon = styled.img<DarkModeHelperProps>`
   width: 77%;
   position: absolute;
   top: 59%;

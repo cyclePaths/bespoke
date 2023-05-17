@@ -284,36 +284,6 @@ const Map = ({
     }
   };
 
-  // Grab the address of the selected coordinates //
-  useEffect(() => {
-    if (selected) {
-      geocoder.geocode({ location: selected }).then((response) => {
-        setAddress(response.results[0]);
-      });
-    }
-  }, [selected]);
-
-  // Renders the directions and info window for the user's route when directions is populated //
-  useEffect(() => {
-    if (directions) {
-      let routeTotalDistance = 0;
-      let routeTotalDuration = 0;
-      directions.routes[0].legs.forEach((route) => {
-        routeTotalDistance += route.distance!.value;
-        routeTotalDuration += route.duration!.value;
-      });
-      const centeredLat = directions.routes[0].bounds.getCenter().lat();
-      const centeredLng = directions.routes[0].bounds.getCenter().lng();
-      setRouteInfo({
-        distance: `${(routeTotalDistance * 0.000621371).toFixed(1)} miles`,
-        duration: `${Math.ceil(routeTotalDuration / 60)} mins`,
-        centerLat: centeredLat,
-        centerLng: centeredLng,
-        warnings: directions.routes[0].warnings,
-      });
-    }
-  }, [directions]);
-
   const exitListForm = () => {
     const searchBar = document.getElementById('route-searcher');
     const findHeader = document.getElementById('list');
@@ -330,6 +300,39 @@ const Map = ({
     resultHeader!.style.display = '';
     emptyResult!.style.display = 'none';
   };
+
+  // Grab the address of the selected coordinates //
+  useEffect(() => {
+    if (selected) {
+      geocoder.geocode({ location: selected }).then((response) => {
+        setAddress(response.results[0]);
+      });
+    }
+  }, [selected]);
+
+  // Renders the directions and info window for the user's route when directions is populated //
+  useEffect(() => {
+    if (directions !== undefined) {
+      let routeTotalDistance = 0;
+      let routeTotalDuration = 0;
+      directions.routes[0].legs.forEach((route) => {
+        routeTotalDistance += route.distance!.value;
+        routeTotalDuration += route.duration!.value;
+      });
+      const centeredLat = directions.routes[0].bounds.getCenter().lat();
+      const centeredLng = directions.routes[0].bounds.getCenter().lng();
+      setRouteInfo({
+        distance: `${(routeTotalDistance * 0.000621371).toFixed(1)} miles`,
+        duration: `${Math.ceil(routeTotalDuration / 60)} mins`,
+        centerLat: centeredLat,
+        centerLng: centeredLng,
+        warnings: directions.routes[0].warnings,
+      });
+
+      axios.put('/bikeRoutes/recentRide')
+        .then()
+    }
+  }, [directions]);
 
   // Sets the center of the map upon page loading //
   useEffect(() => {
@@ -348,7 +351,7 @@ const Map = ({
 
   useEffect(() => {
     if (startingPoint && destination && markers.length > 0 && routeClicked) {
-      // fetchDirections();
+      fetchDirections();
     } else if (
       startingPoint &&
       destination &&
@@ -358,10 +361,6 @@ const Map = ({
       fetchDirections();
     }
     setRouteClicked(false);
-
-    return () => {
-      console.log('unmounted');
-    }
   }, [startingPoint, destination, markers, routeClicked]);
 
   useEffect(() => {
@@ -375,14 +374,6 @@ const Map = ({
       setHomeCoordinates(undefined);
     }
   }, []);
-
-  useEffect(() => {
-    if (homeCoordinates === undefined) {
-      setTimeout(() => {
-        // fetchDirections();
-      }, 1000);
-    }
-  }, [homeCoordinates]);
 
   return (
     <div className='container'>
