@@ -158,27 +158,25 @@ export const weatherIcons = {
       'https://basmilius.github.io/weather-icons/production/fill/all/fahrenheit.svg',
 
     thermometer: {
-      base: {
-        base: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer.svg',
-        colder:
-          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-colder.svg',
-        warmer:
-          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-warmer.svg',
+      base: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer.svg',
+      colder:
+        'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-colder.svg',
+      warmer:
+        'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-warmer.svg',
+      celsius:
+        'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-celsius.svg',
+      fahrenheit:
+        'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-fahrenheit.svg',
+      empty: {
+        base: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass.svg',
         celsius:
-          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-celsius.svg',
+          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass-celsius.svg',
         fahrenheit:
-          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-fahrenheit.svg',
-        empty: {
-          base: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass.svg',
-          celsius:
-            'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass-celsius.svg',
-          fahrenheit:
-            'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass-fahrenheit.svg',
-        },
-        mercury: {
-          red: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-mercury.svg',
-          blue: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-mercury-cold.svg',
-        },
+          'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-glass-fahrenheit.svg',
+      },
+      mercury: {
+        red: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-mercury.svg',
+        blue: 'https://basmilius.github.io/weather-icons/production/fill/all/thermometer-mercury-cold.svg',
       },
     },
     UV: {
