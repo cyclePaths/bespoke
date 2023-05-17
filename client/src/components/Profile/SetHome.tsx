@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Addresses, { Address, SelectedAddress, HomeAddress } from './Addresses';
+// import ProfileNav from './ProfileNave';
+import Profile from './Profile';
 
 
 const SetHome = () => {
@@ -38,6 +40,8 @@ return (
       setHomeAddress={setHomeAddress}
       saveHome={saveHome}
     />
+    {/* <Profile homeAddress={homeAddress} /> */}
+    {/* <ProfileNav homeAddress={homeAddress} /> */}
   </div>
 );
 };
