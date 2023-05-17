@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext, createContext } from 'react';
+import UpdatedReportsContext from './UpdatedReportsContext';
 import axios from 'axios';
-import { Report } from '@prisma/client';
+// import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
 import {
+  Tooltip,
   Box,
   Drawer,
   Fab,
@@ -22,23 +24,40 @@ import { LatLngLiteral } from '../BikeRoutes/RouteM';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { Card, CardContent } from '@mui/material';
+import CreateReport from './CreateReport';
 
 dayjs.extend(utc);
-//  added so reports can be passed as props from CreateReport to re-render after a report is created
-// interface ReportsMapProps {
-//   reports: Report[];
-// }
 
-//  webpack url-loader
-// import roadHazardIcon from './images/hazard.png';
-// import theftAlertIcon from './icons/theft.png';
-// import collisionIcon from './images/collision.png';
-// import pointOfInterestIcon from './images/poi.png';
+interface ReportsMapProps {
+  updatedReports: Report[];
+}
+// type CreateReportProps = {
+//   fetchReports: () => Promise<void>;
+// };
+interface Report {
+  id: string;
+  title: string | null;
+  body: string | null;
+  type: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  published: boolean;
+  location_lat?: number;
+  location_lng?: number;
+  userId: number;
+  author: User; // Add the 'author' property
+  imgUrl: string | null;
+  comments: Comment[];
+}
 
-const ReportsMap: React.FC = () => {
+const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
+  // console.log("ReportsMap", props);
+
+  const updatedReports = useContext(UpdatedReportsContext);
+
   const [map, setMap] = useState<google.maps.Map>();
   const [center, setCenter] = useState<google.maps.LatLng>();
-  const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<Report[]>(monthReports); // Assign monthReports to reports state
   const [buttonClicked, setButtonClicked] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
@@ -81,13 +100,14 @@ const ReportsMap: React.FC = () => {
   };
 
   const handleButtonClick = async (id: string) => {
-    console.log(id);
     setSelectedReport(null);
     setButtonClicked(true);
     try {
       await axios.patch(`/reports/${id}`, { published: false });
-      // If the update was successful, you can fetch the updated reports again to re-render the map with the updated data.
-      // fetchReports();
+      console.log(id);
+      fetchThisMonthReports();
+
+      // setMarkers(prevMarkers => prevMarkers.filter(marker => marker.get("reportId") !== id));
     } catch (error) {
       console.error(error);
     } finally {
@@ -99,39 +119,38 @@ const ReportsMap: React.FC = () => {
     const value = event.target.value;
     setSelectedType(value === 'All' ? '' : value);
   };
+  const addNewReport = (newReport: Report) => {
+    setReports((prevReports) => [...prevReports, newReport]);
+  };
+  // ****Commented out to move fetching to parent component ****
+  // useEffect(() => {
+  // const fetchThisMonthReports = async () => {
+  //   try {
+  //     const response = await axios.get('/reports/thisMonth');
+  //     const filteredReports = response.data;
+  //     // console.log("reports:", response.data);
+  //     setReports(filteredReports);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //       fetchReports();
+
+  // }, [])
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const response = await axios.get('/reports');
-        const filteredReports = response.data.filter((report) => {
-          const reportCreatedAt = new Date(report.createdAt);
-          const currentDate = new Date();
-          const monthAgo = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - 1,
-            currentDate.getDate()
-          );
-          return reportCreatedAt >= monthAgo;
-        });
-        setReports(filteredReports);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchReports();
-  }, []);
+    setReports(monthReports);
+  }, [monthReports]);
 
   useEffect(() => {
     if (map && reports) {
-      const filteredReports = selectedType
-        ? reports.filter(
-            (report) =>
-              report.type === selectedType && report.published === true
-          )
-        : reports.filter((report) => report.published === true);
-
-      const newMarkers = filteredReports.map((report) => {
+      console.log('setting Markers: ', reports);
+      const newMarkers = reports.map((report: Report) => {
+        // Assuming you have fetched the report data and stored it in the `report` variable
+        const author: User = report.author;
+        console.log('Author: ', author.name); // Output the author information
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {
@@ -170,14 +189,17 @@ const ReportsMap: React.FC = () => {
           icon: getMarkerIconUrl(report.type),
         });
 
+        marker.set('reportId', report.id); // Store the reportId using the set method
+
         const isoDate = report.createdAt;
         const formattedDate = dayjs.utc(isoDate).format('DD/MM/YYYY');
         const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
-        const imageUrl: string | null = report.imgUrl;
+        const imageUrl = report.imgUrl;
         const imageElement = document.createElement('img');
-        if (imageUrl !== null) {
+        if (imageUrl) {
           imageElement.src = imageUrl;
+          imageElement.loading = 'lazy';
         }
 
         contentDiv.appendChild(imageElement);
@@ -188,7 +210,7 @@ const ReportsMap: React.FC = () => {
         const titleParagraph = document.createElement('p');
         titleParagraph.textContent = report.title;
         const authorParagraph = document.createElement('p');
-        authorParagraph.textContent = report.userId.toString();
+        authorParagraph.textContent = author.name;
         const bodyParagraph = document.createElement('p');
         bodyParagraph.textContent = report.body;
         // const createdAtParagraph = document.createElement('p');
@@ -200,8 +222,8 @@ const ReportsMap: React.FC = () => {
         if (buttonClicked) {
           buttonClickedParagraph.textContent = 'Button clicked';
         }
-        contentDiv.appendChild(dateParagraph);
         contentDiv.appendChild(typeParagraph);
+        contentDiv.appendChild(dateParagraph);
         contentDiv.appendChild(authorParagraph);
         contentDiv.appendChild(titleParagraph);
         contentDiv.appendChild(bodyParagraph);
@@ -209,15 +231,17 @@ const ReportsMap: React.FC = () => {
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);
 
-        // marker.addListener('click', () => {
-        //   infoWindow.open(map, marker);
-        // });
         marker.addListener('click', () => {
           setSelectedReport(report);
         });
 
         return marker;
       });
+
+      // const filteredMarkers = newMarkers.filter((marker) => {
+      //   const reportId = marker.get("reportId");
+      //   return updatedReports.find((report) => report.id === reportId)?.published;
+      // });
 
       const centerLatLng = center;
       const circle = new google.maps.Circle({
@@ -235,6 +259,11 @@ const ReportsMap: React.FC = () => {
         marker.setMap(null);
       });
 
+      // Set the new markers on the map
+      newMarkers.forEach((marker) => {
+        marker.setMap(map);
+      });
+
       setMarkers(newMarkers);
 
       const bounds = circle.getBounds();
@@ -242,7 +271,7 @@ const ReportsMap: React.FC = () => {
         map.fitBounds(bounds);
       }
     }
-  }, [map, reports, selectedType, buttonClicked]);
+  }, [map, selectedType, buttonClicked, reports]);
 
   // Sets the center of the map upon page loading //
   useEffect(() => {
@@ -344,7 +373,15 @@ const ReportsMap: React.FC = () => {
               onClose={() => setSelectedReport(null)}
               sx={{ maxHeight: '80vh' }}
             >
-              <Box sx={{ padding: 2, backgroundColor: 'lightgrey'}}>
+              <Box
+                sx={{
+                  padding: 2,
+                  backgroundColor: 'lightgrey',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <IconButton
                   onClick={() => setSelectedReport(null)}
                   sx={{ position: 'absolute', bottom: 8, right: 8 }}
@@ -356,18 +393,21 @@ const ReportsMap: React.FC = () => {
                     {selectedReport.imgUrl && (
                       <img src={selectedReport.imgUrl} alt='Report image' />
                     )}
+                    <p style={{ margin: 'auto', textAlign: 'center' }}>
+                      {selectedReport.type}
+                    </p>
+
                     <p>
                       {dayjs(selectedReport.createdAt).format('DD/MM/YYYY')}
                     </p>
-                    <p>{selectedReport.type}</p>
                     <p>{selectedReport.title}</p>
-                    <p>{selectedReport.userId}</p>
+                    <p>{selectedReport.author.name}:</p>
                     <p>{selectedReport.body}</p>
-                    <ArchiveIcon
-                      onClick={() => handleButtonClick(selectedReport.id)}
-                    >
-                      Archive Report
-                    </ArchiveIcon>
+                    <Tooltip title='Archive Report'>
+                      <ArchiveIcon
+                        onClick={() => handleButtonClick(selectedReport.id)}
+                      />
+                    </Tooltip>
                   </>
                 )}
               </Box>
@@ -385,33 +425,9 @@ const ReportsMap: React.FC = () => {
           </Box>
         </Box>
       </div>
+      <CreateReport fetchThisMonthReports={fetchThisMonthReports} />
     </BandAid>
   );
 };
 
 export default ReportsMap;
-
-//   return {
-//     url: roadHazardIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Theft Alert':
-//   return {
-//     url: theftAlertIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Collision':
-//   return {
-//     url: collisionIcon,
-//     scaledSize: markerSize,
-//   };
-// case 'Point of Interest':
-//   return {
-//     url: pointOfInterestIcon,
-//     scaledSize: markerSize,
-//   };
-// default:
-//   return {
-//     url: roadHazardIcon,
-//     scaledSize: markerSize,
-//   };
