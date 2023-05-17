@@ -1,5 +1,5 @@
-import React, { useState, useEffect, createContext } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { Routes, Route, BrowserRouter, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
@@ -21,6 +21,11 @@ import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import { toast } from 'react-toastify';
+import { SocketContext } from './SocketContext';
+import { Socket } from 'socket.io-client';
+import { SocketProvider } from './SocketContext';
+
+
 
 
 
@@ -343,6 +348,87 @@ const Root = () => {
     // }
     return weatherIcon;
   };
+
+
+
+ /*
+  Below is the functionality for direct message notifications. handleMessageData is a call back
+  function passed to DirectMessages to capture the user id of a receiver in order to filter
+  the notifications so that they display only for a receiver, and not for everyone.
+  */
+
+  interface RootMessage {
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    receiverName: string;
+    text: string;
+    fromMe: boolean;
+  }
+
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+  const [rootReceiverId, setRootReceiverId] = useState(0);
+  const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
+  // const navigate = useNavigate();
+
+  const handleReceiverData = (receiverId) => {
+    setRootReceiverId(receiverId)
+  }
+
+  useEffect(()=> {
+    console.log('id', rootReceiverId);
+  }, [rootReceiverId])
+
+
+  const handleMessageData = (newMessage) => {
+    setRootNewMessage(newMessage);
+    console.log('test')
+  };
+
+  useEffect(()=> {
+    console.log('message', rootNewMessage);
+  }, [rootNewMessage])
+
+
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('message', handleReceivedMessage);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('message', handleReceivedMessage);
+      }
+    };
+  }, [socket, user]);
+
+
+  const handleReceivedMessage = (newMessage) => {
+    console.log('Received message:', newMessage);
+    setRootNewMessage(newMessage);
+
+    if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+      toast.success(newMessage.text, {
+        onClick: () => {
+          // navigate(`/directMessages/${newMessage.threadId}`)
+          // navigate(`/directMessages/${newMessage.senderId}/${newMessage.receiverId}`);
+
+        }
+      });
+    }
+
+  };
+
+
+ /*
+  Above is the functionality for direct message notifications. handleMessageData is a call back
+  function passed to DirectMessages to capture the user id of a receiver in order to filter
+  the notifications so that they display only for a receiver, and not for everyone.
+  */
+
+
+
 
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
@@ -757,6 +843,9 @@ const fetchThisMonthReports = async () => {
                   />
                 }
               />
+              <Route path='createReport' element={<CreateReport />} />
+              <Route path='reportsMap' element={<ReportsMap />} />
+              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
               <Route
   path="createReport"
