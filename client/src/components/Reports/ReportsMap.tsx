@@ -7,6 +7,7 @@ import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
 import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
 import {
+  Tooltip,
   Box,
   Drawer,
   Fab,
@@ -49,7 +50,7 @@ interface Report {
   comments: Comment[];
 }
 
-const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
+const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
   // console.log("ReportsMap", props);
 
   const updatedReports = useContext(UpdatedReportsContext);
@@ -114,10 +115,6 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
     }
   };
 
-
-
-
-
   const handleTypeChange = (event) => {
     const value = event.target.value;
     setSelectedType(value === 'All' ? '' : value);
@@ -138,7 +135,6 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
   //   }
   // };
 
-
   // useEffect(() => {
   //       fetchReports();
 
@@ -149,13 +145,12 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
   }, [monthReports]);
 
   useEffect(() => {
-
     if (map && reports) {
-      console.log("setting Markers: ", reports);
+      console.log('setting Markers: ', reports);
       const newMarkers = reports.map((report: Report) => {
-// Assuming you have fetched the report data and stored it in the `report` variable
-const author: User = report.author;
-console.log("Author: ", author.name); // Output the author information
+        // Assuming you have fetched the report data and stored it in the `report` variable
+        const author: User = report.author;
+        console.log('Author: ', author.name); // Output the author information
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {
@@ -194,9 +189,7 @@ console.log("Author: ", author.name); // Output the author information
           icon: getMarkerIconUrl(report.type),
         });
 
-        marker.set("reportId", report.id); // Store the reportId using the set method
-
-
+        marker.set('reportId', report.id); // Store the reportId using the set method
 
         const isoDate = report.createdAt;
         const formattedDate = dayjs.utc(isoDate).format('DD/MM/YYYY');
@@ -206,9 +199,8 @@ console.log("Author: ", author.name); // Output the author information
         const imageElement = document.createElement('img');
         if (imageUrl) {
           imageElement.src = imageUrl;
-          imageElement.loading = "lazy";
+          imageElement.loading = 'lazy';
         }
-
 
         contentDiv.appendChild(imageElement);
         const dateParagraph = document.createElement('p');
@@ -230,15 +222,14 @@ console.log("Author: ", author.name); // Output the author information
         if (buttonClicked) {
           buttonClickedParagraph.textContent = 'Button clicked';
         }
-        contentDiv.appendChild(dateParagraph);
         contentDiv.appendChild(typeParagraph);
+        contentDiv.appendChild(dateParagraph);
         contentDiv.appendChild(authorParagraph);
         contentDiv.appendChild(titleParagraph);
         contentDiv.appendChild(bodyParagraph);
         contentDiv.appendChild(button);
         contentDiv.appendChild(buttonClickedParagraph);
         infoWindow.setContent(contentDiv);
-
 
         marker.addListener('click', () => {
           setSelectedReport(report);
@@ -268,10 +259,10 @@ console.log("Author: ", author.name); // Output the author information
         marker.setMap(null);
       });
 
-          // Set the new markers on the map
-    newMarkers.forEach((marker) => {
-      marker.setMap(map);
-    });
+      // Set the new markers on the map
+      newMarkers.forEach((marker) => {
+        marker.setMap(map);
+      });
 
       setMarkers(newMarkers);
 
@@ -281,9 +272,6 @@ console.log("Author: ", author.name); // Output the author information
       }
     }
   }, [map, selectedType, buttonClicked, reports]);
-
-
-
 
   // Sets the center of the map upon page loading //
   useEffect(() => {
@@ -385,7 +373,15 @@ console.log("Author: ", author.name); // Output the author information
               onClose={() => setSelectedReport(null)}
               sx={{ maxHeight: '80vh' }}
             >
-              <Box sx={{ padding: 2, backgroundColor: 'lightgrey'}}>
+              <Box
+                sx={{
+                  padding: 2,
+                  backgroundColor: 'lightgrey',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <IconButton
                   onClick={() => setSelectedReport(null)}
                   sx={{ position: 'absolute', bottom: 8, right: 8 }}
@@ -397,18 +393,21 @@ console.log("Author: ", author.name); // Output the author information
                     {selectedReport.imgUrl && (
                       <img src={selectedReport.imgUrl} alt='Report image' />
                     )}
+                    <p style={{ margin: 'auto', textAlign: 'center' }}>
+                      {selectedReport.type}
+                    </p>
+
                     <p>
                       {dayjs(selectedReport.createdAt).format('DD/MM/YYYY')}
                     </p>
-                    <p>{selectedReport.type}</p>
                     <p>{selectedReport.title}</p>
-                    <p>{selectedReport.userId}</p>
+                    <p>{selectedReport.author.name}:</p>
                     <p>{selectedReport.body}</p>
-                    <ArchiveIcon
-                      onClick={() => handleButtonClick(selectedReport.id)}
-                    >
-                      Archive Report
-                    </ArchiveIcon>
+                    <Tooltip title='Archive Report'>
+                      <ArchiveIcon
+                        onClick={() => handleButtonClick(selectedReport.id)}
+                      />
+                    </Tooltip>
                   </>
                 )}
               </Box>
@@ -426,7 +425,7 @@ console.log("Author: ", author.name); // Output the author information
           </Box>
         </Box>
       </div>
-      <CreateReport fetchThisMonthReports={fetchThisMonthReports}/>
+      <CreateReport fetchThisMonthReports={fetchThisMonthReports} />
     </BandAid>
   );
 };
