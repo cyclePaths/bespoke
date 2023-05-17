@@ -70,8 +70,14 @@ const SaveForm = ({
             onClick={() => handleSave()}
             sx={{
               marginTop: '15px',
-              backgroundColor: '#e0e0e0',
-              color: 'black',
+              backgroundColor: isDark ? '#707070' : '#ececec',
+              '&:hover': {
+                backgroundColor: isDark ? '#707070' : '#ececec',
+              },
+              '&:active': {
+                backgroundColor: isDark ? '#707070' : '#ececec',
+              },
+              color: isDark ? '#ececec' : '#000000',
               height: '30px',
             }}
           >

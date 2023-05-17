@@ -35,6 +35,7 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
