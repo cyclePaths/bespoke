@@ -367,27 +367,27 @@ const Root = () => {
   }
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
-  const [rootReceiverId, setRootReceiverId] = useState(0);
+  // const [rootReceiverId, setRootReceiverId] = useState(0);
   const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
   // const navigate = useNavigate();
 
-  const handleReceiverData = (receiverId) => {
-    setRootReceiverId(receiverId)
-  }
+  // const handleReceiverData = (receiverId) => {
+  //   setRootReceiverId(receiverId)
+  // }
 
-  useEffect(()=> {
-    console.log('id', rootReceiverId);
-  }, [rootReceiverId])
+  // useEffect(()=> {
+  //   console.log('id', rootReceiverId);
+  // }, [rootReceiverId])
 
 
-  const handleMessageData = (newMessage) => {
-    setRootNewMessage(newMessage);
-    console.log('test')
-  };
+  // const handleMessageData = (newMessage) => {
+  //   setRootNewMessage(newMessage);
+  //   console.log('test')
+  // };
 
-  useEffect(()=> {
-    console.log('message', rootNewMessage);
-  }, [rootNewMessage])
+  // useEffect(()=> {
+  //   console.log('message', rootNewMessage);
+  // }, [rootNewMessage])
 
 
 
@@ -843,9 +843,9 @@ const fetchThisMonthReports = async () => {
                   />
                 }
               />
-              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
-              <Route path='directMessages' element={<DirectMessages />} />
+              {/* <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='report' element={<Report />} />
               <Route
   path="createReport"
