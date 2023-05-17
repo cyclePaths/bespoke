@@ -27,3 +27,4 @@ jobs:
         npm install --legacy-peer-deps
         npx webpack
         npm run build
+      

@@ -10,6 +10,8 @@ import Profile from './Profile';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { WaveHighlight, HighlightText } from '../../StyledComp';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -360,7 +362,7 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                 sx={{ position: 'fixed', left: 0 }}
                 onClick={handleBackButtonClick}
               >
-                &lt; &lt;
+                <ArrowBackIcon />
               </Button>
             )}
 
@@ -378,7 +380,7 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                   backgroundColor: 'rgb(30, 136, 229) !important',
                 }}
               >
-                &lt; &lt;
+                <ArrowBackIcon />
               </Button>
             )}
 
@@ -390,7 +392,7 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                 sx={{ position: 'fixed', right: 0 }}
                 onClick={handleForwardButtonClick}
               >
-                &gt; &gt;
+                <ArrowForwardIcon />
               </Button>
             )}
 
@@ -408,7 +410,7 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                   backgroundColor: 'rgb(30, 136, 229) !important',
                 }}
               >
-                &gt; &gt;
+                <ArrowForwardIcon />
               </Button>
             )}
 

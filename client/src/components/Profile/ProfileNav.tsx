@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -14,6 +14,9 @@ import Stats from './Stats';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
+import { ProfileDisplays } from '../../StyledComp';
+import { SocketContext } from '../../SocketContext';
+import { Socket } from 'socket.io-client';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -63,7 +66,19 @@ function a11yProps(index: number) {
   };
 }
 
-const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
+const ProfileNav = ({
+  user,
+  photo,
+  saveTheme,
+  handleToggleStyle,
+  theme,
+  homeAddress,
+  weightForProfileDisplay,
+  lastRideActivity,
+  lastRideDuration,
+  lastRideWeight,
+  lastRideCalories,
+}) => {
   const [value, setValue] = useState(-1);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [weight, setWeight] = useState(0);
@@ -77,6 +92,20 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
   const [stats, setStats] = useState([]);
   const [appTheme, setAppTheme] = useState(false);
   const [themeIcon, setThemeIcon] = useState(false);
+  const [areTabsVisible, setAreTabsVisible] = useState(true);
+
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  // useEffect(() => {
+  //   if (socket) {
+  //     // Listen for incoming 'message' events
+  //     socket.on('message', (newMessage) => {
+  //       // Handle the incoming message
+  //       console.log('Received message:', newMessage);
+  //     });
+  //   }
+  // }, [socket]);
+
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -108,6 +137,10 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
       const newState = prevState.map((visible, index) => {
         return index === tabIndex ? !visible : false;
       });
+
+      const anyTabsVisible = newState.some((visible) => visible);
+      setAreTabsVisible(!anyTabsVisible);
+
       return newState;
     });
   };
@@ -117,7 +150,7 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
-          // sx={{ justifyContent: 'space-between' }}
+            // sx={{ justifyContent: 'space-between' }}
             value={value}
             onChange={handleChange}
             aria-label='basic tabs example'
@@ -127,10 +160,46 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
               },
             }}
           >
-            <Tab label='Set Home' sx={{ color: '#f1e2e2' }} {...a11yProps(0)} />
-            <Tab label='Weight' sx={{ color: '#f1e2e2' }} {...a11yProps(1)} />
-            <Tab label='Add Ride' sx={{ color: '#f1e2e2' }} {...a11yProps(2)} />
-            <Tab label='Stats' sx={{ color: '#f1e2e2' }} {...a11yProps(3)} />
+            <Tab
+              label='Home'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
+              {...a11yProps(0)}
+            />
+            <Tab
+              label='Weight'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
+              {...a11yProps(1)}
+            />
+            <Tab
+              label='Rides'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
+              {...a11yProps(2)}
+            />
+            <Tab
+              label='Stats'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+                minWidth: '0px',
+              }}
+              {...a11yProps(3)}
+            />
+            <Tab
+              label='Badges'
+              sx={{
+                color: appTheme ? '#3c3636' : '#f1e2e2',
+              minWidth: '0px',
+            }}
+              {...a11yProps(4)}
+            />
           </Tabs>
         </Box>
 
@@ -157,7 +226,11 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
 
                   onClick={handleThemeIconClick}
                 >
-                  {appTheme ? <LightModeIcon className='theme-icon' /> : <DarkMode className='theme-icon' />}
+                  {appTheme ? (
+                    <LightModeIcon className='theme-icon' />
+                  ) : (
+                    <DarkMode className='theme-icon' />
+                  )}
                   {/* <DarkModeIcon /> */}
                 </IconButton>
               </div>
@@ -172,19 +245,45 @@ const ProfileNav = ({ user, photo, saveTheme, handleToggleStyle, theme }) => {
           <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
             <div style={{ width: '100%' }}>
               {/* {`My current weight is ${weight} lbs`} */}
-              <SetWeight
-                weight={weight}
-                onWeightChange={handleWeightChange}
-              />
+              <SetWeight weight={weight} onWeightChange={handleWeightChange} />
             </div>
           </div>
           <div hidden={!tabVisibility[2]} />
 
-          {showScrollers && <Scrollers setShowScrollers={setShowScrollers} theme={theme} saveTheme={saveTheme} appTheme={appTheme} />}
+          {showScrollers && (
+            <Scrollers
+              setShowScrollers={setShowScrollers}
+              theme={theme}
+              saveTheme={saveTheme}
+              appTheme={appTheme}
+            />
+          )}
 
           <div hidden={!tabVisibility[3]}>
             <Stats />
             {/* <StatsDisplay stats={stats} /> */}
+          </div>
+        </div>
+        <div className={`holder ${areTabsVisible ? '' : 'hidden'}`}>
+          <ProfileDisplays>
+            <h4>{homeAddress}</h4>
+          </ProfileDisplays>
+          <ProfileDisplays>
+            <h4>{weightForProfileDisplay}</h4>
+          </ProfileDisplays>
+          <div>
+            <ProfileDisplays>
+              <h4>{lastRideActivity}</h4>
+            </ProfileDisplays>
+            <ProfileDisplays>
+              <h4>{lastRideDuration}</h4>
+            </ProfileDisplays>
+            <ProfileDisplays>
+              <h4>{lastRideWeight}</h4>
+            </ProfileDisplays>
+            <ProfileDisplays>
+              <h4>{lastRideCalories}</h4>
+            </ProfileDisplays>
           </div>
         </div>
       </Box>

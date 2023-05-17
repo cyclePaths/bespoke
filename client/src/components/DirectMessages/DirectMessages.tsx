@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +12,8 @@ import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { SocketContext } from '../../SocketContext';
+import { Socket } from 'socket.io-client';
 
 interface Message {
   id: number;
@@ -93,17 +95,18 @@ function DirectMessages() {
 
 
 
-  const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+
+
+  // const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
-      setLoadingM(true);
-      setMessages([]);
-      await setShowMessageContainer(false);
       setReceiver(receiver);
       setIsReceiverSelected(true);
+      // await handleReceiverData(receiver.id);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
@@ -135,31 +138,56 @@ function DirectMessages() {
     }
   }, [receiver]);
 
+  // useEffect(() => {
+  //   const newSocket = io('http://localhost:8080');
+
+  //   // Store the Socket.IO client instance in the state variable
+  //   setSocket(newSocket);
+
+  //   // Join the room for the current user and receiver
+  //   newSocket.emit('joinRoom', { userId, receiverId });
+
+  //   // Listen for incoming 'message' events
+  //   newSocket.on('message', (newMessage) => {
+  //     // Add the new message to the messages array if it's from the targeted receiver
+  //     if (
+  //       newMessage.senderId === receiverId &&
+  //       newMessage.receiverId === userId
+  //     ) {
+  //       setMessage(newMessage);
+  //     }
+  //   });
+
+  //   // Clean up the WebSocket connection when the component unmounts
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, [userId, receiverId]);
+
   useEffect(() => {
-    const newSocket = io('http://localhost:8080');
+    if (socket) {
+      // Join the room for the current user and receiver
+      socket.emit('joinRoom', { userId, receiverId });
 
-    // Store the Socket.IO client instance in the state variable
-    setSocket(newSocket);
+      // Listen for incoming 'message' events
+      socket.on('message', (newMessage) => {
+        // Add the new message to the messages array if it's from the targeted receiver
+        if (
+          newMessage.senderId === receiverId &&
+          newMessage.receiverId === userId
+        ) {
+          setMessage(newMessage);
 
-    // Join the room for the current user and receiver
-    newSocket.emit('joinRoom', { userId, receiverId });
+        }
+      });
+    }
+  }, [socket, userId, receiverId]);
 
-    // Listen for incoming 'message' events
-    newSocket.on('message', (newMessage) => {
-      // Add the new message to the messages array if it's from the targeted receiver
-      if (
-        newMessage.senderId === receiverId &&
-        newMessage.receiverId === userId
-      ) {
-        setMessage(newMessage);
-      }
-    });
 
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [userId, receiverId]);
+
+
+
+
 
   useEffect(() => {
     if (message) {
@@ -215,6 +243,8 @@ function DirectMessages() {
     // Emit a 'message' event to the server
     socket.emit('message', newMessage);
 
+    // handleMessageData(newMessage);
+
     axios
       .post('/dms/message', {
         message: newMessage,
@@ -233,13 +263,13 @@ function DirectMessages() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (socket) {
+  //       socket.disconnect();
+  //     }
+  //   };
+  // }, [socket]);
 
   return (
     <BandAid>

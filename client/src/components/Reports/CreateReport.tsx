@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
 import {
+  Paper,
   Input,
   IconButton,
   InputLabel,
@@ -18,8 +19,20 @@ import {
 } from '@mui/material';
 import { AttachFile, PhotoCamera } from '@mui/icons-material';
 import { LatLngLiteral } from '../BikeRoutes/RouteM';
+// Import the context
+import UpdatedReportsContext from './UpdatedReportsContext';
 
-const CreateReport: React.FC = () => {
+/*
+The lifecycle of CreateReport is as follows:
+
+1. On initial render, the component initializes all state variables.
+2. When the user's geolocation is available, the component sets the current location state variable and fetches the reports using the `fetchReports` function.
+3. If the `geoLocation` state variable changes (e.g., the user moves), the component updates the `currentLocation` state variable and fetches the reports again.
+4. When the user submits a report, the component sends the report data to the server using Axios and updates the state variables accordingly.
+5. When the `open` state variable changes (e.g., the user closes the report dialog), the component updates the state variable accordingly.
+*/
+
+const CreateReport = ({ fetchThisMonthReports }) => {
   // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
@@ -70,10 +83,11 @@ const CreateReport: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
+    console.log("handleSubmit");
     if (currentLocation) {
       setSubmitting(true);
       try {
-        const { email, id } = user;
+        const { email, id, name } = user;
 
         const formData = new FormData();
         formData.append('userId', id);
@@ -93,11 +107,6 @@ const CreateReport: React.FC = () => {
           },
         });
 
-        // if (type === 'Point of Interest') {
-        //   user.addBadge('Tour Guide', 1);
-        // } else {
-        //   user.addBadge('Safety Sentinel', 1);
-        // }
         if (type === 'Point of Interest') {
           addBadge('Tour Guide', 1);
         } else {
@@ -105,10 +114,14 @@ const CreateReport: React.FC = () => {
         }
 
         setReports([...reports, response.data]);
+        // console.log("Response.data:", response.data);
+        setReports((prevReports) => [...prevReports, response.data]); // <-- use previous state
         setBody('');
         setType('');
         setImage(null);
         setOpen(false);
+        await fetchThisMonthReports();
+        // await addNewReport();
       } catch (error: any) {
         console.error(error.message);
         setError(error.message);
@@ -122,26 +135,28 @@ const CreateReport: React.FC = () => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
     }
-  }, [geoLocation]);
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setCurrentLocation({ lat: latitude, lng: longitude });
-      },
-      (error) => {
-        setError(error.message);
-      }
-    );
   }, []);
 
   return (
     <div>
-      <ReportsMap />
-      <Dialog open={open} onClose={handleClose}>
-        <div id='make-report-container'>
-          <form onSubmit={handleSubmit}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          elevation: 3,
+          square: true,
+          sx: {
+            width: '500px',
+            backgroundColor: 'lightgray',
+            border: '2px solid gray',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          {' '}
+          {/* Move the form tag here */}
+          <Paper sx={{ p: 2 }}>
             <ToggleButtonGroup
               value={type}
               onChange={handleTypeText}
@@ -152,6 +167,7 @@ const CreateReport: React.FC = () => {
                 flexWrap: 'nowrap',
                 justifyContent: 'center',
                 width: '100%',
+                mb: '1rem',
               }}
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
@@ -165,28 +181,30 @@ const CreateReport: React.FC = () => {
               </ToggleButton>
               <ToggleButton value='Point of Interest'>P.O.I</ToggleButton>
             </ToggleButtonGroup>
-            {/* </Grid> */}
-            {/* <Grid item> */}
+
             <TextField
               id='report-title-input'
               label='Report Title'
               variant='outlined'
-              sx={{ width: '100%' }} // set the width to 100%
+              fullWidth
+              sx={{
+                mb: '1rem',
+              }}
               onChange={handleTitleText}
             />
-            {/* </Grid> */}
-            {/* <Grid item> */}
+
             <TextField
               id='report-body-input'
               label='Comments'
               variant='outlined'
               multiline
               rows={4}
-              sx={{ width: '100%' }} // set the width to 100%
+              fullWidth
+              sx={{
+                mb: '1rem',
+              }}
               onChange={handleBodyText}
             />
-            {/* </Grid> */}
-            {/* </Grid> */}
 
             <IconButton
               color='primary'
@@ -202,12 +220,122 @@ const CreateReport: React.FC = () => {
               />
               <PhotoCamera />
             </IconButton>
-            <input type='submit' value='submit' />
-          </form>
-        </div>
+
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              style={{ float: 'right' }}
+            >
+              Submit
+            </Button>
+          </Paper>
+        </form>{' '}
+        {/* Close the form tag */}
       </Dialog>
     </div>
   );
+
+  //   return (
+  //     <div>
+  //       <Dialog open={open} onClose={handleClose} PaperProps={{
+  //   elevation: 3,
+  //   square: true,
+  //   variant: 'outlined',
+  //   style: {
+  //     width: '500px',
+  //     backgroundColor: 'lightgray',
+  //     border: '2px solid gray',
+  //     borderRadius: '10px', // Set the desired border radius value
+  //   },
+  // }}>
+  //         <div id='make-report-container'>
+  //           <form onSubmit={handleSubmit}>
+  //             <ToggleButtonGroup
+  //               value={type}
+  //               onChange={handleTypeText}
+  //               aria-label='Report Type'
+  //               exclusive
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 justifyContent: 'center',
+  //                 width: '100%',
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //             >
+  //               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
+  //                 Hazard
+  //               </ToggleButton>
+  //               <ToggleButton value='Theft Alert' sx={{ width: '20%' }}>
+  //                 Theft
+  //               </ToggleButton>
+  //               <ToggleButton value='Collision' sx={{ width: '30%' }}>
+  //                 Collision
+  //               </ToggleButton>
+  //               <ToggleButton value='Point of Interest'>P.O.I</ToggleButton>
+  //             </ToggleButtonGroup>
+  //             {/* </Grid> */}
+  //             {/* <Grid item> */}
+  //             <TextField
+  //               id='report-title-input'
+  //               label='Report Title'
+  //               variant='outlined'
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 marginLeft: 'auto',
+  //                 marginRight: 'auto',
+  //                 width: '97%', // Adjust the width as needed
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //               onChange={handleTitleText}
+  //             />
+
+  //             {/* </Grid> */}
+  //             {/* <Grid item> */}
+  //             <TextField
+  //               id='report-body-input'
+  //               label='Comments'
+  //               variant='outlined'
+  //               multiline
+  //               rows={4}
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 marginLeft: 'auto',
+  //                 marginRight: 'auto',
+  //                 width: '97%', // Adjust the width as needed
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //               onChange={handleBodyText}
+  //             />
+  //             {/* </Grid> */}
+  //             {/* </Grid> */}
+
+  //             <IconButton
+  //               color='primary'
+  //               aria-label='upload picture'
+  //               component='label'
+  //             >
+  //               <input
+  //                 hidden
+  //                 accept='image/*'
+  //                 type='file'
+  //                 name='file'
+  //                 onChange={handleImage}
+  //               />
+  //               <PhotoCamera />
+  //             </IconButton >
+  //             <input type='submit' value='Submit' style={{ position: 'absolute', bottom: 8, right: 8 }}/>
+  //           </form>
+  //         </div>
+  //       </Dialog>
+  //     </div>
+  //   );
 };
 
 export default CreateReport;
