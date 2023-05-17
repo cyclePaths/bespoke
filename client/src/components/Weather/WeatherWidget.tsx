@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Hourly } from 'client/src/Root';
 import {
-  HourlyForecastWrapper,
+  WeatherWidgetWrapper,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
@@ -36,7 +36,7 @@ const WeatherWidget = ({
   };
 
   return (
-    <HourlyForecastWrapper>
+    <WeatherWidgetWrapper>
       {hourlyForecasts.map((forecast, i) => {
         let dateObj = new Date(forecast.time);
         const hour = dateObj.getHours();
@@ -58,7 +58,7 @@ const WeatherWidget = ({
           </ForecastItem>
         );
       })}
-    </HourlyForecastWrapper>
+    </WeatherWidgetWrapper>
   );
 };
 

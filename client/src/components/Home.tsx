@@ -7,6 +7,7 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import {
   BandAid,
   ForecastEntry,
+  HomeWeatherWidgetHolder,
   HomePageCompWrapper,
   GoHomeIcon,
   StatsDivs,
@@ -53,10 +54,12 @@ const Home = ({
     <div>
       <BandAid>
         <HomePageCompWrapper>
-          <WeatherWidget
-            prepareWeatherIcon={prepareWeatherIcon}
-            hourlyForecasts={hourlyForecasts}
-          ></WeatherWidget>
+          <HomeWeatherWidgetHolder>
+            <WeatherWidget
+              prepareWeatherIcon={prepareWeatherIcon}
+              hourlyForecasts={hourlyForecasts}
+            ></WeatherWidget>
+          </HomeWeatherWidgetHolder>
           {/* <Button
             onClick={() => {
               handleRoutingHome();

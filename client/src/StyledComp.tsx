@@ -262,7 +262,7 @@ const ForecastStatsBox = styled.div<DarkModeHelperProps>`
   margin-left: 0em;
   margin-top: 4.0625em;
   margin-bottom: 1.5625em;
-  border-radius: 1.875em;
+  border-radius: 30px;
 `;
 
 const ForecastStatHolder = styled.p`
@@ -392,7 +392,15 @@ const ForecastRowContainerforHome = styled.div`
   width: 52.7%;
 `;
 
-const HourlyForecastWrapper = styled.div`
+const HomeWeatherWidgetHolder = styled.div`
+  width: 17em;
+  height: 11em;
+  border-radius: 8px;
+  margin-left: 3em;
+  margin-top: 3em;
+`;
+
+const WeatherWidgetWrapper = styled.div`
   display: flex;
   overflow-x: scroll;
   scrollbar-width: thin;
@@ -557,7 +565,8 @@ export {
   HomePageCompWrapper,
   GoHomeIcon,
   ForecastRowContainerforHome,
-  HourlyForecastWrapper,
+  HomeWeatherWidgetHolder,
+  WeatherWidgetWrapper,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
