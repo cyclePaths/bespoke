@@ -17,7 +17,7 @@ WeatherRoute.get('/forecast', (req, res) => {
   axios
     //note can add '&daily=sunrise&daily=sunset' to endpoint so that sunrise/set and moonrise/set icons can be used, but need timezone to get these; can have user set and then add in to endpoint with '&timezone=<timezone>'
     .get(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&daily=sunrise&daily=sunset&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&daily=sunrise&daily=sunset&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day&hourly=direct_radiation&hourly=diffuse_radiation`
     )
     .then(({ data }) => {
       const currentWeather = {
@@ -29,11 +29,13 @@ WeatherRoute.get('/forecast', (req, res) => {
         time: data.current_weather.time,
       };
       const hourly = new Array(24).fill(0).map(() => ({
-        displayIcon: true,
         time: new Date(),
         temperature: 0,
+        previousTemperature: 1000,
         humidity: 0,
         apparentTemperature: 0,
+        directRadiation: 0,
+        diffuseRadiation: 0,
         cloudcover: 0,
         windspeed: 0,
         precipitation: 0,
@@ -55,6 +57,9 @@ WeatherRoute.get('/forecast', (req, res) => {
             hourly[i].humidity = ele;
           } else if (key === 'apparent_temperature') {
             hourly[i].apparentTemperature = ele;
+            if (hourly[i - 1]) {
+              hourly[i].previousTemperature = hourly[i - 1].apparentTemperature;
+            }
           } else if (key === 'windspeed_10m') {
             hourly[i].windspeed = ele;
           } else if (key === 'precipitation_probability') {
@@ -63,6 +68,10 @@ WeatherRoute.get('/forecast', (req, res) => {
             hourly[i].weatherDescription = weatherCodes[ele];
           } else if (key === 'snow_depth') {
             hourly[i].snowDepth = weatherCodes[ele];
+          } else if (key === 'direct_radiation') {
+            hourly[i].directRadiation = ele;
+          } else if (key === 'diffuse_radiation') {
+            hourly[i].diffuseRadiation = ele;
           } else if (key === 'is_day') {
             if (ele === 1) {
               hourly[i].isDay = true;
@@ -83,6 +92,7 @@ WeatherRoute.get('/forecast', (req, res) => {
         sunriseHour: sunriseHour,
         sunsetHour: sunsetHour,
       };
+      console.log(responseObj.hourly);
       res.status(200).send(responseObj);
     })
     .catch((err) => {
