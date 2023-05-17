@@ -742,3 +742,10 @@ The code above is for the Profile Stats feature
 .white-input {
   color: #fff;
 }
+.report-type {
+  font-family: 'Your Font', sans-serif; /* Replace 'Your Font' with the desired font name */
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold; /* Set the desired font weight */
+  color: #000000; /* Set the desired text color */
+  /* Add any additional styling properties */
+}
