@@ -40,11 +40,13 @@ export interface MeasurementUnits {
 }
 
 export interface Hourly {
-  displayIcon: boolean;
   time: Date;
   temperature: number;
+  previousTemperature: number;
   humidity: number;
   apparentTemperature: number;
+  directRadiation: number;
+  diffuseRadiation: number;
   cloudcover: number;
   windspeed: number;
   precipitation: number;
@@ -81,7 +83,7 @@ export interface RootPropsToWeather {
 }
 
 export interface RootPropsToHome {
-  homeForecasts: Hourly[];
+  hourlyForecasts: Hourly[];
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
@@ -258,7 +260,11 @@ const Root = () => {
     //setting weather icon
     let weatherIcon = weatherIcons.day.clear;
     if (weather === 'Clear Sky' || weather === 'Mainly Clear') {
-      weatherIcon = weatherIcons[timeOfDay].clear;
+      if (timeOfDay === 'day') {
+        weatherIcon = weatherIcons[timeOfDay].clear;
+      } else {
+        weatherIcon = weatherIcons[timeOfDay].starry;
+      }
     } else if (weather === 'Partly Cloudy') {
       weatherIcon = weatherIcons[timeOfDay].partlyCloudy.base;
     } else if (weather === 'Overcast') {
@@ -619,11 +625,13 @@ const Root = () => {
   }, [selectedBadge]);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
-    displayIcon: true,
     time: new Date(),
     temperature: 0,
+    previousTemperature: 0,
     humidity: 0,
     apparentTemperature: 0,
+    directRadiation: 0,
+    diffuseRadiation: 0,
     cloudcover: 0,
     windspeed: 0,
     precipitation: 0,
@@ -651,11 +659,6 @@ const Root = () => {
     }
   });
 
-  homeForecasts.forEach((ele, i) => {
-    if (i !== 0) {
-      ele.displayIcon = false;
-    }
-  });
   const reports = [];
 
   return (
@@ -682,7 +685,7 @@ const Root = () => {
                 path='/home'
                 element={
                   <Home
-                    homeForecasts={homeForecasts}
+                    hourlyForecasts={hourlyForecasts}
                     windSpeedMeasurementUnit={windSpeedMeasurementUnit}
                     temperatureMeasurementUnit={temperatureMeasurementUnit}
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
