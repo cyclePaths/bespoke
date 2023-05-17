@@ -22,6 +22,8 @@ import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import { toast } from 'react-toastify';
 
+
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -160,6 +162,7 @@ const Root = () => {
 
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<any>();
+  // const [reports, setReports] = useState<Report[]>([]);
   const [geoLocation, setGeoLocation] = useState<any>();
   const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -211,6 +214,7 @@ const Root = () => {
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
   const [homeCoordinates, setHomeCoordinates] = useState<LatLngLiteral>();
+
 
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
@@ -660,6 +664,21 @@ const Root = () => {
   });
 
   const reports = [];
+  const [monthReports, setMonthReports] = useState<Report[]>([]);
+
+const fetchThisMonthReports = async () => {
+  try {
+    const response = await axios.get('/reports/thisMonth');
+    setMonthReports(response.data);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+  useEffect(() => {
+    fetchThisMonthReports();
+  }, [])
 
   return (
     <div className={isDark ? 'dark' : 'light'}>
@@ -739,8 +758,14 @@ const Root = () => {
                 }
               />
               <Route path='directMessages' element={<DirectMessages />} />
-              <Route path='createReport' element={<CreateReport />} />
-              <Route path='reportsMap' element={<ReportsMap />} />
+              <Route
+  path="createReport"
+  element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
+/>
+<Route
+  path='reportsMap'
+  element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
+/>
               <Route path='directMessages' element={<DirectMessages />} />
               <Route path='report' element={<Report />} />
             </Route>
