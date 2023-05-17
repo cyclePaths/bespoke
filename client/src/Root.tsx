@@ -407,7 +407,7 @@ const Root = () => {
     console.log('Received message:', newMessage);
     setRootNewMessage(newMessage);
 
-    if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+    if (newMessage.senderId !== user!.id && newMessage.receiverId === user!.id) {
       toast.success(newMessage.text, {
         onClick: () => {
           // navigate(`/directMessages/${newMessage.threadId}`)
