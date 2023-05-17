@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
@@ -358,9 +358,9 @@ const Root = () => {
   }
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
-  const [rootUserId, setRootUserId] = useState('');
   const [rootReceiverId, setRootReceiverId] = useState(0);
   const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
+  // const navigate = useNavigate();
 
   const handleReceiverData = (receiverId) => {
     setRootReceiverId(receiverId)
@@ -394,17 +394,29 @@ const Root = () => {
     };
   }, [socket, user]);
 
+
   const handleReceivedMessage = (newMessage) => {
     console.log('Received message:', newMessage);
     setRootNewMessage(newMessage);
 
     if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
-      toast.success(newMessage.text);
+      toast.success(newMessage.text, {
+        onClick: () => {
+          // navigate(`/directMessages/${newMessage.threadId}`)
+          // navigate(`/directMessages/${newMessage.senderId}/${newMessage.receiverId}`);
+
+        }
+      });
     }
 
   };
 
 
+ /*
+  Above is the functionality for direct message notifications. handleMessageData is a call back
+  function passed to DirectMessages to capture the user id of a receiver in order to filter
+  the notifications so that they display only for a receiver, and not for everyone.
+  */
 
 
 
@@ -817,6 +829,7 @@ const Root = () => {
               <Route path='report' element={<Report />} />
             </Route>
             <Route path='signIn' element={<SignIn />} />
+            {/* <Route path='directMessages/:senderId?/:receiverId?' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData} />} /> */}
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
         </BrowserRouter>
