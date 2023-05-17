@@ -396,7 +396,6 @@ const HomeWeatherWidgetHolder = styled.div`
   width: 17em;
   height: 11em;
   border-radius: 8px;
-  margin-left: 3em;
   margin-top: 3em;
 `;
 
@@ -429,7 +428,7 @@ const HomePageCompWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const GoHomeIcon = styled.img`
