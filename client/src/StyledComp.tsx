@@ -35,6 +35,7 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
@@ -142,10 +143,17 @@ const RouteList = styled.div`
   align-content: space-between;
 `;
 
-const StatsDivs = styled.div`
-  background-color: white;
-  margin: 5px;
-  border-radius: 2px;
+// Home Page stuff //
+const StatsWrapper = styled.div<DarkModeHelperProps>`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  max-width: 50%;
+  margin-left: 20px;
+`;
+
+const RecentRidesHeader = styled.header<DarkModeHelperProps>`
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
 `;
 
 //Related to Badges and Achievements
@@ -432,7 +440,7 @@ const HomePageCompWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const GoHomeIcon = styled.img`
+const GoHomeIcon = styled.img<DarkModeHelperProps>`
   width: 77%;
   position: absolute;
   top: 59%;
@@ -580,11 +588,12 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
-  StatsDivs,
   ToastBuffer,
   WaveHighlight,
   HighlightText,
   ProfileDisplays,
   LoadingDiv,
   PrivacySelector,
+  RecentRidesHeader,
+  StatsWrapper
 };

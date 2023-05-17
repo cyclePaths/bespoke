@@ -1,22 +1,40 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
 import ForecastRow from './Weather/ForecastRow';
 import Forecast from './Weather/Forecast';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import {
   BandAid,
   ForecastEntry,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
-  GoHomeIcon,
-  StatsDivs,
+  StatsWrapper
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { BikeRoutes } from '@prisma/client';
+import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
+import {styled} from '@mui/material/styles';
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 
 const Home = ({
   hourlyForecasts,
@@ -28,27 +46,27 @@ const Home = ({
   prepareWeatherIcon,
   setHomeCoordinates,
 }: RootPropsToHome) => {
-  const { user } = useContext(UserContext);
-  const [showWarning, setShowWarning] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const { user, isDark } = useContext(UserContext);
+  const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
+  const [expanded, setExpanded] = useState<boolean>(false)
 
-  // This is to get a geolocation of the user's home //
-  const handleRoutingHome = () => {
-    if (user.homeAddress === null) {
-      setShowWarning(true);
+  const handleRouteInfoExpand = () => {
+    setExpanded(!expanded);
+  }
 
-      setTimeout(() => {
-        setShowWarning(false);
-      }, 5000);
-    } else {
-      geocodeByAddress(user.homeAddress).then((result) => {
-        getLatLng(result[0]).then((coordinates) => {
-          setHomeCoordinates(coordinates);
-          navigate('/bikeRoutes'); // Navigates to the bikeRoutes view to chart a way home
-        });
-      });
+  useEffect(() => {
+    axios.get('/bikeRoutes/currentRoute')
+      .then(({data}) => {
+        setRouteInfo(data);
+      })
+      .catch((err) => {
+        console.error('Failed to find most recent route: ', err);
+      })
+
+    return () => {
+      // console.log('Fetched and cleanup');
     }
-  };
+  }, [])
 
   return (
     <div>
@@ -60,37 +78,31 @@ const Home = ({
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
-          {/* <Button
-            onClick={() => {
-              handleRoutingHome();
-            }}
-          >
-            <GoHomeIcon src='https://cdn-icons-png.flaticon.com/512/69/69947.png' />
-          </Button> */}
-          {/* <Modal
-            open={showWarning}
-            aria-labelledby='modal-modal-title'
-            aria-describedby='modal-modal-description'
-          >
-            <Box>
-              <Typography id='modal-modal-title' variant='h6' component='h2'>
-                Warning:
-              </Typography>
-              <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-                You have not set a home. Please go to the profile and set your
-                current home
-              </Typography>
-            </Box>
-          </Modal> */}
         </HomePageCompWrapper>
-        {/* <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
-          <StatsDivs>
-            This is a new Element. Dont know what will go here?
-          </StatsDivs>
-          <StatsDivs>
-            This is another New Element. Again dont know what do display here?
-          </StatsDivs>
-        </div> */}
+        <StatsWrapper>
+          <Card>
+            <CardHeader title="Most Recent Route"/>
+            <CardActions disableSpacing>
+              <IconButton>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleRouteInfoExpand}
+                  aria-expanded={expanded}
+                  aria-label='show route info'
+                >
+                  <ExpandMoreIcon/>
+                </ExpandMore>
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph sx={{ textAlign: 'center' }}>
+                  {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </StatsWrapper>
       </BandAid>
     </div>
   );

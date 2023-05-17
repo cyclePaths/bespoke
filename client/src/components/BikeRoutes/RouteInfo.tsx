@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { RouteAlerts, RouteList } from '../../StyledComp';
 import {
   IconButton,
@@ -14,14 +14,14 @@ import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { UserContext } from '../../Root';
-import { Coordinates, RouteProps } from './RouteM';
+import { RouteProps } from './RouteM';
 
 const RouteInfo = ({
   route,
   index,
   handleRouteClick,
   setOpenSearch,
-  fetchDirections,
+  routeList,
   setRouteList,
   likeList,
   setMarkers,
@@ -77,13 +77,15 @@ const RouteInfo = ({
 
   const handleDeleteRoute = () => {
     deleteRoute(route.id, route.likes);
-    setDeleteMessage(true);
     setDeleteOpen(false);
+    setDeleteMessage(true);
 
-    setTimeout(() => {
-      setDeleteMessage(false);
-    }, 2400);
+    // setTimeout(() => {
+    //   setDeleteMessage(false);
+    // }, 2400);
   };
+
+
 
   useEffect(() => {
     const date = new Date(route.createdAt);
@@ -102,7 +104,7 @@ const RouteInfo = ({
   }, []);
 
   return (
-    <div style={{ width: '130%' }}>
+    <div style={{ width: '130%', paddingLeft: '15px', paddingRight: '15px' }}>
       {deleteMessage ? (
         <RouteAlerts id='Delete-Alert'>
           Route Deleted{' '}
@@ -144,6 +146,8 @@ const RouteInfo = ({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            paddingLeft: '20px',
+            paddingRight: '20px',
           }}
         >
           <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>

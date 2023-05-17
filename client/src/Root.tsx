@@ -166,9 +166,8 @@ const Root = () => {
   //.........................................
 
   // Created User Info and Geolocation for context //
-  const [user, setUser] = useState<any>();
-  // const [reports, setReports] = useState<Report[]>([]);
-  const [geoLocation, setGeoLocation] = useState<any>();
+  const [user, setUser] = useState<User>();
+  const [geoLocation, setGeoLocation] = useState<geoLocation>();
   const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
   //holds all badge objects
@@ -231,8 +230,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: geoLocation.lat,
-          longitude: geoLocation.lng,
+          latitude: geoLocation!.lat,
+          longitude: geoLocation!.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -408,7 +407,7 @@ const Root = () => {
     console.log('Received message:', newMessage);
     setRootNewMessage(newMessage);
 
-    if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+    if (newMessage.senderId !== user!.id && newMessage.receiverId === user!.id) {
       toast.success(newMessage.text, {
         onClick: () => {
           // navigate(`/directMessages/${newMessage.threadId}`)
@@ -630,16 +629,7 @@ const Root = () => {
     axios
       .get('auth/user')
       .then(({ data }) => {
-        setUser({
-          email: data.email,
-          id: data.id,
-          name: data.name,
-          thumbnail: data.thumbnail,
-          weight: data.weight,
-          homeAddress: data.homeAddress,
-          location_lat: parseFloat(data.location_lat),
-          location_lng: parseFloat(data.location_lng),
-        });
+        setUser(data);
         setIsDark(!data.theme);
       })
       .catch((err) => {
@@ -676,7 +666,7 @@ const Root = () => {
   };
 
   useEffect(() => {
-    if (geoLocation) {
+    if (geoLocation !== undefined) {
       updateUserLocation(geoLocation);
       getForecasts();
     }
