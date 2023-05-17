@@ -74,7 +74,7 @@ function Message({ text, fromMe }: Message) {
   );
 }
 
-function DirectMessages({ handleReceiverData, handleMessageData }) {
+function DirectMessages() {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -106,7 +106,7 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
     if (receiver !== null) {
       setReceiver(receiver);
       setIsReceiverSelected(true);
-      await handleReceiverData(receiver.id);
+      // await handleReceiverData(receiver.id);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
@@ -243,7 +243,7 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
     // Emit a 'message' event to the server
     socket.emit('message', newMessage);
 
-    handleMessageData(newMessage);
+    // handleMessageData(newMessage);
 
     axios
       .post('/dms/message', {

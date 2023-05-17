@@ -371,7 +371,9 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               anchor='bottom'
               open={selectedReport !== null}
               onClose={() => setSelectedReport(null)}
-              sx={{ maxHeight: '80vh' }}
+              sx={{ maxHeight: '80vh',
+              borderRadius: '10px',
+            }}
             >
               <Box
                 sx={{
@@ -390,17 +392,28 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                 </IconButton>
                 {selectedReport && (
                   <>
-                    {selectedReport.imgUrl && (
-                      <img src={selectedReport.imgUrl} alt='Report image' />
-                    )}
-                    <p style={{ margin: 'auto', textAlign: 'center' }}>
+                                  <p className="report-type" style={{ marginTop: '1rem', textAlign: 'center' }}>
                       {selectedReport.type}
                     </p>
+                    {selectedReport.imgUrl && (
+                      <img
+                      src={selectedReport.imgUrl}
+                      alt='Report image'
+                      style={{
+                        maxHeight: '100%',
+                        maxWidth: '100%',
+                        marginTop: '1rem',
+                        display: 'block',
+                      }}
+                    />
+
+                    )}
+                    <p style={{ marginTop: '1rem', textAlign: 'center' }}>{selectedReport.title} </p>
+
 
                     <p>
                       {dayjs(selectedReport.createdAt).format('DD/MM/YYYY')}
                     </p>
-                    <p>{selectedReport.title}</p>
                     <p>{selectedReport.author.name}:</p>
                     <p>{selectedReport.body}</p>
                     <Tooltip title='Archive Report'>
