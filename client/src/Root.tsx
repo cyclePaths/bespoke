@@ -20,7 +20,6 @@ import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
-import SignIn from './components/SignIn';
 import { toast } from 'react-toastify';
 import { SocketContext } from './SocketContext';
 import { Socket } from 'socket.io-client';
@@ -828,7 +827,6 @@ const Root = () => {
               {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='report' element={<Report />} />
             </Route>
-            <Route path='signIn' element={<SignIn />} />
             {/* <Route path='directMessages/:senderId?/:receiverId?' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData} />} /> */}
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}

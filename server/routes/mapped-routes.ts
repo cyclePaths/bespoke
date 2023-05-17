@@ -342,4 +342,62 @@ BikeRoutes.get('/likesValue', (req, res) => {
     });
 });
 
+BikeRoutes.delete('/deleteRoute/:routeId', async (req, res) => {
+  const { routeId } = req.params;
+  const { likesCount } = req.body;
+  const { id, totalLikesReceived } = req.user as User;
+
+  try {
+    const deleteLikeRoutes = await prisma.routeLike.deleteMany({
+      where: {
+        bikeRouteId: parseInt(routeId),
+      },
+    });
+
+    if (deleteLikeRoutes) {
+      prisma.bikeRoutes
+        .delete({
+          where: {
+            id: parseInt(routeId),
+          },
+        })
+        .then(() => {
+          prisma.user
+            .update({
+              where: {
+                id: id,
+              },
+              data: {
+                totalLikesReceived: totalLikesReceived - likesCount,
+              },
+            })
+            .then(() => {
+              res.sendStatus(203);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.sendStatus(500);
+        });
+    } else {
+      prisma.bikeRoutes
+        .delete({
+          where: {
+            id: parseInt(routeId),
+          },
+        })
+        .then(() => {
+          res.sendStatus(203);
+        })
+        .catch((err) => {
+          console.error('Failed to Delete route: ', err);
+          res.sendStatus(500);
+        });
+    }
+  } catch (err) {
+    console.error('Failed to delete and update user: ', err);
+    res.sendStatus(500);
+  }
+});
+
 export default BikeRoutes;

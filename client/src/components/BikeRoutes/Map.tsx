@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useMemo,
   useContext,
 } from 'react';
 import {
@@ -13,16 +14,11 @@ import {
 } from '@react-google-maps/api';
 import {
   RouteButtonContainer,
-  SaveAlert,
+  RouteAlerts,
   StartRouteContainer,
 } from '../../StyledComp';
 import {
-  defaultMapContainerStyle,
-  Theft,
-  Collision,
-  POI,
-  RoadHazard,
-  Default,
+  defaultMapContainerStyle, darkModeOptions, defaultOptions, Theft, Collision, POI, RoadHazard, Default
 } from './Utils';
 import MapInputandButton from './MapInputandButtons';
 import FetchedRoutes from './FetchedRoutes';
@@ -35,26 +31,26 @@ import { Button } from '@mui/material';
 import NavigationIcon from '@mui/icons-material/Navigation';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SearchIcon from '@mui/icons-material/Search';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 import {
-  Coordinates,
   LatLngLiteral,
   DirectionsResult,
-  MapOptions,
   geocoder,
   MapOptionsProp,
+  RouteInfo
 } from './RouteM';
+import { BikeRoutes, Report } from '@prisma/client';
 import { report } from 'process';
 
 // Sets the map to not be google styled //
 
 const Map = ({
-  options,
   homeCoordinates,
   setHomeCoordinates,
 }: MapOptionsProp) => {
   /////////////// CONTEXT AND STATE //////////////////
   // Pull user and geoLocation from context //
-  const { user, geoLocation } = useContext(UserContext);
+  const { user, geoLocation, isDark } = useContext(UserContext);
   // Import the start icon //
   const startIcon = {
     url: 'https://cdn.discordapp.com/attachments/187823430295355392/1103112961192636587/green_flag.png',
@@ -79,15 +75,15 @@ const Map = ({
   const [markers, setMarkers] = useState<LatLngLiteral[]>([]);
   const [destination, setDestination] = useState<LatLngLiteral | null>(null);
   const [selected, setSelected] = useState<LatLngLiteral | null>(null);
-  const [directions, setDirections] = useState<DirectionsResult>();
+  const [directions, setDirections] = useState<DirectionsResult | undefined>(undefined);
   const [address, setAddress] = useState<any>({});
-  const [routeList, setRouteList] = useState<any[]>([]);
-  const [reportsList, setReportsList] = useState<any[]>([]);
+  const [routeList, setRouteList] = useState<BikeRoutes[]>([]);
+  const [reportsList, setReportsList] = useState<Report[]>([]);
   const [userCenter, setUserCenter] = useState<LatLngLiteral>({
     lat: 29.9511,
     lng: -90.0715,
   });
-  const [routeInfo, setRouteInfo] = useState<any>();
+  const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
   const [routeClicked, setRouteClicked] = useState<boolean>(false);
 
   // For Popup Route Save Action and Selector Action //
@@ -105,7 +101,7 @@ const Map = ({
   // This function is for fetching a direction from point A to B. Refactor for past B //
   const fetchDirections = () => {
     if (!startingPoint || !destination) {
-      return;
+      return null;
     }
     // Refactored to do more than point A and B //
     if (markers.length > 0) {
@@ -125,7 +121,7 @@ const Map = ({
         (result, status) => {
           if (status === 'OK' && result) {
             setDirections(result);
-            // setMarkers([]);
+            renderRouteInfo();
           }
         }
       );
@@ -140,7 +136,7 @@ const Map = ({
         (result, status) => {
           if (status === 'OK' && result) {
             setDirections(result);
-            // setMarkers([]);
+            renderRouteInfo();
           }
         }
       );
@@ -189,6 +185,7 @@ const Map = ({
           lat: event.latLng!.lat(),
           lng: event.latLng!.lng(),
         });
+        setUserCenter({lat: event.latLng!.lat(), lng: event.latLng!.lng()});
       } else {
         if (destination === null) {
           setDestination({
@@ -231,27 +228,36 @@ const Map = ({
   };
   // End of routes list //
 
+  const handleClearMap = (): void => {
+    setStartingPoint(null);
+    setMarkers([]);
+    setDestination(null);
+    setDirections(undefined);
+    setRouteInfo(null);
+  }
+
   // Render Distance and Duration //
   const renderRouteInfo = () => {
-    if (!directions) return null;
+    if (!directions || routeInfo === null) return null;
     return (
       <InfoWindow
         position={
           {
             lat: routeInfo.centerLat,
             lng: routeInfo.centerLng,
-          } as google.maps.LatLng
+          }
         }
+        onCloseClick={() => setRouteInfo(null)}
       >
-        <div>
+        <div style={{color: 'black'}}>
           <p>Duration: {routeInfo.duration}</p>
           <p>Distance: {routeInfo.distance}</p>
           <p>
             Reports in Area:{' '}
             {reportsList.length > 0
               ? reportsList.map((report) =>
-                  report.location_lat >= routeInfo.centerLat - 0.007 &&
-                  report.location_lat <= routeInfo.centerLat + 0.007
+                  report.location_lat! >= routeInfo.centerLat - 0.007 &&
+                  report.location_lat! <= routeInfo.centerLat + 0.007
                     ? report.type + ', '
                     : ''
                 )
@@ -311,6 +317,7 @@ const Map = ({
     const searchBar = document.getElementById('route-searcher');
     const findHeader = document.getElementById('list');
     const resultHeader = document.getElementById('results');
+    const emptyResult = document.getElementById('no-list');
 
     setOpenSearch(false);
     setCategory('');
@@ -319,6 +326,7 @@ const Map = ({
     findHeader!.style.display = 'none';
     searchBar!.style.display = 'none';
     resultHeader!.style.display = '';
+    emptyResult!.style.display = 'none';
     setRouteList([]);
   };
 
@@ -326,6 +334,10 @@ const Map = ({
   useEffect(() => {
     if (geoLocation) {
       setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
+    }
+
+    return () => {
+      console.log('unmounted');
     }
   }, [geoLocation]);
 
@@ -335,7 +347,7 @@ const Map = ({
 
   useEffect(() => {
     if (startingPoint && destination && markers.length > 0 && routeClicked) {
-      fetchDirections();
+      // fetchDirections();
     } else if (
       startingPoint &&
       destination &&
@@ -345,6 +357,10 @@ const Map = ({
       fetchDirections();
     }
     setRouteClicked(false);
+
+    return () => {
+      console.log('unmounted');
+    }
   }, [startingPoint, destination, markers, routeClicked]);
 
   useEffect(() => {
@@ -362,7 +378,7 @@ const Map = ({
   useEffect(() => {
     if (homeCoordinates === undefined) {
       setTimeout(() => {
-        fetchDirections();
+        // fetchDirections();
       }, 1000);
     }
   }, [homeCoordinates]);
@@ -370,13 +386,13 @@ const Map = ({
   return (
     <div className='container'>
       {saveMessage ? (
-        <SaveAlert id='saveMessage'>
+        <RouteAlerts id='saveMessage' isDark={isDark}>
           Route Saved{' '}
           <img
-            src='https://cdn.discordapp.com/attachments/187823430295355392/1103162661111336970/icons8-done.gif'
-            id='checkmark'
+            src='https://cdn.discordapp.com/attachments/187823430295355392/1107720593916317738/output-onlinegiftools.gif'
+            className='checkmark'
           />
-        </SaveAlert>
+        </RouteAlerts>
       ) : (
         <></>
       )}
@@ -394,7 +410,7 @@ const Map = ({
       {/* This is the map rendering on screen */}
       <GoogleMap
         mapContainerStyle={defaultMapContainerStyle}
-        options={options as google.maps.MapOptions}
+        options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
         center={userCenter}
         zoom={14}
         onLoad={onLoad}
@@ -418,8 +434,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -435,8 +451,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -452,8 +468,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -469,8 +485,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -486,8 +502,8 @@ const Map = ({
                 <Marker
                   key={i}
                   position={{
-                    lat: parseFloat(report.location_lat),
-                    lng: parseFloat(report.location_lng),
+                    lat: report.location_lat!,
+                    lng: report.location_lng!,
                   }}
                   onClick={(event) => {
                     setSelected({
@@ -556,7 +572,7 @@ const Map = ({
               setSelected(null);
             }}
           >
-            <div>
+            <div style={{color: 'black'}}>
               <p>{address.formatted_address}</p>
             </div>
           </InfoWindow>
@@ -570,28 +586,28 @@ const Map = ({
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={fetchDirections}
         >
-          <NavigationIcon sx={{ color: '#2e7d32' }} />
+          <NavigationIcon sx={{ color: isDark ? '#35af3b' : '#29922f' }} />
         </Button>
         <Button
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={() => {
@@ -600,23 +616,39 @@ const Map = ({
             }
           }}
         >
-          <SaveAltIcon sx={{ color: '#546e7a' }} />
+          <SaveAltIcon sx={{ color: isDark ? '#4c9fc5' : '#2e5b70' }} />
         </Button>
         <Button
           variant='contained'
           sx={{
             margin: '4px',
-            backgroundColor: '#e0e0e0',
-            '&:hover, &:active': {
-              backgroundColor: '#8b8b8b',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            '&:focus': {
-              backgroundColor: '#e0e0e0',
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
             },
           }}
           onClick={() => setOpenSearch(true)}
         >
-          <SearchIcon sx={{ color: 'black' }} />
+          <SearchIcon sx={{ color: isDark ? '#ececec' : '#000000' }} />
+        </Button>
+        <Button
+          variant='contained'
+          sx={{
+            margin: '4px',
+            backgroundColor: isDark ? '#707070' : '#ececec',
+            '&:hover': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
+            },
+            '&:active': {
+              backgroundColor: isDark ? '#707070' : '#ececec',
+            },
+          }}
+          onClick={handleClearMap}
+        >
+          <ClearAllIcon sx={{ color: isDark ? '#e74141' : '#bd0000' }} />
         </Button>
       </RouteButtonContainer>
 

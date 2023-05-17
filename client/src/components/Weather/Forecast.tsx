@@ -5,6 +5,7 @@ import {
   WeatherIconFrame,
   ForecastBit,
   ForecastStatsBox,
+  ForecastStatHolder,
   WeatherDescription,
   ForecastText,
   ForecastTime,
@@ -15,6 +16,7 @@ import {
   AdjustedTemperatureText,
   AdjustedTemperatureHelperIcon,
   ForecastHelperIcon,
+  WindspeedHelperIcon,
   ConditionalHelperIcon,
   BigTemperatureHelperIcon,
   ForecastEntry,
@@ -103,8 +105,23 @@ const Forecast = ({
     snowfall
   );
 
+  let adjustedWindSpeed = windspeed;
+  //if using kmh, convert to miles for the setWindSpeedIcon function, which is based on mph
+  if (windSpeedMeasurementUnit === 'kmh') {
+    adjustedWindSpeed *= 0.621371;
+  }
+
   //sets conditional icon for sunrise, sunset, etc.
   const displayConditionalIcon = () => {
+    //show a hurricane warning if hurricane force winds exist
+    if (adjustedWindSpeed >= 74) {
+      return (
+        <ConditionalHelperIcon
+          src={weatherIcons.generic.hurricane}
+        ></ConditionalHelperIcon>
+      );
+    }
+    //show sun/moon rise/set icon if hour is appropriate
     if (hour === sunriseHour) {
       return (
         <ConditionalHelperIcon
@@ -129,6 +146,37 @@ const Forecast = ({
           src={weatherIcons.night.moonset}
         ></ConditionalHelperIcon>
       );
+    }
+  };
+
+  //sets the wind speed icon based on the ranking of the wind speed
+  const setWindSpeedIcon = (windSpeed) => {
+    if (windSpeed === 0) {
+      return weatherIcons.generic.wind.ranked[0];
+    } else if (windSpeed <= 3) {
+      return weatherIcons.generic.wind.ranked[1];
+    } else if (windSpeed > 3 && windSpeed <= 7) {
+      return weatherIcons.generic.wind.ranked[2];
+    } else if (windSpeed > 7 && windSpeed <= 12) {
+      return weatherIcons.generic.wind.ranked[3];
+    } else if (windSpeed > 12 && windSpeed <= 18) {
+      return weatherIcons.generic.wind.ranked[4];
+    } else if (windSpeed > 18 && windSpeed <= 24) {
+      return weatherIcons.generic.wind.ranked[5];
+    } else if (windSpeed > 24 && windSpeed <= 31) {
+      return weatherIcons.generic.wind.ranked[6];
+    } else if (windSpeed > 31 && windSpeed <= 38) {
+      return weatherIcons.generic.wind.ranked[7];
+    } else if (windSpeed > 38 && windSpeed <= 46) {
+      return weatherIcons.generic.wind.ranked[8];
+    } else if (windSpeed > 46 && windSpeed <= 54) {
+      return weatherIcons.generic.wind.ranked[9];
+    } else if (windSpeed > 54 && windSpeed <= 63) {
+      return weatherIcons.generic.wind.ranked[10];
+    } else if (windSpeed > 63 && windSpeed <= 73) {
+      return weatherIcons.generic.wind.ranked[11];
+    } else if (windSpeed > 73) {
+      return weatherIcons.generic.wind.ranked[12];
     }
   };
 
@@ -162,12 +210,19 @@ const Forecast = ({
       <WeatherDescription>{weatherDescription}</WeatherDescription>
       <ForecastStatsBox isDark={isDark}>
         <ForecastBit>
-          <ForecastText>Precipitation: {precipitationProbability}</ForecastText>
+          <ForecastText>Precipitation: </ForecastText>
+          <ForecastStatHolder>{precipitationProbability}</ForecastStatHolder>
           <ForecastHelperIcon src={weatherIcons.misc.humidity} />
         </ForecastBit>
         <ForecastBit>
-          <ForecastText>Humidity: {humidity}</ForecastText>
+          <ForecastText>Humidity: </ForecastText>
+          <ForecastStatHolder>{humidity}</ForecastStatHolder>
           <ForecastHelperIcon src={weatherIcons.misc.humidity} />
+        </ForecastBit>
+        <ForecastBit>
+          <ForecastText>Wind Speed: </ForecastText>
+          <ForecastStatHolder>{adjustedWindSpeed}</ForecastStatHolder>
+          <WindspeedHelperIcon src={setWindSpeedIcon(adjustedWindSpeed)} />
         </ForecastBit>
       </ForecastStatsBox>
     </ForecastEntry>
