@@ -159,12 +159,18 @@ const Map = ({
           privacy,
           userId: user.id,
         })
-        .then(() => {
+        .then(({data}) => {
           setSaveMessage(true);
           // Timeout to make the message disappear correctly //
           setTimeout(() => {
             setSaveMessage(false);
           }, 2400);
+
+          axios.put('/bikeRoutes/recentRoute', {routeId: data.id})
+            .then(() => {})
+            .catch((err) => {
+              console.error('Failed to update most recent Routes: ', err);
+            })
         })
         .catch((err) => {
           console.error('Failed request:', err);
@@ -328,9 +334,6 @@ const Map = ({
         centerLng: centeredLng,
         warnings: directions.routes[0].warnings,
       });
-
-      axios.put('/bikeRoutes/recentRide')
-        .then()
     }
   }, [directions]);
 
@@ -338,10 +341,6 @@ const Map = ({
   useEffect(() => {
     if (geoLocation) {
       setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
-    }
-
-    return () => {
-      console.log('unmounted');
     }
   }, [geoLocation]);
 

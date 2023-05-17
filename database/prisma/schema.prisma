@@ -26,9 +26,10 @@ model User {
   rides                   Rides[]
   location_lat            Float?
   location_lng            Float?
-  createdRoutes           BikeRoutes[]
+  createdRoutes           BikeRoutes[]     @relation("UserCreatedRoutes")
+  recentRouteId           Int?
+  recentRoute             BikeRoutes?      @relation("MostRecentRoute", fields: [recentRouteId], references: [id])
   reports                 Report[]
-  recentRoute             Json?
   theme                   Boolean          @default(true)
   sentMessages            DirectMessages[] @relation("SentMessages")
   receivedMessages        DirectMessages[] @relation("ReceivedMessages")
@@ -129,18 +130,19 @@ model Comment {
 }
 
 model BikeRoutes {
-  id          Int         @id @default(autoincrement())
-  name        String?
-  category    String?
-  createdAt   DateTime    @default(now())
-  userId      Int
-  destination Json
-  origin      Json
-  waypoints   Json?
-  likes       Int?        @default(0)
-  isPrivate   Boolean     @default(false)
-  user        User        @relation(fields: [userId], references: [id])
-  userLikes   RouteLike[]
+  id           Int         @id @default(autoincrement())
+  name         String?
+  category     String?
+  createdAt    DateTime    @default(now())
+  userId       Int
+  destination  Json
+  origin       Json
+  waypoints    Json?
+  likes        Int?        @default(0)
+  isPrivate    Boolean     @default(false)
+  user         User        @relation("UserCreatedRoutes", fields: [userId], references: [id])
+  userLikes    RouteLike[]
+  recentRiders User[]      @relation("MostRecentRoute")
 }
 
 model RouteLike {

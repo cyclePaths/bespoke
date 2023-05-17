@@ -75,7 +75,7 @@ const StopwatchStats = ({
       })
       .then((response) => {
 
-        console.log('this response', response)
+        // console.log('this response', response)
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
@@ -108,7 +108,7 @@ const StopwatchStats = ({
           },
         });
 
-        console.log('check res', response);
+        // console.log('check res', response);
         axios
           .post('profile/workout', {
             activity: workout,

@@ -3,22 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
 import ForecastRow from './Weather/ForecastRow';
 import Forecast from './Weather/Forecast';
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import {
   BandAid,
   ForecastEntry,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
-  GoHomeIcon,
-  StatsDivs,
+  StatsWrapper
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
+import {styled} from '@mui/material/styles';
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 
 const Home = ({
   hourlyForecasts,
@@ -32,18 +48,23 @@ const Home = ({
 }: RootPropsToHome) => {
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
+  const [expanded, setExpanded] = useState<boolean>(false)
+
+  const handleRouteInfoExpand = () => {
+    setExpanded(!expanded);
+  }
 
   useEffect(() => {
     axios.get('/bikeRoutes/currentRoute')
       .then(({data}) => {
-        console.log(data);
+        setRouteInfo(data);
       })
       .catch((err) => {
         console.error('Failed to find most recent route: ', err);
       })
 
     return () => {
-      console.log('Fetched and cleanup');
+      // console.log('Fetched and cleanup');
     }
   }, [])
 
@@ -58,11 +79,30 @@ const Home = ({
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
         </HomePageCompWrapper>
-        <div style={{ display: 'flex', flexWrap: 'nowrap' }}>
-          <StatsDivs>
-            This is a new Element. Dont know what will go here?
-          </StatsDivs>
-        </div>
+        <StatsWrapper>
+          <Card>
+            <CardHeader title="Most Recent Route"/>
+            <CardActions disableSpacing>
+              <IconButton>
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleRouteInfoExpand}
+                  aria-expanded={expanded}
+                  aria-label='show route info'
+                >
+                  <ExpandMoreIcon/>
+                </ExpandMore>
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph sx={{ textAlign: 'center' }}>
+                  {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </StatsWrapper>
       </BandAid>
     </div>
   );

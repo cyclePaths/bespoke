@@ -143,10 +143,17 @@ const RouteList = styled.div`
   align-content: space-between;
 `;
 
-const StatsDivs = styled.div`
-  background-color: white;
-  margin: 5px;
-  border-radius: 2px;
+// Home Page stuff //
+const StatsWrapper = styled.div<DarkModeHelperProps>`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  max-width: 50%;
+  margin-left: 20px;
+`;
+
+const RecentRidesHeader = styled.header<DarkModeHelperProps>`
+  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
 `;
 
 //Related to Badges and Achievements
@@ -571,10 +578,11 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
-  StatsDivs,
   ToastBuffer,
   WaveHighlight,
   HighlightText,
   LoadingDiv,
   PrivacySelector,
+  RecentRidesHeader,
+  StatsWrapper
 };
