@@ -843,10 +843,10 @@ const fetchThisMonthReports = async () => {
                   />
                 }
               />
-              <Route path='createReport' element={<CreateReport />} />
-              <Route path='reportsMap' element={<ReportsMap />} />
               {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='report' element={<Report />} />
               <Route
   path="createReport"
   element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
@@ -855,8 +855,6 @@ const fetchThisMonthReports = async () => {
   path='reportsMap'
   element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
 />
-              <Route path='directMessages' element={<DirectMessages />} />
-              <Route path='report' element={<Report />} />
             </Route>
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
