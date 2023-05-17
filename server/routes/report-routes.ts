@@ -44,6 +44,9 @@ reportRouter.get('/thisMonth', async (req, res) => {
           gte: oneMonthAgo.toISOString(), // Greater than or equal to the one month ago date
           lte: currentDate.toISOString()  // Less than or equal to the current date
         }
+      },
+      include: {
+        author: true
       }
     });
 

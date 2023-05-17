@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, createContext } from 'react';
 import UpdatedReportsContext from './UpdatedReportsContext';
 import axios from 'axios';
-import { Report } from '@prisma/client';
+// import { Report } from '@prisma/client';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
@@ -33,6 +33,21 @@ interface ReportsMapProps {
 // type CreateReportProps = {
 //   fetchReports: () => Promise<void>;
 // };
+interface Report {
+  id: string;
+  title: string | null;
+  body: string | null;
+  type: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  published: boolean;
+  location_lat?: number;
+  location_lng?: number;
+  userId: number;
+  author: User; // Add the 'author' property
+  imgUrl: string | null;
+  comments: Comment[];
+}
 
 const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
   // console.log("ReportsMap", props);
@@ -137,7 +152,10 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
 
     if (map && reports) {
       console.log("setting Markers: ", reports);
-      const newMarkers = reports.map((report) => {
+      const newMarkers = reports.map((report: Report) => {
+// Assuming you have fetched the report data and stored it in the `report` variable
+const author: User = report.author;
+console.log("Author: ", author.name); // Output the author information
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {
@@ -184,9 +202,9 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
         const formattedDate = dayjs.utc(isoDate).format('DD/MM/YYYY');
         const infoWindow = new google.maps.InfoWindow();
         const contentDiv = document.createElement('div');
-        const imageUrl: string | null = report.imgUrl;
+        const imageUrl = report.imgUrl;
         const imageElement = document.createElement('img');
-        if (imageUrl !== null) {
+        if (imageUrl) {
           imageElement.src = imageUrl;
           imageElement.loading = "lazy";
         }
@@ -200,7 +218,7 @@ const ReportsMap = ({monthReports, fetchThisMonthReports}) => {
         const titleParagraph = document.createElement('p');
         titleParagraph.textContent = report.title;
         const authorParagraph = document.createElement('p');
-        authorParagraph.textContent = report.userId.toString();
+        authorParagraph.textContent = author.name;
         const bodyParagraph = document.createElement('p');
         bodyParagraph.textContent = report.body;
         // const createdAtParagraph = document.createElement('p');

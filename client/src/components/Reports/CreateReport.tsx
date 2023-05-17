@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ReportsMap from './ReportsMap';
 import { Report } from '@prisma/client';
 import {
+  Paper,
   Input,
   IconButton,
   InputLabel,
@@ -31,9 +32,8 @@ The lifecycle of CreateReport is as follows:
 5. When the `open` state variable changes (e.g., the user closes the report dialog), the component updates the state variable accordingly.
 */
 
-
-const CreateReport = ({fetchThisMonthReports}) => {
-    // const navigate = useNavigate();
+const CreateReport = ({ fetchThisMonthReports }) => {
+  // const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
   const [body, setBody] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -55,8 +55,6 @@ const CreateReport = ({fetchThisMonthReports}) => {
     setOpen(false);
   };
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-
 
   const { user, geoLocation, addBadge } = useContext(UserContext);
 
@@ -108,11 +106,6 @@ const CreateReport = ({fetchThisMonthReports}) => {
           },
         });
 
-        // if (type === 'Point of Interest') {
-        //   user.addBadge('Tour Guide', 1);
-        // } else {
-        //   user.addBadge('Safety Sentinel', 1);
-        // }
         if (type === 'Point of Interest') {
           addBadge('Tour Guide', 1);
         } else {
@@ -121,7 +114,7 @@ const CreateReport = ({fetchThisMonthReports}) => {
 
         setReports([...reports, response.data]);
         // console.log("Response.data:", response.data);
-        setReports(prevReports => [...prevReports, response.data]); // <-- use previous state
+        setReports((prevReports) => [...prevReports, response.data]); // <-- use previous state
         setBody('');
         setType('');
         setImage(null);
@@ -132,51 +125,37 @@ const CreateReport = ({fetchThisMonthReports}) => {
         console.error(error.message);
         setError(error.message);
       } finally {
-
         setSubmitting(false);
       }
     }
   };
 
-    // ****Commented out to move fetching to parent component ****
-  // useEffect(() => {
-    // const fetchReports = async () => {
-    //   try {
-    //     const response = await axios.get('/reports');
-    //     const filteredReports = response.data.filter((report) => {
-    //       const reportCreatedAt = new Date(report.createdAt);
-    //       const currentDate = new Date();
-    //       const monthAgo = new Date(
-    //         currentDate.getFullYear(),
-    //         currentDate.getMonth() - 1,
-    //         currentDate.getDate()
-    //       );
-    //       return reportCreatedAt >= monthAgo;
-    //     });
-    //     setReports(filteredReports);
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-  //   fetchReports();
-  // }, []);
-  // useEffect(() => {
-  //   fetchReports();
-  // }, [])
-
   useEffect(() => {
     if (geoLocation) {
       setCurrentLocation({ lat: geoLocation.lat, lng: geoLocation.lng });
-      // fetchReports();
     }
   }, []);
 
-
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
-        <div id='make-report-container'>
-          <form onSubmit={handleSubmit}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          elevation: 3,
+          square: true,
+          sx: {
+            width: '500px',
+            backgroundColor: 'lightgray',
+            border: '2px solid gray',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          {' '}
+          {/* Move the form tag here */}
+          <Paper sx={{ p: 2 }}>
             <ToggleButtonGroup
               value={type}
               onChange={handleTypeText}
@@ -187,6 +166,7 @@ const CreateReport = ({fetchThisMonthReports}) => {
                 flexWrap: 'nowrap',
                 justifyContent: 'center',
                 width: '100%',
+                mb: '1rem',
               }}
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
@@ -200,28 +180,30 @@ const CreateReport = ({fetchThisMonthReports}) => {
               </ToggleButton>
               <ToggleButton value='Point of Interest'>P.O.I</ToggleButton>
             </ToggleButtonGroup>
-            {/* </Grid> */}
-            {/* <Grid item> */}
+
             <TextField
               id='report-title-input'
               label='Report Title'
               variant='outlined'
-              sx={{ width: '100%' }} // set the width to 100%
+              fullWidth
+              sx={{
+                mb: '1rem',
+              }}
               onChange={handleTitleText}
             />
-            {/* </Grid> */}
-            {/* <Grid item> */}
+
             <TextField
               id='report-body-input'
               label='Comments'
               variant='outlined'
               multiline
               rows={4}
-              sx={{ width: '100%' }} // set the width to 100%
+              fullWidth
+              sx={{
+                mb: '1rem',
+              }}
               onChange={handleBodyText}
             />
-            {/* </Grid> */}
-            {/* </Grid> */}
 
             <IconButton
               color='primary'
@@ -237,12 +219,122 @@ const CreateReport = ({fetchThisMonthReports}) => {
               />
               <PhotoCamera />
             </IconButton>
-            <input type='submit' value='submit' />
-          </form>
-        </div>
+
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              style={{ float: 'right' }}
+            >
+              Submit
+            </Button>
+          </Paper>
+        </form>{' '}
+        {/* Close the form tag */}
       </Dialog>
     </div>
   );
+
+  //   return (
+  //     <div>
+  //       <Dialog open={open} onClose={handleClose} PaperProps={{
+  //   elevation: 3,
+  //   square: true,
+  //   variant: 'outlined',
+  //   style: {
+  //     width: '500px',
+  //     backgroundColor: 'lightgray',
+  //     border: '2px solid gray',
+  //     borderRadius: '10px', // Set the desired border radius value
+  //   },
+  // }}>
+  //         <div id='make-report-container'>
+  //           <form onSubmit={handleSubmit}>
+  //             <ToggleButtonGroup
+  //               value={type}
+  //               onChange={handleTypeText}
+  //               aria-label='Report Type'
+  //               exclusive
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 justifyContent: 'center',
+  //                 width: '100%',
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //             >
+  //               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
+  //                 Hazard
+  //               </ToggleButton>
+  //               <ToggleButton value='Theft Alert' sx={{ width: '20%' }}>
+  //                 Theft
+  //               </ToggleButton>
+  //               <ToggleButton value='Collision' sx={{ width: '30%' }}>
+  //                 Collision
+  //               </ToggleButton>
+  //               <ToggleButton value='Point of Interest'>P.O.I</ToggleButton>
+  //             </ToggleButtonGroup>
+  //             {/* </Grid> */}
+  //             {/* <Grid item> */}
+  //             <TextField
+  //               id='report-title-input'
+  //               label='Report Title'
+  //               variant='outlined'
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 marginLeft: 'auto',
+  //                 marginRight: 'auto',
+  //                 width: '97%', // Adjust the width as needed
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //               onChange={handleTitleText}
+  //             />
+
+  //             {/* </Grid> */}
+  //             {/* <Grid item> */}
+  //             <TextField
+  //               id='report-body-input'
+  //               label='Comments'
+  //               variant='outlined'
+  //               multiline
+  //               rows={4}
+  //               sx={{
+  //                 display: 'flex',
+  //                 flexWrap: 'nowrap',
+  //                 marginLeft: 'auto',
+  //                 marginRight: 'auto',
+  //                 width: '97%', // Adjust the width as needed
+  //                 marginBottom: '1rem', // Add margin bottom
+  //                 marginTop: '1rem',
+  //               }}
+  //               onChange={handleBodyText}
+  //             />
+  //             {/* </Grid> */}
+  //             {/* </Grid> */}
+
+  //             <IconButton
+  //               color='primary'
+  //               aria-label='upload picture'
+  //               component='label'
+  //             >
+  //               <input
+  //                 hidden
+  //                 accept='image/*'
+  //                 type='file'
+  //                 name='file'
+  //                 onChange={handleImage}
+  //               />
+  //               <PhotoCamera />
+  //             </IconButton >
+  //             <input type='submit' value='Submit' style={{ position: 'absolute', bottom: 8, right: 8 }}/>
+  //           </form>
+  //         </div>
+  //       </Dialog>
+  //     </div>
+  //   );
 };
 
 export default CreateReport;
