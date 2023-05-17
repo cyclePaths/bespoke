@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -74,7 +75,7 @@ function Message({ text, fromMe }: Message) {
   );
 }
 
-function DirectMessages({ handleReceiverData, handleMessageData }) {
+function DirectMessages() {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -86,6 +87,7 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
   const loading = open && options.length === 0;
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
+  const [senderId, setSenderId] = useState(0);
   const [receiver, setReceiver] = useState<SelectedUser>();
   const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
@@ -97,6 +99,20 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
+  const location = useLocation();
+
+  // const notificationReceiverId = location?.state?.notificationReceiverId || 0;
+  const notificationSenderId = location?.state?.notificationSenderId || 0;
+  console.log('location', location.state);
+
+  // const receiverIdParam = new URLSearchParams(location.search).get('receiverId');
+  // const notificationReceiverId = receiverIdParam ? parseInt(receiverIdParam, 10) : 0;
+
+  // useEffect(() => {
+  //   if (notificationReceiverId !== 0) {
+  //     setReceiverId(notificationReceiverId);
+  //   }
+  // })
 
   // const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
@@ -106,7 +122,6 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
     if (receiver !== null) {
       setReceiver(receiver);
       setIsReceiverSelected(true);
-      await handleReceiverData(receiver.id);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
@@ -197,9 +212,6 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
 
 
   const loadMessages = async () => {
-    // Clear out previous messages and hide the container
-    setMessages([]);
-    setShowMessageContainer(false);
 
     try {
       const thread = await axios.get('/dms/retrieveMessages', {
@@ -208,13 +220,49 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
       const { data } = thread;
       // Now set the new messages and show the container
       setMessages(data);
+      // setReceiver(data[0]?.receiver); // Set the receiver based on the retrieved messages
+      // setIsReceiverSelected(true);
       setShowMessageContainer(true);
-      setLoadingM(false);
     } catch (err) {
       console.log(err);
-      setLoadingM(false);
     }
   };
+
+
+
+
+  useEffect(() => {
+    if (notificationSenderId !== 0) {
+      setSenderId(notificationSenderId);
+      console.log(typeof notificationSenderId)
+      loadNotificationMessages(); // Call loadMessages to load the messages for the notification receiver
+    }
+  }, [notificationSenderId]);
+
+
+
+  const loadNotificationMessages = async () => {
+
+    try {
+      const thread = await axios.get('/dms/retrieveNotificationMessages', {
+        params: { senderId: senderId },
+      });
+      console.log('notification thread', thread)
+      const { data } = thread;
+      // Now set the new messages and show the container
+      setMessages(data);
+      // setReceiver(data[0]?.receiver); // Set the receiver based on the retrieved messages
+      // setIsReceiverSelected(true);
+      setShowMessageContainer(true);
+    } catch (err) {
+      console.log('Notificatoin error', err);
+    }
+  };
+
+
+
+
+
 
 
 
@@ -243,7 +291,6 @@ function DirectMessages({ handleReceiverData, handleMessageData }) {
     // Emit a 'message' event to the server
     socket.emit('message', newMessage);
 
-    handleMessageData(newMessage);
 
     axios
       .post('/dms/message', {

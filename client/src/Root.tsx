@@ -24,6 +24,7 @@ import { toast } from 'react-toastify';
 import { SocketContext } from './SocketContext';
 import { Socket } from 'socket.io-client';
 import { SocketProvider } from './SocketContext';
+import DMNotifications from './DMNotifications';
 
 
 
@@ -145,6 +146,9 @@ export interface BadgeWithAdditions extends Badge {
 }
 
 export const UserContext = createContext<any>(Object());
+
+export const MessageContext = createContext('');
+// const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
@@ -347,68 +351,87 @@ const Root = () => {
   the notifications so that they display only for a receiver, and not for everyone.
   */
 
-  interface RootMessage {
-    senderId: number;
-    senderName: string;
-    receiverId: number;
-    receiverName: string;
-    text: string;
-    fromMe: boolean;
+  // interface RootMessage {
+  //   senderId: number;
+  //   senderName: string;
+  //   receiverId: number;
+  //   receiverName: string;
+  //   text: string;
+  //   fromMe: boolean;
+  // }
+
+  // const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  // // const navigate = useNavigate();
+
+
+  // useEffect(() => {
+  //   if (socket && user) {
+  //     socket.on('message', handleReceivedMessage);
+  //   }
+
+  //   return () => {
+  //     if (socket) {
+  //       socket.off('message', handleReceivedMessage);
+  //     }
+  //   };
+  // }, [socket, user]);
+
+
+  // const handleReceivedMessage = (newMessage) => {
+  //   console.log('Received message:', newMessage);
+
+  //   if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+  //     toast.success(newMessage.text, {
+  //       onClick: () => {
+  //         // navigate(`/directMessages/${newMessage.threadId}`)
+  //         // navigate(`/directMessages/${newMessage.senderId}/${newMessage.receiverId}`);
+
+  //       }
+  //     });
+  //   }
+
+  // };
+
+// Keep the interface
+interface RootMessage {
+  senderId: number;
+  senderName: string;
+  receiverId: number;
+  receiverName: string;
+  text: string;
+  fromMe: boolean;
+}
+
+// Keep the socket and state variables
+
+const socket = useContext(SocketContext).socket as Socket | undefined;
+const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
+
+// Keep the socket event handling
+useEffect(() => {
+  if (socket && user) {
+    socket.on('message', handleReceivedMessage);
   }
 
-  const socket = useContext(SocketContext).socket as Socket | undefined;
-  const [rootReceiverId, setRootReceiverId] = useState(0);
-  const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
-  // const navigate = useNavigate();
+  return () => {
+    if (socket) {
+      socket.off('message', handleReceivedMessage);
+    }
+  };
+}, [socket, user]);
 
-  const handleReceiverData = (receiverId) => {
-    setRootReceiverId(receiverId)
+// Adjust handleReceivedMessage
+const handleReceivedMessage = (newMessage: RootMessage) => {
+  console.log('Received message:', newMessage);
+
+  // Only set the state here, don't show notifications or navigate
+  if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+    setRootNewMessage(newMessage);
   }
-
-  useEffect(()=> {
-    console.log('id', rootReceiverId);
-  }, [rootReceiverId])
+};
 
 
-  const handleMessageData = (newMessage) => {
-    setRootNewMessage(newMessage);
-    console.log('test')
-  };
-
-  useEffect(()=> {
-    console.log('message', rootNewMessage);
-  }, [rootNewMessage])
-
-
-
-  useEffect(() => {
-    if (socket && user) {
-      socket.on('message', handleReceivedMessage);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('message', handleReceivedMessage);
-      }
-    };
-  }, [socket, user]);
-
-
-  const handleReceivedMessage = (newMessage) => {
-    console.log('Received message:', newMessage);
-    setRootNewMessage(newMessage);
-
-    if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
-      toast.success(newMessage.text, {
-        onClick: () => {
-          // navigate(`/directMessages/${newMessage.threadId}`)
-          // navigate(`/directMessages/${newMessage.senderId}/${newMessage.receiverId}`);
-
-        }
-      });
-    }
-
-  };
 
 
  /*
@@ -761,7 +784,10 @@ const Root = () => {
           isDark,
         }}
       >
+        <MessageContext.Provider value={{ message: rootNewMessage }}>
+
         <BrowserRouter>
+        <DMNotifications />
           <Routes>
             <Route path='/' element={<App />}>
               <Route
@@ -821,16 +847,20 @@ const Root = () => {
                   />
                 }
               />
-              <Route path='directMessages' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData}/>} />
+              {/* <Route path='directMessages' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData}/>} /> */}
+
+
+
+
               <Route path='createReport' element={<CreateReport />} />
               <Route path='reportsMap' element={<ReportsMap />} />
-              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
+              <Route path='directMessages' element={<DirectMessages  />} />
               <Route path='report' element={<Report />} />
             </Route>
-            {/* <Route path='directMessages/:senderId?/:receiverId?' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData} />} /> */}
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
         </BrowserRouter>
+        </MessageContext.Provider>
       </UserContext.Provider>
     </div>
   );
