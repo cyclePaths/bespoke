@@ -74,7 +74,7 @@ function Message({ text, fromMe }: Message) {
   );
 }
 
-function DirectMessages() {
+function DirectMessages({ handleReceiverData, handleMessageData }) {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -104,11 +104,9 @@ function DirectMessages() {
 
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
-      setLoadingM(true);
-      setMessages([]);
-      await setShowMessageContainer(false);
       setReceiver(receiver);
       setIsReceiverSelected(true);
+      await handleReceiverData(receiver.id);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
@@ -179,10 +177,12 @@ function DirectMessages() {
           newMessage.receiverId === userId
         ) {
           setMessage(newMessage);
+
         }
       });
     }
   }, [socket, userId, receiverId]);
+
 
 
 
@@ -243,6 +243,8 @@ function DirectMessages() {
     // Emit a 'message' event to the server
     socket.emit('message', newMessage);
 
+    handleMessageData(newMessage);
+
     axios
       .post('/dms/message', {
         message: newMessage,
@@ -261,13 +263,13 @@ function DirectMessages() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (socket) {
+  //       socket.disconnect();
+  //     }
+  //   };
+  // }, [socket]);
 
   return (
     <BandAid>
