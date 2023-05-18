@@ -34,11 +34,14 @@ function SearchUsers({
   handleSetReceiver,
   setIsReceiverSelected,
   setShowMessageContainer,
-  setMessages
+  setMessages,
+  senderName,
 }) {
   const [findUser, setFindUser] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(true);
-  const [active, setActive] = useState(true); // Add active state
+  const [active, setActive] = useState(true);
+  const [label, setLabel] = useState(senderName || 'Search Bikers');
+
 
   const classes = useStyles();
 
@@ -68,6 +71,17 @@ function SearchUsers({
   }, [loading]);
 
 
+  const resetLabel = () => {
+    setLabel('Search Bikers');
+  };
+
+
+  useEffect(() => {
+    setLabel(senderName || 'Search Bikers');
+  }, [senderName]);
+
+
+
   return (
     <div className={classes.search}>
       {/* {showAutoComplete ? ( */}
@@ -82,6 +96,7 @@ function SearchUsers({
           open={open}
           onOpen={() => {
             setOpen(true);
+            //  resetLabel();
           }}
           onClose={() => {
             setOpen(false);
@@ -106,9 +121,12 @@ function SearchUsers({
             <TextField
               sx={{ borderRadius: '25px' }}
               {...params}
-              label='Search Bikers'
+              // label='Search Bikers'
+              // label={senderName || 'Search Bikers'}
+              label={label}
               InputProps={{
                 ...params.InputProps,
+                onFocus: resetLabel,
                 endAdornment: (
                   <React.Fragment>
                     {loading ? (

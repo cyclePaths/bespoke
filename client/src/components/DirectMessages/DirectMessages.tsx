@@ -425,6 +425,7 @@ function DirectMessages() {
         setIsReceiverSelected={setIsReceiverSelected}
         setShowMessageContainer={setShowMessageContainer}
         setMessages={setMessages}
+        senderName={senderName}
       ></SearchUsers>
       {/* <Conversations /> */}
       {/* {isReceiverSelected && showMessageContainer && ( */}
