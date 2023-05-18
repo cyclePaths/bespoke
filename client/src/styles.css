@@ -738,3 +738,7 @@ The code above is for the Profile Stats feature
 #make-report-container {
   transition: opacity 0.5s ease-out;
 }
+
+.white-input {
+  color: #fff;
+}

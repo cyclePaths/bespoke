@@ -28,6 +28,8 @@ import DMNotifications from './DMNotifications';
 
 
 
+
+
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -46,11 +48,13 @@ export interface MeasurementUnits {
 }
 
 export interface Hourly {
-  displayIcon: boolean;
   time: Date;
   temperature: number;
+  previousTemperature: number;
   humidity: number;
   apparentTemperature: number;
+  directRadiation: number;
+  diffuseRadiation: number;
   cloudcover: number;
   windspeed: number;
   precipitation: number;
@@ -87,7 +91,7 @@ export interface RootPropsToWeather {
 }
 
 export interface RootPropsToHome {
-  homeForecasts: Hourly[];
+  hourlyForecasts: Hourly[];
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
@@ -147,7 +151,7 @@ export interface BadgeWithAdditions extends Badge {
 
 export const UserContext = createContext<any>(Object());
 
-export const MessageContext = createContext('');
+export const MessageContext = createContext<any>(Object());
 // const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
 const Root = () => {
@@ -167,6 +171,7 @@ const Root = () => {
 
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<any>();
+  // const [reports, setReports] = useState<Report[]>([]);
   const [geoLocation, setGeoLocation] = useState<any>();
   const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -219,6 +224,7 @@ const Root = () => {
   const [sunsetHour, setSunsetHour] = useState<number>(0);
   const [homeCoordinates, setHomeCoordinates] = useState<LatLngLiteral>();
 
+
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
   const getForecasts = () => {
@@ -267,7 +273,11 @@ const Root = () => {
     //setting weather icon
     let weatherIcon = weatherIcons.day.clear;
     if (weather === 'Clear Sky' || weather === 'Mainly Clear') {
-      weatherIcon = weatherIcons[timeOfDay].clear;
+      if (timeOfDay === 'day') {
+        weatherIcon = weatherIcons[timeOfDay].clear;
+      } else {
+        weatherIcon = weatherIcons[timeOfDay].starry;
+      }
     } else if (weather === 'Partly Cloudy') {
       weatherIcon = weatherIcons[timeOfDay].partlyCloudy.base;
     } else if (weather === 'Overcast') {
@@ -728,11 +738,13 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
   }, [selectedBadge]);
 
   let homeForecasts: Hourly[] = new Array(4).fill(0).map(() => ({
-    displayIcon: true,
     time: new Date(),
     temperature: 0,
+    previousTemperature: 0,
     humidity: 0,
     apparentTemperature: 0,
+    directRadiation: 0,
+    diffuseRadiation: 0,
     cloudcover: 0,
     windspeed: 0,
     precipitation: 0,
@@ -760,12 +772,22 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
     }
   });
 
-  homeForecasts.forEach((ele, i) => {
-    if (i !== 0) {
-      ele.displayIcon = false;
-    }
-  });
   const reports = [];
+  const [monthReports, setMonthReports] = useState<Report[]>([]);
+
+const fetchThisMonthReports = async () => {
+  try {
+    const response = await axios.get('/reports/thisMonth');
+    setMonthReports(response.data);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+  useEffect(() => {
+    fetchThisMonthReports();
+  }, [])
 
   return (
     <div className={isDark ? 'dark' : 'light'}>
@@ -794,7 +816,7 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
                 path='/home'
                 element={
                   <Home
-                    homeForecasts={homeForecasts}
+                    hourlyForecasts={hourlyForecasts}
                     windSpeedMeasurementUnit={windSpeedMeasurementUnit}
                     temperatureMeasurementUnit={temperatureMeasurementUnit}
                     precipitationMeasurementUnit={precipitationMeasurementUnit}
@@ -847,14 +869,18 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
                   />
                 }
               />
-              {/* <Route path='directMessages' element={<DirectMessages handleReceiverData={handleReceiverData} handleMessageData={handleMessageData}/>} /> */}
 
-
-
-
-              <Route path='createReport' element={<CreateReport />} />
-              <Route path='reportsMap' element={<ReportsMap />} />
-              <Route path='directMessages' element={<DirectMessages  />} />
+              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
+              <Route path='directMessages' element={<DirectMessages />} />
+              <Route
+  path="createReport"
+  element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
+/>
+<Route
+  path='reportsMap'
+  element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
+/>
+              <Route path='directMessages' element={<DirectMessages />} />
               <Route path='report' element={<Report />} />
             </Route>
           </Routes>
