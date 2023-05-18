@@ -135,11 +135,13 @@ function DirectMessages() {
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
       setReceiver(receiver);
+      setShowMessageContainer(true);
       setIsReceiverSelected(true);
       setUserIsSelectingReceiver(true);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
+      setShowMessageContainer(false);
     }
   };
 
@@ -209,11 +211,12 @@ function DirectMessages() {
         params: { receiverId: receiverId },
       });
       const { data } = thread;
+      const sortedMessages = data.sort((a, b) => a.id - b.id);
       console.log('receiverThread', thread)
 
       // Now set the new messages and show the container
-      setMessages(data);
-      console.log('messages', messages)
+      setMessages(sortedMessages);
+      // console.log('messages', messages)
       // setReceiver(data[0]?.receiver); // Set the receiver based on the retrieved messages
       // setIsReceiverSelected(true);
       setShowMessageContainer(true);
@@ -221,6 +224,10 @@ function DirectMessages() {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    console.log('messages', messages)
+  }, [messages])
 
   useEffect(() => {
     if (receiverId !== 0) {
@@ -257,6 +264,12 @@ function DirectMessages() {
         });
         console.log('notification thread', thread)
         const { data } = thread;
+
+        // const orderedData = data.map((current) => {
+        //   current.senderId =
+        // })
+
+
         // Now set the new messages and show the container
         setMessages(data);
         console.log('Messages', messages)
@@ -269,6 +282,14 @@ function DirectMessages() {
     // }
 
   };
+
+    useEffect(() => {
+    console.log('notificationM', messages)
+  }, [messages])
+
+  useEffect(() => {
+    console.log('test', messages)
+  }, [])
 
   useEffect(() => {
     console.log('setSender', isSenderSelected);
@@ -341,6 +362,7 @@ function DirectMessages() {
   const handleNavigationAway = () => {
     setIsSenderSelected(false); // Reset the flag when user navigates away
     setIsNotificationClicked(false);
+    setShowMessageContainer(false);
   };
 
   useEffect(() => {

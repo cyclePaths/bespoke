@@ -71,22 +71,22 @@ dmRouter.get('/retrieveNotificationMessages', async (req: Request, res: Response
     const { senderId } = req.query;
     const { id } = req.user as { id: number };
 
-    const conversation = await prisma.directMessages.findMany({
 
+
+    const conversation = await prisma.directMessages.findMany({
       where: {
-        // OR: [
-        //   { senderId: Number(senderId), receiverId: id },
-        //   { senderId: id, receiverId: Number(senderId) },
-        // ],
-        senderId: Number(senderId),
-        receiverId: id
+        OR: [
+          { senderId: Number(senderId), receiverId: id },
+          { senderId: id, receiverId: Number(senderId) },
+        ],
       },
       include: {
         sender: true,
         receiver: true,
       },
     });
-    // console.log('conversation', conversation[conversation.length - 1])
+
+    // console.log('conversation', conversation)
     res.status(200).send(conversation);
   } catch (err) {
     console.log(err);
