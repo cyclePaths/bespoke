@@ -11,14 +11,10 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MessageIcon from '@mui/icons-material/Message';
 import TimerIcon from '@mui/icons-material/Timer';
 import Stopwatch from './Profile/Stopwatch';
-import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
-import LeaderBoard from './LeaderBoard/LeaderBoard';
 import { NavBarTop } from '../StyledComp';
-import DirectMessages from './DirectMessages/DirectMessages';
 
 const Navbar = () => {
   const [value, setValue] = useState<any>(null);
@@ -32,8 +28,6 @@ const Navbar = () => {
   const [report, setReport] = useState<boolean>(false);
   const [bulletin, setBulletin] = useState<boolean>(false);
   /// TOP NAV ///
-  const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
-  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
   const [messages, setMessages] = useState<boolean>(false);
   const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
@@ -42,11 +36,6 @@ const Navbar = () => {
 
   // User Context //
   const { user, isDark } = useContext(UserContext);
-
-  const handleLeaderBoard = () => {
-    setOpenLeaderBoard(true);
-    setLeaderBoard(true);
-  };
 
   const clickHome = () => {
     setValue(null);
@@ -123,17 +112,12 @@ const Navbar = () => {
           Bespoke
         </Link>
         <span style={{ display: 'contents' }}>
-          <IconButton onClick={() => handleLeaderBoard()}>
-            <EmojiEventsIcon
-              sx={{ color: isDark ? (leaderBoard ? '#ffff00' : '#ececec') : (leaderBoard ? '#ffff00' : '#757575') }}
-            />
-          </IconButton>
           <Link to='/directMessages'>
             <IconButton
               onClick={() => toMessages()}
               sx={{ color: messages ? '#673ab7' : '#757575' }}
             >
-              <MessageIcon sx={{ color: isDark ? (messages ? '#673ab7' : '#ececec') : (messages ? '#673ab7' : '#757575') }} />
+              <MessageIcon sx={{ color: isDark ? (messages ? '#85d3ff' : '#ececec') : (messages ? '#191a35' : '#757575') }} />
             </IconButton>
           </Link>
           <IconButton
@@ -175,9 +159,9 @@ const Navbar = () => {
         >
           <BottomNavigationAction
             label='Navigate'
-            style={{ minWidth: '0px', color: navigate ? '#f44336' : '#757575' }}
+            style={{ minWidth: '0px', color: isDark ? (navigate ? '#f8827a' : '#ececec') : (navigate ? '#f44336' : '#757575') }}
             icon={
-              <PlaceIcon sx={{ color: isDark ? (navigate ? '#f44336' : '#ececec') : (navigate ? '#f44336' : '#757575') }} />
+              <PlaceIcon sx={{ color: isDark ? (navigate ? '#f8827a' : '#ececec') : (navigate ? '#f44336' : '#757575') }} />
             }
             component={Link}
             onClick={() => toNav()}
@@ -186,17 +170,17 @@ const Navbar = () => {
           <BottomNavigationAction
             label='Weather'
             style={{ minWidth: '0px', color: isDark ? (weather ? '#fafafa' : '#757575') : (weather ? 'black' : '#757575') }}
-            icon={<CloudIcon sx={{ color: isDark ? (weather ? '#fafafa' : '#ececec') : (weather ? '#fafafa' : '#757575') }} />}
+            icon={<CloudIcon sx={{ color: isDark ? (weather ? '#fafafa' : '#ececec') : (weather ? '#9c9c9c' : '#757575') }} />}
             component={Link}
             onClick={() => toWeather()}
             to='/weather'
           />
           <BottomNavigationAction
             label='Report'
-            style={{ minWidth: '0px', color: report ? '#f9a825' : '#757575' }}
+            style={{ minWidth: '0px', color: isDark ? (report ? '#f9a825' : '#757575') : (report ? '#9b3a0d' : '#757575') }}
             icon={
               <ReportProblemIcon
-                sx={{ color: isDark ? (report ? '#f9a825' : '#ececec') : (report ? '#f9a825' : '#757575') }}
+                sx={{ color: isDark ? (report ? '#f9a825' : '#ececec') : (report ? '#9b3a0d' : '#757575') }}
               />
             }
             component={Link}
@@ -205,10 +189,10 @@ const Navbar = () => {
           />
           <BottomNavigationAction
             label='Bulletin'
-            style={{ minWidth: '0px', color: bulletin ? '#7be795' : '#757575' }}
+            style={{ minWidth: '0px', color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#20a03e' : '#757575') }}
             icon={
               <FormatListBulletedIcon
-                sx={{ color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#7be795' : '#757575') }}
+                sx={{ color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#20a03e' : '#757575') }}
               />
             }
             component={Link}
@@ -225,13 +209,6 @@ const Navbar = () => {
           />
         </BottomNavigation>
       </div>
-      <LeaderBoardPopout
-        openLeaderBoard={openLeaderBoard}
-        setOpenLeaderBoard={setOpenLeaderBoard}
-        setLeaderBoard={setLeaderBoard}
-      >
-        <LeaderBoard />
-      </LeaderBoardPopout>
       <Stopwatch
         openStopWatch={openStopWatch}
         setOpenStopWatch={setOpenStopWatch}

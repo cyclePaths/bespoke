@@ -19,11 +19,13 @@ import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
 import {styled} from '@mui/material/styles';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
+// For the expandable cards on the home page //
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -49,6 +51,13 @@ const Home = ({
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
   const [expanded, setExpanded] = useState<boolean>(false)
+  const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
+  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+
+  const handleLeaderBoard = () => {
+    setOpenLeaderBoard(true);
+    setLeaderBoard(true);
+  };
 
   const handleRouteInfoExpand = () => {
     setExpanded(!expanded);
@@ -82,27 +91,26 @@ const Home = ({
         <StatsWrapper>
           <Card>
             <CardHeader title="Most Recent Route"/>
-            <CardActions disableSpacing>
-              <IconButton>
-                <ExpandMore
-                  expand={expanded}
-                  onClick={handleRouteInfoExpand}
-                  aria-expanded={expanded}
-                  aria-label='show route info'
-                >
-                  <ExpandMoreIcon/>
-                </ExpandMore>
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
               <CardContent>
                 <Typography paragraph sx={{ textAlign: 'center' }}>
                   {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
                 </Typography>
               </CardContent>
-            </Collapse>
           </Card>
+          <IconButton onClick={() => handleLeaderBoard()}>
+            <EmojiEventsIcon
+              sx={{ color: isDark ? (leaderBoard ? '#ffff00' : '#ececec') : (leaderBoard ? '#ffff00' : '#757575') }}
+            />
+          </IconButton>
         </StatsWrapper>
+
+        <LeaderBoardPopout
+        openLeaderBoard={openLeaderBoard}
+        setOpenLeaderBoard={setOpenLeaderBoard}
+        setLeaderBoard={setLeaderBoard}
+        >
+          <LeaderBoard />
+        </LeaderBoardPopout>
       </BandAid>
     </div>
   );

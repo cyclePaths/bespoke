@@ -120,7 +120,7 @@ const GlobalStyleDark = createGlobalStyle`
 
 const GlobalStyleLight = createGlobalStyle`
   html, body {
-    background-color: rgb(133, 211, 255);
+    background-color: #85d3ff;
     color: #333;
   }
 

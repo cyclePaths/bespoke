@@ -144,7 +144,7 @@ const RouteList = styled.div`
 `;
 
 // Home Page stuff //
-const StatsWrapper = styled.div<DarkModeHelperProps>`
+const StatsWrapper = styled.span<DarkModeHelperProps>`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
