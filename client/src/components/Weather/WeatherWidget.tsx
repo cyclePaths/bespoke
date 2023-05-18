@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Hourly } from 'client/src/Root';
 import {
+  WeatherIcon,
   WeatherWidgetWrapper,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
 } from '../../StyledComp';
+import { weatherIcons } from '../../../assets';
 
 interface PropsToWeatherWidget {
+  temperatureMeasurementUnit: string;
   hourlyForecasts: Hourly[];
   prepareWeatherIcon: (
     weather: string,
@@ -20,6 +23,7 @@ interface PropsToWeatherWidget {
 }
 
 const WeatherWidget = ({
+  temperatureMeasurementUnit,
   prepareWeatherIcon,
   hourlyForecasts,
 }: PropsToWeatherWidget) => {
@@ -35,6 +39,11 @@ const WeatherWidget = ({
     }
   };
 
+  let temperatureUnit = '°F';
+
+  if (temperatureMeasurementUnit === 'celsius') {
+    temperatureUnit = '°C';
+  }
   return (
     <WeatherWidgetWrapper>
       {hourlyForecasts.map((forecast, i) => {
@@ -54,7 +63,10 @@ const WeatherWidget = ({
               alt='Weather Icon'
             />
             <ForecastHour>{setHour(hour)}</ForecastHour>
-            <ForecastTemperature>{forecast.temperature}°C</ForecastTemperature>
+            <ForecastTemperature>
+              {forecast.temperature}
+              {temperatureUnit}
+            </ForecastTemperature>
           </ForecastItem>
         );
       })}
@@ -63,3 +75,5 @@ const WeatherWidget = ({
 };
 
 export default WeatherWidget;
+
+// can use this for the Faren/Celsius icon but need to style it:             <WeatherIcon src={temperatureUnit}></WeatherIcon>

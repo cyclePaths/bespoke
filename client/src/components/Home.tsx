@@ -8,17 +8,26 @@ import {
   ForecastEntry,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
-  StatsWrapper
+  StatsWrapper,
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
-import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps } from '@mui/material';
+import {
+  Card,
+  CardHeader,
+  Collapse,
+  CardContent,
+  CardActions,
+  Typography,
+  IconButton,
+  IconButtonProps,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,7 +44,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-
 const Home = ({
   hourlyForecasts,
   windSpeedMeasurementUnit,
@@ -48,25 +56,26 @@ const Home = ({
 }: RootPropsToHome) => {
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
-  const [expanded, setExpanded] = useState<boolean>(false)
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const handleRouteInfoExpand = () => {
     setExpanded(!expanded);
-  }
+  };
 
   useEffect(() => {
-    axios.get('/bikeRoutes/currentRoute')
-      .then(({data}) => {
+    axios
+      .get('/bikeRoutes/currentRoute')
+      .then(({ data }) => {
         setRouteInfo(data);
       })
       .catch((err) => {
         console.error('Failed to find most recent route: ', err);
-      })
+      });
 
     return () => {
       // console.log('Fetched and cleanup');
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div>
@@ -74,6 +83,7 @@ const Home = ({
         <HomePageCompWrapper>
           <HomeWeatherWidgetHolder>
             <WeatherWidget
+              temperatureMeasurementUnit={temperatureMeasurementUnit}
               prepareWeatherIcon={prepareWeatherIcon}
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
@@ -81,7 +91,7 @@ const Home = ({
         </HomePageCompWrapper>
         <StatsWrapper>
           <Card>
-            <CardHeader title="Most Recent Route"/>
+            <CardHeader title='Most Recent Route' />
             <CardActions disableSpacing>
               <IconButton>
                 <ExpandMore
@@ -90,14 +100,16 @@ const Home = ({
                   aria-expanded={expanded}
                   aria-label='show route info'
                 >
-                  <ExpandMoreIcon/>
+                  <ExpandMoreIcon />
                 </ExpandMore>
               </IconButton>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse in={expanded} timeout='auto' unmountOnExit>
               <CardContent>
                 <Typography paragraph sx={{ textAlign: 'center' }}>
-                  {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
+                  {routeInfo
+                    ? routeInfo.name
+                    : 'You have not been on a route yet. Please Search a route or create a new route'}
                 </Typography>
               </CardContent>
             </Collapse>
