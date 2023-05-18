@@ -209,6 +209,8 @@ function DirectMessages() {
         params: { receiverId: receiverId },
       });
       const { data } = thread;
+      console.log('receiverThread', thread)
+
       // Now set the new messages and show the container
       setMessages(data);
       console.log('messages', messages)
@@ -231,15 +233,6 @@ function DirectMessages() {
 
 
 ///////Below: Loading Messages Thread when Notification is clicked/////////
-
-  // useEffect(() => {
-  //   if (!performance.navigation.type) {
-  //   if (notificationSenderId !== 0) {
-  //     setSenderId(notificationSenderId);
-  //     console.log('function call', loadNotificationMessages()); // Call loadMessages to load the messages for the notification receiver
-  //   }
-  // }
-  // }, [notificationSenderId]);
 
 
   useEffect(() => {
