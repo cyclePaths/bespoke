@@ -97,6 +97,7 @@ function DirectMessages() {
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
   const [senderId, setSenderId] = useState(0);
+  const [senderName, setSenderName] = useState('');
   const [receiver, setReceiver] = useState<SelectedUser>();
   const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
@@ -116,7 +117,11 @@ function DirectMessages() {
 
   // const notificationReceiverId = location?.state?.notificationReceiverId || 0;
   const notificationSenderId = location?.state?.notificationSenderId;
-  // console.log('location', location.state);
+  const notificationSenderName = location?.state?.notificationSenderName;
+
+
+
+
 
 
   // const [socket, setSocket] = useState<SocketIOClient.Socket>();
@@ -246,11 +251,16 @@ function DirectMessages() {
     // if we have notificationSenderId available, and it's different from the one stored in state
     if (notificationSenderId && notificationSenderId !== storedNotificationSenderId) {
       setSenderId(notificationSenderId);  // update senderId
+      setSenderName(notificationSenderName);
       setStoredNotificationSenderId(notificationSenderId); // remember this notificationSenderId
       loadNotificationMessages();  // run your function
     }
     // setIsNotificationClicked(true);
   }, [notificationSenderId]);
+
+  useEffect(() => {
+    console.log('notificationSender', notificationSenderName);
+  }, [senderName])
 
 
   const loadNotificationMessages = async () => {
@@ -264,6 +274,8 @@ function DirectMessages() {
         });
         console.log('notification thread', thread)
         const { data } = thread;
+        const sortedMessages = data.sort((a, b) => a.id - b.id);
+
 
         // const orderedData = data.map((current) => {
         //   current.senderId =
@@ -271,7 +283,7 @@ function DirectMessages() {
 
 
         // Now set the new messages and show the container
-        setMessages(data);
+        setMessages(sortedMessages);
         console.log('Messages', messages)
 
         setShowMessageContainer(true);
@@ -315,20 +327,20 @@ function DirectMessages() {
   /// End of Load Mounting ///
 
   const handleSendMessage = () => {
-    if (!socket || !receiver) {
-      return;
-    }
+    // if (!socket || !receiver) {
+    //   return;
+    // }
     const newMessage = {
       senderId: userId,
       senderName: name,
-      receiverId: receiver?.id ?? 0,
-      receiverName: receiver.name,
+      receiverId: (receiver?.id ?? 0) || notificationSenderId,
+      receiverName: receiver?.name || notificationSenderName,
       text: messageInput,
       fromMe: true,
     };
 
     // Emit a 'message' event to the server
-    socket.emit('message', newMessage);
+    socket?.emit('message', newMessage);
 
 
     axios

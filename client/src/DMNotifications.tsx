@@ -18,7 +18,11 @@ const DMNotifications = () => {
     if (message && !receivedMessages.includes(message)) {
       toast.success(message.text, {
         onClick: () => {
-          navigate('/directMessages', { state: { notificationSenderId: Number(message.senderId) } });
+          console.log('checking message', message);
+          navigate('/directMessages', { state: {
+            notificationSenderId: Number(message.senderId),
+            notificationSenderName: message.senderName,
+          } });
         }
       });
 
