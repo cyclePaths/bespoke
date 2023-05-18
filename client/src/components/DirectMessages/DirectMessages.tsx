@@ -16,6 +16,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
 import { UserContext } from '../../Root';
+import DMNotifications from 'client/src/DMNotifications';
 
 export interface Message {
   id: number;
@@ -96,6 +97,7 @@ function DirectMessages() {
   const loading = open && options.length === 0;
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
+  const [receiverName, setReceiverName] = useState('');
   const [senderId, setSenderId] = useState(0);
   const [senderName, setSenderName] = useState('');
   const [receiver, setReceiver] = useState<SelectedUser>();
@@ -116,30 +118,42 @@ function DirectMessages() {
   const location = useLocation();
 
   // const notificationReceiverId = location?.state?.notificationReceiverId || 0;
-  const notificationSenderId = location?.state?.notificationSenderId;
-  const notificationSenderName = location?.state?.notificationSenderName;
-
-
-
-
+  let notificationSenderId = location?.state?.notificationSenderId;
+  let notificationSenderName = location?.state?.notificationSenderName;
 
 
   // const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
+  useEffect(() => {
+
+    console.log('setNotification', isNotificationClicked);
+  }, [isNotificationClicked])
+
+  useEffect(() => {
+    if (notificationSenderId !== undefined) {
+      setReceiverId(notificationSenderId);
+    }
+    console.log('notificationSenderId', notificationSenderId);
+  }, [notificationSenderId])
 
 
+  useEffect(() => {
+    if (notificationSenderName !== undefined) {
+      setReceiverName(notificationSenderName);
+    }
+    console.log('notificationSenderId', notificationSenderId);
+  }, [notificationSenderId])
 
-
-
-  console.log('setNotification', isNotificationClicked);
 
 
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
       setReceiver(receiver);
+      setReceiverName(receiver.name);
       setShowMessageContainer(true);
       setIsReceiverSelected(true);
       setUserIsSelectingReceiver(true);
@@ -149,6 +163,19 @@ function DirectMessages() {
       setShowMessageContainer(false);
     }
   };
+
+  // const handleSetReceiver = async (receiver: SelectedUser | null) => {
+  //   if (receiver !== null) {
+  //     setReceiver(receiver);
+  //     setShowMessageContainer(true);
+  //     setIsReceiverSelected(true);
+  //     setUserIsSelectingReceiver(true);
+  //   } else {
+  //     setReceiver(undefined);
+  //     setIsReceiverSelected(false);
+  //     setShowMessageContainer(false);
+  //   }
+  // };
 
 
 
@@ -164,7 +191,7 @@ function DirectMessages() {
       .get('/profile/user')
       .then(({ data }) => {
         const { id, name } = data;
-        console.log(id);
+        // console.log(id);
         setUserId(id);
         setName(name);
       })
@@ -217,7 +244,7 @@ function DirectMessages() {
       });
       const { data } = thread;
       const sortedMessages = data.sort((a, b) => a.id - b.id);
-      console.log('receiverThread', thread)
+      // console.log('receiverThread', thread)
 
       // Now set the new messages and show the container
       setMessages(sortedMessages);
@@ -231,7 +258,7 @@ function DirectMessages() {
   };
 
   useEffect(() => {
-    console.log('messages', messages)
+    // console.log('messages', messages)
   }, [messages])
 
   useEffect(() => {
@@ -265,7 +292,7 @@ function DirectMessages() {
 
   const loadNotificationMessages = async () => {
     // if (senderId !== 0) {
-      console.log('sender', senderId)
+      // console.log('sender', senderId)
       setIsSenderSelected(true);
       try {
         const thread = await axios.get('/dms/retrieveNotificationMessages', {
@@ -295,23 +322,6 @@ function DirectMessages() {
 
   };
 
-    useEffect(() => {
-    console.log('notificationM', messages)
-  }, [messages])
-
-  useEffect(() => {
-    console.log('test', messages)
-  }, [])
-
-  useEffect(() => {
-    console.log('setSender', isSenderSelected);
-    // console.log('setNotification', isNotificationClicked);
-  }, [isSenderSelected])
-
-  // useEffect(() => {
-    // setShowMessageContainer(true);
-    // console.log('Updated Messages:', messages);
-  // }, [messages]);
 
   useEffect(() => {
     if (senderId !== 0) {
@@ -333,8 +343,10 @@ function DirectMessages() {
     const newMessage = {
       senderId: userId,
       senderName: name,
-      receiverId: (receiver?.id ?? 0) || notificationSenderId,
-      receiverName: receiver?.name || notificationSenderName,
+      // receiverId: (receiver?.id ?? 0) || notificationSenderId,
+      // receiverName: receiver?.name || notificationSenderName,
+      receiverId: receiverId,
+      receiverName: receiverName,
       text: messageInput,
       fromMe: true,
     };
@@ -375,6 +387,8 @@ function DirectMessages() {
     setIsSenderSelected(false); // Reset the flag when user navigates away
     setIsNotificationClicked(false);
     setShowMessageContainer(false);
+    notificationSenderId = undefined;
+    notificationSenderName = undefined;
   };
 
   useEffect(() => {
@@ -389,9 +403,13 @@ function DirectMessages() {
     };
   }, []);
 
+
+
+
   return (
     <BandAid>
       {/* <div>{`Hello ${name}!`}</div> */}
+      {/* <DMNotifications /> */}
 
       <SearchUsers
         open={open}
