@@ -92,7 +92,7 @@ WeatherRoute.get('/forecast', (req, res) => {
         sunriseHour: sunriseHour,
         sunsetHour: sunsetHour,
       };
-      console.log(responseObj.hourly);
+      // console.log(responseObj.hourly);
       res.status(200).send(responseObj);
     })
     .catch((err) => {
