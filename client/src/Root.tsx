@@ -404,7 +404,6 @@ const Root = () => {
 
 
   const handleReceivedMessage = (newMessage) => {
-    console.log('Received message:', newMessage);
     setRootNewMessage(newMessage);
 
     if (newMessage.senderId !== user!.id && newMessage.receiverId === user!.id) {
@@ -837,14 +836,8 @@ const fetchThisMonthReports = async () => {
               {/* <Route path='directMessages' element={<DirectMessages />} />
               <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='report' element={<Report />} />
-              <Route
-  path="createReport"
-  element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
-/>
-<Route
-  path='reportsMap'
-  element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
-/>
+              <Route path="createReport" element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>} />
+              <Route path='reportsMap' element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />} />
             </Route>
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}

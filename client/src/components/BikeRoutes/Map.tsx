@@ -639,7 +639,7 @@ const Map = ({
           }}
           onClick={handleClearMap}
         >
-          <ClearAllIcon sx={{ color: isDark ? '#e74141' : '#bd0000' }} />
+          <ClearAllIcon sx={{ color: isDark ? '#e96767' : '#bd0000' }} />
         </Button>
       </RouteButtonContainer>
 
