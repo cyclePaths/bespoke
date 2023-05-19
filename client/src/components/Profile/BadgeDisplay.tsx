@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from 'client/src/Root';
+import { UserContext } from '../../Root';
 import {
   AchievementBadgeByName,
   AchievementBadge,
@@ -7,7 +7,7 @@ import {
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeTooltip,
   TooltipBox,
-} from 'client/src/StyledComp';
+} from '../../StyledComp';
 
 const BadgeDisplay = () => {
   const {
