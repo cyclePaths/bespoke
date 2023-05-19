@@ -37,6 +37,7 @@ function SearchUsers({
   setShowMessageContainer,
   setMessages,
   senderName,
+  setShowTextField,
 }) {
   const [findUser, setFindUser] = useState('');
   const [showAutoComplete, setShowAutoComplete] = useState(true);
@@ -107,6 +108,7 @@ function SearchUsers({
           getOptionLabel={(option) => option.name}
           onChange={async (event, newValue) => {
             setIsReceiverSelected(true);
+            setShowTextField(true);
             setReceiver('');
             setReceiver(newValue);
             handleSetReceiver(newValue);

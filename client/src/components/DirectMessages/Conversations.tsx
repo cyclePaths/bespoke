@@ -51,6 +51,7 @@ interface ConversationsProps {
   setIsReceiverSelected: (isReceiverSelected: boolean) => void;
   showConversations: boolean;
   setShowConversations:(showConversations: boolean) => void;
+  setShowTextField:(boolean) => void;
 }
 
 
@@ -65,6 +66,7 @@ const Conversations: React.FC<ConversationsProps> = ({
   setIsReceiverSelected,
   showConversations,
   setShowConversations,
+  setShowTextField,
 }) => {
   const [myConversations, setMyConversations] = React.useState<Conversation[]>(
     []
@@ -72,7 +74,8 @@ const Conversations: React.FC<ConversationsProps> = ({
   const [myUserId, setMyUserId] = React.useState(0);
   // const [showConversations, setShowConversations] = React.useState(true);
   const [showMessageThread, setShowMessageThread] = React.useState(false);
-  const [isHandleConvoClicked, setIsHandleConvoClicked] = React.useState(false);
+  // const [isHandleConvoClicked, setIsHandleConvoClicked] = React.useState(false);
+  const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
 
 
 
@@ -93,36 +96,54 @@ const Conversations: React.FC<ConversationsProps> = ({
       });
   };
 
+
   const handleConvoClick = async (convo: Conversation) => {
-    setIsHandleConvoClicked(true);
+    setSelectedConversationId(null);
+    // await loadMessages();
+    // setIsHandleConvoClicked(true);
     setSenderId(convo.senderId);
     // setSenderName(convo.senderName);
     setReceiverId(convo.receiverId);
+    console.log("Selected Sender ID: ", convo.senderId);
+    console.log("Selected Receiver ID: ", convo.receiverId);
     setReceiverName(convo.receiverName);
-    // await loadMessages();
+    setSelectedConversationId(convo.id);
     setShowConversations(false);
     setShowMessageThread(true);
+    setShowTextField(true);
+    setIsReceiverSelected(true);
+
+
+      await loadMessages();
+
   }
 
+
   React.useEffect(() => {
-    if (isHandleConvoClicked) {
+    const isNotEdge = !window.navigator.userAgent.includes('Edg');
+
+    if (isReceiverSelected && isNotEdge) {
+      console.log('check me');
       loadMessages();
     }
-  });
-// }, [isHandleConvoClicked]);
-
+  }, [isReceiverSelected]);
 
 
   const handleBackClick = () => {
     setShowConversations(true); // Show the conversation list
     setShowMessageThread(false); // Hide the message thread
-    setShowMessageContainer(false);
+
     setSenderId(0);
     setReceiverId(0);
     setIsReceiverSelected(false);
-
+    setShowTextField(false);
+    setShowMessageContainer(false);
   };
 
+  if (isReceiverSelected === false) {
+    setShowMessageContainer(false);
+    // setReceiverId(0);
+  }
 
   React.useEffect(() => {
 
@@ -137,6 +158,13 @@ const Conversations: React.FC<ConversationsProps> = ({
     convos();
     // console.log('convos?', myConversations);
   }, []);
+
+
+  // React.useEffect(() => {
+  //   if (isReceiverSelected) {
+  //     setShowMessageContainer(true);
+  //   }
+  // }, [isReceiverSelected]);
 
 
   return (
@@ -157,16 +185,19 @@ const Conversations: React.FC<ConversationsProps> = ({
                     src={convo.senderId === myUserId ? convo.receiver.thumbnail : convo.sender.thumbnail}
                   />
                 </ListItemAvatar>
+                <Typography variant="body2" sx={{ textTransform: 'none' }}>
                 <ListItemText
                   primary={convo.receiverName}
                   secondary={
                     <React.Fragment>
+
                       {convo.text.length > 35
                         ? `${convo.text.slice(0, 35)}...`
                         : convo.text}
                     </React.Fragment>
                   }
                 />
+                </Typography>
               </ListItem>
             </Button>
             {index !== myConversations.length - 1 && (

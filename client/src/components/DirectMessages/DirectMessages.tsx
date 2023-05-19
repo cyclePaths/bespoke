@@ -109,6 +109,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
   const [storedNotificationSenderId, setStoredNotificationSenderId] = useState(null);
   const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
+  const [showTextField, setShowTextField] = useState(true);
   // const [showConversations, setShowConversations] = React.useState(true);
 
 
@@ -401,6 +402,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
         setShowMessageContainer={setShowMessageContainer}
         setMessages={setMessages}
         senderName={senderName}
+        setShowTextField={setShowTextField}
       ></SearchUsers>
 
       <Conversations
@@ -414,6 +416,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
         setIsReceiverSelected={setIsReceiverSelected}
         showConversations={showConversations}
         setShowConversations={setShowConversations}
+        setShowTextField={setShowTextField}
       />
       {/* {isReceiverSelected && showMessageContainer && ( */}
       {((isReceiverSelected || isSenderSelected) && showMessageContainer) && (
@@ -436,7 +439,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
               />
             ))}
           </div>
-
+          {showTextField && (
           <div className={classes.inputContainer}>
             <TextField
             fullWidth
@@ -467,6 +470,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
               Send
             </Button>
           </div>
+        )}
         </Paper>
       )}
 
