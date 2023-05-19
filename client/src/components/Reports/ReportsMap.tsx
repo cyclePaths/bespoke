@@ -5,8 +5,9 @@ import axios from 'axios';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
-import { defaultMapContainerStyle } from '../BikeRoutes/Utils';
+import { defaultMapContainerStyle, darkModeOptions, defaultOptions } from '../BikeRoutes/Utils';
 import {
+  Theme,
   Tooltip,
   Box,
   Drawer,
@@ -25,6 +26,13 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { Card, CardContent } from '@mui/material';
 import CreateReport from './CreateReport';
+import Typography from '@mui/material/Typography';
+import 'dayjs/locale/en'; // Import the locale you want to use for month names
+import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
+import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
+
+dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
+dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
 
 dayjs.extend(utc);
 
@@ -72,7 +80,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
     setMap(map);
   };
 
-  const { user, geoLocation } = useContext(UserContext);
+  const { user, geoLocation, isDark } = useContext(UserContext);
   const options = {
     disableDefaultUI: true,
     styles: [
@@ -399,7 +407,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                     </p>
 
                     {selectedReport.imgUrl && (
-                      <img className='report-image'
+                      <img
+                        className='report-image'
                         src={selectedReport.imgUrl}
                         alt='Report image'
                         style={{
@@ -411,11 +420,41 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                       />
                     )}
 
-                    <p className='report-date'>
-                      {dayjs(selectedReport.createdAt).format('DD/MM/YYYY')}
-                    </p>
-                    <p className='report-author'>{selectedReport.author.name}:</p>
-                    <p className='report-body'>{selectedReport.body}</p>
+                    <Card sx={{ minWidth: 275, my: '0.5rem' }}>
+                      <CardContent>
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            textAlign: 'right',
+                            marginTop: '0.25rem',
+                          }} // Reduce margin-top
+                          color='text.secondary'
+                        >
+                          <p className='report-date'>
+                            {dayjs(selectedReport.createdAt).format(
+                              'MMMM D, YYYY'
+                            )}
+                          </p>
+                        </Typography>
+                        <Typography variant='body2'>
+                          <p className='report-body'>{selectedReport.body}</p>
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            textAlign: 'right',
+                            marginBottom: '0.25rem',
+                          }} // Reduce margin-bottom
+                          color='text.secondary'
+                          gutterBottom
+                        >
+                          <p className='report-author'>
+                            -{selectedReport.author.name}
+                          </p>
+                        </Typography>
+                      </CardContent>
+                    </Card>
+
                     <Tooltip title='Archive Report'>
                       <ArchiveIcon
                         onClick={() => handleButtonClick(selectedReport.id)}
@@ -432,7 +471,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                 center={userCenter}
                 zoom={15}
                 onLoad={onLoad}
-                options={options as google.maps.MapOptions}
+                options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
+
               />
             </Box>
           </Box>
