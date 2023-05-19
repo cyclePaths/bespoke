@@ -6,7 +6,7 @@ const Comment = (props) => {
 
   return (
     <div className='bulletin' style={{backgroundColor: 'rgb(87, 161, 103)', marginTop: '5px'}}>
-      <div className='bulletinTopic' style={{ paddingLeft:'10px'}}><i>{commentCreator}</i> -- {formattedDate}</div>
+      <div className='bulletinTopic' style={{ paddingLeft:'10px'}}><i>{commentCreator} -- {formattedDate}</i></div>
       <div style={{ display: 'inline-block', marginTop: '5px', paddingLeft:'10px', paddingRight:'10px'}} className='commentText'>{commentText}</div>
     </div>
   );
