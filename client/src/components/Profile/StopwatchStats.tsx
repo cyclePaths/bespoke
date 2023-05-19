@@ -49,14 +49,11 @@ const StopwatchStats = ({
   useEffect(() => {
     axios.get('/profile/weight')
       .then(({ data }) => {
-        console.log(data)
        setWeight(data.weight)
       })
       .catch((err) => {
         console.log(err);
       })
-    console.log('h', hours)
-    console.log('m', minutes)
   }, [])
 
   const workoutStats = () => {
@@ -75,7 +72,6 @@ const StopwatchStats = ({
       })
       .then((response) => {
 
-        // console.log('this response', response)
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
@@ -108,7 +104,6 @@ const StopwatchStats = ({
           },
         });
 
-        // console.log('check res', response);
         axios
           .post('profile/workout', {
             activity: workout,
