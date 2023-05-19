@@ -151,17 +151,23 @@ const Forecast = ({
       );
     }
     //show temperature +/- if significant gain/loss of temperature since last hour
-    if (previousTemperature !== 10000) {
+    if (previousTemperature !== 1000) {
+      let brightness = 3;
       if (temperatureMeasurementUnit === 'fahrenheit') {
         if (apparentTemperature >= previousTemperature + 5) {
           return (
             <ConditionalHelperIcon
+              bright={brightness}
               src={weatherIcons.misc.thermometer.warmer}
             ></ConditionalHelperIcon>
           );
         } else if (apparentTemperature <= previousTemperature - 5) {
+          if (isDark) {
+            brightness = 15;
+          }
           return (
             <ConditionalHelperIcon
+              bright={brightness}
               src={weatherIcons.misc.thermometer.colder}
             ></ConditionalHelperIcon>
           );
@@ -170,12 +176,17 @@ const Forecast = ({
         if (apparentTemperature >= previousTemperature + 2.75) {
           return (
             <ConditionalHelperIcon
+              bright={brightness}
               src={weatherIcons.misc.thermometer.warmer}
             ></ConditionalHelperIcon>
           );
         } else if (apparentTemperature <= previousTemperature - 2.75) {
+          if (isDark) {
+            brightness = 15;
+          }
           return (
             <ConditionalHelperIcon
+              bright={brightness}
               src={weatherIcons.misc.thermometer.colder}
             ></ConditionalHelperIcon>
           );
@@ -257,7 +268,7 @@ const Forecast = ({
             <MainTemperatureText>
               <strong>{Math.round(temperature)}</strong>
             </MainTemperatureText>
-            <BigTemperatureHelperIcon src={temperatureUnit} />
+            <BigTemperatureHelperIcon src={temperatureUnit} isDark={isDark} />
           </MainTemperature>
         </MainTemperatureFrame>
       </ForecastBit>
@@ -268,7 +279,7 @@ const Forecast = ({
             <strong>{Math.round(apparentTemperature)}</strong>
           </AdjustedTemperatureText>
         </AdjustedTemperature>
-        <AdjustedTemperatureHelperIcon src={temperatureUnit} />
+        <AdjustedTemperatureHelperIcon src={temperatureUnit} isDark={isDark} />
       </AdjustedTemperature>
       <WeatherDescription>{weatherDescription}</WeatherDescription>
       <ForecastStatsBox isDark={isDark}>
