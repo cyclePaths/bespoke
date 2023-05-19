@@ -146,10 +146,10 @@ const RouteList = styled.div`
 // Home Page stuff //
 const StatsWrapper = styled.span<DarkModeHelperProps>`
   display: flex;
-  flex-flow: column nowrap;
   align-items: center;
-  max-width: 50%;
-  margin-left: 20px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin: 10px;
 `;
 
 const RecentRidesHeader = styled.header<DarkModeHelperProps>`
@@ -440,10 +440,9 @@ const HomePageCompWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const GoHomeIcon = styled.img<DarkModeHelperProps>`
-  width: 77%;
-  position: absolute;
-  top: 59%;
+const LeaderBoardDirections = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 // Misc styled components
@@ -581,7 +580,7 @@ export {
   BandAid,
   RouteAlerts,
   HomePageCompWrapper,
-  GoHomeIcon,
+  LeaderBoardDirections,
   ForecastRowContainerforHome,
   HomeWeatherWidgetHolder,
   WeatherWidgetWrapper,

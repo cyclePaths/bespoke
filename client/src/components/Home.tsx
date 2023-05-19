@@ -13,7 +13,7 @@ import {
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
-import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps } from '@mui/material';
+import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
@@ -89,25 +89,30 @@ const Home = ({
           </HomeWeatherWidgetHolder>
         </HomePageCompWrapper>
         <StatsWrapper>
-          <Card>
-            <CardHeader title="Most Recent Route"/>
+          <Card sx={{ margin: '10px', backgroundColor: isDark ? '#cacaca' : '#ececec'}}>
+            <CardHeader title="Most Recent Route" sx={{flexDirection: 'column'}}/>
               <CardContent>
                 <Typography paragraph sx={{ textAlign: 'center' }}>
                   {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
                 </Typography>
               </CardContent>
           </Card>
-          <IconButton onClick={() => handleLeaderBoard()}>
-            <EmojiEventsIcon
-              sx={{ color: isDark ? (leaderBoard ? '#ffff00' : '#ececec') : (leaderBoard ? '#ffff00' : '#757575') }}
-            />
-          </IconButton>
+          <Card sx={{ margin: '10px', maxWidth: '50%', backgroundColor: isDark ? '#cacaca' : '#ececec'}}>
+            <CardHeader title="LeaderBoards" sx={{paddingBottom: '0px', textAlign: 'center'}}/>
+            <CardContent sx={{paddingBottom: '0px'}}>
+              <Typography sx={{textAlign: 'center'}}>
+                See our current top 10 users in our selected categories
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" onClick={handleLeaderBoard}>See all LeaderBoards</Button>
+            </CardActions>
+          </Card>
         </StatsWrapper>
-
         <LeaderBoardPopout
-        openLeaderBoard={openLeaderBoard}
-        setOpenLeaderBoard={setOpenLeaderBoard}
-        setLeaderBoard={setLeaderBoard}
+          setLeaderBoard={setLeaderBoard}
+          setOpenLeaderBoard={setOpenLeaderBoard}
+          openLeaderBoard={openLeaderBoard}
         >
           <LeaderBoard />
         </LeaderBoardPopout>
