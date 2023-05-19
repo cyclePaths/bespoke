@@ -193,10 +193,10 @@ const Navbar = () => {
           />
           <BottomNavigationAction
             label='Report'
-            style={{ minWidth: '0px', color: report ? '#f9a825' : '#757575' }}
+            style={{ minWidth: '0px', color: report ? '#f44336' : '#757575' }}
             icon={
               <ReportProblemIcon
-                sx={{ color: isDark ? (report ? '#f9a825' : '#ececec') : (report ? '#f9a825' : '#757575') }}
+                sx={{ color: isDark ? (report ? '#f44336' : '#ececec') : (report ? '#f44336' : '#757575') }}
               />
             }
             component={Link}
