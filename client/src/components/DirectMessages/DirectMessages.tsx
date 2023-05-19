@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -14,15 +15,19 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
+import { UserContext } from '../../Root';
+import DMNotifications from 'client/src/DMNotifications';
 
-interface Message {
+export interface Message {
   id: number;
   senderId: number;
   senderName: string;
   receiverId: number;
   receiverName: string;
   text: string;
-  fromMe: boolean;
+  // fromMe: boolean;
+  userId: number;
+  isNotificationClicked: boolean;
 }
 
 interface SelectedUser {
@@ -60,8 +65,14 @@ interface SelectedUser {
   totalLikesReceived: number;
 }
 
-function Message({ text, fromMe }: Message) {
+
+
+// function Message({ text, fromMe }: Message) {
+  function Message({ id, senderId, senderName, receiverId, receiverName, text, userId }: Message) {
+
   const classes = useStyles();
+  // const { id: userId } = useContext(UserContext);
+  const fromMe = senderId === userId;
 
   return (
     <Paper
@@ -74,7 +85,7 @@ function Message({ text, fromMe }: Message) {
   );
 }
 
-function DirectMessages() {
+function DirectMessages({ showConversations, setShowConversations }) {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -86,30 +97,71 @@ function DirectMessages() {
   const loading = open && options.length === 0;
   const [userId, setUserId] = useState(0);
   const [receiverId, setReceiverId] = useState(0);
+  const [receiverName, setReceiverName] = useState('');
+  const [senderId, setSenderId] = useState(0);
+  const [senderName, setSenderName] = useState('');
   const [receiver, setReceiver] = useState<SelectedUser>();
   const [name, setName] = useState('');
   const [messageThread, setMessageThread] = useState<Message[]>([]);
   const [isReceiverSelected, setIsReceiverSelected] = useState(false);
+  const [isSenderSelected, setIsSenderSelected] = useState(false);
   const [showMessageContainer, setShowMessageContainer] = useState(false);
-  const [loadingM, setLoadingM] = useState(false);
+  const [storedNotificationSenderId, setStoredNotificationSenderId] = useState(null);
+  const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
+  const [isNotificationClicked, setIsNotificationClicked] = useState(false);
+  const [showTextField, setShowTextField] = useState(true);
+  // const [showConversations, setShowConversations] = React.useState(true);
 
+
+  const fromMe = senderId === userId;
 
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
+  const location = useLocation();
+
+  // const notificationReceiverId = location?.state?.notificationReceiverId || 0;
+  let notificationSenderId = location?.state?.notificationSenderId;
+  let notificationSenderName = location?.state?.notificationSenderName;
+
 
   // const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
+  useEffect(() => {
+
+    console.log('setNotification', isNotificationClicked);
+  }, [isNotificationClicked])
+
+  useEffect(() => {
+    if (notificationSenderId !== undefined) {
+      setReceiverId(notificationSenderId);
+    }
+    console.log('notificationSenderId', notificationSenderId);
+  }, [notificationSenderId])
+
+
+  useEffect(() => {
+    if (notificationSenderName !== undefined) {
+      setReceiverName(notificationSenderName);
+    }
+    console.log('notificationSenderId', notificationSenderId);
+  }, [notificationSenderId])
+
+
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
 
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
       setReceiver(receiver);
+      setReceiverName(receiver.name);
+      setShowMessageContainer(true);
       setIsReceiverSelected(true);
-      // await handleReceiverData(receiver.id);
+      setUserIsSelectingReceiver(true);
     } else {
       setReceiver(undefined);
       setIsReceiverSelected(false);
+      setShowMessageContainer(false);
     }
   };
 
@@ -125,7 +177,7 @@ function DirectMessages() {
       .get('/profile/user')
       .then(({ data }) => {
         const { id, name } = data;
-        console.log(id);
+        // console.log(id);
         setUserId(id);
         setName(name);
       })
@@ -138,31 +190,6 @@ function DirectMessages() {
     }
   }, [receiver]);
 
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:8080');
-
-  //   // Store the Socket.IO client instance in the state variable
-  //   setSocket(newSocket);
-
-  //   // Join the room for the current user and receiver
-  //   newSocket.emit('joinRoom', { userId, receiverId });
-
-  //   // Listen for incoming 'message' events
-  //   newSocket.on('message', (newMessage) => {
-  //     // Add the new message to the messages array if it's from the targeted receiver
-  //     if (
-  //       newMessage.senderId === receiverId &&
-  //       newMessage.receiverId === userId
-  //     ) {
-  //       setMessage(newMessage);
-  //     }
-  //   });
-
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, [userId, receiverId]);
 
   useEffect(() => {
     if (socket) {
@@ -185,38 +212,36 @@ function DirectMessages() {
 
 
 
-
-
-
-
   useEffect(() => {
     if (message) {
       setMessages((prevMessages) => [...prevMessages, message]);
     }
   }, [message]);
 
+///////Below: Loading Messages Thread when user is selected/////////
+
 
   const loadMessages = async () => {
-    // Clear out previous messages and hide the container
-    setMessages([]);
-    setShowMessageContainer(false);
+
 
     try {
       const thread = await axios.get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
       });
       const { data } = thread;
+      const sortedMessages = data.sort((a, b) => a.id - b.id);
+      // console.log('receiverThread', thread)
+
       // Now set the new messages and show the container
-      setMessages(data);
+      setMessages(sortedMessages);
+      // console.log('messages', messages)
+      // setReceiver(data[0]?.receiver); // Set the receiver based on the retrieved messages
+      // setIsReceiverSelected(true);
       setShowMessageContainer(true);
-      setLoadingM(false);
     } catch (err) {
       console.log(err);
-      setLoadingM(false);
     }
   };
-
-
 
   useEffect(() => {
     if (receiverId !== 0) {
@@ -224,26 +249,89 @@ function DirectMessages() {
     }
   }, [receiverId]);
 
+
+  // useEffect(() => {
+  //   if (receiverId !== 0 || senderId !== 0) {
+  //     loadMessages();
+  //   }
+  // }, [receiverId, senderId]);
+
+///////Above: Loading Messages Thread when user is selected/////////
+
+///////Below: Loading Messages Thread when Notification is clicked/////////
+
+
+  useEffect(() => {
+    // if we have notificationSenderId available, and it's different from the one stored in state
+    if (notificationSenderId && notificationSenderId !== storedNotificationSenderId) {
+      setSenderId(notificationSenderId);  // update senderId
+      setSenderName(notificationSenderName);
+      setStoredNotificationSenderId(notificationSenderId); // remember this notificationSenderId
+      loadNotificationMessages();  // run your function
+    }
+    // setIsNotificationClicked(true);
+  }, [notificationSenderId]);
+
+  useEffect(() => {
+    console.log('notificationSender', notificationSenderName);
+  }, [senderName])
+
+
+  const loadNotificationMessages = async () => {
+    // if (senderId !== 0) {
+      // console.log('sender', senderId)
+      setIsSenderSelected(true);
+      try {
+        const thread = await axios.get('/dms/retrieveNotificationMessages', {
+
+          params: { senderId: senderId },
+        });
+        console.log('notification thread', thread)
+        const { data } = thread;
+        const sortedMessages = data.sort((a, b) => a.id - b.id);
+
+        // Now set the new messages and show the container
+        setMessages(sortedMessages);
+        console.log('Messages', messages)
+
+        setShowMessageContainer(true);
+        // setIsSenderSelected(false);
+      } catch (err) {
+        console.log('Notification error', err);
+      }
+    // }
+
+  };
+
+
+  useEffect(() => {
+    if (senderId !== 0) {
+      loadNotificationMessages();
+    }
+}, [senderId,isSenderSelected]);  // We watch for senderId changes here
+
+///////Above: Loading Messages Thread when Notification is clicked/////////
+
   /// End of Load Mounting ///
 
   const handleSendMessage = () => {
-    if (!socket || !receiver) {
-      return;
-    }
-    console.log(message);
+    // if (!socket || !receiver) {
+    //   return;
+    // }
     const newMessage = {
       senderId: userId,
       senderName: name,
-      receiverId: receiver?.id ?? 0,
-      receiverName: receiver.name,
+      // receiverId: (receiver?.id ?? 0) || notificationSenderId,
+      // receiverName: receiver?.name || notificationSenderName,
+      receiverId: receiverId,
+      receiverName: receiverName,
       text: messageInput,
       fromMe: true,
     };
 
     // Emit a 'message' event to the server
-    socket.emit('message', newMessage);
+    socket?.emit('message', newMessage);
 
-    // handleMessageData(newMessage);
 
     axios
       .post('/dms/message', {
@@ -271,9 +359,33 @@ function DirectMessages() {
   //   };
   // }, [socket]);
 
+  const handleNavigationAway = () => {
+    setIsSenderSelected(false); // Reset the flag when user navigates away
+    setIsNotificationClicked(false);
+    setShowMessageContainer(false);
+    notificationSenderId = undefined;
+    notificationSenderName = undefined;
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      handleNavigationAway();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+
+
+
   return (
     <BandAid>
       {/* <div>{`Hello ${name}!`}</div> */}
+      {/* <DMNotifications /> */}
 
       <SearchUsers
         open={open}
@@ -289,9 +401,25 @@ function DirectMessages() {
         setIsReceiverSelected={setIsReceiverSelected}
         setShowMessageContainer={setShowMessageContainer}
         setMessages={setMessages}
+        senderName={senderName}
+        setShowTextField={setShowTextField}
       ></SearchUsers>
-      {/* <Conversations /> */}
-      {isReceiverSelected && showMessageContainer && (
+
+      <Conversations
+        setSenderId={setSenderId}
+        setSenderName={setSenderName}
+        setReceiverId={setReceiverId}
+        setReceiverName={setReceiverName}
+        loadMessages={loadMessages}
+        setShowMessageContainer={setShowMessageContainer}
+        isReceiverSelected={isReceiverSelected}
+        setIsReceiverSelected={setIsReceiverSelected}
+        showConversations={showConversations}
+        setShowConversations={setShowConversations}
+        setShowTextField={setShowTextField}
+      />
+      {/* {isReceiverSelected && showMessageContainer && ( */}
+      {((isReceiverSelected || isSenderSelected) && showMessageContainer) && (
         <Paper className={classes.root} key={receiver?.id} >
           <div
           className={classes.messagesContainer}
@@ -305,11 +433,13 @@ function DirectMessages() {
                 receiverId={message.receiverId}
                 receiverName={message.receiverName}
                 text={message.text}
-                fromMe={message.senderId === userId}
+                // fromMe={message.senderId === userId}
+                userId={userId}
+                isNotificationClicked={isNotificationClicked}
               />
             ))}
           </div>
-
+          {showTextField && (
           <div className={classes.inputContainer}>
             <TextField
             fullWidth
@@ -340,8 +470,10 @@ function DirectMessages() {
               Send
             </Button>
           </div>
+        )}
         </Paper>
       )}
+
     </BandAid>
   );
 }

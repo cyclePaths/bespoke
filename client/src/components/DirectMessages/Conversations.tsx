@@ -1,171 +1,3 @@
-// import * as React from 'react';
-// import axios from 'axios';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import Divider from '@mui/material/Divider';
-// import ListItemText from '@mui/material/ListItemText';
-// import ListItemAvatar from '@mui/material/ListItemAvatar';
-// import Avatar from '@mui/material/Avatar';
-// import Typography from '@mui/material/Typography';
-
-// interface Message {
-//   id: number;
-//   senderId: number;
-//   receiverId: number;
-//   text: string;
-//   fromMe: boolean;
-// }
-
-// interface MessageList {
-//   id: number;
-//   senderId: number;
-//   receiverId: number;
-//   text: string;
-//   messages: Message[];
-// }
-
-
-// const Conversations = () => {
-//   const [users, setUsers] = React.useState();
-//   const [convos, setConvos] = React.useState<MessageList[]>([]);
-
-//   const getConvos = async () => {
-//     try {
-//       const conversations = await axios.get('/dms/conversations');
-//       console.log('Thread', conversations);
-//       const { data } = conversations;
-
-//       setConvos(data);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-
-//   React.useEffect(() => {
-//     axios
-//       .get('/dms/findUsers')
-//       .then(({ data }) => {
-//         // console.log('Users', data)
-//         setUsers(data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-
-//     getConvos();
-//   }, []);
-
-//   React.useEffect(() => {
-//     console.log('Users', users);
-//     console.log('converstions2', convos);
-//   }, [users, convos]);
-
-
-//   const groupedMessages = {};
-// for (const message of convos) {
-//   const key = [message.senderId, message.receiverId].sort().join('_');
-//   if (!groupedMessages[key]) {
-//     groupedMessages[key] = [];
-//   }
-//   groupedMessages[key].push(message);
-// }
-// console.log("library", groupedMessages)
-
-//   const convoList = Object.entries(groupedMessages).map(([key, messages]) => {
-//   const [senderId, receiverId] = key.split('_').map(Number);
-//   const lastMessage = messages[messages.length - 1];
-//   const receiver = users.find((user) => user.id === receiverId);
-
-
-
-//   return (
-//     <List
-//       sx={{ width: '100%', marginTop: '55px', bgcolor: 'rgba(11, 35, 1, 0.5)' }}
-//     >
-//       {convos &&
-//         convos.map((convo) => {
-//           const lastMessage = convo[convos.length - 1];
-//           return (
-//             <React.Fragment key={convo.id}>
-//               <ListItem alignItems='flex-start'>
-//                 <ListItemAvatar>
-//                   <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-//                 </ListItemAvatar>
-//                 <ListItemText
-//                   primary={convo.receiverId}
-//                   secondary={
-//                     <React.Fragment>
-//                       <Typography
-//                         sx={{ display: 'inline' }}
-//                         component='span'
-//                         variant='body2'
-//                         color='text.primary'
-//                       >
-//                         Ali Connors
-//                       </Typography>
-//                       {/* {` — ${lastMessage.text}…`} */}
-//                     </React.Fragment>
-//                   }
-//                 />
-//               </ListItem>
-//               ;
-//             </React.Fragment>
-//           );
-//         })}
-
-//       {/* <Divider variant="inset" component="li" />
-//       <ListItem alignItems="flex-start">
-//         <ListItemAvatar>
-//           <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-//         </ListItemAvatar>
-//         <ListItemText
-//           primary="Summer BBQ"
-//           secondary={
-//             <React.Fragment>
-//               <Typography
-//                 sx={{ display: 'inline' }}
-//                 component="span"
-//                 variant="body2"
-//                 color="text.primary"
-//               >
-//                 to Scott, Alex, Jennifer
-//               </Typography>
-//               {" — Wish I could come, but I'm out of town this…"}
-//             </React.Fragment>
-//           }
-//         />
-//       </ListItem>
-//       <Divider variant="inset" component="li" />
-//       <ListItem alignItems="flex-start">
-//         <ListItemAvatar>
-//           <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-//         </ListItemAvatar>
-//         <ListItemText
-//           primary="Oui Oui"
-//           secondary={
-//             <React.Fragment>
-//               <Typography
-//                 sx={{ display: 'inline' }}
-//                 component="span"
-//                 variant="body2"
-//                 color="text.primary"
-//               >
-//                 Sandra Adams
-//               </Typography>
-//               {' — Do you have Paris recommendations? Have you ever…'}
-//             </React.Fragment>
-//           }
-//         />
-//       </ListItem> */}
-//     </List>
-//   );
-// };
-
-// export default Conversations;
-
-
-
-
 import * as React from 'react';
 import axios from 'axios';
 import List from '@mui/material/List';
@@ -175,99 +7,218 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+// import DMNotifications from '../../DMNotifications';
 
-interface Message {
-  id: number;
-  senderId: number;
-  receiverId: number;
-  text: string;
+interface Conversation {
+  createdAt: string;
   fromMe: boolean;
-}
-
-interface Messages {
   id: number;
-  senderId: number;
+  receiver: {
+    id: number;
+    email: string;
+    name: string;
+    thumbnail: string;
+    weight: null | number;
+    // Add other properties as needed
+  };
   receiverId: number;
+  receiverName: string;
+  sender: {
+    id: number;
+    email: string;
+    name: string;
+    thumbnail: string;
+    weight: number;
+    // Add other properties as needed
+  };
+  senderId: number;
+  senderName: string;
   text: string;
-  messages: Message[];
 }
 
-interface User {
-  id: number;
-  name: string;
+
+interface ConversationsProps {
+  setSenderId: (senderId: number) => void;
+  setSenderName: (senderName: string) => void;
+  setReceiverId: (receiverId: number) => void;
+  setReceiverName: (receiverName: string) => void;
+  loadMessages: () => void;
+  setShowMessageContainer: (boolean) => void;
+  isReceiverSelected: boolean;
+  setIsReceiverSelected: (isReceiverSelected: boolean) => void;
+  showConversations: boolean;
+  setShowConversations:(showConversations: boolean) => void;
+  setShowTextField:(boolean) => void;
 }
 
-const Conversations = () => {
-  const [users, setUsers] = React.useState<User[]>([]);
-  const [messages, setMessages] = React.useState<Message[]>([]);
 
-  React.useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const { data } = await axios.get('/dms/findUsers');
-        setUsers(data);
-      } catch (err) {
+const Conversations: React.FC<ConversationsProps> = ({
+  setSenderId,
+  setSenderName,
+  setReceiverId,
+  setReceiverName,
+  loadMessages,
+  setShowMessageContainer,
+  isReceiverSelected,
+  setIsReceiverSelected,
+  showConversations,
+  setShowConversations,
+  setShowTextField,
+}) => {
+  const [myConversations, setMyConversations] = React.useState<Conversation[]>(
+    []
+  );
+  const [myUserId, setMyUserId] = React.useState(0);
+  // const [showConversations, setShowConversations] = React.useState(true);
+  const [showMessageThread, setShowMessageThread] = React.useState(false);
+  // const [isHandleConvoClicked, setIsHandleConvoClicked] = React.useState(false);
+  const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
+
+
+
+  // let myConversations = []
+  const convos = () => {
+    axios
+      .get('/dms/conversations')
+      .then(({ data }) => {
+        console.log('convos', data);
+        setMyConversations(data);
+        // data.forEach((current) => {
+        //   myConversations.push(current)
+        // })
+        console.log('myConversations', myConversations);
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    };
+      });
+  };
 
-    const fetchMessages = async () => {
-      try {
-        const { data } = await axios.get('/dms/messages');
-        setMessages(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
 
-    fetchUsers();
-    fetchMessages();
-  }, []);
+  const handleConvoClick = async (convo: Conversation) => {
+    setSelectedConversationId(null);
+    // await loadMessages();
+    // setIsHandleConvoClicked(true);
+    setSenderId(convo.senderId);
+    // setSenderName(convo.senderName);
+    setReceiverId(convo.receiverId);
+    console.log("Selected Sender ID: ", convo.senderId);
+    console.log("Selected Receiver ID: ", convo.receiverId);
+    setReceiverName(convo.receiverName);
+    setSelectedConversationId(convo.id);
+    setShowConversations(false);
+    setShowMessageThread(true);
+    setShowTextField(true);
+    setIsReceiverSelected(true);
 
-  const groupedMessages = {};
-  for (const message of messages) {
-    const key = [message.senderId, message.receiverId].sort().join('_');
-    if (!groupedMessages[key]) {
-      groupedMessages[key] = [];
-    }
-    groupedMessages[key].push(message);
+
+      await loadMessages();
+
   }
 
-  // const convoList = Object.entries(groupedMessages).map(([key, messages]) => {
-  //   const [senderId, receiverId] = key.split('_').map(Number);
-  //   const lastMessage = messages[messages.length - 1];
-  //   const receiver = users.find((user) => user.id === receiverId);
-  //   return (
-  //     <React.Fragment key={key}>
-  //       <ListItem alignItems='flex-start'>
-  //         <ListItemAvatar>
-  //           <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-  //         </ListItemAvatar>
-  //         <ListItemText
-  //           primary={receiver.name}
-  //           secondary={
-  //             <React.Fragment>
-  //               <Typography
-  //                 sx={{ display: 'inline' }}
-  //                 component='span'
-  //                 variant='body2'
-  //                 color='text.primary'
-  //               >
-  //                 {lastMessage.fromMe ? 'You' : receiver.name}
-  //               </Typography>
-  //               {` — ${lastMessage.text}…`}
-  //             </React.Fragment>
-  //           }
-  //         />
-  //       </ListItem>
-  //     </React.Fragment>
-  //   );
-  // });
+
+  React.useEffect(() => {
+    const isNotEdge = !window.navigator.userAgent.includes('Edg');
+
+    if (isReceiverSelected && isNotEdge) {
+      console.log('check me');
+      loadMessages();
+    }
+  }, [isReceiverSelected]);
+
+
+  const handleBackClick = () => {
+    setShowConversations(true); // Show the conversation list
+    setShowMessageThread(false); // Hide the message thread
+
+    setSenderId(0);
+    setReceiverId(0);
+    setIsReceiverSelected(false);
+    setShowTextField(false);
+    setShowMessageContainer(false);
+  };
+
+  if (isReceiverSelected === false) {
+    setShowMessageContainer(false);
+    // setReceiverId(0);
+  }
+
+  React.useEffect(() => {
+
+    axios.get('/profile/user')
+      .then(({ data }) => {
+        setMyUserId(data.id)
+      })
+      .catch((err) => {
+
+      })
+
+    convos();
+    // console.log('convos?', myConversations);
+  }, []);
+
+
+  // React.useEffect(() => {
+  //   if (isReceiverSelected) {
+  //     setShowMessageContainer(true);
+  //   }
+  // }, [isReceiverSelected]);
+
 
   return (
-    <List sx={{ width: '100%', marginTop: '55px', bgcolor: 'rgba(11, 35, 1, 0.5)' }}>
-      {/* {convoList} */}
-    </List>
+    <>
+    {!isReceiverSelected && showConversations ? (
+      <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'gray', margin: '0 auto' }}>
+        {myConversations.map((convo, index) => (
+          <React.Fragment key={index}>
+            <Button
+              component='li'
+              onClick={() => handleConvoClick(convo)}
+              sx={{ width: '100%', textAlign: 'left' }}
+            >
+              <ListItem alignItems='flex-start'>
+                <ListItemAvatar>
+                  <Avatar
+                    alt={convo.senderId === myUserId ? convo.receiverName : convo.senderName}
+                    src={convo.senderId === myUserId ? convo.receiver.thumbnail : convo.sender.thumbnail}
+                  />
+                </ListItemAvatar>
+                <Typography variant="body2" sx={{ textTransform: 'none' }}>
+                <ListItemText
+                  primary={convo.receiverName}
+                  secondary={
+                    <React.Fragment>
+
+                      {convo.text.length > 35
+                        ? `${convo.text.slice(0, 35)}...`
+                        : convo.text}
+                    </React.Fragment>
+                  }
+                />
+                </Typography>
+              </ListItem>
+            </Button>
+            {index !== myConversations.length - 1 && (
+              <Divider variant='inset' component='li' />
+            )}
+          </React.Fragment>
+        ))}
+      </List>
+    ) : (
+      <Fab
+        sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+        color='secondary'
+        size='small'
+        aria-label='back'
+        onClick={handleBackClick}
+      >
+        <ArrowBackIosNewIcon fontSize='small' />
+      </Fab>
+    )}
+    {/* <DMNotifications setShowConversations={setShowConversations} /> */}
+  </>
   );
 };
 

@@ -22,17 +22,20 @@ import {
   Typography,
   IconButton,
   IconButtonProps,
+  Button,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
 import { styled } from '@mui/material/styles';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
+// For the expandable cards on the home page //
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -57,6 +60,13 @@ const Home = ({
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
+  const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+
+  const handleLeaderBoard = () => {
+    setOpenLeaderBoard(true);
+    setLeaderBoard(true);
+  };
 
   const handleRouteInfoExpand = () => {
     setExpanded(!expanded);
@@ -90,31 +100,54 @@ const Home = ({
           </HomeWeatherWidgetHolder>
         </HomePageCompWrapper>
         <StatsWrapper>
-          <Card>
-            <CardHeader title='Most Recent Route' />
-            <CardActions disableSpacing>
-              <IconButton>
-                <ExpandMore
-                  expand={expanded}
-                  onClick={handleRouteInfoExpand}
-                  aria-expanded={expanded}
-                  aria-label='show route info'
-                >
-                  <ExpandMoreIcon />
-                </ExpandMore>
-              </IconButton>
+          <Card
+            sx={{
+              margin: '10px',
+              backgroundColor: isDark ? '#cacaca' : '#ececec',
+            }}
+          >
+            <CardHeader
+              title='Most Recent Route'
+              sx={{ flexDirection: 'column' }}
+            />
+            <CardContent>
+              <Typography paragraph sx={{ textAlign: 'center' }}>
+                {routeInfo
+                  ? routeInfo.name
+                  : 'You have not been on a route yet. Please Search a route or create a new route'}
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card
+            sx={{
+              margin: '10px',
+              maxWidth: '50%',
+              backgroundColor: isDark ? '#cacaca' : '#ececec',
+            }}
+          >
+            <CardHeader
+              title='LeaderBoards'
+              sx={{ paddingBottom: '0px', textAlign: 'center' }}
+            />
+            <CardContent sx={{ paddingBottom: '0px' }}>
+              <Typography sx={{ textAlign: 'center' }}>
+                See our current top 10 users in our selected categories
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size='small' onClick={handleLeaderBoard}>
+                See all LeaderBoards
+              </Button>
             </CardActions>
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-              <CardContent>
-                <Typography paragraph sx={{ textAlign: 'center' }}>
-                  {routeInfo
-                    ? routeInfo.name
-                    : 'You have not been on a route yet. Please Search a route or create a new route'}
-                </Typography>
-              </CardContent>
-            </Collapse>
           </Card>
         </StatsWrapper>
+        <LeaderBoardPopout
+          setLeaderBoard={setLeaderBoard}
+          setOpenLeaderBoard={setOpenLeaderBoard}
+          openLeaderBoard={openLeaderBoard}
+        >
+          <LeaderBoard />
+        </LeaderBoardPopout>
       </BandAid>
     </div>
   );

@@ -426,7 +426,6 @@ The code above is for the scroll wheel
   margin: 9px;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
   border-radius: 4px;
   width: 85%;
 }
@@ -440,13 +439,14 @@ The code above is for the scroll wheel
 }
 
 .leaderboardTitles {
-  background-color: #e0e0e0;
-  display: flex;
-  justify-content: center;
+  background-color: #ececec;
   margin-right: 40px;
   margin-left: 40px;
   border-radius: 4px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  padding-bottom: 5px;
+  text-align: center;
+  padding-top: 5px;
 }
 
 .leaderboard-value {
@@ -469,7 +469,7 @@ The code above is for the scroll wheel
 }
 
 .leaderBoxOverride {
-  background-color: #e0e0e0;
+  background-color: #ececec;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -749,10 +749,10 @@ The code above is for the Profile Stats feature
 .white-input {
   color: #fff;
 }
+
 .report-type {
-  font-family: 'Your Font', sans-serif; /* Replace 'Your Font' with the desired font name */
-  font-size: 16px; /* Adjust the font size as needed */
-  font-weight: bold; /* Set the desired font weight */
-  color: #000000; /* Set the desired text color */
-  /* Add any additional styling properties */
+  font-family: 'Your Font', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
 }

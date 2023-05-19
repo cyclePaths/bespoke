@@ -1,13 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { UserContext } from '../../Root';
-import { ThemeProvider, Typography, OutlinedInput, Button} from'@mui/material'
+import { ThemeProvider, OutlinedInput, Button} from'@mui/material'
 import themeBulletin from './ThemeBulletin'
 import AddEquipment from '../Equipment/AddEquipment'
 import axios from 'axios';
 
 
 
-const CreateBulletin = () => {
+const CreateBulletin = (props) => {
+    const { bulletins, setBulletins } = props
     const context = useContext(UserContext)
 
     const [topic, setTopic] = useState('')
@@ -28,9 +29,11 @@ const CreateBulletin = () => {
             topic,
             text
           })
-          .then(() => {
+          .then((response) => {
+            let submittedBulletin = response.data
             setTopic('');
             setText('')
+            props.updateBulletins(submittedBulletin)
           })
           .catch(() => alert('Unable to make Bulletin!'));
        } else {
