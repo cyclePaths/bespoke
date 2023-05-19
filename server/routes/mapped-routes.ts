@@ -43,8 +43,8 @@ BikeRoutes.post('/newRoute', (req, res) => {
           createdAt: new Date(),
         },
       })
-      .then(() => {
-        res.sendStatus(201);
+      .then((result) => {
+        res.status(201).send(result);
       })
       .catch((err) => {
         console.error('Failed to handle:', err);
@@ -106,6 +106,7 @@ BikeRoutes.get('/reports', async (req, res) => {
           gte: parseFloat(lng as string) - 0.04,
           lte: parseFloat(lng as string) + 0.04,
         },
+        published: true,
       },
       include: {
         comments: true,
@@ -368,7 +369,7 @@ BikeRoutes.delete('/deleteRoute/:routeId', async (req, res) => {
                 id: id,
               },
               data: {
-                totalLikesReceived: totalLikesReceived - likesCount,
+                totalLikesReceived: totalLikesReceived !== 0 ? totalLikesReceived - likesCount : 0,
               },
             })
             .then(() => {
@@ -399,5 +400,48 @@ BikeRoutes.delete('/deleteRoute/:routeId', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+BikeRoutes.put('/recentRoute', (req, res) => {
+  const { id } = req.user as User;
+  const { routeId } = req.body;
+
+  const recentRouteId = parseInt(routeId)
+  prisma.user.update({
+    where: { id: id },
+    data: {
+      recentRouteId: recentRouteId
+    }
+  })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(err => {
+      console.error('Failed to update user: ', err);
+      res.sendStatus(500);
+    })
+})
+
+BikeRoutes.get('/currentRoute', (req, res) => {
+  const { recentRouteId } = req.user as User;
+
+  if (recentRouteId !== null){
+    prisma.bikeRoutes.findUnique({
+      where: {
+        id: recentRouteId
+      }
+    })
+    .then(result => {
+      if (result) {
+        res.status(200).send(result)
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch(err => {
+      console.error('Failed to fetch last route: ', err);
+      res.sendStatus(500);
+    })
+  }
+})
 
 export default BikeRoutes;

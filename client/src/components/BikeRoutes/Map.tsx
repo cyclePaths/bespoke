@@ -159,11 +159,18 @@ const Map = ({
           privacy,
           userId: user.id,
         })
-        .then(() => {
+        .then(({data}) => {
           setSaveMessage(true);
+          // Timeout to make the message disappear correctly //
           setTimeout(() => {
             setSaveMessage(false);
           }, 2400);
+
+          axios.put('/bikeRoutes/recentRoute', {routeId: data.id})
+            .then(() => {})
+            .catch((err) => {
+              console.error('Failed to update most recent Routes: ', err);
+            })
         })
         .catch((err) => {
           console.error('Failed request:', err);
@@ -171,8 +178,8 @@ const Map = ({
     }
   };
 
+  // Map Ref for displaying a map
   const mapRef = useRef<GoogleMap>();
-
   const onLoad = useCallback((map): void => (mapRef.current = map), []);
 
   // End of Map Rendering //
@@ -283,6 +290,23 @@ const Map = ({
     }
   };
 
+  const exitListForm = () => {
+    const searchBar = document.getElementById('route-searcher');
+    const findHeader = document.getElementById('list');
+    const resultHeader = document.getElementById('results');
+    const emptyResult = document.getElementById('no-list');
+
+    setOpenSearch(false);
+    setCategory('');
+    setIsPrivate(false);
+    setRouteList([]);
+
+    findHeader!.style.display = 'none';
+    searchBar!.style.display = 'none';
+    resultHeader!.style.display = '';
+    emptyResult!.style.display = 'none';
+  };
+
   // Grab the address of the selected coordinates //
   useEffect(() => {
     if (selected) {
@@ -294,7 +318,7 @@ const Map = ({
 
   // Renders the directions and info window for the user's route when directions is populated //
   useEffect(() => {
-    if (directions) {
+    if (directions !== undefined) {
       let routeTotalDistance = 0;
       let routeTotalDuration = 0;
       directions.routes[0].legs.forEach((route) => {
@@ -313,31 +337,10 @@ const Map = ({
     }
   }, [directions]);
 
-  const exitListForm = () => {
-    const searchBar = document.getElementById('route-searcher');
-    const findHeader = document.getElementById('list');
-    const resultHeader = document.getElementById('results');
-    const emptyResult = document.getElementById('no-list');
-
-    setOpenSearch(false);
-    setCategory('');
-    setIsPrivate(false);
-
-    findHeader!.style.display = 'none';
-    searchBar!.style.display = 'none';
-    resultHeader!.style.display = '';
-    emptyResult!.style.display = 'none';
-    setRouteList([]);
-  };
-
   // Sets the center of the map upon page loading //
   useEffect(() => {
     if (geoLocation) {
       setUserCenter({ lat: geoLocation.lat, lng: geoLocation.lng });
-    }
-
-    return () => {
-      console.log('unmounted');
     }
   }, [geoLocation]);
 
@@ -347,7 +350,7 @@ const Map = ({
 
   useEffect(() => {
     if (startingPoint && destination && markers.length > 0 && routeClicked) {
-      // fetchDirections();
+      fetchDirections();
     } else if (
       startingPoint &&
       destination &&
@@ -357,10 +360,6 @@ const Map = ({
       fetchDirections();
     }
     setRouteClicked(false);
-
-    return () => {
-      console.log('unmounted');
-    }
   }, [startingPoint, destination, markers, routeClicked]);
 
   useEffect(() => {
@@ -374,14 +373,6 @@ const Map = ({
       setHomeCoordinates(undefined);
     }
   }, []);
-
-  useEffect(() => {
-    if (homeCoordinates === undefined) {
-      setTimeout(() => {
-        // fetchDirections();
-      }, 1000);
-    }
-  }, [homeCoordinates]);
 
   return (
     <div className='container'>
@@ -648,7 +639,7 @@ const Map = ({
           }}
           onClick={handleClearMap}
         >
-          <ClearAllIcon sx={{ color: isDark ? '#e74141' : '#bd0000' }} />
+          <ClearAllIcon sx={{ color: isDark ? '#e96767' : '#bd0000' }} />
         </Button>
       </RouteButtonContainer>
 

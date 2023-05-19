@@ -170,9 +170,8 @@ const Root = () => {
   //.........................................
 
   // Created User Info and Geolocation for context //
-  const [user, setUser] = useState<any>();
-  // const [reports, setReports] = useState<Report[]>([]);
-  const [geoLocation, setGeoLocation] = useState<any>();
+  const [user, setUser] = useState<User>();
+  const [geoLocation, setGeoLocation] = useState<geoLocation>();
   const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
   //holds all badge objects
@@ -235,8 +234,8 @@ const Root = () => {
           precipitationUnit: precipitationMeasurementUnit,
           windSpeedUnit: windSpeedMeasurementUnit,
           temperatureUnit: temperatureMeasurementUnit,
-          latitude: geoLocation.lat,
-          longitude: geoLocation.lng,
+          latitude: geoLocation!.lat,
+          longitude: geoLocation!.lng,
           numDaysToForecast: numDaysToForecast,
         },
       })
@@ -395,12 +394,10 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
   console.log('Received message:', newMessage);
 
   // Only set the state here, don't show notifications or navigate
-  if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
+  if (newMessage.senderId !== user?.id && newMessage.receiverId === user?.id) {
     setRootNewMessage(newMessage);
   }
 };
-
-
 
 
  /*
@@ -612,16 +609,7 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
     axios
       .get('auth/user')
       .then(({ data }) => {
-        setUser({
-          email: data.email,
-          id: data.id,
-          name: data.name,
-          thumbnail: data.thumbnail,
-          weight: data.weight,
-          homeAddress: data.homeAddress,
-          location_lat: parseFloat(data.location_lat),
-          location_lng: parseFloat(data.location_lng),
-        });
+        setUser(data);
         setIsDark(!data.theme);
       })
       .catch((err) => {
@@ -658,7 +646,7 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
   };
 
   useEffect(() => {
-    if (geoLocation) {
+    if (geoLocation !== undefined) {
       updateUserLocation(geoLocation);
       getForecasts();
     }
@@ -844,6 +832,8 @@ const fetchThisMonthReports = async () => {
 />
               {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='report' element={<Report />} />
+              <Route path="createReport" element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>} />
+              <Route path='reportsMap' element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />} />
             </Route>
           </Routes>
           {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}

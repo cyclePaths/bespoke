@@ -3,7 +3,10 @@ import axios from 'axios';
 import { UserContext } from '../../Root';
 import LeaderBoardList from './LeaderBoardList';
 import { useKeenSlider } from 'keen-slider/react';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'keen-slider/keen-slider.min.css';
+import { LeaderBoardDirections } from '../../StyledComp';
 
 export interface UserandValue {
   name: string;
@@ -29,6 +32,7 @@ const LeaderBoard = () => {
     created() {
       setLoaded(true);
     },
+    loop: true
   });
 
   const fetchUserByTotalLikes = () => {
@@ -97,12 +101,12 @@ const LeaderBoard = () => {
   return (
     <>
       <div className='navigation-wrapper'>
-        <div ref={sliderRef} className='keen-slider'>
+        <div ref={sliderRef} className='keen-slider' style={{height: '60vh'}}>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Liked Users</h2>
             <div className='leaderBoxOverride'>
               {top10Likes.map((user, i) => (
-                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+                <LeaderBoardList key={i} i={i} user={user} type='Like Users' />
               ))}
             </div>
           </div>
@@ -110,7 +114,7 @@ const LeaderBoard = () => {
             <h2 className='leaderboardTitles'>Top Travelers</h2>
             <div className='leaderBoxOverride'>
               {top10Miles.map((user, i) => (
-                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+                <LeaderBoardList key={i} i={i} user={user} type='Top Travelers' />
               ))}
             </div>
           </div>
@@ -118,7 +122,7 @@ const LeaderBoard = () => {
             <h2 className='leaderboardTitles'>Topic Chasers</h2>
             <div className='leaderBoxOverride'>
               {top10Post.map((user, i) => (
-                <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
+                <LeaderBoardList key={i} i={i} user={user} type='Topic Chasers' />
               ))}
             </div>
           </div>
@@ -140,6 +144,11 @@ const LeaderBoard = () => {
           </div>
         </div>
       </div>
+      <LeaderBoardDirections>
+        <ArrowBackIcon/>
+        <p style={{textAlign: 'center'}}>Swipe Right or Left to scroll throught the leaderboards</p>
+        <ArrowForwardIcon/>
+      </LeaderBoardDirections>
     </>
   );
 };

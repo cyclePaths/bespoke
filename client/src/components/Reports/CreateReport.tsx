@@ -56,7 +56,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
   };
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const { user, geoLocation, addBadge } = useContext(UserContext);
+  const { user, geoLocation, addBadge, isDark } = useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -83,6 +83,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
+    console.log('handleSubmit');
     if (currentLocation) {
       setSubmitting(true);
       try {
@@ -141,13 +142,10 @@ const CreateReport = ({ fetchThisMonthReports }) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          elevation: 3,
-          square: true,
-          sx: {
-            width: '500px',
-            backgroundColor: 'lightgray',
-            border: '2px solid gray',
+        sx={{
+          '& .MuiPaper-root': {
+            backgroundColor: '#757575',
+            // border: '2px solid gray',
             borderRadius: '10px',
           },
         }}
@@ -167,6 +165,14 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 justifyContent: 'center',
                 width: '100%',
                 mb: '1rem',
+                '& .MuiToggleButton-root': {
+                  color: '#FFFFFF',
+                  backgroundColor: '#757575',
+                },
+                '& .MuiToggleButton-root.Mui-selected': {
+                  color: '#000000',
+                  backgroundColor: '#ececec',
+                },
               }}
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
@@ -184,8 +190,12 @@ const CreateReport = ({ fetchThisMonthReports }) => {
             <TextField
               id='report-title-input'
               label='Report Title'
-              variant='outlined'
               fullWidth
+              inputProps={{
+                style: {
+                  color: '#FFFFFF',
+                },
+              }}
               sx={{
                 mb: '1rem',
               }}
@@ -195,10 +205,14 @@ const CreateReport = ({ fetchThisMonthReports }) => {
             <TextField
               id='report-body-input'
               label='Comments'
-              variant='outlined'
               multiline
               rows={4}
               fullWidth
+              inputProps={{
+                style: {
+                  color: '#FFFFFF',
+                },
+              }}
               sx={{
                 mb: '1rem',
               }}
@@ -209,6 +223,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               color='primary'
               aria-label='upload picture'
               component='label'
+              sx={{ backgroundColor: '#ececec' }}
             >
               <input
                 hidden
@@ -217,14 +232,18 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 name='file'
                 onChange={handleImage}
               />
-              <PhotoCamera />
+              <PhotoCamera sx={{ color: isDark ? '#4c9fc5' : '#2e5b70' }} />
             </IconButton>
 
             <Button
               type='submit'
               variant='contained'
               color='primary'
-              style={{ float: 'right' }}
+              style={{
+                float: 'right',
+                backgroundColor: '#ececec',
+                color: isDark ? '#4c9fc5' : '#2e5b70',
+              }}
             >
               Submit
             </Button>

@@ -23,8 +23,10 @@ const CreateComment = (props) => {
             commentCreator: context.user.name,
             commentText: commentText
           })
-          .then(() => {
+          .then((response) => {
+            let submittedComment = response.data
             setCommentText('')
+            props.updateComments(submittedComment)
           })
           .catch(() => alert('Unable to make Comment!'));
        } else {

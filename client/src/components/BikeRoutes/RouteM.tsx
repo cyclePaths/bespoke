@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Map from './Map';
 import { BandAid, RouteCreatorComponent } from '../../StyledComp';
 import { darkModeOptions, defaultOptions, defaultMapContainerStyle } from './Utils'
+import { BikeRoutes } from '@prisma/client';
 
 // Exports to be used throughout the Bike Route Component //
 
@@ -66,6 +67,7 @@ export interface RouteProps {
   handleRouteClick: (origin, destination) => void;
   setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
   fetchDirections: () => void;
+  routeList: BikeRoutes[]
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
   likeList: any[];
   setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
