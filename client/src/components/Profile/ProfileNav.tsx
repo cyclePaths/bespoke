@@ -89,6 +89,7 @@ const ProfileNav = ({
     false,
     false,
     false,
+    false,
   ]);
   const [stats, setStats] = useState([]);
   const [appTheme, setAppTheme] = useState(false);
