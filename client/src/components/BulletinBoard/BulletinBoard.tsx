@@ -11,8 +11,13 @@ import { BandAid } from '../../StyledComp';
 
 const BulletinBoard = () => {
   const context = useContext(UserContext);
-  const [bulletins, setBulletins] = useState([]);
-  const [comments, setComments] = useState([]);
+  const [bulletins, setBulletins] = useState<any[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
+  let orderedBulletins: object[] = []
+  for (let i = bulletins.length -1; i >= 0; i--) {
+    orderedBulletins.push(bulletins[i])
+  }
+
 
   // Function to retrieve all bulletins
   const getAllBulletins = () => {
@@ -54,6 +59,14 @@ const BulletinBoard = () => {
       });
   };
 
+  const updateBulletins = (submittedBulletin) => {
+    setBulletins((previousBulletins) => [...previousBulletins, submittedBulletin])
+  }
+
+  const updateComments = (submittedComment) => {
+    setComments((previousComments) => [...previousComments, submittedComment])
+  }
+
   //useEffect hook populates with bulletins
   useEffect(() => {
     getAllBulletins();
@@ -64,12 +77,14 @@ const BulletinBoard = () => {
     <BandAid>
       <Card style={{ backgroundColor: 'rgb(133, 211, 255)', borderRadius: '5px' }}>
         <EquipmentPool />
-        <CreateBulletin />
-        {bulletins.map((bulletin, i) => (
+        <CreateBulletin bulletins={bulletins} setBulletins={setBulletins}
+                        updateBulletins={updateBulletins}/>
+        {orderedBulletins.map((bulletin, i) => (
           <Bulletin
             bulletin={bulletin}
             comments={comments}
             handleBulletinSelection={handleBulletinSelection}
+            updateComments={updateComments}
             key={i}
           />
         ))}
