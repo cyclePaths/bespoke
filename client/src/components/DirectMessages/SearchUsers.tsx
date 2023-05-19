@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
+import DirectMessages from './DirectMessages';
 
 export interface Users {
   id: number;
@@ -41,7 +42,6 @@ function SearchUsers({
   const [showAutoComplete, setShowAutoComplete] = useState(true);
   const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
-
 
   const classes = useStyles();
 
@@ -106,6 +106,7 @@ function SearchUsers({
           }
           getOptionLabel={(option) => option.name}
           onChange={async (event, newValue) => {
+            setIsReceiverSelected(true);
             setReceiver('');
             setReceiver(newValue);
             handleSetReceiver(newValue);
@@ -157,6 +158,7 @@ function SearchUsers({
       //     <ArrowBackIosNewIcon fontSize='small' />
       //   </Fab>
       // )} */}
+
     </div>
   );
 }

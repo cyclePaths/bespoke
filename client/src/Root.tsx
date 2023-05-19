@@ -361,48 +361,6 @@ const Root = () => {
   the notifications so that they display only for a receiver, and not for everyone.
   */
 
-  // interface RootMessage {
-  //   senderId: number;
-  //   senderName: string;
-  //   receiverId: number;
-  //   receiverName: string;
-  //   text: string;
-  //   fromMe: boolean;
-  // }
-
-  // const socket = useContext(SocketContext).socket as Socket | undefined;
-
-  // // const navigate = useNavigate();
-
-
-  // useEffect(() => {
-  //   if (socket && user) {
-  //     socket.on('message', handleReceivedMessage);
-  //   }
-
-  //   return () => {
-  //     if (socket) {
-  //       socket.off('message', handleReceivedMessage);
-  //     }
-  //   };
-  // }, [socket, user]);
-
-
-  // const handleReceivedMessage = (newMessage) => {
-  //   console.log('Received message:', newMessage);
-
-  //   if (newMessage.senderId !== user.id && newMessage.receiverId === user.id) {
-  //     toast.success(newMessage.text, {
-  //       onClick: () => {
-  //         // navigate(`/directMessages/${newMessage.threadId}`)
-  //         // navigate(`/directMessages/${newMessage.senderId}/${newMessage.receiverId}`);
-
-  //       }
-  //     });
-  //   }
-
-  // };
-
 // Keep the interface
 interface RootMessage {
   senderId: number;
@@ -417,6 +375,7 @@ interface RootMessage {
 
 const socket = useContext(SocketContext).socket as Socket | undefined;
 const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
+const [showConversations, setShowConversations] = React.useState(true);
 
 // Keep the socket event handling
 useEffect(() => {
@@ -809,7 +768,7 @@ const fetchThisMonthReports = async () => {
         <MessageContext.Provider value={{ message: rootNewMessage }}>
 
         <BrowserRouter>
-        <DMNotifications />
+        <DMNotifications setShowConversations={setShowConversations}  />
           <Routes>
             <Route path='/' element={<App />}>
               <Route
@@ -871,7 +830,10 @@ const fetchThisMonthReports = async () => {
               />
 
               {/* <Route path='directMessages' element={<DirectMessages />} /> */}
-              <Route path='directMessages' element={<DirectMessages />} />
+              <Route path='directMessages' element={<DirectMessages
+              setShowConversations={setShowConversations}
+              showConversations={showConversations}
+              />} />
               <Route
   path="createReport"
   element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
@@ -880,7 +842,7 @@ const fetchThisMonthReports = async () => {
   path='reportsMap'
   element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
 />
-              <Route path='directMessages' element={<DirectMessages />} />
+              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
               <Route path='report' element={<Report />} />
             </Route>
           </Routes>

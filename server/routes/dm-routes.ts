@@ -64,9 +64,9 @@ dmRouter.get('/retrieveMessages', async (req: Request, res: Response) => {
 
 
 dmRouter.get('/retrieveNotificationMessages', async (req: Request, res: Response) => {
-  console.log('query', req.query);
+  // console.log('query', req.query);
   // console.log('user', req.user);
-  console.log('senderId', req.query.senderId)
+  // console.log('senderId', req.query.senderId)
   try {
     const { senderId } = req.query;
     const { id } = req.user as { id: number };
@@ -98,9 +98,11 @@ dmRouter.get('/retrieveNotificationMessages', async (req: Request, res: Response
 
 
 dmRouter.get('/conversations', async (req: Request, res: Response) => {
+  // console.log(req)
   try {
     const { id } = req.user as { id: number };
 
+    // Get all conversations where the user is either the sender or the receiver
     const conversations = await prisma.directMessages.findMany({
       where: {
         OR: [{ senderId: id }, { receiverId: id }],
@@ -109,13 +111,36 @@ dmRouter.get('/conversations', async (req: Request, res: Response) => {
         sender: true,
         receiver: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
-    // res.status(200).send(conversations);
+
+    // Create a map to store the most recent message of each conversation
+    const lastMessages = new Map();
+
+    conversations.forEach((message) => {
+      const otherUserId = message.senderId === id ? message.receiverId : message.senderId;
+
+      // If the conversation with the other user is not yet in the map, or the current message is more recent,
+      // update the map
+      if (!lastMessages.has(otherUserId) || lastMessages.get(otherUserId).createdAt < message.createdAt) {
+        lastMessages.set(otherUserId, message);
+      }
+    });
+
+    // Convert the map to an array
+    const lastMessagesArray = Array.from(lastMessages.values());
+
+
+    res.status(200).send(lastMessagesArray);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
 });
+
+
 
 dmRouter.post('/message', async (req: Request, res: Response) => {
   // console.log(req.user);

@@ -85,7 +85,7 @@ interface SelectedUser {
   );
 }
 
-function DirectMessages() {
+function DirectMessages({ showConversations, setShowConversations }) {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -109,6 +109,8 @@ function DirectMessages() {
   const [storedNotificationSenderId, setStoredNotificationSenderId] = useState(null);
   const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
+  // const [showConversations, setShowConversations] = React.useState(true);
+
 
   const fromMe = senderId === userId;
 
@@ -145,8 +147,6 @@ function DirectMessages() {
   }, [notificationSenderId])
 
 
-
-
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
 
@@ -163,21 +163,6 @@ function DirectMessages() {
       setShowMessageContainer(false);
     }
   };
-
-  // const handleSetReceiver = async (receiver: SelectedUser | null) => {
-  //   if (receiver !== null) {
-  //     setReceiver(receiver);
-  //     setShowMessageContainer(true);
-  //     setIsReceiverSelected(true);
-  //     setUserIsSelectingReceiver(true);
-  //   } else {
-  //     setReceiver(undefined);
-  //     setIsReceiverSelected(false);
-  //     setShowMessageContainer(false);
-  //   }
-  // };
-
-
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -258,18 +243,19 @@ function DirectMessages() {
   };
 
   useEffect(() => {
-    // console.log('messages', messages)
-  }, [messages])
-
-  useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
     }
   }, [receiverId]);
 
+
+  // useEffect(() => {
+  //   if (receiverId !== 0 || senderId !== 0) {
+  //     loadMessages();
+  //   }
+  // }, [receiverId, senderId]);
+
 ///////Above: Loading Messages Thread when user is selected/////////
-
-
 
 ///////Below: Loading Messages Thread when Notification is clicked/////////
 
@@ -303,12 +289,6 @@ function DirectMessages() {
         const { data } = thread;
         const sortedMessages = data.sort((a, b) => a.id - b.id);
 
-
-        // const orderedData = data.map((current) => {
-        //   current.senderId =
-        // })
-
-
         // Now set the new messages and show the container
         setMessages(sortedMessages);
         console.log('Messages', messages)
@@ -330,9 +310,6 @@ function DirectMessages() {
 }, [senderId,isSenderSelected]);  // We watch for senderId changes here
 
 ///////Above: Loading Messages Thread when Notification is clicked/////////
-
-
-
 
   /// End of Load Mounting ///
 
@@ -381,8 +358,6 @@ function DirectMessages() {
   //   };
   // }, [socket]);
 
-
-
   const handleNavigationAway = () => {
     setIsSenderSelected(false); // Reset the flag when user navigates away
     setIsNotificationClicked(false);
@@ -427,7 +402,19 @@ function DirectMessages() {
         setMessages={setMessages}
         senderName={senderName}
       ></SearchUsers>
-      {/* <Conversations /> */}
+
+      <Conversations
+        setSenderId={setSenderId}
+        setSenderName={setSenderName}
+        setReceiverId={setReceiverId}
+        setReceiverName={setReceiverName}
+        loadMessages={loadMessages}
+        setShowMessageContainer={setShowMessageContainer}
+        isReceiverSelected={isReceiverSelected}
+        setIsReceiverSelected={setIsReceiverSelected}
+        showConversations={showConversations}
+        setShowConversations={setShowConversations}
+      />
       {/* {isReceiverSelected && showMessageContainer && ( */}
       {((isReceiverSelected || isSenderSelected) && showMessageContainer) && (
         <Paper className={classes.root} key={receiver?.id} >

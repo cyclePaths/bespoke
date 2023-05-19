@@ -5,7 +5,7 @@ import { MessageContext } from './Root'; // Assuming Root and Notification are i
 import { Message } from './components/DirectMessages/DirectMessages';
 // import debounce from 'lodash.debounce';
 
-const DMNotifications = () => {
+const DMNotifications = ({ setShowConversations }) => {
   const navigate = useNavigate();
   const { message } = useContext(MessageContext);
   // const [isNotificationShown, setIsNotificationShown] = useState(false);
@@ -19,6 +19,7 @@ const DMNotifications = () => {
       toast.success(message.text, {
         onClick: () => {
           console.log('checking message', message);
+          setShowConversations(false);
           navigate('/directMessages', { state: {
             notificationSenderId: Number(message.senderId),
             notificationSenderName: message.senderName,

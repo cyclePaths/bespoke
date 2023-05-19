@@ -261,9 +261,15 @@ const ProfileNav = ({
 
           <div hidden={!tabVisibility[3]}>
             <Stats />
-            {/* <StatsDisplay stats={stats} /> */}
           </div>
+
+
+
+
         </div>
+
+
+
         <div className={`holder ${areTabsVisible ? '' : 'hidden'}`}>
           <ProfileDisplays>
             <h4>{homeAddress}</h4>
