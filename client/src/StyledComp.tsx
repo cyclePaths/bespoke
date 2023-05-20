@@ -232,9 +232,27 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 0.3125em #80cbf5'};
   background: ${(props) =>
     props.isDark
-      ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
-      : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
+      ? 'linear-gradient(145deg, #1b1c39, #171730);'
+      : 'linear-gradient(145deg, #8ee2ff, #78bee6)'};
 `;
+
+// const ForecastEntry = styled.div<DarkModeHelperProps>`
+//   justify-content: center;
+//   margin-top: 2.1875em;
+//   margin-left: 2.1875em;
+//   margin-bottom: 1.3125em;
+//   width: 9.0625em;
+//   align-items: center;
+//   border-radius: 7px;
+//   box-shadow: ${(props) =>
+//     props.isDark
+//       ? '1.25em 1.25em 3.75em #171830, -0.625em -0.625em 0.3125em #1b1c3a'
+//       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 0.3125em #80cbf5'};
+//   background: ${(props) =>
+//     props.isDark
+//       ? 'linear-gradient(145deg, rgb(63, 153, 82), #358145)'
+//       : 'linear-gradient(145deg, rgb(123, 231, 149), rgb(104, 194, 125))'};
+// `;
 
 const WeatherIcon = styled.img`
   display: flex;
@@ -250,14 +268,31 @@ const WeatherIconFrame = styled.div<DarkModeHelperProps>`
   height: 4.6875em;
   width: 4.6875em;
   border-radius: 50%;
-  background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+  background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
   box-shadow: ${(props) =>
     props.isDark
-      ? 'inset 1.25em 1.25em 2.4375em #368246, inset -1.25em -1.25em 2.4375em #409c54, -5px -5px 15px #15162d,'
-      : 'inset 1.25em 1.25em 1.4375em #65be7a, inset -1.25em -1.25em 1.4375em #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
+      ? 'inset 1.25em 1.25em 2.4375em #15162d, inset -1.25em -1.25em 2.4375em #1d1e3d, -5px -5px 15px #15162d,'
+      : 'inset 1.25em 1.25em 1.4375em #71b3d9, inset -1.25em -1.25em 1.4375em #99f3ff, rgb(113, 179, 217) -5px -5px 15px'};
   margin-top: 0.625em;
   margin-left: -2.8125em;
 `;
+
+// const WeatherIconFrame = styled.div<DarkModeHelperProps>`
+//   position: relative;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 4.6875em;
+//   width: 4.6875em;
+//   border-radius: 50%;
+//   background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
+//   box-shadow: ${(props) =>
+//     props.isDark
+//       ? 'inset 1.25em 1.25em 2.4375em #368246, inset -1.25em -1.25em 2.4375em #409c54, -5px -5px 15px #15162d,'
+//       : 'inset 1.25em 1.25em 1.4375em #65be7a, inset -1.25em -1.25em 1.4375em #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
+//   margin-top: 0.625em;
+//   margin-left: -2.8125em;
+// `;
 
 const ForecastBit = styled.div`
   display: flex;
@@ -325,6 +360,18 @@ const MainTemperature = styled.div`
   font-size: 2.125em;
 `;
 
+// const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
+//   height: 4.6875em;
+//   width: 4.6875em;
+//   margin-top: 3.8125em;
+//   margin-left: 1.25em;
+//   border-radius: 50%;
+//   background: ${(props) =>
+//     props.isDark
+//       ? 'linear-gradient(145deg, #3f9952, #358145)'
+//       : 'linear-gradient(145deg, #7be795, #68c27d)'};
+// `;
+
 const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
   height: 4.6875em;
   width: 4.6875em;
@@ -333,8 +380,8 @@ const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
   border-radius: 50%;
   background: ${(props) =>
     props.isDark
-      ? 'linear-gradient(145deg, #3f9952, #358145)'
-      : 'linear-gradient(145deg, #7be795, #68c27d)'};
+      ? 'linear-gradient(145deg, #1b1c39, #171730);'
+      : 'linear-gradient(145deg, #8ee2ff, #78bee6)'};
 `;
 
 const MainTemperatureText = styled.p`
