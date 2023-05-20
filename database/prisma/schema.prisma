@@ -59,7 +59,7 @@ model DirectMessages {
   receiverId   Int
   receiverName String   @map(name: "receiver.name")
   text         String
-  // fromMe       Boolean
+  fromMe       Boolean
   createdAt    DateTime @default(now())
 }
 
