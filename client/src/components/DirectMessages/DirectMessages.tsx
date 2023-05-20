@@ -25,7 +25,7 @@ export interface Message {
   receiverId: number;
   receiverName: string;
   text: string;
-  // fromMe: boolean;
+  //fromMe: boolean;
   userId: number;
   isNotificationClicked: boolean;
 }
@@ -433,7 +433,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
                 receiverId={message.receiverId}
                 receiverName={message.receiverName}
                 text={message.text}
-                // fromMe={message.senderId === userId}
+                //fromMe={message.senderId === userId}
                 userId={userId}
                 isNotificationClicked={isNotificationClicked}
               />

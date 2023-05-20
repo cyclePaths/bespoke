@@ -158,7 +158,7 @@ dmRouter.post('/message', async (req: Request, res: Response) => {
         receiverId: receiverId,
         receiverName: receiverName,
         text: text,
-        fromMe: fromMe,
+        fromMe: Boolean(fromMe),
       },
     });
     res.status(201).send(newMessage);
