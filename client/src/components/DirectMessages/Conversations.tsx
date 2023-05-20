@@ -105,14 +105,16 @@ const Conversations: React.FC<ConversationsProps> = ({
     // await loadMessages();
     // setIsHandleConvoClicked(true);
     setSenderId(convo.senderId);
-    // setSenderName(convo.senderName);
-    setReceiverId(convo.receiverId);
-    setReceiverName(convo.receiverName);
+    setReceiverId(convo.receiverId === myUserId ? convo.senderId : convo.receiverId);
+    // setReceiverName(convo.receiverName);
     setSelectedConversationId(convo.id);
     setShowConversations(false);
     setShowMessageThread(true);
     setShowTextField(true);
     setIsReceiverSelected(true);
+
+
+    // convo.senderId === myUserId ? convo.receiverName : convo.senderName
 
      const thisConversation = await loadMessages();
 
