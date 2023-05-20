@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Fab from '@mui/material/Fab';
 import CircularProgress from '@mui/material/CircularProgress';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
-import DirectMessages from './DirectMessages';
 
 export interface Users {
   id: number;
@@ -39,9 +36,9 @@ function SearchUsers({
   senderName,
   setShowTextField,
 }) {
-  const [findUser, setFindUser] = useState('');
+
   const [showAutoComplete, setShowAutoComplete] = useState(true);
-  const [active, setActive] = useState(true);
+  // const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
 
   const classes = useStyles();
@@ -73,7 +70,7 @@ function SearchUsers({
 
 
   const resetLabel = () => {
-    setLabel('Search Bikers');
+    // setLabel('Search Bikers');
   };
 
 
@@ -85,8 +82,6 @@ function SearchUsers({
 
   return (
     <div className={classes.search}>
-      {/* {showAutoComplete ? ( */}
-        {/* {showAutoComplete && ( */}
         <Autocomplete
           sx={{
             background:
@@ -97,7 +92,6 @@ function SearchUsers({
           open={open}
           onOpen={() => {
             setOpen(true);
-            //  resetLabel();
           }}
           onClose={() => {
             setOpen(false);
@@ -115,8 +109,6 @@ function SearchUsers({
             setShowAutoComplete(false);
 
             await new Promise((resolve) => setShowMessageContainer(false, resolve));
-
-
           }}
           options={options}
           loading={loading}
@@ -142,25 +134,6 @@ function SearchUsers({
             />
           )}
         />
-      {/* // )} */}
-
-      {/* // : (
-      //   <Fab
-      //     sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)', }}
-      //     color='secondary'
-      //     size='small'
-      //     aria-label='back'
-      //     onClick={() => {
-      //       setMessages([]);
-      //       setShowMessageContainer(false);
-      //       setShowAutoComplete(true);
-      //       setIsReceiverSelected(false);
-      //     }}
-      //   >
-      //     <ArrowBackIosNewIcon fontSize='small' />
-      //   </Fab>
-      // )} */}
-
     </div>
   );
 }
