@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Message } from './DirectMessages';
 // import DMNotifications from '../../DMNotifications';
 
 interface Conversation {
@@ -64,8 +65,8 @@ const Conversations: React.FC<ConversationsProps> = ({
   setShowMessageContainer,
   isReceiverSelected,
   setIsReceiverSelected,
-  showConversations,
-  setShowConversations,
+  // showConversations,
+  // setShowConversations,
   setShowTextField,
 }) => {
   const [myConversations, setMyConversations] = React.useState<Conversation[]>(
@@ -76,7 +77,8 @@ const Conversations: React.FC<ConversationsProps> = ({
   const [showMessageThread, setShowMessageThread] = React.useState(false);
   // const [isHandleConvoClicked, setIsHandleConvoClicked] = React.useState(false);
   const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
-
+  const [clickedConversation, setClickedConversation] = React.useState<Message[]>([]);
+  const [showConversations, setShowConversations] = React.useState(true);
 
 
   // let myConversations = []
@@ -96,6 +98,7 @@ const Conversations: React.FC<ConversationsProps> = ({
       });
   };
 
+  // let thisConversation;
 
   const handleConvoClick = async (convo: Conversation) => {
     setSelectedConversationId(null);
@@ -104,8 +107,6 @@ const Conversations: React.FC<ConversationsProps> = ({
     setSenderId(convo.senderId);
     // setSenderName(convo.senderName);
     setReceiverId(convo.receiverId);
-    console.log("Selected Sender ID: ", convo.senderId);
-    console.log("Selected Receiver ID: ", convo.receiverId);
     setReceiverName(convo.receiverName);
     setSelectedConversationId(convo.id);
     setShowConversations(false);
@@ -113,11 +114,24 @@ const Conversations: React.FC<ConversationsProps> = ({
     setShowTextField(true);
     setIsReceiverSelected(true);
 
+     const thisConversation = await loadMessages();
 
-      await loadMessages();
+    // setClickedConversation(thisConversation)
 
   }
 
+  React.useEffect(() => {
+    console.log('thisConversation', clickedConversation);
+  }, [clickedConversation])
+
+  // React.useEffect(() => {
+  //   const isNotEdge = !window.navigator.userAgent.includes('Edg');
+
+  //   if (isReceiverSelected && isNotEdge) {
+  //     console.log('check me');
+  //     loadMessages();
+  //   }
+  // }, [isReceiverSelected]);
 
   React.useEffect(() => {
     const isNotEdge = !window.navigator.userAgent.includes('Edg');
@@ -126,7 +140,7 @@ const Conversations: React.FC<ConversationsProps> = ({
       console.log('check me');
       loadMessages();
     }
-  }, [isReceiverSelected]);
+  }, [clickedConversation]);
 
 
   const handleBackClick = () => {
@@ -156,16 +170,35 @@ const Conversations: React.FC<ConversationsProps> = ({
       })
 
     convos();
-    // console.log('convos?', myConversations);
   }, []);
 
 
-  // React.useEffect(() => {
-  //   if (isReceiverSelected) {
-  //     setShowMessageContainer(true);
-  //   }
-  // }, [isReceiverSelected]);
+  React.useEffect(() => {
+    if (isReceiverSelected) {
+      setShowMessageContainer(true);
+    }
+  }, [isReceiverSelected]);
 
+
+
+  const handleNavigationAway = () => {
+    setShowConversations(true);
+    setIsReceiverSelected(false);
+    setShowMessageThread(false);
+
+  };
+
+  React.useEffect(() => {
+    const handleBeforeUnload = () => {
+      handleNavigationAway();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <>
@@ -187,7 +220,7 @@ const Conversations: React.FC<ConversationsProps> = ({
                 </ListItemAvatar>
                 <Typography variant="body2" sx={{ textTransform: 'none' }}>
                 <ListItemText
-                  primary={convo.receiverName}
+                   primary={convo.receiverId === myUserId ? convo.senderName : convo.receiverName}
                   secondary={
                     <React.Fragment>
 
