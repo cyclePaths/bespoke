@@ -11,6 +11,7 @@ import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
 import Stats from './Stats';
+import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
@@ -88,6 +89,7 @@ const ProfileNav = ({
     false,
     false,
     false,
+    false,
   ]);
   const [stats, setStats] = useState([]);
   const [appTheme, setAppTheme] = useState(false);
@@ -105,7 +107,6 @@ const ProfileNav = ({
   //     });
   //   }
   // }, [socket]);
-
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -196,8 +197,8 @@ const ProfileNav = ({
               label='Badges'
               sx={{
                 color: appTheme ? '#3c3636' : '#f1e2e2',
-              minWidth: '0px',
-            }}
+                minWidth: '0px',
+              }}
               {...a11yProps(4)}
             />
           </Tabs>
@@ -262,13 +263,10 @@ const ProfileNav = ({
           <div hidden={!tabVisibility[3]}>
             <Stats />
           </div>
-
-
-
-
+          <div hidden={!tabVisibility[4]}>
+            <BadgeDisplay />
+          </div>
         </div>
-
-
 
         <div className={`holder ${areTabsVisible ? '' : 'hidden'}`}>
           <ProfileDisplays>

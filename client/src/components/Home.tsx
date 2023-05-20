@@ -8,17 +8,27 @@ import {
   ForecastEntry,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
-  StatsWrapper
+  StatsWrapper,
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
 import { UserContext } from '../Root';
-import { Card, CardHeader, Collapse, CardContent, CardActions, Typography, IconButton, IconButtonProps, Button } from '@mui/material';
+import {
+  Card,
+  CardHeader,
+  Collapse,
+  CardContent,
+  CardActions,
+  Typography,
+  IconButton,
+  IconButtonProps,
+  Button,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
-import {styled} from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -37,7 +47,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-
 const Home = ({
   hourlyForecasts,
   windSpeedMeasurementUnit,
@@ -50,7 +59,7 @@ const Home = ({
 }: RootPropsToHome) => {
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
-  const [expanded, setExpanded] = useState<boolean>(false)
+  const [expanded, setExpanded] = useState<boolean>(false);
   const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
   const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
 
@@ -61,21 +70,22 @@ const Home = ({
 
   const handleRouteInfoExpand = () => {
     setExpanded(!expanded);
-  }
+  };
 
   useEffect(() => {
-    axios.get('/bikeRoutes/currentRoute')
-      .then(({data}) => {
+    axios
+      .get('/bikeRoutes/currentRoute')
+      .then(({ data }) => {
         setRouteInfo(data);
       })
       .catch((err) => {
         console.error('Failed to find most recent route: ', err);
-      })
+      });
 
     return () => {
       // console.log('Fetched and cleanup');
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div>
@@ -83,29 +93,51 @@ const Home = ({
         <HomePageCompWrapper>
           <HomeWeatherWidgetHolder>
             <WeatherWidget
+              temperatureMeasurementUnit={temperatureMeasurementUnit}
               prepareWeatherIcon={prepareWeatherIcon}
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
         </HomePageCompWrapper>
         <StatsWrapper>
-          <Card sx={{ margin: '10px', backgroundColor: isDark ? '#cacaca' : '#ececec'}}>
-            <CardHeader title="Most Recent Route" sx={{flexDirection: 'column'}}/>
-              <CardContent>
-                <Typography paragraph sx={{ textAlign: 'center' }}>
-                  {routeInfo ? routeInfo.name : "You have not been on a route yet. Please Search a route or create a new route"}
-                </Typography>
-              </CardContent>
+          <Card
+            sx={{
+              margin: '10px',
+              backgroundColor: isDark ? '#cacaca' : '#ececec',
+            }}
+          >
+            <CardHeader
+              title='Most Recent Route'
+              sx={{ flexDirection: 'column' }}
+            />
+            <CardContent>
+              <Typography paragraph sx={{ textAlign: 'center' }}>
+                {routeInfo
+                  ? routeInfo.name
+                  : 'You have not been on a route yet. Please Search a route or create a new route'}
+              </Typography>
+            </CardContent>
           </Card>
-          <Card sx={{ margin: '10px', maxWidth: '50%', backgroundColor: isDark ? '#cacaca' : '#ececec'}}>
-            <CardHeader title="LeaderBoards" sx={{paddingBottom: '0px', textAlign: 'center'}}/>
-            <CardContent sx={{paddingBottom: '0px'}}>
-              <Typography sx={{textAlign: 'center'}}>
+          <Card
+            sx={{
+              margin: '10px',
+              maxWidth: '50%',
+              backgroundColor: isDark ? '#cacaca' : '#ececec',
+            }}
+          >
+            <CardHeader
+              title='LeaderBoards'
+              sx={{ paddingBottom: '0px', textAlign: 'center' }}
+            />
+            <CardContent sx={{ paddingBottom: '0px' }}>
+              <Typography sx={{ textAlign: 'center' }}>
                 See our current top 10 users in our selected categories
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" onClick={handleLeaderBoard}>See all LeaderBoards</Button>
+              <Button size='small' onClick={handleLeaderBoard}>
+                See all LeaderBoards
+              </Button>
             </CardActions>
           </Card>
         </StatsWrapper>

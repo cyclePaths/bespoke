@@ -4,6 +4,10 @@ export type DarkModeHelperProps = {
   isDark: boolean;
 };
 
+export type BrightnessProps = {
+  bright: number;
+};
+
 const Button = styled.button`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
@@ -35,7 +39,7 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
-  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
@@ -153,7 +157,7 @@ const StatsWrapper = styled.span<DarkModeHelperProps>`
 `;
 
 const RecentRidesHeader = styled.header<DarkModeHelperProps>`
-  color: ${({isDark}) => isDark ? '#ececec' : '#000000'};
+  color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
 `;
 
 //Related to Badges and Achievements
@@ -221,7 +225,7 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
   margin-bottom: 1.3125em;
   width: 9.0625em;
   align-items: center;
-  border-radius: 3.125em;
+  border-radius: 7px;
   box-shadow: ${(props) =>
     props.isDark
       ? '1.25em 1.25em 3.75em #171830, -0.625em -0.625em 0.3125em #1b1c3a'
@@ -348,11 +352,13 @@ const AdjustedTemperatureText = styled.p`
   margin: -0.3125em 0em -0.3125em 0.5em;
 `;
 
-const AdjustedTemperatureHelperIcon = styled.img`
+const AdjustedTemperatureHelperIcon = styled.img<DarkModeHelperProps>`
   margin-top: 1.6875em;
   margin-left: -0.9375em;
   height: 1.875em;
   width: 2.8125em;
+  filter: ${(props) =>
+    props.isDark ? 'invert(100%) brightness(200%)' : 'none'};
 `;
 
 const ForecastHelperIcon = styled.img`
@@ -369,15 +375,16 @@ const WindspeedHelperIcon = styled.img`
   width: 2.1875em;
 `;
 
-const ConditionalHelperIcon = styled.img`
+const ConditionalHelperIcon = styled.img<BrightnessProps>`
   position: absolute;
   margin-top: 2.1875em;
   margin-left: -1.875em;
   height: 1.875em;
   width: 3.125em;
+  filter: ${(props) => (props.bright ? `contrast(${props.bright})` : 'none')};
 `;
 
-const BigTemperatureHelperIcon = styled.img`
+const BigTemperatureHelperIcon = styled.img<DarkModeHelperProps>`
   position: absolute;
   margin-left: 0.705882em;
   margin-top: -0.651765em;
@@ -385,6 +392,8 @@ const BigTemperatureHelperIcon = styled.img`
   max-width: 1.94118em;
   height: 100%;
   width: 100%;
+  filter: ${(props) =>
+    props.isDark ? 'invert(100%) brightness(200%)' : 'none'};
 `;
 
 // Misc styled components
@@ -404,7 +413,6 @@ const HomeWeatherWidgetHolder = styled.div`
   width: 17em;
   height: 11em;
   border-radius: 8px;
-  margin-left: 3em;
   margin-top: 3em;
 `;
 
@@ -420,7 +428,8 @@ const ForecastItem = styled.div`
   display: inline-block;
   padding: 10px;
   text-align: center;
-  width: 100px;
+  width: 70px;
+  flex-shrink: 0;
 `;
 
 const ForecastHour = styled.div`
@@ -437,7 +446,7 @@ const HomePageCompWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const LeaderBoardDirections = styled.div`
@@ -530,13 +539,10 @@ const HighlightText = styled.h4`
 
 //Above is for the instruction text in the Scrollers in Profile //
 
-
 const ProfileDisplays = styled.div`
-   display: flex;
+  display: flex;
   justify-content: center;
-`
-
-
+`;
 
 export {
   ForecastBit,
@@ -594,5 +600,5 @@ export {
   LoadingDiv,
   PrivacySelector,
   RecentRidesHeader,
-  StatsWrapper
+  StatsWrapper,
 };
