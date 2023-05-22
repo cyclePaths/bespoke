@@ -59,9 +59,13 @@ const Conversations: React.FC<ConversationsProps> = ({
   isReceiverSelected,
   setIsReceiverSelected,
   setShowTextField,
+  setReceiverName,
+  setSenderName,
+  // senderName,
 }) => {
   const [myConversations, setMyConversations] = React.useState<Conversation[]>([]);
   const [myUserId, setMyUserId] = React.useState(0);
+  const [myUserName, setMyUserName] = React.useState('');
   const [showMessageThread, setShowMessageThread] = React.useState(false);
   const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
   const [clickedConversation, setClickedConversation] = React.useState<Message[]>([]);
@@ -84,7 +88,8 @@ const Conversations: React.FC<ConversationsProps> = ({
   const handleConvoClick = async (convo: Conversation) => {
     setSelectedConversationId(null);
     setReceiverId(convo.receiverId === myUserId ? convo.senderId : convo.receiverId);
-    // setReceiverName(convo.receiverName);
+    setReceiverName(convo.receiver.name === myUserName ? convo.sender.name : convo.receiver.name);
+    setMyUserName(myUserName);
     setSelectedConversationId(convo.id);
     setShowConversations(false);
     setShowMessageThread(true);
@@ -121,12 +126,13 @@ const Conversations: React.FC<ConversationsProps> = ({
   React.useEffect(() => {
     axios.get('/profile/user')
       .then(({ data }) => {
-        setMyUserId(data.id)
+        setMyUserId(data.id);
+        setMyUserName(data.name);
       })
       .catch((err) => {
       })
     convos();
-  }, []);
+  }, [myUserName]);
 
 
   React.useEffect(() => {
@@ -174,7 +180,8 @@ const Conversations: React.FC<ConversationsProps> = ({
                 </ListItemAvatar>
                 <Typography variant="body2" sx={{ textTransform: 'none' }}>
                 <ListItemText
-                   primary={convo.receiverId === myUserId ? convo.senderName : convo.receiverName}
+                   primary={convo.senderId === myUserId ? convo.receiverName : convo.senderName}
+
                   secondary={
                     <React.Fragment>
 
