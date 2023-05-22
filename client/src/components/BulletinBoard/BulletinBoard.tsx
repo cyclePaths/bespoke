@@ -86,6 +86,9 @@ const BulletinBoard = () => {
             handleBulletinSelection={handleBulletinSelection}
             updateComments={updateComments}
             key={i}
+            bulletins={bulletins}
+            setBulletins={setBulletins}
+            getAllBulletins={getAllBulletins}
           />
         ))}
       </Card>
