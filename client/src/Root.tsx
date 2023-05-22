@@ -376,6 +376,8 @@ const socket = useContext(SocketContext).socket as Socket | undefined;
 const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
 const [showConversations, setShowConversations] = React.useState(true);
 
+
+
 // Keep the socket event handling
 useEffect(() => {
   if (socket && user) {
