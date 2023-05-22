@@ -228,7 +228,7 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
   border-radius: 7px;
   box-shadow: ${(props) =>
     props.isDark
-      ? '1.25em 1.25em 3.75em #171830, -0.625em -0.625em 0.3125em #1b1c3a'
+      ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 0.3125em #282b71'
       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 0.3125em #80cbf5'};
   background: ${(props) =>
     props.isDark
@@ -261,20 +261,22 @@ const WeatherIcon = styled.img`
 `;
 
 const WeatherIconFrame = styled.div<DarkModeHelperProps>`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 4.6875em;
-  width: 4.6875em;
-  border-radius: 50%;
-  background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
-  box-shadow: ${(props) =>
-    props.isDark
-      ? 'inset 1.25em 1.25em 2.4375em #15162d, inset -1.25em -1.25em 2.4375em #1d1e3d, -5px -5px 15px #15162d,'
-      : 'inset 1.25em 1.25em 1.4375em #71b3d9, inset -1.25em -1.25em 1.4375em #99f3ff, rgb(113, 179, 217) -5px -5px 15px'};
-  margin-top: 0.625em;
-  margin-left: -2.8125em;
+  && {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4.6875em;
+    width: 4.6875em;
+    border-radius: 50%;
+    background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
+    box-shadow: ${(props) =>
+      props.isDark
+        ? 'inset 1.25em 1.25em 1.4375em #15162d, inset -1.25em -1.25em 1.4375em #1d1e3d, #282b71 -5px -5px 15px'
+        : 'inset 1.25em 1.25em 1.4375em #71b3d9, inset -1.25em -1.25em 1.4375em #99f3ff, #71b3d9 -5px -5px 15px'};
+    margin-top: 0.625em;
+    margin-left: -2.8125em;
+  }
 `;
 
 // const WeatherIconFrame = styled.div<DarkModeHelperProps>`
