@@ -4,6 +4,7 @@ import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
 import ProfileNav from './ProfileNav';
+import DirectMessages from  '../DirectMessages/DirectMessages';
 import styled from 'styled-components';
 import { useTheme } from './ThemeContext';
 // import { ToggleSwitch } from '../../StyledComp';
@@ -198,6 +199,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
   return (
     <BandAid>
+      {/* <DirectMessages theme={theme}/> */}
       <ProfileNav
         user={user}
         photo={photo}

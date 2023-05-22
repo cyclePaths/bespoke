@@ -84,9 +84,11 @@ function SearchUsers({
     <div className={classes.search}>
         <Autocomplete
           sx={{
-            background:
-              'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-            borderRadius: '5px',
+            background: 'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
+            // background:
+            //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+
+            // borderRadius: '5px',
           }}
           id='asynchronous'
           open={open}

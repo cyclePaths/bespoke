@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Message } from './DirectMessages';
+import { conversationStyle } from './DMStyles';
 
 interface Conversation {
   createdAt: string;
@@ -70,6 +71,8 @@ const Conversations: React.FC<ConversationsProps> = ({
   const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
   const [clickedConversation, setClickedConversation] = React.useState<Message[]>([]);
   const [showConversations, setShowConversations] = React.useState(true);
+
+  const classes = conversationStyle();
 
   const convos = () => {
     axios
@@ -163,7 +166,7 @@ const Conversations: React.FC<ConversationsProps> = ({
   return (
     <>
     {!isReceiverSelected && showConversations ? (
-      <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'gray', margin: '0 auto' }}>
+      <List className={classes.list}>
         {myConversations.map((convo, index) => (
           <React.Fragment key={index}>
             <Button
@@ -178,7 +181,7 @@ const Conversations: React.FC<ConversationsProps> = ({
                     src={convo.senderId === myUserId ? convo.receiver.thumbnail : convo.sender.thumbnail}
                   />
                 </ListItemAvatar>
-                <Typography variant="body2" sx={{ textTransform: 'none' }}>
+                <Typography variant="body2" sx={{ textTransform: 'none', color: 'rgb(255, 255, 255)' }}>
                 <ListItemText
                    primary={convo.senderId === myUserId ? convo.receiverName : convo.senderName}
 

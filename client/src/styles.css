@@ -503,6 +503,7 @@ The code below is for the Profile search Home address feature
   height: 60vh;
   position: relative;
   top: 50%;
+
 }
 
 .address {
@@ -512,7 +513,7 @@ The code below is for the Profile search Home address feature
   align-items: center;
   position: absolute;
   /* Position the element relative to the parent element */
-  top: 30%;
+  top: 33%;
   /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%);
   /* Center the element vertically */
@@ -524,7 +525,7 @@ The code below is for the Profile search Home address feature
 
 .saveHome {
   margin-top: 10px !important;
-  position: absolute;
+  /* position: absolute; */
   /* margin-bottom: 10px; */
   z-index: 9999;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
@@ -544,7 +545,7 @@ The code below is for the Profile search Home address feature
 }
 
 .delete-address {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 @media screen and (max-height: 900px) {
@@ -562,8 +563,12 @@ The code below is for the Profile search Home address feature
 @media screen and (max-height: 700px) {
   .address {
     /* bottom: 200px; */
-    margin-top: 38px;
+    margin-top: 30px;
   }
+
+  /* .delete-address {
+    top: 0;
+  } */
 
   .displayedAddress {
     top: calc(20% - 60px);
@@ -579,7 +584,7 @@ The code below is for the Profile search Home address feature
   /* position: relative; */
 
   position: absolute;
-  top: 100%;
+  top: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
