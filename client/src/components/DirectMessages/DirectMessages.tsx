@@ -15,8 +15,7 @@ import Conversations from './Conversations';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import { UserContext } from '../../Root';
-import DMNotifications from 'client/src/DMNotifications';
+
 
 export interface Message {
   id: number;
@@ -129,6 +128,8 @@ function DirectMessages({ showConversations, setShowConversations }) {
   useEffect(() => {
     if (notificationSenderName !== undefined) {
       setReceiverName(notificationSenderName);
+      setSenderName(notificationSenderName);
+
     }
     console.log('notificationSenderId', notificationSenderId);
   }, [notificationSenderId])
@@ -202,7 +203,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
     }
   }, [message]);
 
-///////Below: Loading Messages Thread when user is selected/////////
+///////Below: Loading Messages Thread when user is selected or notification is clicked/////////
 
   const loadMessages = () => {
 
@@ -231,7 +232,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
   }, [receiverId]);
 
 
-///////Above: Loading Messages Thread when user is selected/////////
+///////Above: Loading Messages Thread when user is selected or notification is clicked/////////
   /// End of Load Mounting ///
 
   const handleSendMessage = () => {
@@ -373,3 +374,18 @@ function DirectMessages({ showConversations, setShowConversations }) {
 }
 
 export default DirectMessages;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
