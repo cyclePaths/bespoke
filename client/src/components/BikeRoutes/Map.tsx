@@ -584,6 +584,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
+            boxShadow: '-4px 3px 5px #00000033'
           }}
           onClick={fetchDirections}
         >
@@ -600,6 +601,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
+            boxShadow: '-4px 3px 5px #00000033'
           }}
           onClick={() => {
             if (directions) {
@@ -620,6 +622,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
+            boxShadow: '-4px 3px 5px #00000033'
           }}
           onClick={() => setOpenSearch(true)}
         >
@@ -636,6 +639,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
+            boxShadow: '-4px 3px 5px #00000033'
           }}
           onClick={handleClearMap}
         >

@@ -25,15 +25,11 @@ const RouteCreatorComponent = styled.div`
 const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   display: flex;
   justify-content: center;
-  background: #ececec;
   border-radius: 4px;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
   flex-flow: column nowrap;
   align-items: center;
+  margin: 30px;
+  margin-top: 60px;
 `;
 
 const CategorySelector = styled.select<DarkModeHelperProps>`
@@ -46,7 +42,7 @@ const CategorySelector = styled.select<DarkModeHelperProps>`
 
 const PrivacySelector = styled.div<DarkModeHelperProps>`
   display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#e0e0e0')};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
   padding: 3px;
   border-radius: 3px;
   border: 1px solid;

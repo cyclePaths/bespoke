@@ -25,6 +25,8 @@ body {
   justify-content: center;
   font-size: 30px;
   margin: 5px;
+  position: absolute;
+  top: 10%;
 }
 
 .route-saver-headers {
