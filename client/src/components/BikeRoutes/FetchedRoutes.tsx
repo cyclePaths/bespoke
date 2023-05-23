@@ -7,6 +7,9 @@ import {
   Switch,
   FormControlLabel,
   IconButton,
+  ToggleButtonGroup,
+  ToggleButton,
+  Paper,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { RouteListOptions } from '../../StyledComp';
@@ -54,8 +57,11 @@ const FetchedRoutes = ({
   };
 
   return (
-    <div className='search-form'>
-      <RouteListOptions id='route-searcher' style={{ display: '' }}>
+    <div>
+      <header id='list'>
+        Search Routes
+      </header>
+      {/* <RouteListOptions id='route-searcher' style={{ display: '' }}>
         <FormControl>
           <div id='search-criteria'>
             <div id='category'>
@@ -91,7 +97,24 @@ const FetchedRoutes = ({
           sx={{ marginTop: '10px' }}
           label='User Routes Only'
         />
-      </RouteListOptions>
+      </RouteListOptions> */}
+      <ToggleButtonGroup>
+        <ToggleButton value='All'>
+          All
+        </ToggleButton>
+        <ToggleButton value='Casual'>
+          Casual
+        </ToggleButton>
+        <ToggleButton value='Speedy'>
+          Speedy
+        </ToggleButton>
+        <ToggleButton value='Scenic'>
+          Scenic
+        </ToggleButton>
+        <ToggleButton value='User'>
+          User
+        </ToggleButton>
+      </ToggleButtonGroup>
       {searched ? (routeList.length === 0 ? <div id='no-list'>No Routes Found</div> : routeList.map((route, i) => {
         const index = i;
         return (
