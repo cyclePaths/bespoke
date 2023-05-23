@@ -170,8 +170,8 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                   backgroundColor: isDark ? '#757575' : '#ececec',
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
-                  color: '#2e5b70',
-                  backgroundColor: '#FFFFFF',
+                  color: '#7dc5e3',
+                  backgroundColor: '#757575',
                 },
 
               }}
@@ -220,12 +220,21 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               onChange={handleBodyText}
             />
 
-            <IconButton
-              color='primary'
-              aria-label='upload picture'
-              component='label'
-              sx={{ backgroundColor: isDark ? '#757575' : '#ececec' }}
-            >
+<IconButton
+  color="primary"
+  aria-label="upload picture"
+  component="label"
+  sx={{
+    margin: '4px',
+    backgroundColor: isDark ? '#707070' : '#ececec',
+    '&:hover': {
+      backgroundColor: isDark ? '#707070' : '#ececec',
+    },
+    '&:active': {
+      backgroundColor: isDark ? '#707070' : '#ececec',
+    },
+  }}
+>
               <input
                 hidden
                 accept='image/*'
@@ -233,17 +242,26 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 name='file'
                 onChange={handleImage}
               />
-              <PhotoCamera sx={{ color: isDark ? '#4c9fc5' : '#2e5b70' }} />
+              <PhotoCamera sx={{ color: isDark ? '#7dc5e3' : '#2e5b70' }} />
             </IconButton>
 
             <Button
               type='submit'
               variant='contained'
-              color='primary'
+              sx={{
+                margin: '4px',
+                backgroundColor: isDark ? '#707070' : '#ececec',
+                '&:hover': {
+                  backgroundColor: isDark ? '#707070' : '#ececec',
+                },
+                '&:active': {
+                  backgroundColor: isDark ? '#707070' : '#ececec',
+                },
+              }}              color='primary'
               style={{
                 float: 'right',
                 // backgroundColor: '#ececec',
-                color: isDark ? '#4c9fc5' : '#2e5b70',
+                color: isDark ? '#7dc5e3' : '#2e5b70',
                 backgroundColor: isDark ? '#757575' : '#ececec',
               }}
             >

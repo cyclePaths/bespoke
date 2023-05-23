@@ -134,23 +134,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
   const addNewReport = (newReport: Report) => {
     setReports((prevReports) => [...prevReports, newReport]);
   };
-  // ****Commented out to move fetching to parent component ****
-  // useEffect(() => {
-  // const fetchThisMonthReports = async () => {
-  //   try {
-  //     const response = await axios.get('/reports/thisMonth');
-  //     const filteredReports = response.data;
-  //     // console.log("reports:", response.data);
-  //     setReports(filteredReports);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //       fetchReports();
-
-  // }, [])
 
   useEffect(() => {
     setReports(monthReports);
