@@ -110,7 +110,7 @@ const RouteInfo = ({
         width: '92%',
         borderRadius: '4px',
         justifyContent: 'space-between',
-        height: '13vh',
+        height: '10vh',
         boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.2)',
         margin: '10px',
       }}

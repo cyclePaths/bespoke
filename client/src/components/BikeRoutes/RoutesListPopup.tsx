@@ -21,7 +21,7 @@ const RoutesListPopup = ({
           backgroundColor: isDark ? '#707070' : '#e0e0e0',
           margin: '10px',
           padding: '10px',
-          height: '63vh',
+          height: '68vh',
         },
       }}
     >

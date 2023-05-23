@@ -71,6 +71,9 @@ const FetchedRoutes = ({
         value={selectedCat}
         exclusive
         onChange={handleSelectedChange}
+        sx={{
+          marginTop: '30px',
+        }}
       >
         <ToggleButton value='All'>All</ToggleButton>
         <ToggleButton value='Casual'>Casual</ToggleButton>

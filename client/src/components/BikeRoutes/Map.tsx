@@ -18,7 +18,14 @@ import {
   StartRouteContainer,
 } from '../../StyledComp';
 import {
-  defaultMapContainerStyle, darkModeOptions, defaultOptions, Theft, Collision, POI, RoadHazard, Default
+  defaultMapContainerStyle,
+  darkModeOptions,
+  defaultOptions,
+  Theft,
+  Collision,
+  POI,
+  RoadHazard,
+  Default,
 } from './Utils';
 import MapInputandButton from './MapInputandButtons';
 import FetchedRoutes from './FetchedRoutes';
@@ -37,17 +44,14 @@ import {
   DirectionsResult,
   geocoder,
   MapOptionsProp,
-  RouteInfo
+  RouteInfo,
 } from './RouteM';
 import { BikeRoutes, Report } from '@prisma/client';
 import { report } from 'process';
 
 // Sets the map to not be google styled //
 
-const Map = ({
-  homeCoordinates,
-  setHomeCoordinates,
-}: MapOptionsProp) => {
+const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
   /////////////// CONTEXT AND STATE //////////////////
   // Pull user and geoLocation from context //
   const { user, geoLocation, isDark } = useContext(UserContext);
@@ -75,7 +79,9 @@ const Map = ({
   const [markers, setMarkers] = useState<LatLngLiteral[]>([]);
   const [destination, setDestination] = useState<LatLngLiteral | null>(null);
   const [selected, setSelected] = useState<LatLngLiteral | null>(null);
-  const [directions, setDirections] = useState<DirectionsResult | undefined>(undefined);
+  const [directions, setDirections] = useState<DirectionsResult | undefined>(
+    undefined
+  );
   const [address, setAddress] = useState<any>({});
   const [routeList, setRouteList] = useState<BikeRoutes[]>([]);
   const [reportsList, setReportsList] = useState<Report[]>([]);
@@ -159,18 +165,19 @@ const Map = ({
           privacy,
           userId: user.id,
         })
-        .then(({data}) => {
+        .then(({ data }) => {
           setSaveMessage(true);
           // Timeout to make the message disappear correctly //
           setTimeout(() => {
             setSaveMessage(false);
           }, 2400);
 
-          axios.put('/bikeRoutes/recentRoute', {routeId: data.id})
+          axios
+            .put('/bikeRoutes/recentRoute', { routeId: data.id })
             .then(() => {})
             .catch((err) => {
               console.error('Failed to update most recent Routes: ', err);
-            })
+            });
         })
         .catch((err) => {
           console.error('Failed request:', err);
@@ -192,7 +199,7 @@ const Map = ({
           lat: event.latLng!.lat(),
           lng: event.latLng!.lng(),
         });
-        setUserCenter({lat: event.latLng!.lat(), lng: event.latLng!.lng()});
+        setUserCenter({ lat: event.latLng!.lat(), lng: event.latLng!.lng() });
       } else {
         if (destination === null) {
           setDestination({
@@ -241,22 +248,25 @@ const Map = ({
     setDestination(null);
     setDirections(undefined);
     setRouteInfo(null);
-  }
+  };
 
   // Render Distance and Duration //
   const renderRouteInfo = () => {
     if (!directions || routeInfo === null) return null;
+    const warning = routeInfo.warnings[0].split('.');
+    const splitWarning = warning[1].split(' ');
+    splitWarning.shift();
+    const boldWarning = splitWarning[0] + ' ' + splitWarning[1];
+    const newWarning = splitWarning.slice(3).join(' ');
     return (
       <InfoWindow
-        position={
-          {
-            lat: routeInfo.centerLat,
-            lng: routeInfo.centerLng,
-          }
-        }
+        position={{
+          lat: routeInfo.centerLat,
+          lng: routeInfo.centerLng,
+        }}
         onCloseClick={() => setRouteInfo(null)}
       >
-        <div style={{color: 'black'}}>
+        <div style={{ color: 'black' }}>
           <p>Duration: {routeInfo.duration}</p>
           <p>Distance: {routeInfo.distance}</p>
           <p>
@@ -270,7 +280,12 @@ const Map = ({
                 )
               : 'None'}
           </p>
-          <p>Google Warning: {routeInfo.warnings[0]}</p>
+          <p>
+            <div style={{ fontWeight: 'bold', fontSize: '15px' }}>
+              {boldWarning}
+            </div>{' '}
+            {newWarning}.
+          </p>
         </div>
       </InfoWindow>
     );
@@ -291,20 +306,10 @@ const Map = ({
   };
 
   const exitListForm = () => {
-    const searchBar = document.getElementById('route-searcher');
-    const findHeader = document.getElementById('list');
-    const resultHeader = document.getElementById('results');
-    const emptyResult = document.getElementById('no-list');
-
     setOpenSearch(false);
     setCategory('');
     setIsPrivate(false);
     setRouteList([]);
-
-    findHeader!.style.display = 'none';
-    searchBar!.style.display = 'none';
-    resultHeader!.style.display = '';
-    emptyResult!.style.display = 'none';
   };
 
   // Grab the address of the selected coordinates //
@@ -401,7 +406,11 @@ const Map = ({
       {/* This is the map rendering on screen */}
       <GoogleMap
         mapContainerStyle={defaultMapContainerStyle}
-        options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
+        options={
+          isDark
+            ? (darkModeOptions as google.maps.MapOptions)
+            : (defaultOptions as google.maps.MapOptions)
+        }
         center={userCenter}
         zoom={14}
         onLoad={onLoad}
@@ -563,7 +572,7 @@ const Map = ({
               setSelected(null);
             }}
           >
-            <div style={{color: 'black'}}>
+            <div style={{ color: 'black' }}>
               <p>{address.formatted_address}</p>
             </div>
           </InfoWindow>
@@ -584,7 +593,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            boxShadow: '-4px 3px 5px #00000033'
+            boxShadow: '-4px 3px 5px #00000033',
           }}
           onClick={fetchDirections}
         >
@@ -601,7 +610,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            boxShadow: '-4px 3px 5px #00000033'
+            boxShadow: '-4px 3px 5px #00000033',
           }}
           onClick={() => {
             if (directions) {
@@ -622,7 +631,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            boxShadow: '-4px 3px 5px #00000033'
+            boxShadow: '-4px 3px 5px #00000033',
           }}
           onClick={() => setOpenSearch(true)}
         >
@@ -639,7 +648,7 @@ const Map = ({
             '&:active': {
               backgroundColor: isDark ? '#707070' : '#ececec',
             },
-            boxShadow: '-4px 3px 5px #00000033'
+            boxShadow: '-4px 3px 5px #00000033',
           }}
           onClick={handleClearMap}
         >

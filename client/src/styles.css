@@ -52,9 +52,11 @@ body {
   display: flex;
   justify-content: space-evenly;
   font-size: 30px;
-  margin: 15px;
   margin-top: 0px;
   font-weight: 500;
+  position: fixed;
+  top: 17%;
+  left: 25%;
 }
 
 #search-criteria {
@@ -66,7 +68,7 @@ body {
   margin-top: 15px;
   display: flex;
   justify-content: space-evenly;
-  height: 45vh;
+  height: 52vh;
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
@@ -77,7 +79,7 @@ body {
   margin-top: 15px;
   display: flex;
   justify-content: space-evenly;
-  height: 45vh;
+  height: 52vh;
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
@@ -87,12 +89,17 @@ body {
   background-color: #fff;
   margin-top: 15px;
   display: flex;
-  justify-content: space-evenly;
-  /* height: 45vh; */
+  height: 52vh;
   flex-direction: column;
   align-items: center;
   border-radius: 4px;
   overflow: scroll;
+}
+
+.card-elements {
+  display: flex;
+  width: 58%;
+  align-items: center;
 }
 
 .checkmark {
