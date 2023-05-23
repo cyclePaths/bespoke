@@ -116,7 +116,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
     setButtonClicked(true);
     try {
       await axios.patch(`/reports/${id}`, { published: false });
-      console.log(id);
+      // console.log(id);
       fetchThisMonthReports();
 
       // setMarkers(prevMarkers => prevMarkers.filter(marker => marker.get("reportId") !== id));
@@ -141,11 +141,23 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
 
   useEffect(() => {
     if (map && reports) {
-      console.log('setting Markers: ', reports);
-      const newMarkers = reports.map((report: Report) => {
+      // console.log('setting Markers: ', reports);
+
+      // Filter the reports based on the selectedType
+      const filteredReports = reports.filter((report: Report) => {
+        if (selectedType === '') {
+          // If selectedType is empty, include all reports
+          return true;
+        } else {
+          // Include reports with matching type
+          return report.type === selectedType;
+        }
+      });
+
+      const newMarkers = filteredReports.map((report: Report) => {
         // Assuming you have fetched the report data and stored it in the `report` variable
         const author: User = report.author;
-        console.log('Author: ', author.name); // Output the author information
+        // console.log('Author: ', author.name); // Output the author information
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {

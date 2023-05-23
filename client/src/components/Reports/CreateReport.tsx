@@ -83,7 +83,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    console.log('handleSubmit');
+    // console.log('handleSubmit');
     if (currentLocation) {
       setSubmitting(true);
       try {
