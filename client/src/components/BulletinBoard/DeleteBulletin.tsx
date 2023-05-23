@@ -5,7 +5,8 @@ import axios from 'axios';
 import themeBulletin from './ThemeBulletin'
 
 const DeleteBulletin = (props) => {
-    const { creator, id, getAllBulletins } = props
+    const { creator, id } = props
+    const getAllBulletins = props.getAllBulletins
     const context = useContext(UserContext)
 
 
@@ -15,7 +16,6 @@ const DeleteBulletin = (props) => {
         axios.delete(`/bulletin/${id}`, {
          })
          .then(() => {
-          alert('bulletin deleted')
           getAllBulletins()
          })
          .catch(() => alert('Unable to delete bulletin!'));
