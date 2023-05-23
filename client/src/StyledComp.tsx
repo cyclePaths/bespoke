@@ -4,6 +4,10 @@ export type DarkModeHelperProps = {
   isDark: boolean;
 };
 
+export type InputProps = DarkModeHelperProps & {
+  secondary?: boolean;
+}
+
 export type BrightnessProps = {
   bright: number;
 };
@@ -61,9 +65,9 @@ const OptionsDiv = styled.div`
   flex-direction: column;
 `;
 
-const InputLayout = styled.input<DarkModeHelperProps>`
+const InputLayout = styled.input<InputProps>`
   height: 30px;
-  width: 75%;
+  width: ${({ secondary }) => secondary ? '85%' : '75%'};
   margin: 5px;
   border-radius: 2px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};

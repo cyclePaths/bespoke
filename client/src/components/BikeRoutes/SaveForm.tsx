@@ -44,6 +44,7 @@ const SaveForm = ({
           type='text'
           maxLength='10'
           placeholder='Enter Name of Route...'
+          secondary
         />
         <OptionsDiv>
           <div className='route-options'>
