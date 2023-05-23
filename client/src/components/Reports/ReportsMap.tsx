@@ -419,13 +419,13 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                       />
                     )}
 
-                    <Card sx={{ minWidth: 275, my: '0.5rem' }}>
+                    <Card sx={{ minWidth: 275, marginTop: '0.5rem' }}>
                       <CardContent>
                         <Typography
                           sx={{
                             fontSize: 14,
                             textAlign: 'left',
-                            marginTop: '0.25rem',
+                            marginTop: '0px',
                           }} // Reduce margin-top
                           color='text.secondary'
                         >
@@ -442,7 +442,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                           sx={{
                             fontSize: 14,
                             textAlign: 'right',
-                            marginBottom: '0.25rem',
+                            marginBottom: '0.5rem',
                           }} // Reduce margin-bottom
                           color='text.secondary'
                           gutterBottom
