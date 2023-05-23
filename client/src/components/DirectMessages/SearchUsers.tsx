@@ -4,6 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
+import Typography from '@mui/material/Typography';
 
 export interface Users {
   id: number;
@@ -50,7 +51,6 @@ function SearchUsers({
     const getUsers = async () => {
       try {
         const response = await axios.get('/dms/findUsers');
-        console.log('RESPONSO', response);
         if (active) {
           setOptions([...response.data]);
         }
@@ -115,21 +115,29 @@ function SearchUsers({
           options={options}
           loading={loading}
           renderInput={(params) => (
+
             <TextField
-              sx={{ borderRadius: '25px' }}
               {...params}
-              // label='Search Bikers'
-              // label={senderName || 'Search Bikers'}
               label={label}
+              InputLabelProps={{
+                style: {
+                  color: 'rgb(191, 186, 186)',
+                },
+              }}
               InputProps={{
+                style: {
+                  color: 'rgb(191, 186, 186)',
+                },
                 ...params.InputProps,
                 onFocus: resetLabel,
                 endAdornment: (
                   <React.Fragment>
+
                     {loading ? (
                       <CircularProgress color='inherit' size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
+
                   </React.Fragment>
                 ),
               }}

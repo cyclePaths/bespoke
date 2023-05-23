@@ -125,7 +125,7 @@ const StopwatchStats = ({
     <div>
       <div>
         {isPickerVisible && (
-          <div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Button
             variant="contained" size="small"
               type='button'
@@ -135,7 +135,7 @@ const StopwatchStats = ({
                 setValueGroups(exiledRedHeadedStepChildrenValueGroups);
               }}
             >
-              Get Stats
+              Send Stats
             </Button>
           </div>
         )}

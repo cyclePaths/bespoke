@@ -175,6 +175,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
     search: {
+      // color: 'rgb(191, 186, 186) !important',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
