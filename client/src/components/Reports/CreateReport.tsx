@@ -144,9 +144,9 @@ const CreateReport = ({ fetchThisMonthReports }) => {
         onClose={handleClose}
         sx={{
           '& .MuiPaper-root': {
-            backgroundColor: '#757575',
+            backgroundColor: isDark ? '#757575' : '#ececec',
             // border: '2px solid gray',
-            borderRadius: '10px',
+            borderRadius: '4px',
           },
         }}
       >
@@ -166,13 +166,14 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 width: '100%',
                 mb: '1rem',
                 '& .MuiToggleButton-root': {
-                  color: '#FFFFFF',
-                  backgroundColor: '#757575',
+                  color: '#2e5b70',
+                  backgroundColor: isDark ? '#757575' : '#ececec',
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
-                  color: '#000000',
-                  backgroundColor: '#ececec',
+                  color: '#2e5b70',
+                  backgroundColor: '#FFFFFF',
                 },
+
               }}
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
@@ -193,7 +194,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               fullWidth
               inputProps={{
                 style: {
-                  color: '#FFFFFF',
+                  color: isDark ? '#FFFFFF' : 'black',
                 },
               }}
               sx={{
@@ -210,7 +211,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               fullWidth
               inputProps={{
                 style: {
-                  color: '#FFFFFF',
+                  color: isDark ? '#FFFFFF' : 'black',
                 },
               }}
               sx={{
@@ -223,7 +224,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               color='primary'
               aria-label='upload picture'
               component='label'
-              sx={{ backgroundColor: '#ececec' }}
+              sx={{ backgroundColor: isDark ? '#757575' : '#ececec' }}
             >
               <input
                 hidden
@@ -241,8 +242,9 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               color='primary'
               style={{
                 float: 'right',
-                backgroundColor: '#ececec',
+                // backgroundColor: '#ececec',
                 color: isDark ? '#4c9fc5' : '#2e5b70',
+                backgroundColor: isDark ? '#757575' : '#ececec',
               }}
             >
               Submit

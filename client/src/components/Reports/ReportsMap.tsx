@@ -5,7 +5,11 @@ import axios from 'axios';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
-import { defaultMapContainerStyle, darkModeOptions, defaultOptions } from '../BikeRoutes/Utils';
+import {
+  defaultMapContainerStyle,
+  darkModeOptions,
+  defaultOptions,
+} from '../BikeRoutes/Utils';
 import {
   Theme,
   Tooltip,
@@ -425,13 +429,13 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                         <Typography
                           sx={{
                             fontSize: 14,
-                            textAlign: 'right',
+                            textAlign: 'left',
                             marginTop: '0.25rem',
                           }} // Reduce margin-top
                           color='text.secondary'
                         >
                           <p className='report-date'>
-                            {dayjs(selectedReport.createdAt).format(
+                            Reported on: {dayjs(selectedReport.createdAt).format(
                               'MMMM D, YYYY'
                             )}
                           </p>
@@ -471,8 +475,11 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                 center={userCenter}
                 zoom={15}
                 onLoad={onLoad}
-                options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
-
+                options={
+                  isDark
+                    ? (darkModeOptions as google.maps.MapOptions)
+                    : (defaultOptions as google.maps.MapOptions)
+                }
               />
             </Box>
           </Box>
