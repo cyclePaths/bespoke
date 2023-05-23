@@ -85,8 +85,6 @@ const RouteInfo = ({
     // }, 2400);
   };
 
-
-
   useEffect(() => {
     const date = new Date(route.createdAt);
     const readableDate = date.toLocaleDateString();
@@ -104,8 +102,86 @@ const RouteInfo = ({
   }, []);
 
   return (
-    <div style={{ width: '130%', paddingLeft: '15px', paddingRight: '15px' }}>
-      {deleteMessage ? (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#e0e0e0',
+        width: '92%',
+        borderRadius: '4px',
+        justifyContent: 'space-between',
+        height: '13vh',
+        boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.2)',
+        margin: '10px',
+      }}
+    >
+      <span
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          margin: '10px',
+        }}
+      >
+        <div>{date}</div>
+        <div
+          style={{
+            marginTop: '5px',
+            marginBottom: '5px',
+            fontWeight: 'bolder',
+          }}
+        >
+          {route.category}
+        </div>
+        <div>Likes: {likeNumber}</div>
+      </span>
+      <div className='route-name' onClick={() => handleRouteParsing()}>
+        {route.name}
+      </div>
+      {route.userId === user.id ? (
+        <IconButton onClick={() => setDeleteOpen(true)}>
+          <DeleteIcon />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => {
+            if (!like) {
+              setLike(true);
+              updateLikes(true);
+            } else {
+              setLike(false);
+              updateLikes(false);
+            }
+          }}
+        >
+          {like === true ? (
+            <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
+          ) : (
+            <ThumbUpAltOutlinedIcon />
+          )}
+        </IconButton>
+      )}
+      <Dialog open={deleteOpen}>
+        <DialogTitle>Delete this route?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this route (any likes by other users
+            will be deleted as well)?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteRoute}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default RouteInfo;
+
+{
+  /* {deleteMessage ? (
         <RouteAlerts id='Delete-Alert'>
           Route Deleted{' '}
           <img
@@ -115,97 +191,5 @@ const RouteInfo = ({
         </RouteAlerts>
       ) : (
         <></>
-      )}
-      <Box
-        component='span'
-        sx={{
-          backgroundColor: '#e0e0e0',
-          display: 'grid',
-          width: '100%',
-          boxShadow: '-2px 4px 4px rgba(0,0,0,0.2)',
-          borderRadius: '3px',
-          marginY: '5px',
-          justifyContent: 'center',
-          justifyItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <div style={{ marginTop: '10px' }}>{date}:</div>
-          <div className='route-name' onClick={() => handleRouteParsing()}>
-            {route.name}
-          </div>
-        </div>
-        <span
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingLeft: '20px',
-            paddingRight: '20px',
-          }}
-        >
-          <div style={{ marginTop: '4px' }}>Likes: {likeNumber}</div>
-          <span style={{ display: 'flex', flexDirection: 'row' }}>
-            {route.userId === user.id ? (
-              <IconButton disabled sx={{ marginRight: '10px' }}>
-                <ThumbUpAltOutlinedIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                onClick={() => {
-                  if (!like) {
-                    setLike(true);
-                    updateLikes(true);
-                  } else {
-                    setLike(false);
-                    updateLikes(false);
-                  }
-                }}
-                sx={{ marginRight: '10px' }}
-              >
-                {like === true ? (
-                  <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
-                ) : (
-                  <ThumbUpAltOutlinedIcon />
-                )}
-              </IconButton>
-            )}
-            {route.userId === user.id ? (
-              <IconButton
-                sx={{ marginLeft: '10px' }}
-                onClick={() => setDeleteOpen(true)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            ) : (
-              <IconButton disabled sx={{ marginLeft: '10px' }}>
-                <DeleteIcon />
-              </IconButton>
-            )}
-          </span>
-        </span>
-        <Dialog open={deleteOpen}>
-          <DialogTitle>Delete this route?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this route (any likes by other
-              users will be deleted as well)?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
-            <Button onClick={handleDeleteRoute}>Confirm</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </div>
-  );
-};
-
-export default RouteInfo;
+      )} */
+}

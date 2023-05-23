@@ -61,6 +61,40 @@ body {
   display: flex;
 }
 
+#no-list {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 45vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+}
+
+#nothing-searched {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 45vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+}
+
+#searched-list {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  /* height: 45vh; */
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  overflow: scroll;
+}
+
 .checkmark {
   height: 17px;
   border-radius: 6px;
@@ -107,13 +141,6 @@ body {
   }
 }
 
-#no-list {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 .search-form {
   display: flex;
   border-radius: 4px;
@@ -128,10 +155,9 @@ body {
 }
 
 .route-name {
-  color: rgb(57, 57, 177);
-  font-family: 'Roboto', sans-serif;
-  margin-top: 5px;
+  color: #3939b1;
   font-size: 25px;
+  text-align: center;
 }
 
 #set-private {

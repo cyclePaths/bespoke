@@ -31,20 +31,14 @@ const FetchedRoutes = ({
   likeList,
   setMarkers,
 }: FetchedRoutesProps) => {
+  const [searched, setSearched] = useState<boolean>(false);
+  const [selectedCat, setSelectedCat] = useState<string>('');
 
-  const [searched, setSearched] = useState(false);
-
-  const handleNewRoutes = () => {
-    const searchBar = document.getElementById('route-searcher');
-    const findHeader = document.getElementById('list');
-    const resultHeader = document.getElementById('results');
-
-    fetchRoutes(isPrivate, category);
-    setSearched(true);
-
-    findHeader!.style.display = 'none';
-    searchBar!.style.display = 'none';
-    resultHeader!.style.display = '';
+  const handleSelectedChange = (
+    event: React.MouseEvent<HTMLElement>,
+    value
+  ) => {
+    if (value !== null) setSelectedCat(value);
   };
 
   const deleteRoute = (routeNum: number, likesCount: number) => {
@@ -56,83 +50,62 @@ const FetchedRoutes = ({
       .catch((err) => console.error('Failed Delete Request: ', err));
   };
 
+  useEffect(() => {
+    if (selectedCat === '') {
+      return;
+    } else {
+      if (selectedCat !== 'User') {
+        fetchRoutes(false, selectedCat);
+        setSearched(true);
+      } else {
+        fetchRoutes(true, selectedCat);
+        setSearched(true);
+      }
+    }
+  }, [selectedCat]);
+
   return (
     <div>
-      <header id='list'>
-        Search Routes
-      </header>
-      {/* <RouteListOptions id='route-searcher' style={{ display: '' }}>
-        <FormControl>
-          <div id='search-criteria'>
-            <div id='category'>
-              <InputLabel
-                id='Search-by-category'
-                variant='standard'
-                htmlFor='uncontrolled-native'
-              >
-                Category
-              </InputLabel>
-              <NativeSelect
-                defaultValue='None'
-                inputProps={{ name: 'category', id: 'uncontrolled-native' }}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value='None'>None</option>
-                <option value='Casual'>Casual</option>
-                <option value='Speedy'>Speedy</option>
-                <option value='Scenic'>Scenic</option>
-              </NativeSelect>
-            </div>
-            <IconButton
-              aria-label='Search'
-              onClick={() => handleNewRoutes()}
-              sx={{ marginLeft: '20px' }}
-            >
-              <SearchIcon />
-            </IconButton>
-          </div>
-        </FormControl>
-        <FormControlLabel
-          control={<Switch onChange={(e) => setIsPrivate(e.target.checked)} />}
-          sx={{ marginTop: '10px' }}
-          label='User Routes Only'
-        />
-      </RouteListOptions> */}
-      <ToggleButtonGroup>
-        <ToggleButton value='All'>
-          All
-        </ToggleButton>
-        <ToggleButton value='Casual'>
-          Casual
-        </ToggleButton>
-        <ToggleButton value='Speedy'>
-          Speedy
-        </ToggleButton>
-        <ToggleButton value='Scenic'>
-          Scenic
-        </ToggleButton>
-        <ToggleButton value='User'>
-          User
-        </ToggleButton>
+      <header id='list'>Search Routes</header>
+      <ToggleButtonGroup
+        value={selectedCat}
+        exclusive
+        onChange={handleSelectedChange}
+      >
+        <ToggleButton value='All'>All</ToggleButton>
+        <ToggleButton value='Casual'>Casual</ToggleButton>
+        <ToggleButton value='Speedy'>Speedy</ToggleButton>
+        <ToggleButton value='Scenic'>Scenic</ToggleButton>
+        <ToggleButton value='User'>User</ToggleButton>
       </ToggleButtonGroup>
-      {searched ? (routeList.length === 0 ? <div id='no-list'>No Routes Found</div> : routeList.map((route, i) => {
-        const index = i;
-        return (
-          <RouteInfo
-            key={i}
-            route={route}
-            index={index}
-            handleRouteClick={handleRouteClick}
-            setOpenSearch={setOpenSearch}
-            fetchDirections={fetchDirections}
-            routeList={routeList}
-            setRouteList={setRouteList}
-            likeList={likeList}
-            setMarkers={setMarkers}
-            deleteRoute={deleteRoute}
-          />
-        );
-      })) : <></>}
+      {searched ? (
+        routeList.length === 0 ? (
+          <div id='no-list'>No Routes Found</div>
+        ) : (
+          <div id='searched-list'>
+            {routeList.map((route, i) => {
+              const index = i;
+              return (
+                <RouteInfo
+                  key={i}
+                  route={route}
+                  index={index}
+                  handleRouteClick={handleRouteClick}
+                  setOpenSearch={setOpenSearch}
+                  fetchDirections={fetchDirections}
+                  routeList={routeList}
+                  setRouteList={setRouteList}
+                  likeList={likeList}
+                  setMarkers={setMarkers}
+                  deleteRoute={deleteRoute}
+                />
+              );
+            })}
+          </div>
+        )
+      ) : (
+        <div id='nothing-searched'>Routes Display Here ...</div>
+      )}
     </div>
   );
 };
