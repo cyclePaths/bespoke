@@ -359,7 +359,10 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                 type='button'
                 variant='contained'
                 className='backButton'
-                sx={{ position: 'fixed', left: 0 }}
+                sx={{ position: 'fixed',
+                left: 0,
+                background: 'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)'
+              }}
                 onClick={handleBackButtonClick}
               >
                 <ArrowBackIcon />
@@ -389,7 +392,10 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                 type='button'
                 variant='contained'
                 className='forwardButton'
-                sx={{ position: 'fixed', right: 0 }}
+                sx={{ position: 'fixed',
+                right: 0,
+                background: 'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)'
+              }}
                 onClick={handleForwardButtonClick}
               >
                 <ArrowForwardIcon />
@@ -426,7 +432,8 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                   center: 0,
                   color: 'white !important',
                   opacity: 0.4,
-                  backgroundColor: 'rgb(76, 175, 80) !important',
+                  background:
+                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125) !important',
                 }}
               >
                 Get Ride Stats
@@ -437,9 +444,10 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
               <Button
                 type='button'
                 variant='contained'
-                color='success'
+                // color='success'
                 className='rideStatsButton'
-                sx={{ position: 'fixed', center: 0 }}
+                sx={{ background:
+                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)', position: 'fixed', center: 0 }}
                 onClick={handleGetRideStatsButton}
               >
                 Get Ride Stats

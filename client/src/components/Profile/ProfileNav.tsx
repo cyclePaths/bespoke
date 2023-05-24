@@ -19,6 +19,8 @@ import { ProfileDisplays } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
 import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,7 +31,7 @@ interface TabPanelProps {
 const LightModeIcon = (props) => {
   return <DarkModeIcon {...props}
   style={{
-    color: '#424345', // replace with your desired color
+    color: '#97999e', // replace with your desired color
   }}
   />;
 };
@@ -150,6 +152,15 @@ const ProfileNav = ({
       return newState;
     });
   };
+
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 
   return (
     <div>
@@ -273,7 +284,7 @@ const ProfileNav = ({
           </div>
         </div>
 
-          <Box>
+
         <div className={`holder ${areTabsVisible ? '' : 'hidden'} default-profile-display`}>
           <ProfileDisplays>
             <h4>{homeAddress}</h4>
@@ -296,7 +307,7 @@ const ProfileNav = ({
             </ProfileDisplays>
           </div>
         </div>
-        </Box>
+
       </Box>
     </div>
   );

@@ -86,7 +86,8 @@ const Addresses = ({
   const [userId, setUserId] = useState(0);
   const [userAddress, setUserAddress] = useState('');
   const [showDelete, setShowDelete] = useState(false);
-  const [selectedAddressPlaceholder, setSelectedAddressPlaceholder] = useState('');
+  const [selectedAddressPlaceholder, setSelectedAddressPlaceholder] =
+    useState('');
   // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
 
   const handlePlaceSelect = (selectedPlace: string) => {
@@ -191,8 +192,7 @@ const Addresses = ({
 
   const deleteAddress = () => {
     axios
-      .delete(`/profile/deleteAddress/${userId}`, {
-      })
+      .delete(`/profile/deleteAddress/${userId}`, {})
       .then(() => {
         setShowDelete(false);
         setHomeAddress('Save a home address to find a quick route home.');
@@ -222,15 +222,15 @@ const Addresses = ({
             {homeAddress}
             {showDelete && (
               <div className='delete-address'>
-              <Button
-                size='small'
-                variant='outlined'
-                color='error'
-                sx={{ marginTop: '15px' }}
-                onClick={deleteAddress}
-              >
-                DELETE
-              </Button>
+                <Button
+                  size='small'
+                  variant='outlined'
+                  color='error'
+                  sx={{ marginTop: '15px' }}
+                  onClick={deleteAddress}
+                >
+                  DELETE
+                </Button>
               </div>
             )}
           </div>
@@ -280,43 +280,36 @@ const Addresses = ({
                     );
                   })}
                   {/* <div>{selectedAddress}</div> */}
-                  {selectedAddress && (
-                  <div>{selectedAddress}</div>
-                )}
+                  {selectedAddress && <div>{selectedAddress}</div>}
 
-                {!selectedAddress && (
-                  <div className='placeholder' style={{ opacity: 0 }}>
-                    Placeholder Text
-                  </div>
-                )}
-
+                  {!selectedAddress && (
+                    <div className='placeholder' style={{ opacity: 0 }}>
+                      Placeholder Text
+                    </div>
+                  )}
                 </div>
 
-
                 <Stack direction='row' spacing={5}>
-                    <Button
-                      className='saveHome'
-                      variant='contained'
-                      color='success'
-                      style={{
-                        backgroundColor: 'green',
-                        color: 'white',
-                        boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
-                      }}
-                      onClick={() => {
-                        handleSetHomeClick();
-                      }}
-                    >
-                      Set Home
-                    </Button>
-                  </Stack>
-
-
+                  <Button
+                    className='saveHome'
+                    variant='contained'
+                    color='success'
+                    style={{
+                      background:
+                        'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',
+                      color: 'white',
+                      boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
+                    }}
+                    onClick={() => {
+                      handleSetHomeClick();
+                    }}
+                  >
+                    Set Home
+                  </Button>
+                </Stack>
               </div>
             )}
           </PlacesAutocomplete>
-
-
 
           {/* <Stack direction='row' spacing={5}>
                     <Button
@@ -335,7 +328,6 @@ const Addresses = ({
                       Set Home
                     </Button>
                   </Stack> */}
-
         </Box>
       </div>
 

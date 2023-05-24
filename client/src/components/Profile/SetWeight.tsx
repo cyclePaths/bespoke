@@ -170,7 +170,9 @@ const SetWeight = (props: WeightTabProps) => {
             <Stack direction='row' spacing={5}>
               <Button
                 className='saveWeight'
-                color='success'
+                sx={{background:
+                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
+                // color='success'
                 variant='contained'
                 type='button'
                 onClick={() => {

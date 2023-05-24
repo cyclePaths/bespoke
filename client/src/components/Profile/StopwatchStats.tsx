@@ -127,7 +127,11 @@ const StopwatchStats = ({
         {isPickerVisible && (
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Button
-            variant="contained" size="small"
+            sx={{background:
+              'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
+            className='submit-button'
+            variant="contained"
+            size="small"
               type='button'
               onClick={() => {
                 workoutStats();
