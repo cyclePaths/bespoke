@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
-import ForecastRow from './Weather/ForecastRow';
 import Forecast from './Weather/Forecast';
 import {
   BandAid,
