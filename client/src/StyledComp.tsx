@@ -515,14 +515,73 @@ const ToastBuffer = styled.div`
 
 //This is for the instruction text in the Scrollers in Profile //
 
-const lightModeText = 'rgb(47, 132, 66)';
+// const lightModeText = 'rgb(47, 132, 66)';
+// // const lightModeText = '#7e29d8';
+// // const darkModeText = '#ffffff';
+// // const darkModeText = '#ac7ede';
+// const darkModeText = 'rgb(123, 231, 149)';
+
+// const lightModeShadow = 'rgb(11, 11, 11)';
+// const darkModeShadow = 'rgb(112, 247, 143)';
+// // const darkModeShadow = '1.25em 1.25em 3.75em #282b71';
+
+// const waveHighlightAnimation = keyframes`
+//   0% {
+//     text-shadow: 0 0 2px ${lightModeShadow};
+//   }
+//   50% {
+//     text-shadow: 0 0 10px ${lightModeShadow};
+//   }
+//   100% {
+//     text-shadow: 0 0 2px ${lightModeShadow};
+//   }
+// `;
+
+// const WaveHighlight = styled.div`
+//   position: relative;
+//   display: inline-block;
+// `;
+
+// const HighlightText = styled.h4`
+//   display: inline-block;
+//   margin-bottom: 30px;
+//   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
+//   text-shadow: ${(props) =>
+//     props.theme === 'dark'
+//       ? `0 0 2px ${darkModeShadow}`
+//       : `0 0 2px ${lightModeShadow}`};
+
+//   animation: ${(props) => keyframes`
+//     0% {
+//       text-shadow: 0 0 2px ${
+//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
+//       };
+//     }
+//     50% {
+//       text-shadow: 0 0 10px ${
+//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
+//       };
+//     }
+//     100% {
+//       text-shadow: 0 0 2px ${
+//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
+//       };
+//     }
+//   `}
+//     2s infinite;
+// `;
+
+
+const lightModeText = 'rgb(50, 53, 50)';
 // const lightModeText = '#7e29d8';
 // const darkModeText = '#ffffff';
 // const darkModeText = '#ac7ede';
-const darkModeText = 'rgb(123, 231, 149)';
+const darkModeText = 'rgb(227, 239, 230)';
 
 const lightModeShadow = 'rgb(11, 11, 11)';
-const darkModeShadow = 'rgb(112, 247, 143)';
+/* const darkModeShadow = 'rgb(112, 247, 143)'; */
+const darkModeShadow = 'rgb(255, 255, 255)';
+// const darkModeShadow = '1.25em 1.25em 3.75em #282b71';
 
 const waveHighlightAnimation = keyframes`
   0% {
@@ -547,22 +606,22 @@ const HighlightText = styled.h4`
   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
   text-shadow: ${(props) =>
     props.theme === 'dark'
-      ? `0 0 2px ${darkModeShadow}`
+      ? `0 0 20px ${darkModeShadow}` // Increase the blur radius to create a glow effect
       : `0 0 2px ${lightModeShadow}`};
 
   animation: ${(props) => keyframes`
     0% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     50% {
-      text-shadow: 0 0 10px ${
+      text-shadow: 0 0 50px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     100% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
@@ -570,13 +629,14 @@ const HighlightText = styled.h4`
     2s infinite;
 `;
 
+
 //Above is for the instruction text in the Scrollers in Profile //
 
 const ProfileDisplays = styled.div`
   /* background-color: white; */
   display: flex;
   justify-content: center;
-  margin: 10px;
+  /* margin: 10px; */
 `;
 
 const ProfileRideDisplay = styled.div`
@@ -589,6 +649,102 @@ const ProfileRideDisplay = styled.div`
 
   }
 `;
+
+//Below are the styles for the default cards on the profile page//
+
+const ProfileDefaultAddressDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71;
+`;
+
+
+const ProfileDefaultAddressDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+`;
+
+
+const ProfileDefaultWeightDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+`;
+
+const ProfileDefaultWeightDisplayLight = styled.div`
+ display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+`;
+
+const ProfileDefaultLastRideDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+`;
+
+const ProfileDefaultLastRideDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100px; */
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+
+  /* border-radius: 50%; */
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+`;
+
+//Above are the styles for the default cards on the profile page//
 
 export {
   ForecastBit,
@@ -650,4 +806,10 @@ export {
   PrivacySelector,
   RecentRidesHeader,
   StatsWrapper,
+  ProfileDefaultAddressDisplayDark,
+  ProfileDefaultAddressDisplayLight,
+  ProfileDefaultWeightDisplayDark,
+  ProfileDefaultWeightDisplayLight,
+  ProfileDefaultLastRideDisplayDark,
+  ProfileDefaultLastRideDisplayLight,
 };

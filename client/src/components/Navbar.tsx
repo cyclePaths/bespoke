@@ -33,10 +33,6 @@ const Navbar = () => {
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
   const [activity, setActivity] = useState('');
   const [activityValue, setActivityValue] = useState('');
-  const [lastSWRideActivity, setLastSWRideActivity] = useState('');
-  const [lastSWRideDuration, setLastSWRideDuration] = useState('');
-  const [lastSWRideWeight, setLastSWRideWeight] = useState('');
-  const [lastSWRideCalories, setLastSWRideCalories] = useState('');
 
   // User Context //
   const { user, isDark } = useContext(UserContext);
@@ -221,11 +217,6 @@ const Navbar = () => {
         setActivity={setActivity}
         activityValue={activityValue}
         setActivityValue={setActivityValue}
-
-        setLastSWRideActivity={setLastSWRideActivity}
-        setLastSWRideDuration={setLastSWRideDuration}
-        setLastSWRideWeight={setLastSWRideWeight}
-        setLastSWRideCalories={setLastSWRideCalories}
       />
       <Outlet />
     </div>

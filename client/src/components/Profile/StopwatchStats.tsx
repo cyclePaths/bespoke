@@ -20,11 +20,6 @@ interface StopwatchStatsProps {
   isPickerVisible: boolean;
   setIsPickerVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setValueGroups: React.Dispatch<React.SetStateAction<any>>;
-
-  setLastSWRideActivity;
-  setLastSWRideDuration;
-  setLastSWRideWeight;
-  setLastSWRideCalories;
 }
 
 const StopwatchStats = ({
@@ -37,11 +32,6 @@ const StopwatchStats = ({
   isPickerVisible,
   setIsPickerVisible,
   setValueGroups,
-
-  setLastSWRideActivity,
-  setLastSWRideDuration,
-  setLastSWRideWeight,
-  setLastSWRideCalories,
 }) => {
   const user = useContext(UserContext);
 
@@ -117,12 +107,6 @@ const StopwatchStats = ({
             stopwatchCalories: total_calories,
           },
         });
-
-
-        // setLastSWRideActivity,
-        // setLastSWRideDuration,
-        // setLastSWRideWeight,
-        // setLastSWRideCalories,
 
         axios
           .post('profile/workout', {

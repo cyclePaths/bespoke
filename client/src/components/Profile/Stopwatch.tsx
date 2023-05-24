@@ -44,15 +44,11 @@ interface NavBarProps {
   setActivity: React.Dispatch<React.SetStateAction<string>>;
   activityValue: string;
   setActivityValue: React.Dispatch<React.SetStateAction<string>>;
-  setLastSWRideActivity;
-  setLastSWRideDuration;
-  setLastSWRideWeight;
-  setLastSWRideCalories;
 }
 
 
 
-const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, setLastSWRideActivity, setLastSWRideDuration, setLastSWRideWeight, setLastSWRideCalories }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 1,
     minutes: 36,
@@ -63,6 +59,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
   const intervalRef = useRef<Subscription | null>(null);
   const [swActivity, setSWActivity] = useState('');
   const [isStopwatchOpen, setIsStopwatchOpen] = useState(false);
+  const [appTheme, setAppTheme] =useState(false);
 
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledStopwatchStatsRedHeadedStepChildrenOptionGroups
@@ -73,9 +70,17 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
   );
 
   const user = useContext(UserContext);
-  if (user) {
-    const { weight } = user;
-  }
+
+  useEffect(() => {
+    // const user = useContext(UserContext);
+    if (user) {
+      const { user: { theme } = {} as any } = user
+      // const { theme } = user;
+      setAppTheme(theme);
+      console.log('user', theme)
+    }
+  }, [user])
+
 
   const handleChange = (exercise: string, value: string) => {
     setValueGroups((prevValueGroups) => ({
@@ -176,7 +181,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
       top: 50,
       right: 32,
       transform: 'translateX(-50)',
-      backgroundColor: 'white',
+      backgroundColor: appTheme ? 'white' : 'black',
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
       padding: '10px',
       width: '200px',
@@ -245,11 +250,6 @@ size='small'
           isPickerVisible={isPickerVisible}
           setIsPickerVisible={setIsPickerVisible}
           setValueGroups={setValueGroups}
-
-          setLastSWRideActivity={setLastSWRideActivity}
-          setLastSWRideDuration={setLastSWRideDuration}
-          setLastSWRideWeight={setLastSWRideWeight}
-          setLastSWRideCalories={setLastSWRideCalories}
         />
         </div>
       </div>

@@ -17,7 +17,6 @@ import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
-import { ProfileDisplays, ProfileRideDisplay } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
 import Grid from '@mui/material/Grid';
@@ -26,6 +25,15 @@ import Paper from '@mui/material/Paper';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Navbar from '../Navbar';
+import { ProfileDisplays,
+  ProfileRideDisplay,
+  ProfileDefaultAddressDisplayDark,
+  ProfileDefaultAddressDisplayLight,
+  ProfileDefaultWeightDisplayDark,
+  ProfileDefaultWeightDisplayLight,
+  ProfileDefaultLastRideDisplayDark,
+  ProfileDefaultLastRideDisplayLight,
+} from '../../StyledComp';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -346,7 +354,12 @@ const ProfileNav = ({
             {/* <div>{`Hello ${user}!`}</div> */}
 
             <div className='profile-pic-Theme-icon'>
+            {appTheme ? (
               <img className='profile-pic' src={photo} alt='avatar' />
+            ) : (
+            <img className='profile-pic' style={{boxShadow: '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'}} src={photo} alt='avatar' />
+            )}
+
 
               <ThemeProvider>
                 <div id='profile' className='themeIcon'>
@@ -418,39 +431,85 @@ const ProfileNav = ({
               areTabsVisible ? '' : 'hidden'
             } default-profile-display`}
           >
-            <ProfileDisplays>
-              <h4>{address}</h4>
-            </ProfileDisplays>
+          {appTheme ? (
+    <ProfileDefaultAddressDisplayLight>
+      <ProfileDisplays>
+        <h4>{address}</h4>
+      </ProfileDisplays>
+    </ProfileDefaultAddressDisplayLight>
+  ) : (
+    <ProfileDefaultAddressDisplayDark>
+      <ProfileDisplays>
+        <h4>{address}</h4>
+      </ProfileDisplays>
+    </ProfileDefaultAddressDisplayDark>
+  )}
 
-            <ProfileDisplays>
-              <h4>{weightMessage}</h4>
-            </ProfileDisplays>
+  {appTheme ? (
+    <ProfileDefaultWeightDisplayLight>
+      <ProfileDisplays>
+        <h4>{weightMessage}</h4>
+      </ProfileDisplays>
+    </ProfileDefaultWeightDisplayLight>
+  ) : (
+    <ProfileDefaultWeightDisplayDark>
+      <ProfileDisplays>
+        <h4>{weightMessage}</h4>
+      </ProfileDisplays>
+    </ProfileDefaultWeightDisplayDark>
+  )}
 
-            <ProfileRideDisplay>
-              <h4>
-                {lastRideActivity === undefined
-                  ? 'No Saved Rides'
-                  : `Your most recent ride was ${lastRideActivity}`}
-              </h4>
-              <h4>
-                {/* {lastRideDuration === undefined
-                  ? null
-                  : `You rode for ${Math.floor(
-                      lastRideDuration / 60
-                    )} hours and ${lastRideDuration % 60} minutes`} */}
-                     {lastRideDuration === undefined ? null : formatDuration(lastRideDuration)}
-              </h4>
-              <h4>
-                {lastRideWeight === undefined
-                  ? null
-                  : `Your weight for this ride was ${lastRideWeight} lbs`}
-              </h4>
-              <h4>
-                {lastRideCalories === undefined
-                  ? null
-                  : `You burned ${lastRideCalories} calories!`}
-              </h4>
-            </ProfileRideDisplay>
+  {appTheme ? (
+    <ProfileDefaultLastRideDisplayLight>
+      <ProfileRideDisplay>
+        <h4>
+          {lastRideActivity === undefined
+            ? 'No Saved Rides'
+            : `Your most recent ride was ${lastRideActivity}`}
+        </h4>
+        <h4>
+          {lastRideDuration === undefined
+            ? null
+            : formatDuration(lastRideDuration)}
+        </h4>
+        <h4>
+          {lastRideWeight === undefined
+            ? null
+            : `Your weight for this ride was ${lastRideWeight} lbs`}
+        </h4>
+        <h4>
+          {lastRideCalories === undefined
+            ? null
+            : `You burned ${lastRideCalories} calories!`}
+        </h4>
+      </ProfileRideDisplay>
+    </ProfileDefaultLastRideDisplayLight>
+  ) : (
+    <ProfileDefaultLastRideDisplayDark>
+      <ProfileRideDisplay>
+        <h4>
+          {lastRideActivity === undefined
+            ? 'No Saved Rides'
+            : `Your most recent ride was ${lastRideActivity}`}
+        </h4>
+        <h4>
+          {lastRideDuration === undefined
+            ? null
+            : formatDuration(lastRideDuration)}
+        </h4>
+        <h4>
+          {lastRideWeight === undefined
+            ? null
+            : `Your weight for this ride was ${lastRideWeight} lbs`}
+        </h4>
+        <h4>
+          {lastRideCalories === undefined
+            ? null
+            : `You burned ${lastRideCalories} calories!`}
+        </h4>
+      </ProfileRideDisplay>
+    </ProfileDefaultLastRideDisplayDark>
+  )}
           </div>
         </Box>
       </div>
