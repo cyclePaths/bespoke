@@ -68,7 +68,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [tier, setTier] = useState(0);
   const [inputBox, setInputBox] = useState('');
 
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
   useEffect(() => {
@@ -111,24 +110,24 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   //.................................................
 
   //show/hide badges on user profile page
-  const badgesToggle = () => {
-    if (badgeDisplay === 'none') {
-      setBadgeDisplay('block');
-    } else {
-      setBadgeDisplay('none');
-    }
-    document.getElementById('badges')!.style.display = badgeDisplay;
-  };
+  // const badgesToggle = () => {
+  //   if (badgeDisplay === 'none') {
+  //     setBadgeDisplay('block');
+  //   } else {
+  //     setBadgeDisplay('none');
+  //   }
+  //   document.getElementById('badges')!.style.display = badgeDisplay;
+  // };
 
-  const displayNoBadgeIfEmpty = () => {
-    if (
-      selectedBadge &&
-      selectedBadge !==
-        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
-    ) {
-      return <AchievementBadgeByName src={selectedBadge} />;
-    }
-  };
+  // const displayNoBadgeIfEmpty = () => {
+  //   if (
+  //     selectedBadge &&
+  //     selectedBadge !==
+  //       'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+  //   ) {
+  //     return <AchievementBadgeByName src={selectedBadge} />;
+  //   }
+  // };
 
   ///////////////////////////////////////////////////////////
   /*
@@ -145,8 +144,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setTheme(data.theme);
         setWeight(data.weight);
         setHomeAddress(data.homeAddress);
-
-
       })
       .catch((err) => {
         console.log(err);
@@ -179,16 +176,13 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
 
       setLastRide(data);
-      badgesToggle(); //fixes weird problem where first trigger of this function does not work for some reason; now first trigger is on load!
-
-
     });
   }, []);
 
   useEffect(() => {
-    setTheme(theme)
-    console.log(theme)
-  }, [theme])
+    setTheme(theme);
+    console.log(theme);
+  }, [theme]);
 
   useEffect(() => {}, [inputBox]);
 
@@ -211,8 +205,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         lastRideWeight={lastRide.weight}
         lastRideCalories={lastRide.calories}
       />
-
-      <div>{displayNoBadgeIfEmpty()}</div>
 
       <div>
         {/* <div style={{ position: 'absolute', marginTop: 20 }}>
@@ -250,7 +242,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         <div>Achievement Badges:</div>
 
         <button onClick={badgesToggle}>Show Badges</button> */}
-        {/* <button
+      {/* <button
           onClick={() => {
             addBadge(inputBox, tier);
           }}
@@ -277,39 +269,19 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
           <option value={6}>6</option>
         </select> */}
 
-        <AchievementBadgeHolder id='badges'>
-          {userBadges.map((badge) => {
-            return (
-              <AchievementBadgeAndTooltipContainer key={badge.id}>
-                <AchievementBadge
-                  onClick={() => {
-                    setSelectedBadge(badge.badgeIcon);
-                  }}
-                  src={badge.badgeIcon}
-                />
-                <AchievementBadgeTooltip>
-                  <TooltipBox isDark={isDark}>
-                    <h3>{badge.name}</h3>
-                    <div>{badge.description}</div>
-                  </TooltipBox>
-                </AchievementBadgeTooltip>
-              </AchievementBadgeAndTooltipContainer>
-            );
-          })}
-        </AchievementBadgeHolder>
-        <div
-          id='weight'
-          className='weight'
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            position: 'fixed',
-            bottom: 60,
-            left: 0,
-            right: 0,
-          }}
-        ></div>
+      <div
+        id='weight'
+        className='weight'
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          position: 'fixed',
+          bottom: 60,
+          left: 0,
+          right: 0,
+        }}
+      ></div>
       {/* </div> */}
     </BandAid>
   );
