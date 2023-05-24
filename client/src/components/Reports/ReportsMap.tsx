@@ -5,7 +5,11 @@ import axios from 'axios';
 import { GoogleMap } from '@react-google-maps/api';
 import { UserContext } from '../../Root';
 import { User } from '@prisma/client';
-import { defaultMapContainerStyle, darkModeOptions, defaultOptions } from '../BikeRoutes/Utils';
+import {
+  defaultMapContainerStyle,
+  darkModeOptions,
+  defaultOptions,
+} from '../BikeRoutes/Utils';
 import {
   Theme,
   Tooltip,
@@ -112,7 +116,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
     setButtonClicked(true);
     try {
       await axios.patch(`/reports/${id}`, { published: false });
-      console.log(id);
+      // console.log(id);
       fetchThisMonthReports();
 
       // setMarkers(prevMarkers => prevMarkers.filter(marker => marker.get("reportId") !== id));
@@ -130,23 +134,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
   const addNewReport = (newReport: Report) => {
     setReports((prevReports) => [...prevReports, newReport]);
   };
-  // ****Commented out to move fetching to parent component ****
-  // useEffect(() => {
-  // const fetchThisMonthReports = async () => {
-  //   try {
-  //     const response = await axios.get('/reports/thisMonth');
-  //     const filteredReports = response.data;
-  //     // console.log("reports:", response.data);
-  //     setReports(filteredReports);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //       fetchReports();
-
-  // }, [])
 
   useEffect(() => {
     setReports(monthReports);
@@ -154,11 +141,23 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
 
   useEffect(() => {
     if (map && reports) {
-      console.log('setting Markers: ', reports);
-      const newMarkers = reports.map((report: Report) => {
+      // console.log('setting Markers: ', reports);
+
+      // Filter the reports based on the selectedType
+      const filteredReports = reports.filter((report: Report) => {
+        if (selectedType === '') {
+          // If selectedType is empty, include all reports
+          return true;
+        } else {
+          // Include reports with matching type
+          return report.type === selectedType;
+        }
+      });
+
+      const newMarkers = filteredReports.map((report: Report) => {
         // Assuming you have fetched the report data and stored it in the `report` variable
         const author: User = report.author;
-        console.log('Author: ', author.name); // Output the author information
+        // console.log('Author: ', author.name); // Output the author information
         const getMarkerIconUrl = (reportType) => {
           const markerSize = new google.maps.Size(35, 35);
           switch (reportType) {
@@ -420,18 +419,18 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                       />
                     )}
 
-                    <Card sx={{ minWidth: 275, my: '0.5rem' }}>
+                    <Card sx={{ minWidth: 275, marginTop: '0.5rem' }}>
                       <CardContent>
                         <Typography
                           sx={{
                             fontSize: 14,
-                            textAlign: 'right',
-                            marginTop: '0.25rem',
+                            textAlign: 'left',
+                            marginTop: '0px',
                           }} // Reduce margin-top
                           color='text.secondary'
                         >
                           <p className='report-date'>
-                            {dayjs(selectedReport.createdAt).format(
+                            Reported on: {dayjs(selectedReport.createdAt).format(
                               'MMMM D, YYYY'
                             )}
                           </p>
@@ -443,7 +442,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                           sx={{
                             fontSize: 14,
                             textAlign: 'right',
-                            marginBottom: '0.25rem',
+                            marginBottom: '0.5rem',
                           }} // Reduce margin-bottom
                           color='text.secondary'
                           gutterBottom
@@ -471,8 +470,11 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                 center={userCenter}
                 zoom={15}
                 onLoad={onLoad}
-                options={isDark ? darkModeOptions as google.maps.MapOptions : defaultOptions as google.maps.MapOptions}
-
+                options={
+                  isDark
+                    ? (darkModeOptions as google.maps.MapOptions)
+                    : (defaultOptions as google.maps.MapOptions)
+                }
               />
             </Box>
           </Box>
