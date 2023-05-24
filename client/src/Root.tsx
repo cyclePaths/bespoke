@@ -1,5 +1,11 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Routes, Route, BrowserRouter, useNavigate, Link } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  useNavigate,
+  Link,
+} from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
@@ -25,10 +31,6 @@ import { SocketContext } from './SocketContext';
 import { Socket } from 'socket.io-client';
 import { SocketProvider } from './SocketContext';
 import DMNotifications from './DMNotifications';
-
-
-
-
 
 export interface CurrentWeather {
   temperature: number;
@@ -69,6 +71,7 @@ export interface Hourly {
 }
 
 export interface RootPropsToWeather {
+  currentTimeIndex: number;
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
@@ -91,6 +94,7 @@ export interface RootPropsToWeather {
 }
 
 export interface RootPropsToHome {
+  currentTimeIndex: number;
   hourlyForecasts: Hourly[];
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
@@ -217,12 +221,14 @@ const Root = () => {
     time: new Date(),
   }); //note: currentWeather is only going to be used on the home screen - everything else will just use the hourly breakdown
 
+  //marks the index of the entry for the current time among the Hourly forecasts
+  const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0);
+
   //stately variables for the 24 hourly forecasts in a given day as well as that day's sunrise and sunset times
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
   const [sunsetHour, setSunsetHour] = useState<number>(0);
   const [homeCoordinates, setHomeCoordinates] = useState<LatLngLiteral>();
-
 
   //coordinates for Marcus: latitude = 30.0; longitude = -90.17;
   const numDaysToForecast: number = 1; //this is for if we implement a weekly weather report
@@ -244,6 +250,7 @@ const Root = () => {
         setSunsetHour(data.sunsetHour);
         setCurrentWeather(data.currentWeather);
         setHourlyForecasts(data.hourly);
+        setCurrentTimeIndex(data.currentTimeIndex);
       })
       .catch((err) =>
         console.error(
@@ -352,64 +359,61 @@ const Root = () => {
     return weatherIcon;
   };
 
-
-
- /*
+  /*
   Below is the functionality for direct message notifications. handleMessageData is a call back
   function passed to DirectMessages to capture the user id of a receiver in order to filter
   the notifications so that they display only for a receiver, and not for everyone.
   */
 
-// Keep the interface
-interface RootMessage {
-  senderId: number;
-  senderName: string;
-  receiverId: number;
-  receiverName: string;
-  text: string;
-  fromMe: boolean;
-}
-
-// Keep the socket and state variables
-
-const socket = useContext(SocketContext).socket as Socket | undefined;
-const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(null);
-const [showConversations, setShowConversations] = React.useState(true);
-
-
-
-// Keep the socket event handling
-useEffect(() => {
-  if (socket && user) {
-    socket.on('message', handleReceivedMessage);
+  // Keep the interface
+  interface RootMessage {
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    receiverName: string;
+    text: string;
+    fromMe: boolean;
   }
 
-  return () => {
-    if (socket) {
-      socket.off('message', handleReceivedMessage);
+  // Keep the socket and state variables
+
+  const socket = useContext(SocketContext).socket as Socket | undefined;
+  const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(
+    null
+  );
+  const [showConversations, setShowConversations] = React.useState(true);
+
+  // Keep the socket event handling
+  useEffect(() => {
+    if (socket && user) {
+      socket.on('message', handleReceivedMessage);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('message', handleReceivedMessage);
+      }
+    };
+  }, [socket, user]);
+
+  // Adjust handleReceivedMessage
+  const handleReceivedMessage = (newMessage: RootMessage) => {
+    console.log('Received message:', newMessage);
+
+    // Only set the state here, don't show notifications or navigate
+    if (
+      newMessage.senderId !== user?.id &&
+      newMessage.receiverId === user?.id
+    ) {
+      setRootNewMessage(newMessage);
     }
   };
-}, [socket, user]);
 
-// Adjust handleReceivedMessage
-const handleReceivedMessage = (newMessage: RootMessage) => {
-  console.log('Received message:', newMessage);
-
-  // Only set the state here, don't show notifications or navigate
-  if (newMessage.senderId !== user?.id && newMessage.receiverId === user?.id) {
-    setRootNewMessage(newMessage);
-  }
-};
-
-
- /*
+  /*
   Above is the functionality for direct message notifications. handleMessageData is a call back
   function passed to DirectMessages to capture the user id of a receiver in order to filter
   the notifications so that they display only for a receiver, and not for everyone.
   */
-
-
-
 
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
@@ -724,19 +728,19 @@ const handleReceivedMessage = (newMessage: RootMessage) => {
   const reports = [];
   const [monthReports, setMonthReports] = useState<Report[]>([]);
 
-const fetchThisMonthReports = async () => {
-  try {
-    const response = await axios.get('/reports/thisMonth');
-    setMonthReports(response.data);
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const fetchThisMonthReports = async () => {
+    try {
+      const response = await axios.get('/reports/thisMonth');
+      setMonthReports(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchThisMonthReports();
-  }, [])
+  }, []);
 
   return (
     <div className={isDark ? 'dark' : 'light'}>
@@ -756,90 +760,124 @@ const fetchThisMonthReports = async () => {
         }}
       >
         <MessageContext.Provider value={{ message: rootNewMessage }}>
+          <BrowserRouter>
+            <DMNotifications setShowConversations={setShowConversations} />
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route
+                  path='/home'
+                  element={
+                    <Home
+                      currentTimeIndex={currentTimeIndex}
+                      hourlyForecasts={hourlyForecasts}
+                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                      temperatureMeasurementUnit={temperatureMeasurementUnit}
+                      precipitationMeasurementUnit={
+                        precipitationMeasurementUnit
+                      }
+                      prepareWeatherIcon={prepareWeatherIcon}
+                      setHomeCoordinates={setHomeCoordinates}
+                      sunriseHour={sunriseHour}
+                      sunsetHour={sunsetHour}
+                    />
+                  }
+                />
+                <Route path='bulletinBoard' element={<BulletinBoard />} />
+                <Route
+                  path='bikeRoutes'
+                  element={
+                    <RouteM
+                      homeCoordinates={homeCoordinates!}
+                      setHomeCoordinates={setHomeCoordinates}
+                    />
+                  }
+                />
+                <Route
+                  path='weather'
+                  element={
+                    <Weather
+                      currentTimeIndex={currentTimeIndex}
+                      windSpeedMeasurementUnit={windSpeedMeasurementUnit}
+                      temperatureMeasurementUnit={temperatureMeasurementUnit}
+                      precipitationMeasurementUnit={
+                        precipitationMeasurementUnit
+                      }
+                      sunriseHour={sunriseHour}
+                      sunsetHour={sunsetHour}
+                      hourlyForecasts={hourlyForecasts}
+                      prepareWeatherIcon={prepareWeatherIcon}
+                      setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
+                      setTemperatureMeasurementUnit={
+                        setTemperatureMeasurementUnit
+                      }
+                      setPrecipitationMeasurementUnit={
+                        setPrecipitationMeasurementUnit
+                      }
+                      getForecasts={getForecasts}
+                    />
+                  }
+                />
+                <Route
+                  path='profile'
+                  element={
+                    <Profile
+                      handleToggleStyle={handleToggleStyle}
+                      isDark={isDark}
+                      setIsDark={setIsDark}
+                    />
+                  }
+                />
 
-        <BrowserRouter>
-        <DMNotifications setShowConversations={setShowConversations}  />
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route
-                path='/home'
-                element={
-                  <Home
-                    hourlyForecasts={hourlyForecasts}
-                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                    temperatureMeasurementUnit={temperatureMeasurementUnit}
-                    precipitationMeasurementUnit={precipitationMeasurementUnit}
-                    prepareWeatherIcon={prepareWeatherIcon}
-                    setHomeCoordinates={setHomeCoordinates}
-                    sunriseHour={sunriseHour}
-                    sunsetHour={sunsetHour}
-                  />
-                }
-              />
-              <Route path='bulletinBoard' element={<BulletinBoard />} />
-              <Route
-                path='bikeRoutes'
-                element={
-                  <RouteM
-                    homeCoordinates={homeCoordinates!}
-                    setHomeCoordinates={setHomeCoordinates}
-                  />
-                }
-              />
-              <Route
-                path='weather'
-                element={
-                  <Weather
-                    windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-                    temperatureMeasurementUnit={temperatureMeasurementUnit}
-                    precipitationMeasurementUnit={precipitationMeasurementUnit}
-                    sunriseHour={sunriseHour}
-                    sunsetHour={sunsetHour}
-                    hourlyForecasts={hourlyForecasts}
-                    prepareWeatherIcon={prepareWeatherIcon}
-                    setWindSpeedMeasurementUnit={setWindSpeedMeasurementUnit}
-                    setTemperatureMeasurementUnit={
-                      setTemperatureMeasurementUnit
-                    }
-                    setPrecipitationMeasurementUnit={
-                      setPrecipitationMeasurementUnit
-                    }
-                    getForecasts={getForecasts}
-                  />
-                }
-              />
-              <Route
-                path='profile'
-                element={
-                  <Profile
-                    handleToggleStyle={handleToggleStyle}
-                    isDark={isDark}
-                    setIsDark={setIsDark}
-                  />
-                }
-              />
-
-              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
-              <Route path='directMessages' element={<DirectMessages
-              setShowConversations={setShowConversations}
-              showConversations={showConversations}
-              />} />
-              <Route
-  path="createReport"
-  element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>}
-/>
-<Route
-  path='reportsMap'
-  element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />}
-/>
-              {/* <Route path='directMessages' element={<DirectMessages />} /> */}
-              <Route path='report' element={<Report />} />
-              <Route path="createReport" element={<CreateReport fetchThisMonthReports={fetchThisMonthReports}/>} />
-              <Route path='reportsMap' element={<ReportsMap monthReports={monthReports} fetchThisMonthReports={fetchThisMonthReports} />} />
-            </Route>
-          </Routes>
-          {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
-        </BrowserRouter>
+                {/* <Route path='directMessages' element={<DirectMessages />} /> */}
+                <Route
+                  path='directMessages'
+                  element={
+                    <DirectMessages
+                      setShowConversations={setShowConversations}
+                      showConversations={showConversations}
+                    />
+                  }
+                />
+                <Route
+                  path='createReport'
+                  element={
+                    <CreateReport
+                      fetchThisMonthReports={fetchThisMonthReports}
+                    />
+                  }
+                />
+                <Route
+                  path='reportsMap'
+                  element={
+                    <ReportsMap
+                      monthReports={monthReports}
+                      fetchThisMonthReports={fetchThisMonthReports}
+                    />
+                  }
+                />
+                {/* <Route path='directMessages' element={<DirectMessages />} /> */}
+                <Route path='report' element={<Report />} />
+                <Route
+                  path='createReport'
+                  element={
+                    <CreateReport
+                      fetchThisMonthReports={fetchThisMonthReports}
+                    />
+                  }
+                />
+                <Route
+                  path='reportsMap'
+                  element={
+                    <ReportsMap
+                      monthReports={monthReports}
+                      fetchThisMonthReports={fetchThisMonthReports}
+                    />
+                  }
+                />
+              </Route>
+            </Routes>
+            {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
+          </BrowserRouter>
         </MessageContext.Provider>
       </UserContext.Provider>
     </div>

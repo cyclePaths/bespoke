@@ -48,6 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const Home = ({
+  currentTimeIndex,
   hourlyForecasts,
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
@@ -93,6 +94,7 @@ const Home = ({
         <HomePageCompWrapper>
           <HomeWeatherWidgetHolder>
             <WeatherWidget
+              currentTimeIndex={currentTimeIndex}
               temperatureMeasurementUnit={temperatureMeasurementUnit}
               prepareWeatherIcon={prepareWeatherIcon}
               hourlyForecasts={hourlyForecasts}

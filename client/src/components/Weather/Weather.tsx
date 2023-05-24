@@ -9,6 +9,7 @@ const Weather = ({
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
   precipitationMeasurementUnit,
+  currentTimeIndex,
   sunriseHour,
   sunsetHour,
   hourlyForecasts,
