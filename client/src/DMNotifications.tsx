@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { MessageContext } from './Root'; // Assuming Root and Notification are in the same directory
+import { MessageContext } from './Root';
 import { Message } from './components/DirectMessages/DirectMessages';
-// import debounce from 'lodash.debounce';
 
 const DMNotifications = ({ setShowConversations }) => {
   const navigate = useNavigate();
   const { message } = useContext(MessageContext);
-  // const [isNotificationShown, setIsNotificationShown] = useState(false);
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
 
 
   useEffect(() => {
-
-
     if (message && !receivedMessages.includes(message)) {
       toast.success(message.text, {
         onClick: () => {

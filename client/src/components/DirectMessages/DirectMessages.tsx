@@ -11,12 +11,11 @@ import { io } from 'socket.io-client';
 import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import { UserContext } from '../../Root';
-import DMNotifications from 'client/src/DMNotifications';
+
 
 export interface Message {
   id: number;
@@ -110,31 +109,17 @@ function DirectMessages({ showConversations, setShowConversations }) {
   const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
   const [showTextField, setShowTextField] = useState(true);
-  // const [showConversations, setShowConversations] = React.useState(true);
-
 
   const fromMe = senderId === userId;
-
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
-
   const location = useLocation();
-
-  // const notificationReceiverId = location?.state?.notificationReceiverId || 0;
   let notificationSenderId = location?.state?.notificationSenderId;
   let notificationSenderName = location?.state?.notificationSenderName;
-
-
-  // const [socket, setSocket] = useState<SocketIOClient.Socket>();
-
-  useEffect(() => {
-
-    console.log('setNotification', isNotificationClicked);
-  }, [isNotificationClicked])
 
   useEffect(() => {
     if (notificationSenderId !== undefined) {
       setReceiverId(notificationSenderId);
+      setIsReceiverSelected(true);
     }
     console.log('notificationSenderId', notificationSenderId);
   }, [notificationSenderId])
@@ -143,14 +128,14 @@ function DirectMessages({ showConversations, setShowConversations }) {
   useEffect(() => {
     if (notificationSenderName !== undefined) {
       setReceiverName(notificationSenderName);
+      setSenderName(notificationSenderName);
+
     }
     console.log('notificationSenderId', notificationSenderId);
   }, [notificationSenderId])
 
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-
-
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
     if (receiver !== null) {
       setReceiver(receiver);
@@ -218,111 +203,43 @@ function DirectMessages({ showConversations, setShowConversations }) {
     }
   }, [message]);
 
-///////Below: Loading Messages Thread when user is selected/////////
+///////Below: Loading Messages Thread when user is selected or notification is clicked/////////
 
+  const loadMessages = () => {
 
-  const loadMessages = async () => {
-
-
-    try {
-      const thread = await axios.get('/dms/retrieveMessages', {
+     axios.get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
-      });
-      const { data } = thread;
-      const sortedMessages = data.sort((a, b) => a.id - b.id);
-      // console.log('receiverThread', thread)
+      })
+        .then(({ data }) => {
+          const sortedMessages = data.sort((a, b) => a.id - b.id);
 
-      // Now set the new messages and show the container
-      setMessages(sortedMessages);
-      // console.log('messages', messages)
-      // setReceiver(data[0]?.receiver); // Set the receiver based on the retrieved messages
-      // setIsReceiverSelected(true);
-      setShowMessageContainer(true);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+          setMessages(sortedMessages);
+
+          setShowMessageContainer(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+
+
 
   useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
+      console.log('loadMessages', loadMessages())
     }
   }, [receiverId]);
 
 
-  // useEffect(() => {
-  //   if (receiverId !== 0 || senderId !== 0) {
-  //     loadMessages();
-  //   }
-  // }, [receiverId, senderId]);
-
-///////Above: Loading Messages Thread when user is selected/////////
-
-///////Below: Loading Messages Thread when Notification is clicked/////////
-
-
-  useEffect(() => {
-    // if we have notificationSenderId available, and it's different from the one stored in state
-    if (notificationSenderId && notificationSenderId !== storedNotificationSenderId) {
-      setSenderId(notificationSenderId);  // update senderId
-      setSenderName(notificationSenderName);
-      setStoredNotificationSenderId(notificationSenderId); // remember this notificationSenderId
-      loadNotificationMessages();  // run your function
-    }
-    // setIsNotificationClicked(true);
-  }, [notificationSenderId]);
-
-  useEffect(() => {
-    console.log('notificationSender', notificationSenderName);
-  }, [senderName])
-
-
-  const loadNotificationMessages = async () => {
-    // if (senderId !== 0) {
-      // console.log('sender', senderId)
-      setIsSenderSelected(true);
-      try {
-        const thread = await axios.get('/dms/retrieveNotificationMessages', {
-
-          params: { senderId: senderId },
-        });
-        console.log('notification thread', thread)
-        const { data } = thread;
-        const sortedMessages = data.sort((a, b) => a.id - b.id);
-
-        // Now set the new messages and show the container
-        setMessages(sortedMessages);
-        console.log('Messages', messages)
-
-        setShowMessageContainer(true);
-        // setIsSenderSelected(false);
-      } catch (err) {
-        console.log('Notification error', err);
-      }
-    // }
-
-  };
-
-
-  useEffect(() => {
-    if (senderId !== 0) {
-      loadNotificationMessages();
-    }
-}, [senderId,isSenderSelected]);  // We watch for senderId changes here
-
-///////Above: Loading Messages Thread when Notification is clicked/////////
-
+///////Above: Loading Messages Thread when user is selected or notification is clicked/////////
   /// End of Load Mounting ///
 
   const handleSendMessage = () => {
-    // if (!socket || !receiver) {
-    //   return;
-    // }
+
     const newMessage = {
       senderId: userId,
       senderName: name,
-      // receiverId: (receiver?.id ?? 0) || notificationSenderId,
-      // receiverName: receiver?.name || notificationSenderName,
       receiverId: receiverId,
       receiverName: receiverName,
       text: messageInput,
@@ -331,7 +248,6 @@ function DirectMessages({ showConversations, setShowConversations }) {
 
     // Emit a 'message' event to the server
     socket?.emit('message', newMessage);
-
 
     axios
       .post('/dms/message', {
@@ -344,20 +260,11 @@ function DirectMessages({ showConversations, setShowConversations }) {
         console.error('NOOOOO', err);
       });
 
-    // setMessages([...messages, newMessage]);
     setMessageInput('');
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
-
-  // useEffect(() => {
-  //   return () => {
-  //     if (socket) {
-  //       socket.disconnect();
-  //     }
-  //   };
-  // }, [socket]);
 
   const handleNavigationAway = () => {
     setIsSenderSelected(false); // Reset the flag when user navigates away
@@ -379,14 +286,8 @@ function DirectMessages({ showConversations, setShowConversations }) {
     };
   }, []);
 
-
-
-
   return (
     <BandAid>
-      {/* <div>{`Hello ${name}!`}</div> */}
-      {/* <DMNotifications /> */}
-
       <SearchUsers
         open={open}
         setOpen={setOpen}
@@ -395,7 +296,6 @@ function DirectMessages({ showConversations, setShowConversations }) {
         loading={loading}
         receiver={receiver}
         setReceiver={setReceiver}
-        // setReceiverId={setReceiverId}
         loadMessages={loadMessages}
         handleSetReceiver={handleSetReceiver}
         setIsReceiverSelected={setIsReceiverSelected}
@@ -418,12 +318,10 @@ function DirectMessages({ showConversations, setShowConversations }) {
         setShowConversations={setShowConversations}
         setShowTextField={setShowTextField}
       />
-      {/* {isReceiverSelected && showMessageContainer && ( */}
-      {((isReceiverSelected || isSenderSelected) && showMessageContainer) && (
+      {isReceiverSelected && showMessageContainer && (
         <Paper className={classes.root} key={receiver?.id} >
           <div
           className={classes.messagesContainer}
-          // className='dm-container'
           ref={messagesContainerRef}>
             {messages.map((message) => (
               <Message
@@ -433,7 +331,6 @@ function DirectMessages({ showConversations, setShowConversations }) {
                 receiverId={message.receiverId}
                 receiverName={message.receiverName}
                 text={message.text}
-                //fromMe={message.senderId === userId}
                 userId={userId}
                 isNotificationClicked={isNotificationClicked}
               />
@@ -444,7 +341,6 @@ function DirectMessages({ showConversations, setShowConversations }) {
             <TextField
             fullWidth
             id="fullWidth"
-              // {...props}
               InputProps={{
                 classes: {
                   root: inputClasses.root,
@@ -473,7 +369,6 @@ function DirectMessages({ showConversations, setShowConversations }) {
         )}
         </Paper>
       )}
-
     </BandAid>
   );
 }
