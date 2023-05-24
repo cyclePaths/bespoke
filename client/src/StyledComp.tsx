@@ -540,8 +540,21 @@ const HighlightText = styled.h4`
 //Above is for the instruction text in the Scrollers in Profile //
 
 const ProfileDisplays = styled.div`
+  /* background-color: white; */
   display: flex;
   justify-content: center;
+  margin: 10px;
+`;
+
+const ProfileRideDisplay = styled.div`
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > * {
+    margin-bottom: 0px;
+
+  }
 `;
 
 export {
@@ -597,6 +610,7 @@ export {
   WaveHighlight,
   HighlightText,
   ProfileDisplays,
+  ProfileRideDisplay,
   LoadingDiv,
   PrivacySelector,
   RecentRidesHeader,

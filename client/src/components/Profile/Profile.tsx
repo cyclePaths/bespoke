@@ -144,7 +144,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setUser(splitNames[0]);
         setPhoto(data.thumbnail);
         setTheme(data.theme);
-        setWeight(data.weight);
+        // setWeight(data.weight);
         setHomeAddress(data.homeAddress);
 
 
@@ -201,13 +201,13 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
     <BandAid>
       {/* <DirectMessages theme={theme}/> */}
       <ProfileNav
-        user={user}
+        // user={user}
         photo={photo}
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
-        homeAddress={homeAddress}
-        weightForProfileDisplay={weight}
+        // homeAddress={homeAddress}
+        // weightForProfileDisplay={weight}
         lastRideActivity={lastRide.activity}
         lastRideDuration={lastRide.duration}
         lastRideWeight={lastRide.weight}

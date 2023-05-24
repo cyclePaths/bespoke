@@ -90,14 +90,6 @@ const Addresses = ({
     useState('');
   // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
 
-  const handlePlaceSelect = (selectedPlace: string) => {
-    setPlace(selectedPlace);
-    setAddress(selectedPlace);
-  };
-
-  const handleHomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHomeAddress(event.target.value);
-  };
 
   // setting state on change
   const handleChange = useCallback((address) => {
@@ -138,7 +130,7 @@ const Addresses = ({
           const home = data.homeAddress;
           setShowDelete(true);
           setAlertTypeWarning(false);
-          setHomeAddress(`Your home is ${home}`);
+          setHomeAddress(`Your home is ${home.slice(0, -5)}`);
           setHasHomeAddress(true);
         }
       })

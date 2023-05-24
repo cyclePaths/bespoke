@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../../Root';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -15,12 +16,14 @@ import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
-import { ProfileDisplays } from '../../StyledComp';
+import { ProfileDisplays, ProfileRideDisplay, } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -75,13 +78,13 @@ function a11yProps(index: number) {
 }
 
 const ProfileNav = ({
-  user,
+  // user,
   photo,
   saveTheme,
   handleToggleStyle,
   theme,
   homeAddress,
-  weightForProfileDisplay,
+  // weightForProfileDisplay,
   lastRideActivity,
   lastRideDuration,
   lastRideWeight,
@@ -102,18 +105,56 @@ const ProfileNav = ({
   const [appTheme, setAppTheme] = useState(false);
   const [themeIcon, setThemeIcon] = useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(true);
+  const [address, setAddress] = useState('');
+  const [open, setOpen] = useState(true);
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpen(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     // Listen for incoming 'message' events
-  //     socket.on('message', (newMessage) => {
-  //       // Handle the incoming message
-  //       console.log('Received message:', newMessage);
-  //     });
-  //   }
-  // }, [socket]);
+ const user = useContext(UserContext)
+
+
+ useEffect(() => {
+  const { user: { homeAddress, weight } = {} as any } = user;
+  if (homeAddress !== null || homeAddress !== undefined) {
+    setAddress(homeAddress)
+  } else {
+    const myHomeAddress = homeAddress.slice(0, -5);
+    setAddress(`Your home is ${myHomeAddress}`);
+  }
+
+  if (weight === null || weight === undefined) {
+    setWeight(0);
+  } else {
+    setWeight(weight);
+  }
+ }, [user])
+
+
+
+ useEffect(() => {
+  if (homeAddress) {
+    setAddress(homeAddress);
+  } else {
+    setAddress('No Address Saved');
+  }
+}, [homeAddress]);
+
+
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -153,17 +194,16 @@ const ProfileNav = ({
     });
   };
 
-
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
-
   return (
     <div>
+       <Backdrop
+       sx={{ backgroundColor: appTheme ? 'rgba(133, 211, 255, 1)' : 'rgba((25, 26, 53, 1)' , color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+       open={open}
+      //  onClick={handleClose}
+       >
+        <CircularProgress color="inherit" />
+     </Backdrop>
+     <div style={{ visibility: open ? "hidden" : "visible" }}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs
@@ -287,28 +327,31 @@ const ProfileNav = ({
 
         <div className={`holder ${areTabsVisible ? '' : 'hidden'} default-profile-display`}>
           <ProfileDisplays>
-            <h4>{homeAddress}</h4>
+            <h4>{(address === undefined || address === null) ?
+            'No Address Saved'
+            : `Your home is ${address}`}</h4>
           </ProfileDisplays>
           <ProfileDisplays>
-            <h4>{weightForProfileDisplay}</h4>
+            <h4>{weight === 0 ? 'No Weight Saved' : `Your current weight is ${weight} lbs`}</h4>
           </ProfileDisplays>
-          <div>
-            <ProfileDisplays>
-              <h4>{lastRideActivity}</h4>
-            </ProfileDisplays>
-            <ProfileDisplays>
-              <h4>{lastRideDuration}</h4>
-            </ProfileDisplays>
-            <ProfileDisplays>
-              <h4>{lastRideWeight}</h4>
-            </ProfileDisplays>
-            <ProfileDisplays>
-              <h4>{lastRideCalories}</h4>
-            </ProfileDisplays>
-          </div>
-        </div>
 
-      </Box>
+          <ProfileRideDisplay>
+              <h4>{lastRideActivity === undefined ?
+              'No Saved Rides' :
+              `Your most recent ride was ${lastRideActivity}`}</h4>
+              <h4>{lastRideDuration === undefined ? null
+              : `You rode for ${Math.floor(lastRideDuration / 60)} hours and ${
+                lastRideDuration % 60
+              } minutes`}</h4>
+              <h4>{lastRideWeight === undefined ? null
+              : `Your weight for this ride was ${lastRideWeight} lbs`}</h4>
+              <h4>{lastRideCalories === undefined ? null
+              : `You burned ${lastRideCalories} calories!`}</h4>
+          </ProfileRideDisplay>
+
+        </div>
+     </Box>
+     </div>
     </div>
   );
 };
