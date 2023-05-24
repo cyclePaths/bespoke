@@ -8,26 +8,12 @@ import { UserContext } from '../../Root';
 const SavePopout = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
   const { isDark } = useContext(UserContext);
   return (
-    <Dialog open={openPopup}>
-      <div
-        style={{ backgroundColor: isDark ? '#191a35' : '#85d3ff' }}
-      >
-        <CloseIcon
-          sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }}
-          onClick={() => setOpenPopup(false)}
-        />
-      </div>
-      <DialogContent
-        style={{
-          paddingLeft: '25px',
-          paddingBottom: '25px',
-          paddingRight: '25px',
-          paddingTop: '10px',
-          backgroundColor: isDark ? '#191a35' : '#85d3ff',
-        }}
-      >
-        {children}
-      </DialogContent>
+    <Dialog open={openPopup} sx={{'& .MuiPaper-root': {alignItems: 'flex-end', backgroundColor: isDark ? '#707070' : '#e0e0e0' }}}>
+      <CloseIcon
+        sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }}
+        onClick={() => setOpenPopup(false)}
+      />
+      {children}
     </Dialog>
   );
 };
