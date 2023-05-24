@@ -367,6 +367,11 @@ const Root = () => {
     return weatherIcon;
   };
 
+  //ProfileNav state variables
+
+  const [homeAddress, setHomeAddress] = useState('');
+  const [weight, setWeight] = useState(0);
+
   /*
   Below is the functionality for direct message notifications. handleMessageData is a call back
   function passed to DirectMessages to capture the user id of a receiver in order to filter
@@ -830,6 +835,10 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
+                      homeAddress={homeAddress}
+                      setHomeAddress={setHomeAddress}
+                      // weight={weight}
+                      // setWeight={setWeight}
                     />
                   }
                 />

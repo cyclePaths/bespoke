@@ -5,11 +5,11 @@ import Addresses, { Address, SelectedAddress, HomeAddress } from './Addresses';
 import Profile from './Profile';
 
 
-const SetHome = () => {
+const SetHome = ({ homeAddress, setHomeAddress }) => {
   // console.log("Rendering SetHome component");
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [homeAddress, setHomeAddress] = useState('');
+  // const [homeAddress, setHomeAddress] = useState('');
 
 
 const saveHome = () => {
@@ -42,8 +42,6 @@ return (
       setHomeAddress={setHomeAddress}
       saveHome={saveHome}
     />
-    {/* <Profile homeAddress={homeAddress} /> */}
-    {/* <ProfileNav homeAddress={homeAddress} /> */}
   </div>
 );
 };

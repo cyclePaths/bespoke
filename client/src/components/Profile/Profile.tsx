@@ -4,6 +4,7 @@ import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
 import ProfileNav from './ProfileNav';
+import SetHome from './SetHome';
 import DirectMessages from  '../DirectMessages/DirectMessages';
 import styled from 'styled-components';
 import { useTheme } from './ThemeContext';
@@ -35,7 +36,7 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
+const Profile = ({ handleToggleStyle, isDark, setIsDark, homeAddress, setHomeAddress }) => {
   //Context
   const {
     userBadges,
@@ -53,15 +54,19 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [homeAddress, setHomeAddress] = useState('');
+  // const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [lastRide, setLastRide] = useState<RideStats>({
-    activity: '',
-    duration: 0,
-    weight: 0,
-    calories: 0,
-  });
+  // const [lastRide, setLastRide] = useState<RideStats>({
+  //   activity: '',
+  //   duration: 0,
+  //   weight: 0,
+  //   calories: 0,
+  // });
+  const [lastRideActivity, setLastRideActivity] = useState('');
+  const [lastRideDuration, setLastRideDuration] = useState('');
+  const [lastRideWeight, setLastRideWeight] = useState('');
+  const [lastRideCalories, setLastRideCalories] = useState('');
 
   //holds toggle-able value to control whether badges are displaying on profile page or not
   const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
@@ -175,10 +180,23 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       if (data.activity === 'mountain bike') {
         data.activity = 'Mountain Biking';
       }
+      setLastRideActivity(data.activity);
+      setLastRideDuration(data.duration);
+      setLastRideWeight(data.weight)
+      setLastRideCalories(data.calories)
 
-      setLastRide(data);
+      // setLastRide(data);
     });
   }, []);
+
+  useEffect(() => {
+    // setLastRide(lastRide)
+    setLastRideActivity(lastRideActivity);
+    setLastRideDuration(lastRideDuration);
+    setLastRideWeight(lastRideWeight)
+    setLastRideCalories(lastRideCalories)
+  }, [lastRideActivity, lastRideDuration, lastRideWeight, lastRideCalories])
+
 
   useEffect(() => {
     setTheme(theme);
@@ -201,13 +219,19 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         handleToggleStyle={handleToggleStyle}
         theme={theme}
         homeAddress={homeAddress}
+        setHomeAddress={setHomeAddress}
         // weightForProfileDisplay={weight}
-        lastRideActivity={lastRide.activity}
-        lastRideDuration={lastRide.duration}
-        lastRideWeight={lastRide.weight}
-        lastRideCalories={lastRide.calories}
+        lastRideActivity={lastRideActivity}
+        lastRideDuration={lastRideDuration}
+        lastRideWeight={lastRideWeight}
+        lastRideCalories={lastRideCalories}
+        setLastRideActivity={setLastRideActivity}
+        setLastRideDuration={setLastRideDuration}
+        setLastRideWeight={setLastRideWeight}
+        setLastRideCalories={setLastRideCalories}
       />
 
+      {/* <SetHome homeAddress={homeAddress} setHomeAddress={setHomeAddress}/> */}
       <div>
         {/* <div style={{ position: 'absolute', marginTop: 20 }}>
         <ul>
