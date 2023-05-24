@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../Root';
 import {
   AchievementBadgeByName,
@@ -20,16 +20,23 @@ const BadgeDisplay = () => {
     tierCheck,
   } = useContext(UserContext);
   //holds toggle-able value to control whether badges are displaying on profile page or not
-  const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
+  const [chooseBadge, setChooseBadge] = useState<boolean>(false);
+  const [displayTooltip, setDisplayTooltip] = useState<boolean>(true);
 
-  //show/hide badges on user profile page
-  const badgesToggle = () => {
-    if (badgeDisplay === 'none') {
-      setBadgeDisplay('block');
-    } else {
-      setBadgeDisplay('none');
+  const badgeClick = (image, id) => {
+    if (chooseBadge) {
+      setSelectedBadge(image);
+      setChooseBadge(false);
     }
-    document.getElementById('badges')!.style.display = badgeDisplay;
+  };
+
+  const toggleBadgeSelection = () => {
+    setChooseBadge(true);
+    return undefined;
+  };
+
+  const toggleTooltip = () => {
+    setDisplayTooltip(!displayTooltip);
   };
 
   const displayNoBadgeIfEmpty = () => {
@@ -42,23 +49,39 @@ const BadgeDisplay = () => {
     }
   };
 
+  useEffect(() => {
+    const containerElement = document.getElementById('achievementContainer');
+
+    if (containerElement) {
+      if (displayTooltip) {
+        containerElement.classList.add('show-tooltip');
+      } else {
+        containerElement.classList.remove('show-tooltip');
+      }
+    }
+  }, [displayTooltip]);
+
   return (
     <div>
-      <div>Achievement Badges:</div>
+      <div>Featured Badge:</div>
+      {displayNoBadgeIfEmpty()}
 
-      <button onClick={badgesToggle}>Show Badges</button>
+      <div>Achievement Badges:</div>
 
       <AchievementBadgeHolder id='badges'>
         {userBadges.map((badge) => {
           return (
-            <AchievementBadgeAndTooltipContainer key={badge.id}>
+            <AchievementBadgeAndTooltipContainer
+              id='achievementContainer'
+              key={badge.id}
+            >
               <AchievementBadge
                 onClick={() => {
-                  setSelectedBadge(badge.badgeIcon);
+                  badgeClick(badge.badgeIcon, badge.id);
                 }}
                 src={badge.badgeIcon}
               />
-              <AchievementBadgeTooltip>
+              <AchievementBadgeTooltip show={true} id={badge.id}>
                 <TooltipBox>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
@@ -68,6 +91,8 @@ const BadgeDisplay = () => {
           );
         })}
       </AchievementBadgeHolder>
+      <button onClick={toggleBadgeSelection}>Select Featured Badge</button>
+      <button onClick={toggleTooltip}>Toggle Tooltip</button>
     </div>
   );
 };
