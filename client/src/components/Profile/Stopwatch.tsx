@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
-import Picker from 'react-scrollable-picker';
+// import Picker from 'react-scrollable-picker';
 import Button from '@mui/material/Button';
 import StopwatchSelect from './StopwatchSelect';
 import {

@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-// import DMNotifications from '../../DMNotifications';
+import { Message } from './DirectMessages';
 
 interface Conversation {
   createdAt: string;
@@ -22,7 +22,6 @@ interface Conversation {
     name: string;
     thumbnail: string;
     weight: null | number;
-    // Add other properties as needed
   };
   receiverId: number;
   receiverName: string;
@@ -32,13 +31,11 @@ interface Conversation {
     name: string;
     thumbnail: string;
     weight: number;
-    // Add other properties as needed
   };
   senderId: number;
   senderName: string;
   text: string;
 }
-
 
 interface ConversationsProps {
   setSenderId: (senderId: number) => void;
@@ -54,41 +51,28 @@ interface ConversationsProps {
   setShowTextField:(boolean) => void;
 }
 
-
 const Conversations: React.FC<ConversationsProps> = ({
   setSenderId,
-  setSenderName,
   setReceiverId,
-  setReceiverName,
   loadMessages,
   setShowMessageContainer,
   isReceiverSelected,
   setIsReceiverSelected,
-  showConversations,
-  setShowConversations,
   setShowTextField,
 }) => {
-  const [myConversations, setMyConversations] = React.useState<Conversation[]>(
-    []
-  );
+  const [myConversations, setMyConversations] = React.useState<Conversation[]>([]);
   const [myUserId, setMyUserId] = React.useState(0);
-  // const [showConversations, setShowConversations] = React.useState(true);
   const [showMessageThread, setShowMessageThread] = React.useState(false);
-  // const [isHandleConvoClicked, setIsHandleConvoClicked] = React.useState(false);
   const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
+  const [clickedConversation, setClickedConversation] = React.useState<Message[]>([]);
+  const [showConversations, setShowConversations] = React.useState(true);
 
-
-
-  // let myConversations = []
   const convos = () => {
     axios
       .get('/dms/conversations')
       .then(({ data }) => {
         console.log('convos', data);
         setMyConversations(data);
-        // data.forEach((current) => {
-        //   myConversations.push(current)
-        // })
         console.log('myConversations', myConversations);
       })
       .catch((err) => {
@@ -99,23 +83,13 @@ const Conversations: React.FC<ConversationsProps> = ({
 
   const handleConvoClick = async (convo: Conversation) => {
     setSelectedConversationId(null);
-    // await loadMessages();
-    // setIsHandleConvoClicked(true);
-    setSenderId(convo.senderId);
-    // setSenderName(convo.senderName);
-    setReceiverId(convo.receiverId);
-    console.log("Selected Sender ID: ", convo.senderId);
-    console.log("Selected Receiver ID: ", convo.receiverId);
-    setReceiverName(convo.receiverName);
+    setReceiverId(convo.receiverId === myUserId ? convo.senderId : convo.receiverId);
+    // setReceiverName(convo.receiverName);
     setSelectedConversationId(convo.id);
     setShowConversations(false);
     setShowMessageThread(true);
     setShowTextField(true);
     setIsReceiverSelected(true);
-
-
-      await loadMessages();
-
   }
 
 
@@ -126,7 +100,7 @@ const Conversations: React.FC<ConversationsProps> = ({
       console.log('check me');
       loadMessages();
     }
-  }, [isReceiverSelected]);
+  }, [clickedConversation]);
 
 
   const handleBackClick = () => {
@@ -142,30 +116,43 @@ const Conversations: React.FC<ConversationsProps> = ({
 
   if (isReceiverSelected === false) {
     setShowMessageContainer(false);
-    // setReceiverId(0);
   }
 
   React.useEffect(() => {
-
     axios.get('/profile/user')
       .then(({ data }) => {
         setMyUserId(data.id)
       })
       .catch((err) => {
-
       })
-
     convos();
-    // console.log('convos?', myConversations);
   }, []);
 
 
-  // React.useEffect(() => {
-  //   if (isReceiverSelected) {
-  //     setShowMessageContainer(true);
-  //   }
-  // }, [isReceiverSelected]);
+  React.useEffect(() => {
+    if (isReceiverSelected) {
+      setShowMessageContainer(true);
+    }
+  }, [isReceiverSelected]);
 
+  const handleNavigationAway = () => {
+    setShowConversations(true);
+    setIsReceiverSelected(false);
+    setShowMessageThread(false);
+
+  };
+
+  React.useEffect(() => {
+    const handleBeforeUnload = () => {
+      handleNavigationAway();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <>
@@ -187,7 +174,7 @@ const Conversations: React.FC<ConversationsProps> = ({
                 </ListItemAvatar>
                 <Typography variant="body2" sx={{ textTransform: 'none' }}>
                 <ListItemText
-                  primary={convo.receiverName}
+                   primary={convo.receiverId === myUserId ? convo.senderName : convo.receiverName}
                   secondary={
                     <React.Fragment>
 
@@ -217,7 +204,6 @@ const Conversations: React.FC<ConversationsProps> = ({
         <ArrowBackIosNewIcon fontSize='small' />
       </Fab>
     )}
-    {/* <DMNotifications setShowConversations={setShowConversations} /> */}
   </>
   );
 };
