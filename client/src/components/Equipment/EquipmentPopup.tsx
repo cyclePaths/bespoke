@@ -13,10 +13,13 @@ const EquipmentPopup = ({
   children,
   openEquipmentEntry,
   setOpenEquipmentEntry,
+  exitPopup
 }) => {
   const context = useContext(UserContext);
   const [equipmentDescription, setEquipmentDescription] = useState('');
   const [equipmentType, setEquipmentType] = useState('');
+
+
 
   const handleEquipmentSubmission = () => {
     if (equipmentDescription && equipmentType) {
@@ -30,6 +33,7 @@ const EquipmentPopup = ({
           context.updateAchievements('Gearhead');
           setEquipmentDescription('');
           setEquipmentType('');
+          exitPopup()
         })
         .catch(() => alert('Unable to POST EQUIPMENT!'));
     } else {

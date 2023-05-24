@@ -20,7 +20,7 @@ const AddEquipment = () => {
                     background: 'linear-gradient(145deg, #19372f, #152e28)'}} onClick={() => setOpenEquipmentEntry(true)}>
         <h5 style={{color: 'rgb(133, 211, 255)'}}>Add Parts</h5>
     </Button>
-    <EquipmentPopup openEquipmentEntry={openEquipmentEntry} setOpenEquipmentEntry={setOpenEquipmentEntry}>
+    <EquipmentPopup openEquipmentEntry={openEquipmentEntry} setOpenEquipmentEntry={setOpenEquipmentEntry} exitPopup={exitPopup}>
     <div style={{textAlign: 'center'}}>
     <Button style={{backgroundColor: '#17332c', marginTop: '5px'}}
               onClick={() => exitPopup()}><div style={{color:'rgb(133, 211, 255)'}}>Close</div>
