@@ -188,7 +188,6 @@ const Addresses = ({
       .then(() => {
         setShowDelete(false);
         setHomeAddress('Save a home address to find a quick route home.');
-        console.log('successful delete');
       })
       .catch((err) => {
         console.log(err);

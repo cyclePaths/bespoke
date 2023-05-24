@@ -206,7 +206,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
-        // homeAddress={homeAddress}
+        homeAddress={homeAddress}
         // weightForProfileDisplay={weight}
         lastRideActivity={lastRide.activity}
         lastRideDuration={lastRide.duration}
