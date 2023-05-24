@@ -44,6 +44,7 @@ const SaveForm = ({
           type='text'
           maxLength='10'
           placeholder='Enter Name of Route...'
+          secondary
         />
         <OptionsDiv>
           <div className='route-options'>
@@ -70,14 +71,14 @@ const SaveForm = ({
             onClick={() => handleSave()}
             sx={{
               marginTop: '15px',
-              backgroundColor: isDark ? '#707070' : '#ececec',
+              backgroundColor: '#2e7d32',
               '&:hover': {
-                backgroundColor: isDark ? '#707070' : '#ececec',
+                backgroundColor: '#2e7d32',
               },
               '&:active': {
-                backgroundColor: isDark ? '#707070' : '#ececec',
+                backgroundColor: '#2e7d32',
               },
-              color: isDark ? '#ececec' : '#000000',
+              color: '#ececec',
               height: '30px',
             }}
           >

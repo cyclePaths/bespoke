@@ -25,6 +25,8 @@ body {
   justify-content: center;
   font-size: 30px;
   margin: 5px;
+  position: absolute;
+  top: 10%;
 }
 
 .route-saver-headers {
@@ -47,19 +49,57 @@ body {
 }
 
 #list {
-  text-align: center;
-  background-color: white;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-}
-
-#results {
-  text-align: center;
-  background-color: white;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 30px;
+  margin-top: 0px;
+  font-weight: 500;
+  position: fixed;
+  top: 17%;
+  left: 25%;
 }
 
 #search-criteria {
   display: flex;
+}
+
+#no-list {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 52vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+}
+
+#nothing-searched {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 52vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+}
+
+#searched-list {
+  background-color: #fff;
+  margin-top: 15px;
+  display: flex;
+  height: 52vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  overflow: scroll;
+}
+
+.card-elements {
+  display: flex;
+  width: 58%;
+  align-items: center;
 }
 
 .checkmark {
@@ -108,16 +148,8 @@ body {
   }
 }
 
-#no-list {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 .search-form {
   display: flex;
-  background-color: white;
   border-radius: 4px;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -130,10 +162,9 @@ body {
 }
 
 .route-name {
-  color: rgb(57, 57, 177);
-  font-family: 'Roboto', sans-serif;
-  margin-top: 5px;
+  color: #3939b1;
   font-size: 25px;
+  text-align: center;
 }
 
 #set-private {
