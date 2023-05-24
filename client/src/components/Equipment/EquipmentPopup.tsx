@@ -50,7 +50,9 @@ const EquipmentPopup = ({
   };
 
   return (
-    <Dialog open={openEquipmentEntry} PaperProps={{ style: { backgroundColor: '#555555ff'}}}>
+    <Dialog open={openEquipmentEntry} PaperProps={{ style: { backgroundColor: 'rgb(133, 211, 255)'}}}>
+          <div style={{display: 'flex', justifyContent: 'center', marginLeft: '10px', marginTop: '10px', marginRight: '10px', marginBottom: '5px'}}>Enter Equipment Information:</div>
+      <div style={{ display: 'flex', justifyContent: 'center'}}>
       <OutlinedInput
         style={{
           backgroundColor: 'rgb(133, 211, 255)',
@@ -69,6 +71,8 @@ const EquipmentPopup = ({
           value: equipmentDescription,
         }}
       />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center'}}>
       <OutlinedInput
         style={{
           backgroundColor: 'rgb(133, 211, 255)',
@@ -87,12 +91,15 @@ const EquipmentPopup = ({
           value: equipmentType,
         }}
       />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center'}}>
       <Button
-        style={{color:'rgb(133, 211, 255)', backgroundColor: '#17332c', marginTop: '5px' }}
+        style={{color:'rgb(133, 211, 255)', backgroundColor: '#17332c', marginLeft: '10px', marginTop: '15px', marginRight: '10px', maxWidth: '90%' }}
         onClick={() => handleEquipmentSubmission()}
       >
         Add Equipment
       </Button>
+      </div>
       <DialogContent>{children}</DialogContent>
     </Dialog>
   );
