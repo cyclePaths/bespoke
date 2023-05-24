@@ -369,8 +369,8 @@ const Root = () => {
 
   //ProfileNav state variables
 
-  const [homeAddress, setHomeAddress] = useState('');
-  const [weight, setWeight] = useState(0);
+  // const [homeAddress, setHomeAddress] = useState('');
+  // const [weight, setWeight] = useState(0);
 
   /*
   Below is the functionality for direct message notifications. handleMessageData is a call back
@@ -835,8 +835,8 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
-                      homeAddress={homeAddress}
-                      setHomeAddress={setHomeAddress}
+                      // homeAddress={homeAddress}
+                      // setHomeAddress={setHomeAddress}
                       // weight={weight}
                       // setWeight={setWeight}
                     />

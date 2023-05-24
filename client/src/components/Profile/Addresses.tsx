@@ -90,7 +90,6 @@ const Addresses = ({
     useState('');
   // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
 
-
   // setting state on change
   const handleChange = useCallback((address) => {
     setAddress(address);
@@ -152,6 +151,13 @@ const Addresses = ({
       setSelectedAddressPlaceholder('');
       setShowDelete(true);
       setAlertTypeSuccess(true);
+
+      const input = document.getElementById('address-input');
+      if (input instanceof HTMLInputElement) {
+        input.value = '';
+        input.blur();
+      }
+
       setTimeout(() => {
         setAlertTypeSuccess(false);
       }, 6000);

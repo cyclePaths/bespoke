@@ -44,11 +44,15 @@ interface NavBarProps {
   setActivity: React.Dispatch<React.SetStateAction<string>>;
   activityValue: string;
   setActivityValue: React.Dispatch<React.SetStateAction<string>>;
+  setLastSWRideActivity;
+  setLastSWRideDuration;
+  setLastSWRideWeight;
+  setLastSWRideCalories;
 }
 
 
 
-const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, setLastSWRideActivity, setLastSWRideDuration, setLastSWRideWeight, setLastSWRideCalories }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 1,
     minutes: 36,
@@ -241,6 +245,11 @@ size='small'
           isPickerVisible={isPickerVisible}
           setIsPickerVisible={setIsPickerVisible}
           setValueGroups={setValueGroups}
+
+          setLastSWRideActivity={setLastSWRideActivity}
+          setLastSWRideDuration={setLastSWRideDuration}
+          setLastSWRideWeight={setLastSWRideWeight}
+          setLastSWRideCalories={setLastSWRideCalories}
         />
         </div>
       </div>

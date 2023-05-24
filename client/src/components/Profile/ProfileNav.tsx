@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { UserContext } from '../../Root';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
@@ -24,6 +25,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Navbar from '../Navbar';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -86,8 +88,8 @@ const ProfileNav = ({
   saveTheme,
   handleToggleStyle,
   theme,
-  homeAddress,
-  setHomeAddress,
+  // homeAddress,
+  // setHomeAddress,
   // weightForProfileDisplay,
   lastRideActivity,
   lastRideDuration,
@@ -97,6 +99,10 @@ const ProfileNav = ({
   setLastRideDuration,
   setLastRideWeight,
   setLastRideCalories,
+  stopwatchActivity,
+  stopwatchDuration,
+  stopwatchWeight,
+  stopwatchCalories,
 }) => {
   const [value, setValue] = useState(-1);
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -116,10 +122,21 @@ const ProfileNav = ({
   const [address, setAddress] = useState('');
   const [open, setOpen] = useState(true);
   const [weightMessage, setWeightMessage] = useState('');
+  const [homeAddress, setHomeAddress] = useState('');
 
   // const handleClose = () => {
   //   setOpen(false);
   // };
+
+  // const location = useLocation();
+  // const stopwatchActivity = location?.state?.stopwatchActivity;
+  // const stopwatchDuration = location?.state?.stopwatchDuration;
+  // const stopwatchWeight = location?.state?.stopwatchWeight;
+  // const stopwatchCalories = location?.state?.stopwatchCalories;
+
+  useEffect(() => {
+    console.log('SWactivity', stopwatchActivity);
+  }, [stopwatchActivity]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -151,13 +168,32 @@ const ProfileNav = ({
     }
   }, [user]);
 
-  // useEffect(() => {
-  //   if (homeAddress) {
-  //     setAddress(homeAddress);
-  //   } else {
-  //     setAddress('No Address Saved');
-  //   }
-  // }, [homeAddress]);
+  useEffect(() => {
+    if (homeAddress) {
+      setAddress(homeAddress);
+    } else {
+      setAddress('No Address Saved');
+    }
+  }, [homeAddress]);
+
+
+  useEffect(() => {
+    if (stopwatchActivity) {
+      setLastRideActivity(stopwatchActivity);
+    }
+    if (stopwatchDuration) {
+      setLastRideDuration(stopwatchDuration);
+    }
+    if (stopwatchWeight) {
+      setLastRideWeight(stopwatchWeight);
+    }
+    if (stopwatchCalories) {
+      setLastRideCalories(stopwatchCalories);
+    }
+  }, [stopwatchActivity])
+
+
+
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -212,6 +248,20 @@ const ProfileNav = ({
   useEffect(() => {
     setLastRideCalories(lastRideCalories);
   }, [lastRideCalories]);
+
+
+  const formatDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+
+    if (hours === 0) {
+      return `You rode for ${minutes} minutes`;
+    } else if (minutes === 0) {
+      return `You rode for ${hours} hours`;
+    } else {
+      return `You rode for ${hours} hours and ${minutes} minutes`;
+    }
+  };
 
   return (
     <div>
@@ -344,11 +394,10 @@ const ProfileNav = ({
                 theme={theme}
                 saveTheme={saveTheme}
                 appTheme={appTheme}
-
-                lastRideActivity={lastRideActivity}
-                lastRideDuration={lastRideDuration}
-                lastRideWeight={lastRideWeight}
-                lastRideCalories={lastRideCalories}
+                // lastRideActivity={lastRideActivity}
+                // lastRideDuration={lastRideDuration}
+                // lastRideWeight={lastRideWeight}
+                // lastRideCalories={lastRideCalories}
                 setLastRideActivity={setLastRideActivity}
                 setLastRideDuration={setLastRideDuration}
                 setLastRideWeight={setLastRideWeight}
@@ -384,11 +433,12 @@ const ProfileNav = ({
                   : `Your most recent ride was ${lastRideActivity}`}
               </h4>
               <h4>
-                {lastRideDuration === undefined
+                {/* {lastRideDuration === undefined
                   ? null
                   : `You rode for ${Math.floor(
                       lastRideDuration / 60
-                    )} hours and ${lastRideDuration % 60} minutes`}
+                    )} hours and ${lastRideDuration % 60} minutes`} */}
+                     {lastRideDuration === undefined ? null : formatDuration(lastRideDuration)}
               </h4>
               <h4>
                 {lastRideWeight === undefined
@@ -404,6 +454,12 @@ const ProfileNav = ({
           </div>
         </Box>
       </div>
+      {/* <Navbar
+        setLastRideActivity={setLastRideActivity}
+        setLastRideDuration={setLastRideDuration}
+        setLastRideWeight={setLastRideWeight}
+        setLastRideCalories={setLastRideCalories}
+      /> */}
     </div>
   );
 };

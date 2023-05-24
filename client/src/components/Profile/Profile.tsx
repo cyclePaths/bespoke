@@ -36,7 +36,7 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = ({ handleToggleStyle, isDark, setIsDark, homeAddress, setHomeAddress }) => {
+const Profile = ({ handleToggleStyle, isDark, setIsDark,}) => {
   //Context
   const {
     userBadges,
@@ -54,7 +54,7 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark, homeAddress, setHomeAdd
   const [greeting, setGreeting] = useState('');
   const [address, setAddress] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
-  // const [homeAddress, setHomeAddress] = useState('');
+  const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
   // const [lastRide, setLastRide] = useState<RideStats>({
@@ -207,6 +207,12 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
   useEffect(() => {}, [tier]);
 
+  const location = useLocation();
+  const stopwatchActivity = location?.state?.stopwatchActivity;
+  const stopwatchDuration = location?.state?.stopwatchDuration;
+  const stopwatchWeight = location?.state?.stopwatchWeight;
+  const stopwatchCalories = location?.state?.stopwatchCalories;
+
   //..................................................
 
   return (
@@ -218,8 +224,8 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
-        homeAddress={homeAddress}
-        setHomeAddress={setHomeAddress}
+        // homeAddress={homeAddress}
+        // setHomeAddress={setHomeAddress}
         // weightForProfileDisplay={weight}
         lastRideActivity={lastRideActivity}
         lastRideDuration={lastRideDuration}
@@ -229,6 +235,11 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setLastRideDuration={setLastRideDuration}
         setLastRideWeight={setLastRideWeight}
         setLastRideCalories={setLastRideCalories}
+
+        stopwatchActivity={stopwatchActivity}
+        stopwatchDuration={stopwatchDuration}
+        stopwatchWeight={stopwatchWeight}
+        stopwatchCalories={stopwatchCalories}
       />
 
       {/* <SetHome homeAddress={homeAddress} setHomeAddress={setHomeAddress}/> */}

@@ -21,10 +21,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
-  lastRideActivity,
-  lastRideDuration,
-  lastRideWeight,
-  lastRideCalories,
+  // lastRideActivity,
+  // lastRideDuration,
+  // lastRideWeight,
+  // lastRideCalories,
   setLastRideActivity,
   setLastRideDuration,
   setLastRideWeight,

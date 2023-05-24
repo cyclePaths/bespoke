@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 
 export type StopwatchActivity = string;
 export type StopwatchDuration = number;
+export type StopwatchWeight = number;
 export type StopwatchCalories = number;
 
 interface StopwatchStatsProps {
@@ -19,6 +20,11 @@ interface StopwatchStatsProps {
   isPickerVisible: boolean;
   setIsPickerVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setValueGroups: React.Dispatch<React.SetStateAction<any>>;
+
+  setLastSWRideActivity;
+  setLastSWRideDuration;
+  setLastSWRideWeight;
+  setLastSWRideCalories;
 }
 
 const StopwatchStats = ({
@@ -31,6 +37,11 @@ const StopwatchStats = ({
   isPickerVisible,
   setIsPickerVisible,
   setValueGroups,
+
+  setLastSWRideActivity,
+  setLastSWRideDuration,
+  setLastSWRideWeight,
+  setLastSWRideCalories,
 }) => {
   const user = useContext(UserContext);
 
@@ -72,6 +83,8 @@ const StopwatchStats = ({
       })
       .then((response) => {
 
+        // console.log('response', response)
+
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
@@ -100,9 +113,16 @@ const StopwatchStats = ({
           state: {
             stopwatchActivity: workout,
             stopwatchDuration: totalTime,
+            stopwatchWeight: weight,
             stopwatchCalories: total_calories,
           },
         });
+
+
+        // setLastSWRideActivity,
+        // setLastSWRideDuration,
+        // setLastSWRideWeight,
+        // setLastSWRideCalories,
 
         axios
           .post('profile/workout', {
