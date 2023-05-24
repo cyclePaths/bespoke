@@ -168,8 +168,9 @@ const AchievementBadgeByName = styled.img`
 `;
 
 const AchievementBadgeTooltip = styled.span`
-  visibility: hidden;
+  visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   padding: 0.3125em 0;
+  pointer-events: none;
   border-radius: 0.375em;
   text-align: center;
   position: absolute;
@@ -181,6 +182,21 @@ const AchievementBadgeTooltip = styled.span`
   opacity: 0;
   transition: opacity 1s;
 `;
+
+// const AchievementBadgeTooltip = styled.span`
+//   visibility: hidden;
+//   padding: 0.3125em 0;
+//   border-radius: 0.375em;
+//   text-align: center;
+//   position: absolute;
+//   z-index: 1;
+//   width: 7.5em;
+//   bottom: 100%;
+//   left: 50%;
+//   margin-left: -3.75em;
+//   opacity: 0;
+//   transition: opacity 1s;
+// `;
 
 const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 9.375em;
@@ -207,9 +223,7 @@ const AchievementBadgeAndTooltipContainer = styled.div`
   }
 `;
 
-const AchievementBadgeHolder = styled.span`
-  display: none;
-`;
+const AchievementBadgeHolder = styled.span``;
 
 //For use in Forecasts/Weather
 
@@ -241,24 +255,6 @@ const ForecastEntry = styled.div<DarkModeHelperProps>`
   height: 7em;
 `;
 
-// const ForecastEntry = styled.div<DarkModeHelperProps>`
-//   justify-content: center;
-//   margin-top: 2.1875em;
-//   margin-left: 2.1875em;
-//   margin-bottom: 1.3125em;
-//   width: 9.0625em;
-//   align-items: center;
-//   border-radius: 7px;
-//   box-shadow: ${(props) =>
-//     props.isDark
-//       ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 0.3125em #282b71'
-//       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 0.3125em #80cbf5'};
-//   background: ${(props) =>
-//     props.isDark
-//       ? 'linear-gradient(145deg, #1b1c39, #171730);'
-//       : 'linear-gradient(145deg, #8ee2ff, #78bee6)'};
-// `;
-
 const WeatherIcon = styled.img`
   display: flex;
   height: 4.0625em;
@@ -284,23 +280,6 @@ const WeatherIconFrame = styled.div<DarkModeHelperProps>`
   }
 `;
 
-// const WeatherIconFrame = styled.div<DarkModeHelperProps>`
-//   position: relative;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 4.6875em;
-//   width: 4.6875em;
-//   border-radius: 50%;
-//   background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
-//   box-shadow: ${(props) =>
-//     props.isDark
-//       ? 'inset 1.25em 1.25em 2.4375em #368246, inset -1.25em -1.25em 2.4375em #409c54, -5px -5px 15px #15162d,'
-//       : 'inset 1.25em 1.25em 1.4375em #65be7a, inset -1.25em -1.25em 1.4375em #81f29c, rgb(113, 179, 217) -5px -5px 15px'};
-//   margin-top: 0.625em;
-//   margin-left: -2.8125em;
-// `;
-
 const ForecastBit = styled.div`
   display: flex;
   align-items: center;
@@ -320,27 +299,12 @@ const ForecastStatsBox = styled.div<DarkModeHelperProps>`
   border-radius: 30px;
 `;
 
-// const ForecastStatsBox = styled.div<DarkModeHelperProps>`
-//   height: 5.9375em;
-//   width: 9.375em;
-//   margin-left: 0em;
-//   margin-top: 4.0625em;
-//   margin-bottom: 1.5625em;
-//   border-radius: 30px;
-// `;
-
 const ForecastStatHolder = styled.p`
   display: flex;
   position: relative;
   justify-content: flex-end;
   font-size: 0.6875em;
 `;
-
-// old ForecastStatsBox visual stuff
-//    background: ${(props) => (props.isDark ? '#3b8f4d' : '#73d88b')};
-//    box-shadow: ${(props) => props.isDark
-//       ? 'inset 20px 20px 39px #368246, inset -20px -20px 39px #409c54'
-//       : 'inset 20px 20px 23px #65be7a, inset -20px -20px 23px #81f29c'};
 
 const ForecastStatHolderWithBuffer = styled.p`
   display: flex;
@@ -385,18 +349,6 @@ const MainTemperature = styled.div`
   align-items: center;
   font-size: 2.125em;
 `;
-
-// const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
-//   height: 4.6875em;
-//   width: 4.6875em;
-//   margin-top: 3.8125em;
-//   margin-left: 1.25em;
-//   border-radius: 50%;
-//   background: ${(props) =>
-//     props.isDark
-//       ? 'linear-gradient(145deg, #3f9952, #358145)'
-//       : 'linear-gradient(145deg, #7be795, #68c27d)'};
-// `;
 
 const MainTemperatureFrame = styled.div<DarkModeHelperProps>`
   height: 4.6875em;
@@ -458,8 +410,8 @@ const WindspeedHelperIcon = styled.img`
 
 const ConditionalHelperIcon = styled.img<BrightnessProps>`
   position: absolute;
-  margin-top: 2.1875em;
-  margin-left: -1.875em;
+  margin-top: -6.8125em;
+  margin-left: -6.175em;
   height: 1.875em;
   width: 3.125em;
   filter: ${(props) => (props.bright ? `contrast(${props.bright})` : 'none')};
