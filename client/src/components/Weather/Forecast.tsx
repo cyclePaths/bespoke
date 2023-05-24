@@ -9,6 +9,7 @@ import {
   ForecastStatHolderWithBuffer,
   WeatherDescription,
   ForecastText,
+  FeelsLikeText,
   ForecastTime,
   MainTemperature,
   MainTemperatureFrame,
@@ -17,6 +18,7 @@ import {
   AdjustedTemperatureText,
   AdjustedTemperatureHelperIcon,
   ForecastHelperIcon,
+  UVIHelperIcon,
   WindspeedHelperIcon,
   ConditionalHelperIcon,
   BigTemperatureHelperIcon,
@@ -275,6 +277,7 @@ const Forecast = ({
       <AdjustedTemperature>
         {displayConditionalIcon()}
         <AdjustedTemperature>
+          <FeelsLikeText>Adj</FeelsLikeText>
           <AdjustedTemperatureText>
             <strong>{Math.round(apparentTemperature)}</strong>
           </AdjustedTemperatureText>
@@ -294,19 +297,15 @@ const Forecast = ({
           <ForecastHelperIcon src={weatherIcons.misc.humidity} />
         </ForecastBit>
         <ForecastBit>
-          <ForecastText>Wind: </ForecastText>
+          <ForecastText>Wind ({windSpeedMeasurementUnit}): </ForecastText>
           <ForecastStatHolderWithBuffer>
             {adjustedWindSpeed}
-            {windSpeedMeasurementUnit}
           </ForecastStatHolderWithBuffer>
           <WindspeedHelperIcon src={setWindSpeedIcon(adjustedWindSpeed)} />
         </ForecastBit>
         <ForecastBit>
           <ForecastText>UVI: </ForecastText>
-          <ForecastStatHolderWithBuffer>
-            {directRadiation}W/m²
-          </ForecastStatHolderWithBuffer>
-          <ForecastHelperIcon src={setRadiationIcon(diffuseRadiation)} />
+          <UVIHelperIcon src={setRadiationIcon(diffuseRadiation)} />
         </ForecastBit>
       </ForecastStatsBox>
     </ForecastEntry>
