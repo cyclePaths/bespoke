@@ -19,9 +19,6 @@ const BadgeDisplay = () => {
     addBadge,
     tierCheck,
   } = useContext(UserContext);
-  //holds toggle-able value to control whether badges are displaying on profile page or not
-  const [chooseBadge, setChooseBadge] = useState<boolean>(false);
-  // const [displayTooltip, setDisplayTooltip] = useState<boolean>(true);
 
   const selectBadge = (image) => {
     console.log('selectBadge has fired');
@@ -33,9 +30,14 @@ const BadgeDisplay = () => {
   const [selectedTooltip, setSelectedTooltip] = useState<string | null>(null);
   const tooltipRefs = useRef<{ [key: string]: HTMLElement }>({});
 
-  const handleTooltipClick = (event, tooltipId) => {
-    console.log('handleTooltipClick has fired');
+  const handleBadgeClick = (event, tooltipId) => {
     event.stopPropagation();
+    let tooltips = tooltipVisibility;
+    for (let key in tooltips) {
+      console.log(`this is tooltips[${key}]: `, tooltips[key]);
+      tooltips[key] = null;
+    }
+    setTooltipVisibility(tooltips);
     setTooltipVisibility((prevVisibility) => ({
       ...prevVisibility,
       [tooltipId]: !prevVisibility[tooltipId],
@@ -43,16 +45,12 @@ const BadgeDisplay = () => {
   };
 
   const handleFavoriteClick = (event, image) => {
-    console.log('handleFavoriteClick has fired');
     event.stopPropagation();
     selectBadge(image);
-    // setSelectedTooltip(null);
   };
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      console.log('this is selectedTooltip: ', selectedTooltip);
-      console.log('this is event.target: ', event.target);
       let tooltips = tooltipVisibility;
       for (let key in tooltips) {
         console.log(`this is tooltips[${key}]: `, tooltips[key]);
@@ -60,17 +58,9 @@ const BadgeDisplay = () => {
       }
       setTooltipVisibility(tooltips);
       if (selectedTooltip !== null) {
-        console.log(
-          'this is tooltipRefs.current[selectedTooltip]: ',
-          tooltipRefs.current[selectedTooltip]
-        );
         if (!tooltipRefs.current[selectedTooltip]?.contains(event.target)) {
           setSelectedTooltip(null);
         }
-      } else {
-        console.log(
-          'Cannot display tooltipRefs.current[selectedTooltip] because selectedTooltip is equal to null'
-        );
       }
     };
 
@@ -93,7 +83,7 @@ const BadgeDisplay = () => {
               id='achievementContainer'
               key={badge.id}
               show={tooltipVisible}
-              onClick={(event) => handleTooltipClick(event, badge.id)}
+              onClick={(event) => handleBadgeClick(event, badge.id)}
             >
               <AchievementBadge src={badge.badgeIcon} />
               <AchievementBadgeTooltip show={tooltipVisible} id={badge.id}>
