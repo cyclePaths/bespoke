@@ -10,6 +10,7 @@ import NightlightRoundTwoToneIcon from '@mui/icons-material/NightlightRoundTwoTo
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
+import { AchievementBadgeByName, SelectedBadge } from '../../StyledComp';
 import Stats from './Stats';
 import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
@@ -68,6 +69,7 @@ function a11yProps(index: number) {
 }
 
 const ProfileNav = ({
+  selectedBadge,
   user,
   photo,
   saveTheme,
@@ -97,6 +99,16 @@ const ProfileNav = ({
   const [areTabsVisible, setAreTabsVisible] = useState(true);
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
+
+  const displayNoBadgeIfEmpty = () => {
+    if (
+      selectedBadge &&
+      selectedBadge !==
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      return <SelectedBadge src={selectedBadge} />;
+    }
+  };
 
   // useEffect(() => {
   //   if (socket) {
@@ -216,7 +228,7 @@ const ProfileNav = ({
 
           <div className='profile-pic-Theme-icon'>
             <img className='profile-pic' src={photo} alt='avatar' />
-
+            {displayNoBadgeIfEmpty()}
             <ThemeProvider>
               <div id='profile' className='themeIcon'>
                 <IconButton

@@ -193,6 +193,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
   return (
     <BandAid>
       <ProfileNav
+        selectedBadge={selectedBadge}
         user={user}
         photo={photo}
         saveTheme={saveTheme}

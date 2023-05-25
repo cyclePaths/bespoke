@@ -6,7 +6,7 @@ export type DarkModeHelperProps = {
 
 export type InputProps = DarkModeHelperProps & {
   secondary?: boolean;
-}
+};
 
 export type BrightnessProps = {
   bright: number;
@@ -67,7 +67,7 @@ const OptionsDiv = styled.div`
 
 const InputLayout = styled.input<InputProps>`
   height: 30px;
-  width: ${({ secondary }) => secondary ? '85%' : '75%'};
+  width: ${({ secondary }) => (secondary ? '85%' : '75%')};
   margin: 5px;
   border-radius: 2px;
   background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
@@ -162,6 +162,13 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 
 //Related to Badges and Achievements
 
+const SelectedBadge = styled.img`
+  height: 3.875em;
+  width: 3.875em;
+  margin-top: 55px;
+  margin-left: -120px;
+`;
+
 const AchievementBadgeByName = styled.img`
   height: 1.875em;
   width: 1.875em;
@@ -170,7 +177,7 @@ const AchievementBadgeByName = styled.img`
 const AchievementBadgeTooltip = styled.span`
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   padding: 0.3125em 0;
-  pointer-events: none;
+  pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
   border-radius: 0.375em;
   text-align: center;
   position: absolute;
@@ -182,21 +189,6 @@ const AchievementBadgeTooltip = styled.span`
   opacity: 0;
   transition: opacity 1s;
 `;
-
-// const AchievementBadgeTooltip = styled.span`
-//   visibility: hidden;
-//   padding: 0.3125em 0;
-//   border-radius: 0.375em;
-//   text-align: center;
-//   position: absolute;
-//   z-index: 1;
-//   width: 7.5em;
-//   bottom: 100%;
-//   left: 50%;
-//   margin-left: -3.75em;
-//   opacity: 0;
-//   transition: opacity 1s;
-// `;
 
 const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 9.375em;
@@ -217,9 +209,11 @@ const AchievementBadge = styled.img`
 const AchievementBadgeAndTooltipContainer = styled.div`
   position: relative;
   display: inline-block;
-  &:hover ${AchievementBadgeTooltip} {
-    visibility: visible;
-    opacity: 1;
+  ${AchievementBadgeTooltip} {
+    visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.show ? 1 : 0)};
+    pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
+    transition: opacity 0.5s;
   }
 `;
 
@@ -611,6 +605,7 @@ export {
   OptionsDiv,
   RouteListOptions,
   RouteList,
+  SelectedBadge,
   AchievementBadgeByName,
   AchievementBadgeTooltip,
   TooltipBox,
