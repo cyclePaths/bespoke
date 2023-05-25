@@ -8,7 +8,15 @@ import { UserContext } from '../../Root';
 const SavePopout = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
   const { isDark } = useContext(UserContext);
   return (
-    <Dialog open={openPopup} sx={{'& .MuiPaper-root': {alignItems: 'flex-end', backgroundColor: isDark ? '#707070' : '#e0e0e0' }}}>
+    <Dialog
+      open={openPopup}
+      sx={{
+        '& .MuiPaper-root': {
+          alignItems: 'flex-end',
+          backgroundColor: isDark ? '#707070' : '#ececec',
+        },
+      }}
+    >
       <CloseIcon
         sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }}
         onClick={() => setOpenPopup(false)}

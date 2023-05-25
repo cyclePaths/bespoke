@@ -6,7 +6,7 @@ export type DarkModeHelperProps = {
 
 export type InputProps = DarkModeHelperProps & {
   secondary?: boolean;
-}
+};
 
 export type BrightnessProps = {
   bright: number;
@@ -38,7 +38,7 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ffffff')};
   color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
@@ -46,7 +46,7 @@ const CategorySelector = styled.select<DarkModeHelperProps>`
 
 const PrivacySelector = styled.div<DarkModeHelperProps>`
   display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ffffff')};
   padding: 3px;
   border-radius: 3px;
   border: 1px solid;
@@ -67,10 +67,17 @@ const OptionsDiv = styled.div`
 
 const InputLayout = styled.input<InputProps>`
   height: 30px;
-  width: ${({ secondary }) => secondary ? '85%' : '75%'};
+  width: ${({ secondary }) => (secondary ? '85%' : '75%')};
   margin: 5px;
   border-radius: 2px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  background-color: ${({ isDark, secondary }) =>
+    secondary
+      ? isDark
+        ? '#707070'
+        : '#ffffff'
+      : isDark
+      ? '#707070'
+      : '#ececec'};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;

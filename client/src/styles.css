@@ -75,7 +75,6 @@ body {
 }
 
 #nothing-searched {
-  background-color: #fff;
   margin-top: 15px;
   display: flex;
   justify-content: space-evenly;
@@ -86,7 +85,6 @@ body {
 }
 
 #searched-list {
-  background-color: #fff;
   margin-top: 15px;
   display: flex;
   height: 52vh;
@@ -161,10 +159,24 @@ body {
   overflow: scroll;
 }
 
+.searched-blocks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 65%;
+  flex-direction: row;
+  padding-right: 15px;
+}
+
 .route-name {
-  color: #3939b1;
   font-size: 25px;
   text-align: center;
+  display: flex;
+  width: 120%;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-right: 10px;
+  text-decoration: underline;
 }
 
 #set-private {

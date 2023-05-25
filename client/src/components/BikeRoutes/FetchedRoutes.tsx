@@ -75,7 +75,7 @@ const FetchedRoutes = ({
         sx={{
           marginTop: '30px',
           '& .MuiToggleButton-root': {
-            color: '#2e5b70',
+            color: isDark ? '#7dc5e3' : '#2e5b70',
             backgroundColor: isDark ? '#757575' : '#ececec',
           },
           '& .MuiToggleButton-root.Mui-selected': {
@@ -93,9 +93,17 @@ const FetchedRoutes = ({
       </ToggleButtonGroup>
       {searched ? (
         routeList.length === 0 ? (
-          <div id='no-list'>No Routes Found</div>
+          <div
+            id='no-list'
+            style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+          >
+            No Routes Found
+          </div>
         ) : (
-          <div id='searched-list'>
+          <div
+            id='searched-list'
+            style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+          >
             {routeList.map((route, i) => {
               const index = i;
               return (
@@ -117,7 +125,12 @@ const FetchedRoutes = ({
           </div>
         )
       ) : (
-        <div id='nothing-searched'>Routes Display Here ...</div>
+        <div
+          id='nothing-searched'
+          style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+        >
+          Routes Display Here ...
+        </div>
       )}
     </div>
   );

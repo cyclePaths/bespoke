@@ -4,7 +4,7 @@ import {
   InputLayout,
   CategorySelector,
   OptionsDiv,
-  PrivacySelector
+  PrivacySelector,
 } from '../../StyledComp';
 import Button from '@mui/material/Button';
 import '../../styles.css';
@@ -53,10 +53,21 @@ const SaveForm = ({
               defaultValue='None'
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option disabled style={{color: isDark ? '#ececec' : '#000000'}}>None</option>
-              <option style={{color: isDark ? '#ececec' : '#000000'}}>Casual</option>
-              <option style={{color: isDark ? '#ececec' : '#000000'}}>Speedy</option>
-              <option style={{color: isDark ? '#ececec' : '#000000'}}>Scenic</option>
+              <option
+                disabled
+                style={{ color: isDark ? '#ffffff' : '#000000' }}
+              >
+                None
+              </option>
+              <option style={{ color: isDark ? '#ececec' : '#000000' }}>
+                Casual
+              </option>
+              <option style={{ color: isDark ? '#ececec' : '#000000' }}>
+                Speedy
+              </option>
+              <option style={{ color: isDark ? '#ececec' : '#000000' }}>
+                Scenic
+              </option>
             </CategorySelector>
             <PrivacySelector isDark={isDark}>
               <div id='set-private'>Private?</div>
