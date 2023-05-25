@@ -93,8 +93,8 @@ const EquipmentPopup = ({
       />
       </div>
       <div style={{ display: 'flex', justifyContent: 'center'}}>
-      <Button
-        style={{color:'rgb(133, 211, 255)', backgroundColor: '#17332c', marginLeft: '10px', marginTop: '15px', marginRight: '10px', maxWidth: '90%' }}
+      <Button variant='contained' color='success'
+        style={{ marginLeft: '10px', marginTop: '15px', marginRight: '10px', maxWidth: '90%' }}
         onClick={() => handleEquipmentSubmission()}
       >
         Add Equipment

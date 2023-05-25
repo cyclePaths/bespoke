@@ -27,7 +27,12 @@ let deleteHolder = <DeleteBulletin style={{ position: 'absolute', top: '0px', ri
    return (
    <div style ={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingBottom: '0px', paddingTop: '10px', minWidth: '50%', maxWidth: '100%'}}>
     <div  className='bulletin' style={{ fontFamily: 'roboto', maxWidth: '600px', minWidth: '50%',
-          borderRadius: '4px', background: '#73d88b', boxShadow: '3px 3px 10px #62b876, -3px -3px 10px #84f8a0',
+          borderRadius: '4px', background: context.isDark
+          ? 'linear-gradient(145deg, #1b1c39, #171730);'
+          : 'linear-gradient(145deg, #8ee2ff, #78bee6)',
+          boxShadow: context.isDark
+          ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
+          : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5',
           position: 'relative' }}>
       <div className='bulletinTopic' style={{ display: 'flex', alignItems: 'center', paddingLeft:'10px', paddingRight:'10px', paddingTop: '3px'}}>
          <span><b>{topic} -- <i>{creator} -- {formattedDate}</i></b></span>

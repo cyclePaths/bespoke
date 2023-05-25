@@ -30,7 +30,7 @@ const DeleteBulletin = (props) => {
     return (
         <div>
         <ThemeProvider theme={themeBulletin}>
-        <Button style={{ maxWidth: '25px', maxHeight: '25px', backgroundColor: '#17332c',
+        <Button variant='contained' color='success' style={{ maxWidth: '25px', maxHeight: '25px',
                           minWidth: '25px', minHeight: '25px', marginLeft: '0px', marginTop: '5px'}}
           onClick={() => handleBulletinDeletion()}>
         <h5>X</h5>
