@@ -773,15 +773,15 @@ The code below is for the Profile Stats feature
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-.select-stats-dialog {
+/* .select-stats-dialog {
   opacity: 1;
   /* background: rgb(250, 250, 250); */
   /* background: rgb(123, 231, 149);
   background: linear-gradient(128deg,
       rgb(42, 164, 71) 0%,
       rgb(104, 194, 125) 100%); */
-  color: '#1d1c1c';
-}
+  /* color: '#1d1c1c';
+} */ */
 
 .stats-grid-container {
   height: 400px;
@@ -807,17 +807,17 @@ The code below is for the Profile Stats feature
 
 @media screen and (max-width: 380px) {
   .stats-grid {
-    margin-top: 50px;
+    margin-top: 0;
   }
 }
 
 .stats-grid {
   opacity: 1;
   /* background: rgb(250, 250, 250); */
-  background: rgb(123, 231, 149);
+  /* background: rgb(123, 231, 149);
   background: linear-gradient(128deg,
       rgb(42, 164, 71) 0%,
-      rgb(104, 194, 125) 100%);
+      rgb(104, 194, 125) 100%); */
   color: '#1d1c1c';
 }
 
