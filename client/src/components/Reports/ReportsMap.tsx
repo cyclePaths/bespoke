@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { FilterList } from '@mui/icons-material';
 import { BandAid } from '../../StyledComp';
-import CarCrashIcon from '@mui/icons-material/CarCrash';
+
 import { Icon, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -34,6 +34,7 @@ import Typography from '@mui/material/Typography';
 import 'dayjs/locale/en'; // Import the locale you want to use for month names
 import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
 import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
+
 
 dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
 dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
@@ -163,22 +164,22 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
           switch (reportType) {
             case 'Road Hazard':
               return {
-                url: 'https://cdn2.iconfinder.com/data/icons/vehicle-18/100/transport-09-512.png',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960006/ypfefgfrehn6jqgdlvez.svg',
                 scaledSize: markerSize,
               };
             case 'Theft Alert':
               return {
-                url: 'https://user-images.githubusercontent.com/25103430/71287503-897b8080-2336-11ea-8b31-848bfab5176e.png',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960049/k6ynymryw47wtkgpfzj6.svg',
                 scaledSize: markerSize,
               };
             case 'Collision':
               return {
-                url: 'https://icons.iconarchive.com/icons/fa-team/fontawesome/48/FontAwesome-Car-Burst-icon.png',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960175/bgespvkap5mz1n6z5nqs.svg',
                 scaledSize: markerSize,
               };
             case 'Point of Interest':
               return {
-                url: 'https://cdn.pixabay.com/photo/2013/04/01/21/30/point-of-interest-99163_960_720.png',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960221/uuezqsykzzbju2in5iqf.svg',
                 scaledSize: markerSize,
               };
             default:
@@ -195,6 +196,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
           map,
           icon: getMarkerIconUrl(report.type),
         });
+
+
 
         marker.set('reportId', report.id); // Store the reportId using the set method
 
