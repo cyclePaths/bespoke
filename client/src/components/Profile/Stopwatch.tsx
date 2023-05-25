@@ -40,6 +40,7 @@ interface NavBarProps {
   openStopWatch?: boolean;
   setOpenStopWatch: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveWatch: React.Dispatch<React.SetStateAction<boolean>>;
+  setPauseWatch: React.Dispatch<React.SetStateAction<boolean>>;
   activity: string;
   setActivity: React.Dispatch<React.SetStateAction<string>>;
   activityValue: string;
@@ -49,7 +50,7 @@ interface NavBarProps {
 
 
 
-const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, isDark }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, setPauseWatch, isDark }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 1,
     minutes: 36,
@@ -203,6 +204,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
         aria-label='back'
           onClick={() => {
             startStopwatch();
+            setPauseWatch(false);
             setActiveWatch(true);
           }}
         >
@@ -226,7 +228,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
       <Fab sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
 color='secondary'
 size='small'
-      onClick={toggleStopwatch}>
+      onClick={() => {toggleStopwatch(); setActiveWatch(false); setPauseWatch(true)}}>
         {isRunning ? <PauseCircleFilledIcon /> : <RestartAltIcon />}
       </Fab>
       </div>

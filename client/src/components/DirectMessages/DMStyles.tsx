@@ -198,6 +198,7 @@ export const conversationStyle = makeStyles((theme: Theme) => ({
     background:
       'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
     margin: '0 auto',
+    // boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.4)',
   },
 }));
 
