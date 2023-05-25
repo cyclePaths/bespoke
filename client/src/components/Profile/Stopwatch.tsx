@@ -44,11 +44,12 @@ interface NavBarProps {
   setActivity: React.Dispatch<React.SetStateAction<string>>;
   activityValue: string;
   setActivityValue: React.Dispatch<React.SetStateAction<string>>;
+  isDark: boolean;
 }
 
 
 
-const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, isDark }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
     hours: 1,
     minutes: 36,
@@ -59,7 +60,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
   const intervalRef = useRef<Subscription | null>(null);
   const [swActivity, setSWActivity] = useState('');
   const [isStopwatchOpen, setIsStopwatchOpen] = useState(false);
-  const [appTheme, setAppTheme] =useState(false);
+  // const [appTheme, setAppTheme] =useState(false);
 
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledStopwatchStatsRedHeadedStepChildrenOptionGroups
@@ -69,17 +70,9 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  const user = useContext(UserContext);
-
   useEffect(() => {
-    // const user = useContext(UserContext);
-    if (user) {
-      const { user: { theme } = {} as any } = user
-      // const { theme } = user;
-      setAppTheme(theme);
-      console.log('user', theme)
-    }
-  }, [user])
+    console.log('isDark', isDark)
+  }, [isDark])
 
 
   const handleChange = (exercise: string, value: string) => {
@@ -175,17 +168,18 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     <div>
   {openStopWatch && <div className="stopwatch-overlay" onClick={() => handleIconClick()} />}
   <div
-  className='stopwatch'
+
     style={{
       position: 'fixed',
       top: 50,
       right: 32,
       transform: 'translateX(-50)',
-      backgroundColor: appTheme ? 'white' : 'black',
-      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+      background: isDark ?
+        'linear-gradient(145deg, #1e2062, #030312)' :
+        'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+      boxShadow: isDark ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71' : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
       padding: '10px',
       width: '200px',
-      // paddingBottom:'10px',
       borderRadius: '20px',
       zIndex: 1001,
       display: openStopWatch ? 'block' : 'none',
@@ -193,7 +187,9 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     }}
   >
     <div className='stopwatch-text-align'>
-      <h3 className='stopwatch-text'>
+      <h3 className='stopwatch-text'
+        style={{color: isDark ? 'white' : 'black',}}
+      >
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
       </h3>
@@ -236,7 +232,13 @@ size='small'
       </div>
       {isPickerVisible && (
         <div>
-          <StopwatchSelect activity={activity} setActivity={setActivity} activityValue={activityValue} setActivityValue={setActivityValue} />
+          <StopwatchSelect
+            activity={activity}
+            setActivity={setActivity}
+            activityValue={activityValue}
+            setActivityValue={setActivityValue}
+            isDark={isDark}
+            />
         </div>
       )}
       <div>

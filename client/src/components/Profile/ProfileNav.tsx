@@ -19,9 +19,6 @@ import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Navbar from '../Navbar';
@@ -142,9 +139,6 @@ const ProfileNav = ({
   // const stopwatchWeight = location?.state?.stopwatchWeight;
   // const stopwatchCalories = location?.state?.stopwatchCalories;
 
-  useEffect(() => {
-    console.log('SWactivity', stopwatchActivity);
-  }, [stopwatchActivity]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -279,7 +273,7 @@ const ProfileNav = ({
             ? 'rgba(133, 211, 255, 1)'
             : 'rgba((25, 26, 53, 1)',
           color: '#fff',
-          zIndex: (theme) => theme.zIndex.drawer + 1,
+          // zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
         open={open}
         //  onClick={handleClose}
@@ -355,7 +349,7 @@ const ProfileNav = ({
 
             <div className='profile-pic-Theme-icon'>
             {appTheme ? (
-              <img className='profile-pic' src={photo} alt='avatar' />
+              <img className='profile-pic' style={{boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.4)'}} src={photo} alt='avatar' />
             ) : (
             <img className='profile-pic' style={{boxShadow: '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'}} src={photo} alt='avatar' />
             )}

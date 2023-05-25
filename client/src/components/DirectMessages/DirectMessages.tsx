@@ -17,6 +17,8 @@ import Conversations from './Conversations';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 export interface Message {
@@ -112,12 +114,23 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
   const [showTextField, setShowTextField] = useState(true);
   const [appTheme, setAppTheme] =useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(true);
 
   const fromMe = senderId === userId;
   const socket = useContext(SocketContext).socket as Socket | undefined;
   const location = useLocation();
   let notificationSenderId = location?.state?.notificationSenderId;
   let notificationSenderName = location?.state?.notificationSenderName;
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setBackdropOpen(false);
+  //   }, 1000);
+
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (notificationSenderId !== undefined) {
@@ -291,6 +304,22 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
 
   return (
     <BandAid>
+ <div>
+  {/* <Backdrop
+        sx={{
+          backgroundColor: appTheme
+            ? 'rgba(133, 211, 255, 1)'
+            : 'rgba((25, 26, 53, 1)',
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.tooltip + 1,
+        }}
+        open={backdropOpen}
+        //  onClick={handleClose}
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop> */}
+
+      <div style={{ zIndex: 9998 }}>
       <SearchUsers
         open={open}
         setOpen={setOpen}
@@ -307,7 +336,9 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
         senderName={senderName}
         setShowTextField={setShowTextField}
       ></SearchUsers>
+      </div>
 
+      <div style={{ zIndex: 9998 }}>
       <Conversations
         setSenderId={setSenderId}
         setSenderName={setSenderName}
@@ -321,6 +352,7 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
         setShowConversations={setShowConversations}
         setShowTextField={setShowTextField}
       />
+      </div>
       {isReceiverSelected && showMessageContainer && (
         <Paper className={classes.root} key={receiver?.id} >
           <div
@@ -378,6 +410,7 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
         )}
         </Paper>
       )}
+      </div>
     </BandAid>
   );
 }

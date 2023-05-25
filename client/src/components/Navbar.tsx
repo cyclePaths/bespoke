@@ -217,6 +217,7 @@ const Navbar = () => {
         setActivity={setActivity}
         activityValue={activityValue}
         setActivityValue={setActivityValue}
+        isDark={isDark}
       />
       <Outlet />
     </div>

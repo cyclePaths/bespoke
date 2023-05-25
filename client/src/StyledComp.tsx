@@ -515,63 +515,6 @@ const ToastBuffer = styled.div`
 
 //This is for the instruction text in the Scrollers in Profile //
 
-// const lightModeText = 'rgb(47, 132, 66)';
-// // const lightModeText = '#7e29d8';
-// // const darkModeText = '#ffffff';
-// // const darkModeText = '#ac7ede';
-// const darkModeText = 'rgb(123, 231, 149)';
-
-// const lightModeShadow = 'rgb(11, 11, 11)';
-// const darkModeShadow = 'rgb(112, 247, 143)';
-// // const darkModeShadow = '1.25em 1.25em 3.75em #282b71';
-
-// const waveHighlightAnimation = keyframes`
-//   0% {
-//     text-shadow: 0 0 2px ${lightModeShadow};
-//   }
-//   50% {
-//     text-shadow: 0 0 10px ${lightModeShadow};
-//   }
-//   100% {
-//     text-shadow: 0 0 2px ${lightModeShadow};
-//   }
-// `;
-
-// const WaveHighlight = styled.div`
-//   position: relative;
-//   display: inline-block;
-// `;
-
-// const HighlightText = styled.h4`
-//   display: inline-block;
-//   margin-bottom: 30px;
-//   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
-//   text-shadow: ${(props) =>
-//     props.theme === 'dark'
-//       ? `0 0 2px ${darkModeShadow}`
-//       : `0 0 2px ${lightModeShadow}`};
-
-//   animation: ${(props) => keyframes`
-//     0% {
-//       text-shadow: 0 0 2px ${
-//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
-//       };
-//     }
-//     50% {
-//       text-shadow: 0 0 10px ${
-//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
-//       };
-//     }
-//     100% {
-//       text-shadow: 0 0 2px ${
-//         props.theme === 'dark' ? darkModeShadow : lightModeShadow
-//       };
-//     }
-//   `}
-//     2s infinite;
-// `;
-
-
 const lightModeText = 'rgb(50, 53, 50)';
 // const lightModeText = '#7e29d8';
 // const darkModeText = '#ffffff';
@@ -607,7 +550,7 @@ const HighlightText = styled.h4`
   text-shadow: ${(props) =>
     props.theme === 'dark'
       ? `0 0 20px ${darkModeShadow}` // Increase the blur radius to create a glow effect
-      : `0 0 2px ${lightModeShadow}`};
+      : `10px 10px 20px ${lightModeShadow}`};
 
   animation: ${(props) => keyframes`
     0% {
@@ -628,7 +571,6 @@ const HighlightText = styled.h4`
   `}
     2s infinite;
 `;
-
 
 //Above is for the instruction text in the Scrollers in Profile //
 
