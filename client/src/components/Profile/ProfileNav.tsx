@@ -507,12 +507,6 @@ const ProfileNav = ({
           </div>
         </Box>
       </div>
-      {/* <Navbar
-        setLastRideActivity={setLastRideActivity}
-        setLastRideDuration={setLastRideDuration}
-        setLastRideWeight={setLastRideWeight}
-        setLastRideCalories={setLastRideCalories}
-      /> */}
     </div>
   );
 };

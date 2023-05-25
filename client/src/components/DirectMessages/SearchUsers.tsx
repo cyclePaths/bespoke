@@ -2,6 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/system';
+import InputBase from '@mui/material/InputBase';
+
 import { useStyles } from './DMStyles';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
@@ -79,16 +84,20 @@ function SearchUsers({
   }, [senderName]);
 
 
+  const CustomInput = styled(InputBase)(({ theme }) => ({
+    color: 'rgb(191, 186, 186)',
+
+    '& .MuiInputAdornment-root.MuiInputAdornment-positionEnd': {
+      color: 'green', // Change this to the color you want for the dropdown icon
+    },
+  }));
 
   return (
+    // <ThemeProvider theme={theme}>
     <div className={classes.search}>
         <Autocomplete
           sx={{
             background: 'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
-            // background:
-            //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-
-            // borderRadius: '5px',
           }}
           id='asynchronous'
           open={open}
@@ -137,7 +146,6 @@ function SearchUsers({
                       <CircularProgress color='inherit' size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
-
                   </React.Fragment>
                 ),
               }}
@@ -145,6 +153,7 @@ function SearchUsers({
           )}
         />
     </div>
+    // </ThemeProvider>
   );
 }
 

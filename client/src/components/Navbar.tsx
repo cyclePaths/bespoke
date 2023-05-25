@@ -136,7 +136,7 @@ if (activeWatch) {
           <Link to='/directMessages'>
             <IconButton
               onClick={() => toMessages()}
-              sx={{ color: messages ? '#673ab7' : '#757575' }}
+              sx={{ color: messages ? '#673ab7' : '#757575', marginLeft: '120px', }}
             >
               <MessageIcon sx={{ color: isDark ? (messages ? '#85d3ff' : '#ececec') : (messages ? '#191a35' : '#757575') }} />
             </IconButton>

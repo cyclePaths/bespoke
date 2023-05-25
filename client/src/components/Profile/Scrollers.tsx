@@ -445,8 +445,6 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
                   center: 0,
                   color: 'white !important',
                   opacity: 0.4,
-                  background:
-                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125) !important',
                 }}
               >
                 Get Ride Stats
@@ -457,10 +455,9 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
               <Button
                 type='button'
                 variant='contained'
-                // color='success'
+                color='success'
                 className='rideStatsButton'
-                sx={{ background:
-                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)', position: 'fixed', center: 0 }}
+                sx={{ position: 'fixed', center: 0, boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3)' }}
                 onClick={handleGetRideStatsButton}
               >
                 Get Ride Stats

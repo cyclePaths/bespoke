@@ -178,6 +178,14 @@ const Conversations: React.FC<ConversationsProps> = ({
   return (
     <>
       {!isReceiverSelected && showConversations ? (
+         <div
+         style={{
+           display: 'flex',
+           justifyContent: 'center',
+          //  alignItems: 'center',
+          //  height: '100vh',
+         }}
+       >
         <List className={classes.list}
           sx={{ boxShadow: isDark ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71' : '6px 6px 6px rgba(0, 0, 0, 0.4)',}}
         >
@@ -238,6 +246,7 @@ const Conversations: React.FC<ConversationsProps> = ({
             </React.Fragment>
           ))}
         </List>
+        </div>
       ) : (
         <Fab
           sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}

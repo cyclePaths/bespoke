@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { UserContext } from '../../Root';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -10,6 +11,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { exiledRedHeadedStepChildrenOptionGroups } from '../../../profile-assets';
 import StatsDisplay from './StatsDisplay';
@@ -21,6 +23,9 @@ const Stats = () => {
   const [isStatsDisplayed, setIsStatsDisplayed] = React.useState(false);
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
+  // User Context //
+  const { isDark } = React.useContext(UserContext);
+
   const handleChange = (event: SelectChangeEvent<typeof speed>) => {
     setSpeed(event.target.value);
   };
@@ -30,13 +35,18 @@ const Stats = () => {
     setIsStatsDisplayed(false);
   };
 
-  const handleClose = (
-    event: React.SyntheticEvent<unknown>,
-    reason?: string
-  ) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false);
-    }
+  const handleClose = () => {
+    setOpen(false);
+    setSpeed('');
+  };
+
+  const handleGridClose = () => {
+    setIsStatsDisplayed(false);
+  };
+
+  const handleOkClick = () => {
+    getStats();
+    setSpeed('');
   };
 
   const getStats = () => {
@@ -56,78 +66,166 @@ const Stats = () => {
       });
   };
 
-  const handleGridClose = () => {
-    setIsStatsDisplayed(false);
-  };
 
-  const handleOkClick = () => {
-    getStats();
-    setSpeed('');
-  };
+  const theme = createTheme({
+    components: {
+      MuiSelect: {
+        styleOverrides: {
+          icon: {
+            color: isDark ? 'white' : 'black',
+          },
+        },
+      },
+    },
+  });
 
   return (
     <>
-      <div className='select-stats'>
-        <Button
-          variant='contained'
-          sx={{
-            background:
-              'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',
-          }}
-          onClick={handleClickOpen}
-        >
-          Select Stats
-        </Button>
-      </div>
-      <div>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle className='select-stats-dialog'>
-            Select Rides By Speed
-          </DialogTitle>
-          <DialogContent className='select-stats-dialog'>
-            <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel htmlFor='demo-dialog-native'>Ride Speed</InputLabel>
-                <Select
-                  native
-                  value={speed}
-                  onChange={handleChange}
-                  input={
-                    <OutlinedInput label='Ride Speed' id='demo-dialog-native' />
-                  }
-                >
-                  <option aria-label='None' value='' />
-                  {workout.map((activity) => {
-                    return (
-                      <React.Fragment key={activity.value}>
-                        <option value={activity.label}>{activity.label}</option>
-                      </React.Fragment>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Box>
-          </DialogContent>
-          <DialogActions className='select-stats-dialog'>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button
-              onClick={(event) => {
-                handleOkClick();
-                handleClose(event, 'ok');
+      <ThemeProvider theme={theme}>
+        <div className='select-stats'>
+          <Button variant='contained' color='success' onClick={handleClickOpen}>
+            Select Stats
+          </Button>
+        </div>
+        <div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              sx: {
+                background: isDark
+                  ? 'linear-gradient(145deg, #1e2062, #030312)'
+                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+                boxShadow: isDark
+                  ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71'
+                  : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
+                '&.Mui-focused': {
+                  boxShadow: isDark
+                    ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71'
+                    : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
+                },
+              },
+            }}
+          >
+            <DialogTitle
+              className='select-stats-dialog'
+              sx={{
+                margin: '0',
+                color: isDark ? 'white' : 'black',
+                background: isDark
+                  ? 'linear-gradient(145deg, #1e2062, #030312)'
+                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
               }}
             >
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-        {isStatsDisplayed && (
-          <StatsDisplay
-            stats={stats}
-            handleGridClose={handleGridClose}
-            handleClickOpen={handleClickOpen}
-          />
-        )}
-      </div>
+              Select Rides By Speed
+            </DialogTitle>
+            <DialogContent
+              className='select-stats-dialog'
+              sx={{
+                margin: '0',
+                background: isDark
+                  ? 'linear-gradient(145deg, #1e2062, #030312)'
+                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+              }}
+            >
+              <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <FormControl
+                  sx={{
+                    m: 1,
+                    minWidth: 120,
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: isDark ? 'white' : 'rgb(117, 117, 117)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: isDark ? 'white' : 'rgb(117, 117, 117)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: isDark ? 'white' : 'rgb(117, 117, 117)',
+                      },
+                    },
+                  }}
+                >
+                  <InputLabel
+                    htmlFor='demo-dialog-native'
+                    sx={{
+                      color: isDark ? 'white' : 'black',
+                      '&.Mui-focused': {
+                        color: isDark ? 'white' : 'black',
+                      },
+                    }}
+                  >
+                    Ride Speed
+                  </InputLabel>
+                  <Select
+                    value={speed}
+                    onChange={handleChange}
+                    input={
+                      <OutlinedInput
+                        label='Ride Speed'
+                        id='demo-dialog-native'
+                      />
+                    }
+                    sx={{
+                       width: 200, // set the width as you prefer
+                      color: isDark ? 'white' : 'black',
+                      '& .MuiListItem-root.Mui-selected': {
+                        backgroundColor: 'green', // change this to the color you want
+                        color: 'white', // change text color here
+                      },
+                      // '& .MuiListItem-root.Mui-selected:hover': {
+                      //   backgroundColor: 'green', // change this to the color you want
+                      //   color: 'white', // change text color here
+                      // },
+                    }}
+                  >
+                    <MenuItem value=''>
+                      <em>None</em>
+                    </MenuItem>
+                    {workout.map((activity) => {
+                      return (
+                        <MenuItem key={activity.value} value={activity.label}>
+                          {activity.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </DialogContent>
+            <DialogActions
+              className='select-stats-dialog'
+              sx={{
+                margin: '0',
+                justifyContent: 'center',
+                background: isDark
+                  ? 'linear-gradient(145deg, #1e2062, #030312)'
+                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+              }}
+            >
+              {/* <Button onClick={handleClose}>Cancel</Button> */}
+              <Button
+                sx={{ justifyContent: 'center' }}
+                color='success'
+                variant='contained'
+                onClick={(event) => {
+                  handleOkClick();
+                  handleClose();
+                }}
+              >
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {isStatsDisplayed && (
+            <StatsDisplay
+              stats={stats}
+              handleGridClose={handleGridClose}
+              handleClickOpen={handleClickOpen}
+            />
+          )}
+        </div>
+      </ThemeProvider>
     </>
   );
 };

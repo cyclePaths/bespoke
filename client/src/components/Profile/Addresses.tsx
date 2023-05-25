@@ -292,8 +292,6 @@ const Addresses = ({
                     variant='contained'
                     color='success'
                     style={{
-                      background:
-                        'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',
                       color: 'white',
                       boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
                     }}

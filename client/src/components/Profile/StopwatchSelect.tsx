@@ -16,8 +16,6 @@ export type Activity = {
 }
 
 const StopwatchSelect = ({ activity, setActivity, activityValue, setActivityValue, isDark }) => {
-  const [age, setAge] = React.useState('');
-  // const [activity, setActivity] = React.useState('');
 
   const { workout } = exiledRedHeadedStepChildrenOptionGroups;
 
