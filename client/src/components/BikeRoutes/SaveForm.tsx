@@ -36,7 +36,12 @@ const SaveForm = ({
   return (
     <div>
       <PopoutSaveForm>
-        <header className='centered-header-Save'>Save Route</header>
+        <header
+          className='centered-header-Save'
+          style={{ color: isDark ? '#ececec' : '#000000' }}
+        >
+          Save Route
+        </header>
         <InputLayout
           isDark={isDark}
           value={routeName}

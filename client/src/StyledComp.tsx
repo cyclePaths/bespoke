@@ -38,15 +38,15 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
 
 const CategorySelector = styled.select<DarkModeHelperProps>`
   border-radius: 3px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ffffff')};
-  color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
+  background-color: ${({ isDark }) => (isDark ? '#a6a6a6' : '#ffffff')};
+  color: #000000;
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 `;
 
 const PrivacySelector = styled.div<DarkModeHelperProps>`
   display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ffffff')};
+  background-color: ${({ isDark }) => (isDark ? '#a6a6a6' : '#ffffff')};
   padding: 3px;
   border-radius: 3px;
   border: 1px solid;
@@ -54,7 +54,7 @@ const PrivacySelector = styled.div<DarkModeHelperProps>`
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
   align-items: center;
   margin-left: 10px;
-  color: ${({ isDark }) => (isDark ? '#e0e0e0' : '#000000')};
+  color: #000000;
 `;
 
 const OptionsDiv = styled.div`
@@ -73,7 +73,7 @@ const InputLayout = styled.input<InputProps>`
   background-color: ${({ isDark, secondary }) =>
     secondary
       ? isDark
-        ? '#707070'
+        ? '#a6a6a6'
         : '#ffffff'
       : isDark
       ? '#707070'
@@ -83,7 +83,7 @@ const InputLayout = styled.input<InputProps>`
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   ::placeholder {
-    color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
+    color: #000000;
   }
 `;
 
@@ -593,7 +593,6 @@ const ProfileRideDisplay = styled.div`
   align-items: center;
   & > * {
     margin-bottom: 0px;
-
   }
 `;
 
