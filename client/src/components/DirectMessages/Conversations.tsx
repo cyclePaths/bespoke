@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Message } from './DirectMessages';
+import { conversationStyle } from './DMStyles';
 
 interface Conversation {
   createdAt: string;
@@ -47,8 +48,8 @@ interface ConversationsProps {
   isReceiverSelected: boolean;
   setIsReceiverSelected: (isReceiverSelected: boolean) => void;
   showConversations: boolean;
-  setShowConversations:(showConversations: boolean) => void;
-  setShowTextField:(boolean) => void;
+  setShowConversations: (showConversations: boolean) => void;
+  setShowTextField: (boolean) => void;
 }
 
 const Conversations: React.FC<ConversationsProps> = ({
@@ -59,13 +60,25 @@ const Conversations: React.FC<ConversationsProps> = ({
   isReceiverSelected,
   setIsReceiverSelected,
   setShowTextField,
+  setReceiverName,
+  setSenderName,
+  // senderName,
 }) => {
-  const [myConversations, setMyConversations] = React.useState<Conversation[]>([]);
+  const [myConversations, setMyConversations] = React.useState<Conversation[]>(
+    []
+  );
   const [myUserId, setMyUserId] = React.useState(0);
+  const [myUserName, setMyUserName] = React.useState('');
   const [showMessageThread, setShowMessageThread] = React.useState(false);
-  const [selectedConversationId, setSelectedConversationId] = React.useState<number | null>(null);
-  const [clickedConversation, setClickedConversation] = React.useState<Message[]>([]);
+  const [selectedConversationId, setSelectedConversationId] = React.useState<
+    number | null
+  >(null);
+  const [clickedConversation, setClickedConversation] = React.useState<
+    Message[]
+  >([]);
   const [showConversations, setShowConversations] = React.useState(true);
+
+  const classes = conversationStyle();
 
   const convos = () => {
     axios
@@ -80,18 +93,23 @@ const Conversations: React.FC<ConversationsProps> = ({
       });
   };
 
-
   const handleConvoClick = async (convo: Conversation) => {
     setSelectedConversationId(null);
-    setReceiverId(convo.receiverId === myUserId ? convo.senderId : convo.receiverId);
-    // setReceiverName(convo.receiverName);
+    setReceiverId(
+      convo.receiverId === myUserId ? convo.senderId : convo.receiverId
+    );
+    setReceiverName(
+      convo.receiver.name === myUserName
+        ? convo.sender.name
+        : convo.receiver.name
+    );
+    setMyUserName(myUserName);
     setSelectedConversationId(convo.id);
     setShowConversations(false);
     setShowMessageThread(true);
     setShowTextField(true);
     setIsReceiverSelected(true);
-  }
-
+  };
 
   React.useEffect(() => {
     const isNotEdge = !window.navigator.userAgent.includes('Edg');
@@ -101,7 +119,6 @@ const Conversations: React.FC<ConversationsProps> = ({
       loadMessages();
     }
   }, [clickedConversation]);
-
 
   const handleBackClick = () => {
     setShowConversations(true); // Show the conversation list
@@ -119,15 +136,15 @@ const Conversations: React.FC<ConversationsProps> = ({
   }
 
   React.useEffect(() => {
-    axios.get('/profile/user')
+    axios
+      .get('/profile/user')
       .then(({ data }) => {
-        setMyUserId(data.id)
+        setMyUserId(data.id);
+        setMyUserName(data.name);
       })
-      .catch((err) => {
-      })
+      .catch((err) => {});
     convos();
-  }, []);
-
+  }, [myUserName]);
 
   React.useEffect(() => {
     if (isReceiverSelected) {
@@ -139,7 +156,6 @@ const Conversations: React.FC<ConversationsProps> = ({
     setShowConversations(true);
     setIsReceiverSelected(false);
     setShowMessageThread(false);
-
   };
 
   React.useEffect(() => {
@@ -156,55 +172,77 @@ const Conversations: React.FC<ConversationsProps> = ({
 
   return (
     <>
-    {!isReceiverSelected && showConversations ? (
-      <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'gray', margin: '0 auto' }}>
-        {myConversations.map((convo, index) => (
-          <React.Fragment key={index}>
-            <Button
-              component='li'
-              onClick={() => handleConvoClick(convo)}
-              sx={{ width: '100%', textAlign: 'left' }}
-            >
-              <ListItem alignItems='flex-start'>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={convo.senderId === myUserId ? convo.receiverName : convo.senderName}
-                    src={convo.senderId === myUserId ? convo.receiver.thumbnail : convo.sender.thumbnail}
-                  />
-                </ListItemAvatar>
-                <Typography variant="body2" sx={{ textTransform: 'none' }}>
-                <ListItemText
-                   primary={convo.receiverId === myUserId ? convo.senderName : convo.receiverName}
-                  secondary={
-                    <React.Fragment>
-
-                      {convo.text.length > 35
-                        ? `${convo.text.slice(0, 35)}...`
-                        : convo.text}
-                    </React.Fragment>
-                  }
-                />
-                </Typography>
-              </ListItem>
-            </Button>
-            {index !== myConversations.length - 1 && (
-              <Divider variant='inset' component='li' />
-            )}
-          </React.Fragment>
-        ))}
-      </List>
-    ) : (
-      <Fab
-        sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
-        color='secondary'
-        size='small'
-        aria-label='back'
-        onClick={handleBackClick}
-      >
-        <ArrowBackIosNewIcon fontSize='small' />
-      </Fab>
-    )}
-  </>
+      {!isReceiverSelected && showConversations ? (
+        <List className={classes.list}>
+          {myConversations.map((convo, index) => (
+            <React.Fragment key={index}>
+              <Button
+                component='li'
+                onClick={() => handleConvoClick(convo)}
+                sx={{ width: '100%', textAlign: 'left' }}
+              >
+                <ListItem alignItems='flex-start'>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={
+                        convo.senderId === myUserId
+                          ? convo.receiverName
+                          : convo.senderName
+                      }
+                      src={
+                        convo.senderId === myUserId
+                          ? convo.receiver.thumbnail
+                          : convo.sender.thumbnail
+                      }
+                    />
+                  </ListItemAvatar>
+                  <Typography
+                    variant='body2'
+                    sx={{ textTransform: 'none', color: 'rgb(217, 211, 211)' }}
+                  >
+                    <ListItemText
+                      primary={
+                        convo.senderId === myUserId
+                          ? convo.receiverName
+                          : convo.senderName
+                      }
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            variant='body2'
+                            sx={{
+                              textTransform: 'none',
+                              color: 'rgb(191, 186, 186)',
+                            }}
+                          >
+                            {convo.text.length > 35
+                              ? `${convo.text.slice(0, 35)}...`
+                              : convo.text}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </Typography>
+                </ListItem>
+              </Button>
+              {index !== myConversations.length - 1 && (
+                <Divider variant='inset' component='li' />
+              )}
+            </React.Fragment>
+          ))}
+        </List>
+      ) : (
+        <Fab
+          sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+          color='secondary'
+          size='small'
+          aria-label='back'
+          onClick={handleBackClick}
+        >
+          <ArrowBackIosNewIcon fontSize='small' />
+        </Fab>
+      )}
+    </>
   );
 };
 

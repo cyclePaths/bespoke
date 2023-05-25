@@ -3,7 +3,7 @@ const { Configuration } = require('webpack');
 const { merge } = require('webpack-merge');
 
 const baseConfig = {
-  entry: ['./client/src/index.tsx', './node_modules/react-scrollable-picker/src/style.less'],
+  entry: ['./client/src/index.tsx'],
   output: {
     path: path.resolve(__dirname, 'client', 'dist'),
     filename: 'bundle.js',

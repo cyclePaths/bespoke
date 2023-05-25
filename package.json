@@ -116,7 +116,6 @@
     "react-router-dom": "^6.10.0",
     "react-toastify": "^9.1.2",
     "rxjs": "^7.8.0",
-    "setLabel('Search Bikers');": "^0.2.1",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "styled-components": "^5.3.9",
