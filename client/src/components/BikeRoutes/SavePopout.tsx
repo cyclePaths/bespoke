@@ -14,6 +14,9 @@ const SavePopout = ({ children, openPopup, setOpenPopup }: SavePopoutProps) => {
         '& .MuiPaper-root': {
           alignItems: 'flex-end',
           backgroundColor: isDark ? '#707070' : '#ececec',
+          margin: '10px',
+          padding: '10px',
+          height: '45vh',
         },
       }}
     >

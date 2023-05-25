@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import '../../styles.css';
 import { SaveProps } from './RouteM';
 import { UserContext } from '../../Root';
+import { TextField } from '@mui/material';
 
 const SaveForm = ({
   routeName,
@@ -42,14 +43,20 @@ const SaveForm = ({
         >
           Save Route
         </header>
-        <InputLayout
-          isDark={isDark}
+        <TextField
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
           type='text'
-          maxLength='10'
+          fullWidth
           placeholder='Enter Name of Route...'
-          secondary
+          inputProps={{
+            style: {
+              color: isDark ? '#FFFFFF' : 'black',
+            },
+          }}
+          sx={{
+            backgroundColor: isDark ? '#ececec' : '#FFFFFF',
+          }}
         />
         <OptionsDiv>
           <div className='route-options'>
