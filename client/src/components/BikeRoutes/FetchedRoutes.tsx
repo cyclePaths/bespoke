@@ -31,6 +31,7 @@ const FetchedRoutes = ({
   likeList,
   setMarkers,
 }: FetchedRoutesProps) => {
+  const { isDark } = useContext(UserContext);
   const [searched, setSearched] = useState<boolean>(false);
   const [selectedCat, setSelectedCat] = useState<string>('');
 
@@ -73,6 +74,15 @@ const FetchedRoutes = ({
         onChange={handleSelectedChange}
         sx={{
           marginTop: '30px',
+          '& .MuiToggleButton-root': {
+            color: '#2e5b70',
+            backgroundColor: isDark ? '#757575' : '#ececec',
+          },
+          '& .MuiToggleButton-root.Mui-selected': {
+            color: '#7dc5e3',
+            backgroundColor: '#757575',
+          },
+          boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.2)',
         }}
       >
         <ToggleButton value='All'>All</ToggleButton>

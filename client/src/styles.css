@@ -507,6 +507,7 @@ The code above is for the scroll wheel
   align-items: center;
   margin-right: 5px;
   margin-left: 5px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /*
