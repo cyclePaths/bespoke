@@ -171,7 +171,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
                   color: isDark? '#7dc5e3' : '#7dc5e3',
-                  backgroundColor: isDark ? '#ececec' : '#757575',
+                  backgroundColor: isDark ? '#121212' : '#757575',
                 },
               }}
             >
