@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Map from './Map';
 import { BandAid, RouteCreatorComponent } from '../../StyledComp';
-import { darkModeOptions, defaultOptions, defaultMapContainerStyle } from './Utils'
+import {
+  darkModeOptions,
+  defaultOptions,
+  defaultMapContainerStyle,
+} from './Utils';
 import { BikeRoutes } from '@prisma/client';
 
 // Exports to be used throughout the Bike Route Component //
@@ -24,7 +28,7 @@ export interface RouteInfo {
   centerLat: number;
   centerLng: number;
   warnings: string[];
-};
+}
 
 export interface MapOptionsProp {
   homeCoordinates: LatLngLiteral;
@@ -67,7 +71,7 @@ export interface RouteProps {
   handleRouteClick: (origin, destination) => void;
   setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
   fetchDirections: () => void;
-  routeList: BikeRoutes[]
+  routeList: BikeRoutes[];
   setRouteList: React.Dispatch<React.SetStateAction<any[]>>;
   likeList: any[];
   setMarkers: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>;
@@ -76,7 +80,8 @@ export interface RouteProps {
 //////////////////////////////////////////////// ->
 
 // FOR SAVEFORM.TSX //
-export interface SaveProps {
+export interface SavePopoutProps {
+  openPopup: boolean;
   routeName: string;
   setRouteName: React.Dispatch<React.SetStateAction<string>>;
   category: string;
@@ -96,12 +101,6 @@ export interface RoutesPopoutProps {
   openSearch: boolean;
   setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
   exitListForm: () => void;
-}
-
-export interface SavePopoutProps {
-  children;
-  openPopup: boolean;
-  setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface RouteMProps {

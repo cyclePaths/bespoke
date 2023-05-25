@@ -36,35 +36,6 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   margin-top: 60px;
 `;
 
-const CategorySelector = styled.select<DarkModeHelperProps>`
-  border-radius: 3px;
-  background-color: ${({ isDark }) => (isDark ? '#a6a6a6' : '#ffffff')};
-  color: #000000;
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 10px;
-`;
-
-const PrivacySelector = styled.div<DarkModeHelperProps>`
-  display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#a6a6a6' : '#ffffff')};
-  padding: 3px;
-  border-radius: 3px;
-  border: 1px solid;
-  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  align-items: center;
-  margin-left: 10px;
-  color: #000000;
-`;
-
-const OptionsDiv = styled.div`
-  display: flex;
-  place-content: flex-start space-evenly;
-  margin: 15px;
-  flex-wrap: wrap;
-  flex-direction: column;
-`;
-
 const InputLayout = styled.input<InputProps>`
   height: 30px;
   width: ${({ secondary }) => (secondary ? '85%' : '75%')};
@@ -632,8 +603,6 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
-  CategorySelector,
-  OptionsDiv,
   RouteListOptions,
   RouteList,
   AchievementBadgeByName,
@@ -659,7 +628,6 @@ export {
   ProfileDisplays,
   ProfileRideDisplay,
   LoadingDiv,
-  PrivacySelector,
   RecentRidesHeader,
   StatsWrapper,
 };
