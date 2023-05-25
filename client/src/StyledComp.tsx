@@ -493,6 +493,11 @@ const HomePageCompWrapper = styled.div`
 const LeaderBoardDirections = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 50%;
+  width: 85%;
+  right: 7.5%;
 `;
 
 // Misc styled components

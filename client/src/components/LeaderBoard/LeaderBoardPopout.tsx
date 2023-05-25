@@ -1,4 +1,4 @@
-import React, { useContext }from 'react';
+import React, { useContext } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { makeStyles } from '@material-ui/core';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,23 +19,30 @@ const LeaderBoardPopout = ({
   setLeaderBoard,
 }) => {
   const classes = contentStyles();
-  const {isDark} = useContext(UserContext)
+  const { isDark } = useContext(UserContext);
 
   const handleClose = () => {
     setOpenLeaderBoard(false);
     setLeaderBoard(false);
   };
   return (
-    <Dialog open={openLeaderBoard}>
-      <div style={{ backgroundColor: 'rgb(133, 211, 255)', display: 'flex', flexDirection: 'row-reverse' }}>
-        <CloseIcon sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }} onClick={() => handleClose()} />
-      </div>
-      <DialogContent
-        className={classes.dialogContent}
-        sx={{ paddingTop: '0px' }}
-      >
-        {children}
-      </DialogContent>
+    <Dialog
+      open={openLeaderBoard}
+      sx={{
+        '& .MuiPaper-root': {
+          backgroundColor: isDark ? '#707070' : '#ececec',
+        },
+      }}
+    >
+      <CloseIcon
+        sx={{
+          color: isDark ? '#e0e0e0' : 'black',
+          fontSize: '2rem',
+          width: '19em',
+        }}
+        onClick={() => handleClose()}
+      />
+      {children}
     </Dialog>
   );
 };
