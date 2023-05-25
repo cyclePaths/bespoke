@@ -185,6 +185,17 @@ body {
   font-size: 14px;
 }
 
+.submit-buttons {
+  background: rgb(123, 231, 149);
+  background: linear-gradient(128deg,
+      rgb(42, 164, 71) 0%,
+      rgb(104, 194, 125) 100%);
+}
+
+/*
+Below is the styling for the stopwatch
+*/
+
 .stopwatch-container {
   z-index: 9999;
 }
@@ -196,11 +207,40 @@ body {
   background: linear-gradient(128deg,
       rgb(42, 164, 71) 0%,
       rgb(104, 194, 125) 100%);
+      /* background: */
+      /* linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47); */
+
+
   color: '#1d1c1c';
+
+  /* position: fixed;
+  top: 40px;
+  right: 32px;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 200px;
+  border-radius: 20px;
+  z-index: 1001; */
+}
+
+.stopwatch-text-align {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .stopwatch-text {
   color: black;
+  font-family: 'digital-7', sans-serif;
+  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stopwatch-button-align {
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-evenly;
 }
 
 .stopwatch-overlay {
@@ -212,6 +252,10 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
+
+/*
+Above is the styling for the stopwatch
+*/
 
 .profile-pic {
   border-radius: 50%;
@@ -232,6 +276,41 @@ body {
   justify-content: space-between;
   /* align-items: center; */
 }
+
+.default-profile-display {
+  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+@media screen and (max-height: 900px) {
+  .default-profile-display {
+    margin-top: 10em;
+  }
+}
+
+@media screen and (max-height: 850px) {
+  .default-profile-display {
+    margin-top: 8rem;
+  }
+}
+
+@media screen and (max-height: 750px) {
+  .default-profile-display {
+    margin-top: 3rem;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .default-profile-display {
+    margin-top: 2rem;
+  }
+}
+
 
 /*
 The code below is for the scroll wheel
@@ -547,6 +626,7 @@ The code below is for the Profile search Home address feature
   height: 60vh;
   position: relative;
   top: 50%;
+
 }
 
 .address {
@@ -556,7 +636,7 @@ The code below is for the Profile search Home address feature
   align-items: center;
   position: absolute;
   /* Position the element relative to the parent element */
-  top: 30%;
+  top: 33%;
   /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%);
   /* Center the element vertically */
@@ -568,7 +648,7 @@ The code below is for the Profile search Home address feature
 
 .saveHome {
   margin-top: 10px !important;
-  position: absolute;
+  /* position: absolute; */
   /* margin-bottom: 10px; */
   z-index: 9999;
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
@@ -588,7 +668,7 @@ The code below is for the Profile search Home address feature
 }
 
 .delete-address {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 
 @media screen and (max-height: 900px) {
@@ -606,8 +686,12 @@ The code below is for the Profile search Home address feature
 @media screen and (max-height: 700px) {
   .address {
     /* bottom: 200px; */
-    margin-top: 38px;
+    margin-top: 30px;
   }
+
+  /* .delete-address {
+    top: 0;
+  } */
 
   .displayedAddress {
     top: calc(20% - 60px);
@@ -623,7 +707,7 @@ The code below is for the Profile search Home address feature
   /* position: relative; */
 
   position: absolute;
-  top: 100%;
+  top: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;

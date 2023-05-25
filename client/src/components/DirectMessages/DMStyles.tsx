@@ -1,36 +1,50 @@
-import { makeStyles, createStyles, Theme, createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  createTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
+
+// import { currentTheme } from '../../Root';
+
+
+// useEffect(() => {
+  // console.log('currentTheme', currentTheme);
+// }, [currentTheme])
 
 // Define a custom theme with breakpoints for small (sm) and medium (md) screens
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#3f51b5',
-      light: '#7986cb',
-      dark: '#303f9f',
-    },
-    secondary: {
-      main: '#f50057',
-      light: '#ff4081',
-      dark: '#c51162',
-    },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#3f51b5',
+//       light: '#7986cb',
+//       dark: '#303f9f',
+//     },
+//     secondary: {
+//       main: '#f50057',
+//       light: '#ff4081',
+//       dark: '#c51162',
+//     },
+//   },
+//   breakpoints: {
+//     values: {
+//       xs: 0,
+//       sm: 600,
+//       md: 960,
+//       lg: 1280,
+//       xl: 1920,
+//     },
+//   },
+// });
 
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
-  root: {
-  },
+  root: {},
   input: {
-    color: 'white',
+    color: 'rgb(50, 25, 25) !important',
     '&::placeholder': {
       color: 'white',
       marginRight: theme.spacing(1),
@@ -49,14 +63,13 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
   disabled: {},
 }));
 
-
 const messagesContainerHeight = '70vh';
 
 // Define the component styles
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      color: 'white',
+      // color: 'white',
       backgroundColor: 'transparent',
       margin: 'auto',
       display: 'flex',
@@ -77,8 +90,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       zIndex: 0,
       maxHeight: messagesContainerHeight,
     },
-
-
 
     '@media screen and (max-height: 900px)': {
       messagesContainer: {
@@ -101,7 +112,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
 
-
     message: {
       color: 'white',
       padding: theme.spacing(1),
@@ -109,9 +119,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     messageFromMe: {
       color: ' #f0f0f0',
-      // backgroundColor: theme.palette.primary.light,
-      backgroundColor:'rgb(0, 122, 255)',
-      // backgroundColor: '#1e212d',
+      background: 'linear-gradient(128deg, rgb(43, 139, 195) 0%, rgb(88, 182, 236) 100%) rgb(117, 199, 246)',
       alignSelf: 'flex-end',
       marginLeft: 120,
       marginRight: 10,
@@ -131,9 +139,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     messageFromOther: {
       alignSelf: 'flex-start',
       color: ' #e8e6e6',
-      // backgroundColor: '#65CF22',
-      // backgroundColor: '#4b3464',
-      backgroundColor:'#3dca3d',
+      background:
+              'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+      // backgroundColor: '#3dca3d',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
@@ -150,12 +158,15 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     inputContainer: {
+      background:
+      'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
       display: 'flex',
       boxShadow: '6px -6px 6px rgba(0, 0, 0, 0.2)',
 
       padding: theme.spacing(2.75),
       '& input': {
         color: 'white',
+      //  color: 'rgb(71, 72, 71)',
         alignItems: 'left',
       },
     },
@@ -163,8 +174,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       left: 0,
     },
 
-
     search: {
+      // color: 'rgb(191, 186, 186) !important',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -177,10 +188,19 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(0),
       zIndex: 1000,
     },
-  }),
+  })
 );
 
 export const conversationStyle = makeStyles((theme: Theme) => ({
+  list: {
+    width: '100%',
+    maxWidth: 500,
+    background:
+      'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
+    margin: '0 auto',
+  },
+}));
 
+export const searchUsersStyle = makeStyles((theme: Theme) => ({
 
 }))
