@@ -83,7 +83,8 @@ const InputLayout = styled.input<InputProps>`
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   ::placeholder {
-    color: #000000;
+    color: ${({ isDark, secondary }) =>
+      secondary ? '#000000' : isDark ? '#d3d3d3' : '#707070'};
   }
 `;
 
