@@ -4,6 +4,7 @@ import axios from 'axios';
 import Home from '../Home';
 import StopwatchStats from './StopwatchStats';
 import ProfileNav from './ProfileNav';
+import DirectMessages from  '../DirectMessages/DirectMessages';
 import styled from 'styled-components';
 import { useTheme } from './ThemeContext';
 // import { ToggleSwitch } from '../../StyledComp';
@@ -142,7 +143,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setUser(splitNames[0]);
         setPhoto(data.thumbnail);
         setTheme(data.theme);
-        setWeight(data.weight);
+        // setWeight(data.weight);
         setHomeAddress(data.homeAddress);
       })
       .catch((err) => {
@@ -192,14 +193,15 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
 
   return (
     <BandAid>
+      {/* <DirectMessages theme={theme}/> */}
       <ProfileNav
-        user={user}
+        // user={user}
         photo={photo}
         saveTheme={saveTheme}
         handleToggleStyle={handleToggleStyle}
         theme={theme}
         homeAddress={homeAddress}
-        weightForProfileDisplay={weight}
+        // weightForProfileDisplay={weight}
         lastRideActivity={lastRide.activity}
         lastRideDuration={lastRide.duration}
         lastRideWeight={lastRide.weight}

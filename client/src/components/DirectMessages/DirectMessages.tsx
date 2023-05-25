@@ -4,6 +4,8 @@ import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Fab from '@mui/material/Fab';
+import SendIcon from '@mui/icons-material/Send';
 import { useStyles, inputTextStyle } from './DMStyles';
 import SearchUsers, { Users } from './SearchUsers';
 import { ThemeProvider } from '@mui/material/styles';
@@ -84,7 +86,7 @@ interface SelectedUser {
   );
 }
 
-function DirectMessages({ showConversations, setShowConversations }) {
+function DirectMessages({ showConversations, setShowConversations, isDark, }) {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -109,6 +111,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
   const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
   const [showTextField, setShowTextField] = useState(true);
+  const [appTheme, setAppTheme] =useState(false);
 
   const fromMe = senderId === userId;
   const socket = useContext(SocketContext).socket as Socket | undefined;
@@ -349,6 +352,7 @@ function DirectMessages({ showConversations, setShowConversations }) {
                   disabled: inputClasses.disabled,
                 },
               }}
+
               placeholder='Type your message...'
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
@@ -357,14 +361,19 @@ function DirectMessages({ showConversations, setShowConversations }) {
               maxRows={18}
               inputRef={inputRef}
             />
-            <Button
-            style={{left: 0}}
-              variant='contained'
-              color='primary'
+            {/* <Button */}
+            <Fab
+            // style={{left: 0}}
+            sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+            color='secondary'
+            size='small'
+            aria-label='back'
               onClick={handleSendMessage}
             >
-              Send
-            </Button>
+              <SendIcon />
+              {/* Send */}
+              </Fab>
+            {/* </Button> */}
           </div>
         )}
         </Paper>
@@ -374,18 +383,3 @@ function DirectMessages({ showConversations, setShowConversations }) {
 }
 
 export default DirectMessages;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

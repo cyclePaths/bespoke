@@ -68,7 +68,14 @@ const Stats = () => {
   return (
     <>
       <div className='select-stats'>
-        <Button variant='contained' color='success' onClick={handleClickOpen}>
+        <Button
+          variant='contained'
+          sx={{
+            background:
+              'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',
+          }}
+          onClick={handleClickOpen}
+        >
           Select Stats
         </Button>
       </div>

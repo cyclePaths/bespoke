@@ -32,7 +32,7 @@ const StopwatchSelect = ({ activity, setActivity, activityValue, setActivityValu
   }, [activity, activityValue]);
 
   return (
-    <>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
         <InputLabel id='demo-select-small-label'>Ride Speed</InputLabel>
         <Select
@@ -55,7 +55,7 @@ const StopwatchSelect = ({ activity, setActivity, activityValue, setActivityValu
         </Select>
       </FormControl>
       {/* <Stopwatch activity={activity}   /> */}
-    </>
+    </div>
   );
 };
 

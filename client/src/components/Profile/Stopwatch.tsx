@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
-// import Picker from 'react-scrollable-picker';
 import Button from '@mui/material/Button';
 import StopwatchSelect from './StopwatchSelect';
 import {
@@ -11,6 +10,12 @@ import {
 } from '../../../profile-assets';
 import StopwatchStats from './StopwatchStats';
 import { Activity } from './StopwatchSelect';
+import Fab from '@mui/material/Fab';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
+import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+
 
 export type StopwatchTime = {
   hours: number;
@@ -117,7 +122,6 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     if (intervalRef.current) {
       intervalRef.current.unsubscribe();
     }
-    // setIsPickerVisible(true);
   };
 
   const resetStopwatch = () => {
@@ -165,62 +169,65 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
   className='stopwatch'
     style={{
       position: 'fixed',
-      top: 40,
+      top: 50,
       right: 32,
       transform: 'translateX(-50)',
       backgroundColor: 'white',
       boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
       padding: '10px',
+      width: '200px',
+      // paddingBottom:'10px',
       borderRadius: '20px',
       zIndex: 1001,
       display: openStopWatch ? 'block' : 'none',
 
     }}
   >
-
+    <div className='stopwatch-text-align'>
       <h3 className='stopwatch-text'>
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
       </h3>
+      </div>
+      <div className='stopwatch-button-align'>
       {!isRunning && (
-        <Button
-      size="small"
+        <Fab
+        sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+        color='secondary'
+        size='small'
+        aria-label='back'
           onClick={() => {
             startStopwatch();
             setActiveWatch(true);
           }}
         >
-          Start
-        </Button>
+          <PlayCircleFilledWhiteIcon />
+          </Fab>
       )}
-      {/* {isRunning && <button onClick={() => stopwatchStop$.next({})}>Stop</button>} */}
       {isRunning && (
-        <Button
-        size="small"
+        <Fab
+        sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+        color='secondary'
+        size='small'
+        aria-label='back'
           onClick={() => {
             stopStopwatch();
             setActiveWatch(false);
           }}
         >
-          Stop
-        </Button>
+         <StopCircleIcon />
+          </Fab>
       )}
-      <Button size="small" onClick={toggleStopwatch}>
-        {isRunning ? 'Pause' : ' Reset '}
-      </Button>
-      {/* <button onClick={resetStopwatch}>{isRunning ? 'Reset' : 'Clear'}</button> */}
-
+      <Fab sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+color='secondary'
+size='small'
+      onClick={toggleStopwatch}>
+        {isRunning ? <PauseCircleFilledIcon /> : <RestartAltIcon />}
+      </Fab>
+      </div>
       {isPickerVisible && (
         <div>
-          {/* <Picker
-            optionGroups={optionGroups}
-            valueGroups={valueGroups}
-            onChange={handleChange}
-          /> */}
           <StopwatchSelect activity={activity} setActivity={setActivity} activityValue={activityValue} setActivityValue={setActivityValue} />
-          {/* <button type='button' onClick={() => workoutStats()}>
-      Get Stats
-    </button> */}
         </div>
       )}
       <div>
