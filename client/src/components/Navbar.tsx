@@ -103,14 +103,20 @@ const Navbar = () => {
 
   return (
     <div>
-      <NavBarTop isDark={isDark}>
-        <Link
-          style={{ fontSize: '35px' }}
-          to='/home'
-          onClick={() => clickHome()}
-        >
-          Bespoke
-        </Link>
+  <NavBarTop isDark={isDark}>
+    <Link to="/home" onClick={() => clickHome()}>
+    <img
+          src="https://res.cloudinary.com/dcecaxmxv/image/upload/v1684942437/nfajohsbfczwqlykn6jk.svg"
+          alt="Bespoke Image"
+          style={{
+            height: '150%',
+            position: 'absolute',
+            left: '10px', // Adjust the left position as needed
+            transform: 'translateY(-50%)', // Center vertically
+            // top: '50%', // Center vertically
+          }}
+        />
+    </Link>
         <span style={{ display: 'contents' }}>
           <Link to='/directMessages'>
             <IconButton
