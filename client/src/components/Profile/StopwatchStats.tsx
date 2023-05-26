@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 
 export type StopwatchActivity = string;
 export type StopwatchDuration = number;
+export type StopwatchWeight = number;
 export type StopwatchCalories = number;
 
 interface StopwatchStatsProps {
@@ -72,6 +73,8 @@ const StopwatchStats = ({
       })
       .then((response) => {
 
+        // console.log('response', response)
+
         const { total_calories } = response.data;
 
         if (workout === 'leisure bicycling') {
@@ -100,6 +103,7 @@ const StopwatchStats = ({
           state: {
             stopwatchActivity: workout,
             stopwatchDuration: totalTime,
+            stopwatchWeight: weight,
             stopwatchCalories: total_calories,
           },
         });
@@ -127,11 +131,12 @@ const StopwatchStats = ({
         {isPickerVisible && (
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Button
-            sx={{background:
-              'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
+            // sx={{background:
+            //   'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
             className='submit-button'
             variant="contained"
             size="small"
+            color="success"
               type='button'
               onClick={() => {
                 workoutStats();

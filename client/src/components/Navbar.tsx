@@ -31,6 +31,7 @@ const Navbar = () => {
   const [messages, setMessages] = useState<boolean>(false);
   const [openStopWatch, setOpenStopWatch] = useState<boolean>(false);
   const [activeWatch, setActiveWatch] = useState<boolean>(false);
+  const [pauseWatch, setPauseWatch] = useState<boolean>(false);
   const [activity, setActivity] = useState('');
   const [activityValue, setActivityValue] = useState('');
 
@@ -101,6 +102,20 @@ const Navbar = () => {
     }
   }, [user]);
 
+  let color;
+
+  if (isDark) {
+    color = '#ececec';
+  } else {
+    color = '#757575';
+  }
+
+  if (activeWatch) {
+    color = '#d81b60';
+  } else if (pauseWatch) {
+    color = '#ff9800';
+  }
+
   return (
     <div>
       <NavBarTop isDark={isDark}>
@@ -133,7 +148,10 @@ const Navbar = () => {
           <Link to='/directMessages'>
             <IconButton
               onClick={() => toMessages()}
-              sx={{ color: messages ? '#673ab7' : '#757575' }}
+              sx={{
+                color: messages ? '#673ab7' : '#757575',
+                marginLeft: '40px',
+              }}
             >
               <MessageIcon
                 sx={{
@@ -157,17 +175,7 @@ const Navbar = () => {
               }
             }}
           >
-            <TimerIcon
-              sx={{
-                color: isDark
-                  ? activeWatch
-                    ? '#d81b60'
-                    : '#ececec'
-                  : activeWatch
-                  ? '#d81b60'
-                  : '#757575',
-              }}
-            />
+            <TimerIcon style={{ color }} />
           </IconButton>
         </span>
       </NavBarTop>
@@ -304,7 +312,7 @@ const Navbar = () => {
           />
           <BottomNavigationAction
             label='Profile'
-            style={{ minWidth: '0px' }}
+            style={{ minWidth: '0px', color: isDark ? '#ececec' : '#1753f7' }}
             icon={userProfilePic}
             component={Link}
             onClick={() => toProfile()}
@@ -316,10 +324,12 @@ const Navbar = () => {
         openStopWatch={openStopWatch}
         setOpenStopWatch={setOpenStopWatch}
         setActiveWatch={setActiveWatch}
+        setPauseWatch={setPauseWatch}
         activity={activity}
         setActivity={setActivity}
         activityValue={activityValue}
         setActivityValue={setActivityValue}
+        isDark={isDark}
       />
       <Outlet />
     </div>

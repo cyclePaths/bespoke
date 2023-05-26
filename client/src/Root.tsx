@@ -3,8 +3,6 @@ import {
   Routes,
   Route,
   BrowserRouter,
-  useNavigate,
-  Link,
 } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -380,19 +378,17 @@ const Root = () => {
       };
     }, [socket, user]);
 
-
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
     console.log('Received message:', newMessage);
-
-      // Only set the state here, don't show notifications or navigate
-      if (
-        newMessage.senderId !== user?.id &&
-        newMessage.receiverId === user?.id
-      ) {
-        setRootNewMessage(newMessage);
-      }
-    };
+    // Only set the state here, don't show notifications or navigate
+    if (
+      newMessage.senderId !== user?.id &&
+      newMessage.receiverId === user?.id
+    ) {
+      setRootNewMessage(newMessage);
+    }
+  };
 
   /*
   /*
@@ -810,6 +806,10 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
+                      // homeAddress={homeAddress}
+                      // setHomeAddress={setHomeAddress}
+                      // weight={weight}
+                      // setWeight={setWeight}
                     />
                   }
                 />
