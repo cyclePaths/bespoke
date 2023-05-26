@@ -328,15 +328,6 @@ const Root = () => {
     text: string;
     fromMe: boolean;
   }
-  // Keep the interface
-  interface RootMessage {
-    senderId: number;
-    senderName: string;
-    receiverId: number;
-    receiverName: string;
-    text: string;
-    fromMe: boolean;
-  }
 
   // Keep the socket and state variables
   const socket = useContext(SocketContext).socket as Socket | undefined;
@@ -359,6 +350,7 @@ const Root = () => {
 
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
+    console.log('Received message:', newMessage);
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
@@ -783,6 +775,10 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
+                      // homeAddress={homeAddress}
+                      // setHomeAddress={setHomeAddress}
+                      // weight={weight}
+                      // setWeight={setWeight}
                     />
                   }
                 />

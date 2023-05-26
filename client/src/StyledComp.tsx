@@ -516,7 +516,8 @@ const LeaderBoardDirections = styled.div`
 // Misc styled components
 
 const NavBarTop = styled.span<DarkModeHelperProps>`
-  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  background-color: ${(props) =>
+    props.isDark ? 'rgb(112, 112, 112)' : '#ececec'};
   border-bottom: 1px solid;
   border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
@@ -541,14 +542,16 @@ const ToastBuffer = styled.div`
 
 //This is for the instruction text in the Scrollers in Profile //
 
-const lightModeText = 'rgb(47, 132, 66)';
+const lightModeText = 'rgb(50, 53, 50)';
 // const lightModeText = '#7e29d8';
 // const darkModeText = '#ffffff';
 // const darkModeText = '#ac7ede';
-const darkModeText = 'rgb(123, 231, 149)';
+const darkModeText = 'rgb(227, 239, 230)';
 
 const lightModeShadow = 'rgb(11, 11, 11)';
-const darkModeShadow = 'rgb(112, 247, 143)';
+/* const darkModeShadow = 'rgb(112, 247, 143)'; */
+const darkModeShadow = 'rgb(255, 255, 255)';
+// const darkModeShadow = '1.25em 1.25em 3.75em #282b71';
 
 const waveHighlightAnimation = keyframes`
   0% {
@@ -573,22 +576,22 @@ const HighlightText = styled.h4`
   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
   text-shadow: ${(props) =>
     props.theme === 'dark'
-      ? `0 0 2px ${darkModeShadow}`
-      : `0 0 2px ${lightModeShadow}`};
+      ? `0 0 20px ${darkModeShadow}` // Increase the blur radius to create a glow effect
+      : `10px 10px 20px ${lightModeShadow}`};
 
   animation: ${(props) => keyframes`
     0% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     50% {
-      text-shadow: 0 0 10px ${
+      text-shadow: 0 0 50px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     100% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
@@ -602,7 +605,7 @@ const ProfileDisplays = styled.div`
   /* background-color: white; */
   display: flex;
   justify-content: center;
-  margin: 10px;
+  /* margin: 10px; */
 `;
 
 const ProfileRideDisplay = styled.div`
@@ -614,6 +617,89 @@ const ProfileRideDisplay = styled.div`
     margin-bottom: 0px;
   }
 `;
+
+//Below are the styles for the default cards on the profile page//
+
+const ProfileDefaultAddressDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113),
+    -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+const ProfileDefaultAddressDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+const ProfileDefaultWeightDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+const ProfileDefaultWeightDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+const ProfileDefaultLastRideDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+const ProfileDefaultLastRideDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+//Above are the styles for the default cards on the profile page//
 
 export {
   ForecastBit,
@@ -676,4 +762,10 @@ export {
   LoadingDiv,
   RecentRidesHeader,
   StatsWrapper,
+  ProfileDefaultAddressDisplayDark,
+  ProfileDefaultAddressDisplayLight,
+  ProfileDefaultWeightDisplayDark,
+  ProfileDefaultWeightDisplayLight,
+  ProfileDefaultLastRideDisplayDark,
+  ProfileDefaultLastRideDisplayLight,
 };

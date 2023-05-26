@@ -18,12 +18,13 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-interface WeightTabProps {
-  weight: number;
-  onWeightChange: (value: number) => void;
-}
+// interface WeightTabProps {
+//   weight: number;
+//   onWeightChange: (value: number) => void;
+// }
 
-const SetWeight = (props: WeightTabProps) => {
+// const SetWeight = (props: WeightTabProps) => {
+  const SetWeight = ({ onWeightChange, weightMessage, setWeightMessage }) => {
   // const { weightChange, onWeightChange } = props;
 
   const [weightValue, setWeightValue] = useState(0);
@@ -33,7 +34,7 @@ const SetWeight = (props: WeightTabProps) => {
     'success' | 'error' | 'warning' | null
   >(null);
   // const [noWeightWarning, setNoWeightWarning] = useState(false);
-  const [weightMessage, setWeightMessage] = useState('');
+  // const [weightMessage, setWeightMessage] = useState('');
   const [userId, setUserId] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
 
@@ -170,9 +171,7 @@ const SetWeight = (props: WeightTabProps) => {
             <Stack direction='row' spacing={5}>
               <Button
                 className='saveWeight'
-                sx={{background:
-                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
-                // color='success'
+                color='success'
                 variant='contained'
                 type='button'
                 onClick={() => {
