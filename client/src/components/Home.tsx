@@ -4,7 +4,8 @@ import { RootPropsToHome } from '../Root';
 import Forecast from './Weather/Forecast';
 import {
   BandAid,
-  ForecastEntry,
+  WeatherWidgetLabel,
+  SwipeIcon,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
   StatsWrapper,
@@ -91,6 +92,10 @@ const Home = ({
     <div>
       <BandAid>
         <HomePageCompWrapper>
+          <WeatherWidgetLabel>
+            <strong>Weather Snapshot:</strong>
+          </WeatherWidgetLabel>
+
           <HomeWeatherWidgetHolder>
             <WeatherWidget
               currentTimeIndex={currentTimeIndex}
@@ -99,6 +104,10 @@ const Home = ({
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
+          <SwipeIcon
+            isDark={isDark}
+            src='https://static.thenounproject.com/png/145048-200.png'
+          />
         </HomePageCompWrapper>
         <StatsWrapper>
           <Card

@@ -245,6 +245,12 @@ const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
 // Darker: #171730 #78bee6
 // Lighter: #1b1c39 #8ee2ff
 
+const BadgeContainerLabel = styled.div`
+  position: relative;
+  margin-left: 6.5625em;
+  margin-bottom: 0.9375em;
+`;
+
 //For use in Forecasts/Weather
 
 const ForecastRowContainer = styled.div`
@@ -493,6 +499,22 @@ const ForecastTemperature = styled.div`
   margin-top: 5px;
 `;
 
+const WeatherWidgetLabel = styled.div`
+  position: absolute;
+  margin-top: 2.1875em;
+  margin-right: 14.6875em;
+`;
+
+const SwipeIcon = styled.img<DarkModeHelperProps>`
+  position: absolute;
+  height: 3em;
+  width: 3em;
+  margin-top: 4.0625em;
+  margin-right: 18.5625em;
+  filter: ${(props) =>
+    props.isDark ? 'invert(100%) brightness(200%)' : 'none'};
+`;
+
 //other home components
 
 const HomePageCompWrapper = styled.div`
@@ -638,6 +660,7 @@ export {
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
+  BadgeContainerLabel,
   NavBarTop,
   BandAid,
   RouteAlerts,
@@ -649,6 +672,8 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
+  WeatherWidgetLabel,
+  SwipeIcon,
   ToastBuffer,
   WaveHighlight,
   HighlightText,

@@ -4,6 +4,7 @@ import {
   AchievementBadgeByName,
   AchievementBadge,
   AchievementBadgeHolder,
+  BadgeContainerLabel,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeTooltip,
   TooltipBox,
@@ -82,7 +83,9 @@ const BadgeDisplay = () => {
 
   return (
     <AchievementBadgeHolder isDark={isDark}>
-      <div>Your Earned Badges:</div>
+      <BadgeContainerLabel>
+        <strong>Earned Badges</strong>
+      </BadgeContainerLabel>
 
       <span id='badges'>
         {userBadges.map((badge) => {
