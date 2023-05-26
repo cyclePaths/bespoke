@@ -119,65 +119,74 @@ const Navbar = () => {
   return (
     <div>
       <NavBarTop isDark={isDark}>
-        <Link
-          to='/home'
-          onClick={() => clickHome()}
+        <div
           style={{
-            textDecoration: 'none',
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
-            width: '50%',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'space-between',
           }}
         >
-          <img
-            src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132266/bespoke-logo-no-neg-space_cg6fmm.png'
-            alt='Bespoke Image'
+          <Link to='/home' onClick={() => clickHome()}>
+            <img
+              src={
+                isDark
+                  ? 'https://cdn.discordapp.com/attachments/187823430295355392/1111718624739205212/Dark_Mode_Bespoke.png'
+                  : 'https://cdn.discordapp.com/attachments/187823430295355392/1111710285917593732/bespoke-logo-no-neg-space.png'
+              }
+              alt='Bespoke Image'
+              style={{ height: '6.6vh' }}
+            />
+          </Link>
+          <span
             style={{
-              width: '90%',
+              width: '45%',
+              display: 'flex',
+              justifyContent: 'space-around',
             }}
-          />
-        </Link>
-        <span
-          style={{
-            display: 'flex',
-            width: '45%',
-            justifyContent: 'space-around',
-          }}
-        >
-          <Link to='/directMessages'>
+          >
+            <Link to='/directMessages'>
+              <IconButton
+                onClick={() => toMessages()}
+                sx={{ color: messages ? '#673ab7' : '#757575' }}
+              >
+                <MessageIcon
+                  sx={{
+                    color: isDark
+                      ? messages
+                        ? '#85d3ff'
+                        : '#ececec'
+                      : messages
+                      ? '#191a35'
+                      : '#757575',
+                  }}
+                />
+              </IconButton>
+            </Link>
             <IconButton
-              onClick={() => toMessages()}
-              sx={{
-                color: messages ? '#673ab7' : '#757575',
-                marginLeft: '40px',
+              onClick={() => {
+                if (openStopWatch) {
+                  setOpenStopWatch(false);
+                } else {
+                  setOpenStopWatch(true);
+                }
               }}
             >
-              <MessageIcon
+              <TimerIcon
                 sx={{
                   color: isDark
-                    ? messages
-                      ? '#85d3ff'
+                    ? activeWatch
+                      ? '#d81b60'
                       : '#ececec'
-                    : messages
-                    ? '#191a35'
+                    : activeWatch
+                    ? '#d81b60'
                     : '#757575',
                 }}
               />
             </IconButton>
-          </Link>
-          <IconButton
-            onClick={() => {
-              if (openStopWatch) {
-                setOpenStopWatch(false);
-              } else {
-                setOpenStopWatch(true);
-              }
-            }}
-          >
-            <TimerIcon style={{ color }} />
-          </IconButton>
-        </span>
+          </span>
+        </div>
       </NavBarTop>
 
       <div

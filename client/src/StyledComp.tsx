@@ -516,7 +516,8 @@ const LeaderBoardDirections = styled.div`
 // Misc styled components
 
 const NavBarTop = styled.span<DarkModeHelperProps>`
-  background-color: ${(props) => (props.isDark ? '#707070' : '#ececec')};
+  background-color: ${(props) =>
+    props.isDark ? 'rgb(112, 112, 112)' : '#ececec'};
   border-bottom: 1px solid;
   border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
@@ -628,10 +629,10 @@ const ProfileDefaultAddressDisplayDark = styled.div`
   padding-bottom: 10px;
   border-radius: 7px;
   background: linear-gradient(145deg, #1e2062, #030312);
-  box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71;
+  box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113),
+    -0.625em -0.625em 1.3125em #282b71;
   font-size: 14px;
 `;
-
 
 const ProfileDefaultAddressDisplayLight = styled.div`
   display: inline-flex;
@@ -645,7 +646,6 @@ const ProfileDefaultAddressDisplayLight = styled.div`
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
   font-size: 14px;
 `;
-
 
 const ProfileDefaultWeightDisplayDark = styled.div`
   display: inline-flex;
@@ -661,7 +661,7 @@ const ProfileDefaultWeightDisplayDark = styled.div`
 `;
 
 const ProfileDefaultWeightDisplayLight = styled.div`
- display: inline-flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 90vw;
