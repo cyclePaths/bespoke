@@ -1,5 +1,3 @@
-
-
 import {
   makeStyles,
   createStyles,
@@ -8,43 +6,11 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 
-// import { currentTheme } from '../../Root';
-
-
-// useEffect(() => {
-  // console.log('currentTheme', currentTheme);
-// }, [currentTheme])
-
-// Define a custom theme with breakpoints for small (sm) and medium (md) screens
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#3f51b5',
-//       light: '#7986cb',
-//       dark: '#303f9f',
-//     },
-//     secondary: {
-//       main: '#f50057',
-//       light: '#ff4081',
-//       dark: '#c51162',
-//     },
-//   },
-//   breakpoints: {
-//     values: {
-//       xs: 0,
-//       sm: 600,
-//       md: 960,
-//       lg: 1280,
-//       xl: 1920,
-//     },
-//   },
-// });
-
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {},
   input: {
-    color: 'rgb(50, 25, 25) !important',
+    color: 'rgb(253, 251, 251) !important',
     '&::placeholder': {
       color: 'white',
       marginRight: theme.spacing(1),

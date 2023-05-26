@@ -1,25 +1,30 @@
-import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useContext,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import { useStyles, inputTextStyle } from './DMStyles';
 import SearchUsers, { Users } from './SearchUsers';
-import { ThemeProvider } from '@mui/material/styles';
-import { io } from 'socket.io-client';
-import * as SocketIOClient from 'socket.io-client';
+// import { ThemeProvider } from '@mui/material/styles';
+// import { io } from 'socket.io-client';
+// import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-
+// import Backdrop from '@mui/material/Backdrop';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 export interface Message {
   id: number;
@@ -68,11 +73,16 @@ interface SelectedUser {
   totalLikesReceived: number;
 }
 
-
-
 // function Message({ text, fromMe }: Message) {
-  function Message({ id, senderId, senderName, receiverId, receiverName, text, userId }: Message) {
-
+function Message({
+  id,
+  senderId,
+  senderName,
+  receiverId,
+  receiverName,
+  text,
+  userId,
+}: Message) {
   const classes = useStyles();
   // const { id: userId } = useContext(UserContext);
   const fromMe = senderId === userId;
@@ -88,7 +98,7 @@ interface SelectedUser {
   );
 }
 
-function DirectMessages({ showConversations, setShowConversations, isDark, }) {
+function DirectMessages({ showConversations, setShowConversations, isDark }) {
   const classes = useStyles();
   const inputClasses = inputTextStyle();
   const [messageInput, setMessageInput] = useState<string>('');
@@ -109,11 +119,10 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
   const [isReceiverSelected, setIsReceiverSelected] = useState(false);
   const [isSenderSelected, setIsSenderSelected] = useState(false);
   const [showMessageContainer, setShowMessageContainer] = useState(false);
-  const [storedNotificationSenderId, setStoredNotificationSenderId] = useState(null);
   const [userIsSelectingReceiver, setUserIsSelectingReceiver] = useState(false);
   const [isNotificationClicked, setIsNotificationClicked] = useState(false);
   const [showTextField, setShowTextField] = useState(true);
-  const [appTheme, setAppTheme] =useState(false);
+  const [appTheme, setAppTheme] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(true);
 
   const fromMe = senderId === userId;
@@ -122,34 +131,21 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
   let notificationSenderId = location?.state?.notificationSenderId;
   let notificationSenderName = location?.state?.notificationSenderName;
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setBackdropOpen(false);
-  //   }, 1000);
-
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
-
   useEffect(() => {
     if (notificationSenderId !== undefined) {
       setReceiverId(notificationSenderId);
       setIsReceiverSelected(true);
     }
     console.log('notificationSenderId', notificationSenderId);
-  }, [notificationSenderId])
-
+  }, [notificationSenderId]);
 
   useEffect(() => {
     if (notificationSenderName !== undefined) {
       setReceiverName(notificationSenderName);
       setSenderName(notificationSenderName);
-
     }
     console.log('notificationSenderId', notificationSenderId);
-  }, [notificationSenderId])
-
+  }, [notificationSenderId]);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const handleSetReceiver = async (receiver: SelectedUser | null) => {
@@ -191,7 +187,6 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
     }
   }, [receiver]);
 
-
   useEffect(() => {
     if (socket) {
       // Join the room for the current user and receiver
@@ -205,13 +200,10 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
           newMessage.receiverId === userId
         ) {
           setMessage(newMessage);
-
         }
       });
     }
   }, [socket, userId, receiverId]);
-
-
 
   useEffect(() => {
     if (message) {
@@ -219,40 +211,36 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
     }
   }, [message]);
 
-///////Below: Loading Messages Thread when user is selected or notification is clicked/////////
+  ///////Below: Loading Messages Thread when user is selected or notification is clicked/////////
 
   const loadMessages = () => {
-
-     axios.get('/dms/retrieveMessages', {
+    axios
+      .get('/dms/retrieveMessages', {
         params: { receiverId: receiverId },
       })
-        .then(({ data }) => {
-          const sortedMessages = data.sort((a, b) => a.id - b.id);
+      .then(({ data }) => {
+        const sortedMessages = data.sort((a, b) => a.id - b.id);
 
-          setMessages(sortedMessages);
+        setMessages(sortedMessages);
 
-          setShowMessageContainer(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-      }
-
-
+        setShowMessageContainer(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     if (receiverId !== 0) {
       loadMessages();
-      console.log('loadMessages', loadMessages())
+      console.log('loadMessages', loadMessages());
     }
   }, [receiverId]);
 
-
-///////Above: Loading Messages Thread when user is selected or notification is clicked/////////
+  ///////Above: Loading Messages Thread when user is selected or notification is clicked/////////
   /// End of Load Mounting ///
 
   const handleSendMessage = () => {
-
     const newMessage = {
       senderId: userId,
       senderName: name,
@@ -304,112 +292,98 @@ function DirectMessages({ showConversations, setShowConversations, isDark, }) {
 
   return (
     <BandAid>
- <div>
-  {/* <Backdrop
-        sx={{
-          backgroundColor: appTheme
-            ? 'rgba(133, 211, 255, 1)'
-            : 'rgba((25, 26, 53, 1)',
-          color: '#fff',
-          zIndex: (theme) => theme.zIndex.tooltip + 1,
-        }}
-        open={backdropOpen}
-        //  onClick={handleClose}
-      >
-        <CircularProgress color='inherit' />
-      </Backdrop> */}
+      <div>
+        <div style={{ zIndex: 9998 }}>
+          <SearchUsers
+            open={open}
+            setOpen={setOpen}
+            options={options}
+            setOptions={setOptions}
+            loading={loading}
+            receiver={receiver}
+            setReceiver={setReceiver}
+            loadMessages={loadMessages}
+            handleSetReceiver={handleSetReceiver}
+            setIsReceiverSelected={setIsReceiverSelected}
+            setShowMessageContainer={setShowMessageContainer}
+            setMessages={setMessages}
+            senderName={senderName}
+            setShowTextField={setShowTextField}
+          ></SearchUsers>
+        </div>
 
-      <div style={{ zIndex: 9998 }}>
-      <SearchUsers
-        open={open}
-        setOpen={setOpen}
-        options={options}
-        setOptions={setOptions}
-        loading={loading}
-        receiver={receiver}
-        setReceiver={setReceiver}
-        loadMessages={loadMessages}
-        handleSetReceiver={handleSetReceiver}
-        setIsReceiverSelected={setIsReceiverSelected}
-        setShowMessageContainer={setShowMessageContainer}
-        setMessages={setMessages}
-        senderName={senderName}
-        setShowTextField={setShowTextField}
-      ></SearchUsers>
-      </div>
-
-      <div style={{ zIndex: 9998 }}>
-      <Conversations
-        setSenderId={setSenderId}
-        setSenderName={setSenderName}
-        setReceiverId={setReceiverId}
-        setReceiverName={setReceiverName}
-        loadMessages={loadMessages}
-        setShowMessageContainer={setShowMessageContainer}
-        isReceiverSelected={isReceiverSelected}
-        setIsReceiverSelected={setIsReceiverSelected}
-        showConversations={showConversations}
-        setShowConversations={setShowConversations}
-        setShowTextField={setShowTextField}
-      />
-      </div>
-      {isReceiverSelected && showMessageContainer && (
-        <Paper className={classes.root} key={receiver?.id} >
-          <div
-          className={classes.messagesContainer}
-          ref={messagesContainerRef}>
-            {messages.map((message) => (
-              <Message
-                id={message.id}
-                senderId={message.senderId}
-                senderName={message.senderName}
-                receiverId={message.receiverId}
-                receiverName={message.receiverName}
-                text={message.text}
-                userId={userId}
-                isNotificationClicked={isNotificationClicked}
-              />
-            ))}
-          </div>
-          {showTextField && (
-          <div className={classes.inputContainer}>
-            <TextField
-            fullWidth
-            id="fullWidth"
-              InputProps={{
-                classes: {
-                  root: inputClasses.root,
-                  input: inputClasses.input,
-                  underline: inputClasses.underline,
-                  disabled: inputClasses.disabled,
-                },
-              }}
-
-              placeholder='Type your message...'
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-              multiline
-              minRows={1}
-              maxRows={18}
-              inputRef={inputRef}
-            />
-            {/* <Button */}
-            <Fab
-            // style={{left: 0}}
-            sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
-            color='secondary'
-            size='small'
-            aria-label='back'
-              onClick={handleSendMessage}
+        <div style={{ zIndex: 9998 }}>
+          <Conversations
+            setSenderId={setSenderId}
+            setSenderName={setSenderName}
+            setReceiverId={setReceiverId}
+            setReceiverName={setReceiverName}
+            loadMessages={loadMessages}
+            setShowMessageContainer={setShowMessageContainer}
+            isReceiverSelected={isReceiverSelected}
+            setIsReceiverSelected={setIsReceiverSelected}
+            showConversations={showConversations}
+            setShowConversations={setShowConversations}
+            setShowTextField={setShowTextField}
+          />
+        </div>
+        {isReceiverSelected && showMessageContainer && (
+          <Paper className={classes.root} key={receiver?.id}>
+            <div
+              className={classes.messagesContainer}
+              ref={messagesContainerRef}
             >
-              <SendIcon />
-              {/* Send */}
-              </Fab>
-            {/* </Button> */}
-          </div>
+              {messages.map((message) => (
+                <Message
+                  id={message.id}
+                  senderId={message.senderId}
+                  senderName={message.senderName}
+                  receiverId={message.receiverId}
+                  receiverName={message.receiverName}
+                  text={message.text}
+                  userId={userId}
+                  isNotificationClicked={isNotificationClicked}
+                />
+              ))}
+            </div>
+            {showTextField && (
+              <div className={classes.inputContainer}>
+                <TextField
+                  fullWidth
+                  id='fullWidth'
+                  InputProps={{
+                    classes: {
+                      root: inputClasses.root,
+                      input: inputClasses.input,
+                      underline: inputClasses.underline,
+                      disabled: inputClasses.disabled,
+                    },
+                  }}
+                  placeholder='Type your message...'
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  multiline
+                  minRows={1}
+                  maxRows={18}
+                  inputRef={inputRef}
+                />
+                <Fab
+                  sx={{
+                    marginLeft: '20px',
+                    marginBottom: '10px',
+                    boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)',
+                  }}
+                  color='secondary'
+                  size='small'
+                  aria-label='back'
+                  onClick={handleSendMessage}
+                >
+                  <SendIcon />
+                </Fab>
+              </div>
+            )}
+          </Paper>
         )}
-        </Paper>
-      )}
       </div>
     </BandAid>
   );

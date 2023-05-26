@@ -75,7 +75,7 @@ function SearchUsers({
 
 
   const resetLabel = () => {
-    // setLabel('Search Bikers');
+    setLabel('Search Bikers');
   };
 
 

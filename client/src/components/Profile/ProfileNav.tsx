@@ -132,15 +132,6 @@ const ProfileNav = ({
   const [weightMessage, setWeightMessage] = useState('');
   const [homeAddress, setHomeAddress] = useState('');
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
-  // const location = useLocation();
-  // const stopwatchActivity = location?.state?.stopwatchActivity;
-  // const stopwatchDuration = location?.state?.stopwatchDuration;
-  // const stopwatchWeight = location?.state?.stopwatchWeight;
-  // const stopwatchCalories = location?.state?.stopwatchCalories;
 
   const logout = () => {
     axios.get('/logout')

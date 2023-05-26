@@ -47,12 +47,12 @@ const Addresses = ({
   setHomeAddress,
   saveHome,
 }: Props) => {
-  const [place, setPlace] = useState('');
+  // const [place, setPlace] = useState('');
   const [openAddress, setOpenAddress] = React.useState(false);
-  const [saveAddressAlert, setSaveAddressAlert] = React.useState(false);
-  const [alertTypeAddress, setAlertTypeAddress] = useState<
-    'success' | 'warning' | null
-  >(null);
+  // const [saveAddressAlert, setSaveAddressAlert] = React.useState(false);
+  // const [alertTypeAddress, setAlertTypeAddress] = useState<
+  //   'success' | 'warning' | null
+  // >(null);
   const [alertTypeSuccess, setAlertTypeSuccess] = React.useState(false);
   const [alertTypeWarning, setAlertTypeWarning] = React.useState(true);
   const [alertTypeError, setAlertTypeError] = React.useState(false);
@@ -67,28 +67,10 @@ const Addresses = ({
   // User Context //
   const { isDark } = useContext(UserContext);
 
-// // Define styles for the autocomplete input box and suggestion list
-// const AutocompleteWrapper = styled.div`
-//   position: relative;
-//   width: 100%;
-// `;
-
-// const AutocompleteInput = styled.input`
-// color: ${isDark ? 'white' : 'black'};
-//   /* width: 100%;
-//   padding: 10px;
-//   font-size: 1rem;
-//   border: 1px solid #ddd;
-//   border-radius: 5px;
-//   &:focus {
-//     outline: none; */
-//   /* } */
-// `;
-
+// Define style for the autocomplete suggestion list
 const AutocompleteSuggestions = styled.div`
   color: ${isDark ? 'white' : 'black'};
 `;
-
 
 
   // setting state on change
