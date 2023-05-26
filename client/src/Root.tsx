@@ -3,8 +3,6 @@ import {
   Routes,
   Route,
   BrowserRouter,
-  useNavigate,
-  Link,
 } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -360,15 +358,6 @@ const Root = () => {
     text: string;
     fromMe: boolean;
   }
-  // Keep the interface
-  interface RootMessage {
-    senderId: number;
-    senderName: string;
-    receiverId: number;
-    receiverName: string;
-    text: string;
-    fromMe: boolean;
-  }
 
   // Keep the socket and state variables
   const socket = useContext(SocketContext).socket as Socket | undefined;
@@ -382,40 +371,16 @@ const Root = () => {
     if (socket && user) {
       socket.on('message', handleReceivedMessage);
     }
-    // Keep the socket event handling
-    useEffect(() => {
-      if (socket && user) {
-        socket.on('message', handleReceivedMessage);
-      }
-
       return () => {
         if (socket) {
           socket.off('message', handleReceivedMessage);
         }
       };
     }, [socket, user]);
-    return () => {
-      if (socket) {
-        socket.off('message', handleReceivedMessage);
-      }
-    };
-  }, [socket, user]);
 
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
     console.log('Received message:', newMessage);
-    // Adjust handleReceivedMessage
-    const handleReceivedMessage = (newMessage: RootMessage) => {
-      console.log('Received message:', newMessage);
-
-      // Only set the state here, don't show notifications or navigate
-      if (
-        newMessage.senderId !== user?.id &&
-        newMessage.receiverId === user?.id
-      ) {
-        setRootNewMessage(newMessage);
-      }
-    };
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
@@ -841,6 +806,10 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
+                      // homeAddress={homeAddress}
+                      // setHomeAddress={setHomeAddress}
+                      // weight={weight}
+                      // setWeight={setWeight}
                     />
                   }
                 />

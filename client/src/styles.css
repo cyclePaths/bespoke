@@ -200,31 +200,6 @@ Below is the styling for the stopwatch
   z-index: 9999;
 }
 
-.stopwatch {
-  opacity: 1;
-  /* background: rgb(250, 250, 250); */
-  background: rgb(123, 231, 149);
-  background: linear-gradient(128deg,
-      rgb(42, 164, 71) 0%,
-      rgb(104, 194, 125) 100%);
-      /* background: */
-      /* linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47); */
-
-
-  color: '#1d1c1c';
-
-  /* position: fixed;
-  top: 40px;
-  right: 32px;
-  transform: translateX(-50%);
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  width: 200px;
-  border-radius: 20px;
-  z-index: 1001; */
-}
-
 .stopwatch-text-align {
   display: flex;
   flex-direction: column;
@@ -269,11 +244,32 @@ Above is the styling for the stopwatch
 .theme-icon {
   margin-top: 10px;
   margin-right: 10px;
+  /* margin-top: 10px;
+  margin-right: 0; */
+}
+
+.logout-block {
+  margin-top: 20px;
+  margin-right: 20px;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+}
+
+
+.themeIcon {
+  margin-top: 20px;
+  position: absolute;
+  right: 0;
+  /* margin-left: auto; */
+
 }
 
 .profile-pic-Theme-icon {
   display: flex;
   justify-content: space-between;
+  position: relative;
   /* align-items: center; */
 }
 
@@ -746,7 +742,7 @@ The code below is for the Profile set weight feature
 
 .saveWeight {
   margin-top: 17px !important;
-  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
 .current-weight {
@@ -807,18 +803,9 @@ The code below is for the Profile Stats feature
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-.select-stats-dialog {
-  opacity: 1;
-  /* background: rgb(250, 250, 250); */
-  background: rgb(123, 231, 149);
-  background: linear-gradient(128deg,
-      rgb(42, 164, 71) 0%,
-      rgb(104, 194, 125) 100%);
-  color: '#1d1c1c';
-}
 
 .stats-grid-container {
   height: 400px;
@@ -844,17 +831,12 @@ The code below is for the Profile Stats feature
 
 @media screen and (max-width: 380px) {
   .stats-grid {
-    margin-top: 50px;
+    margin-top: 0;
   }
 }
 
 .stats-grid {
   opacity: 1;
-  /* background: rgb(250, 250, 250); */
-  background: rgb(123, 231, 149);
-  background: linear-gradient(128deg,
-      rgb(42, 164, 71) 0%,
-      rgb(104, 194, 125) 100%);
   color: '#1d1c1c';
 }
 
@@ -883,3 +865,4 @@ The code above is for the Profile Stats feature
   font-weight: bold;
   color: #000000;
 }
+

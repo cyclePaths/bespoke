@@ -1,5 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
@@ -61,8 +62,6 @@ const Conversations: React.FC<ConversationsProps> = ({
   setIsReceiverSelected,
   setShowTextField,
   setReceiverName,
-  setSenderName,
-  // senderName,
 }) => {
   const [myConversations, setMyConversations] = React.useState<Conversation[]>(
     []
@@ -77,6 +76,10 @@ const Conversations: React.FC<ConversationsProps> = ({
     Message[]
   >([]);
   const [showConversations, setShowConversations] = React.useState(true);
+
+
+  // User Context //
+  const { user, isDark } = React.useContext(UserContext);
 
   const classes = conversationStyle();
 
@@ -123,7 +126,6 @@ const Conversations: React.FC<ConversationsProps> = ({
   const handleBackClick = () => {
     setShowConversations(true); // Show the conversation list
     setShowMessageThread(false); // Hide the message thread
-
     setSenderId(0);
     setReceiverId(0);
     setIsReceiverSelected(false);
@@ -173,7 +175,15 @@ const Conversations: React.FC<ConversationsProps> = ({
   return (
     <>
       {!isReceiverSelected && showConversations ? (
-        <List className={classes.list}>
+         <div
+         style={{
+           display: 'flex',
+           justifyContent: 'center',
+         }}
+       >
+        <List className={classes.list}
+          sx={{ boxShadow: isDark ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71' : '6px 6px 6px rgba(0, 0, 0, 0.4)',}}
+        >
           {myConversations.map((convo, index) => (
             <React.Fragment key={index}>
               <Button
@@ -231,6 +241,7 @@ const Conversations: React.FC<ConversationsProps> = ({
             </React.Fragment>
           ))}
         </List>
+        </div>
       ) : (
         <Fab
           sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}

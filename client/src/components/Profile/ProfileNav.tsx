@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { UserContext } from '../../Root';
 import axios from 'axios';
 import Tabs from '@mui/material/Tabs';
@@ -17,14 +18,23 @@ import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
-import { ProfileDisplays, ProfileRideDisplay } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import Backdrop from '@mui/material/Backdrop';
+import Button from '@mui/material/Button';
+import LogoutIcon from '@mui/icons-material/Logout';
 import CircularProgress from '@mui/material/CircularProgress';
+import Navbar from '../Navbar';
+import {
+  ProfileDisplays,
+  ProfileRideDisplay,
+  ProfileDefaultAddressDisplayDark,
+  ProfileDefaultAddressDisplayLight,
+  ProfileDefaultWeightDisplayDark,
+  ProfileDefaultWeightDisplayLight,
+  ProfileDefaultLastRideDisplayDark,
+  ProfileDefaultLastRideDisplayLight,
+} from '../../StyledComp';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -88,12 +98,21 @@ const ProfileNav = ({
   saveTheme,
   handleToggleStyle,
   theme,
-  homeAddress,
+  // homeAddress,
+  // setHomeAddress,
   // weightForProfileDisplay,
   lastRideActivity,
   lastRideDuration,
   lastRideWeight,
   lastRideCalories,
+  setLastRideActivity,
+  setLastRideDuration,
+  setLastRideWeight,
+  setLastRideCalories,
+  stopwatchActivity,
+  stopwatchDuration,
+  stopwatchWeight,
+  stopwatchCalories,
 }) => {
   const [value, setValue] = useState(-1);
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -112,10 +131,17 @@ const ProfileNav = ({
   const [areTabsVisible, setAreTabsVisible] = useState(true);
   const [address, setAddress] = useState('');
   const [open, setOpen] = useState(true);
+  const [weightMessage, setWeightMessage] = useState('');
+  const [homeAddress, setHomeAddress] = useState('');
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+
+  const logout = () => {
+    axios.get('/logout')
+    .then(() => {})
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -128,6 +154,7 @@ const ProfileNav = ({
   }, []);
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
+
 
   const displayNoBadgeIfEmpty = () => {
     if (
@@ -143,11 +170,11 @@ const ProfileNav = ({
 
   useEffect(() => {
     const { user: { homeAddress, weight } = {} as any } = user;
-    if (homeAddress !== null || homeAddress !== undefined) {
-      setAddress(homeAddress);
+    if (homeAddress === null || homeAddress === undefined) {
+      setAddress('Save a home address to find a quick route home');
     } else {
       const myHomeAddress = homeAddress.slice(0, -5);
-      setAddress(`Your home is ${myHomeAddress}`);
+      setAddress(myHomeAddress);
     }
 
     if (weight === null || weight === undefined) {
@@ -164,6 +191,21 @@ const ProfileNav = ({
       setAddress('No Address Saved');
     }
   }, [homeAddress]);
+
+  useEffect(() => {
+    if (stopwatchActivity) {
+      setLastRideActivity(stopwatchActivity);
+    }
+    if (stopwatchDuration) {
+      setLastRideDuration(stopwatchDuration);
+    }
+    if (stopwatchWeight) {
+      setLastRideWeight(stopwatchWeight);
+    }
+    if (stopwatchCalories) {
+      setLastRideCalories(stopwatchCalories);
+    }
+  }, [stopwatchActivity]);
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -203,6 +245,35 @@ const ProfileNav = ({
     });
   };
 
+  useEffect(() => {
+    setLastRideActivity(lastRideActivity);
+  }, [lastRideActivity]);
+
+  useEffect(() => {
+    setLastRideDuration(lastRideDuration);
+  }, [lastRideDuration]);
+
+  useEffect(() => {
+    setLastRideWeight(lastRideWeight);
+  }, [lastRideWeight]);
+
+  useEffect(() => {
+    setLastRideCalories(lastRideCalories);
+  }, [lastRideCalories]);
+
+  const formatDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+
+    if (hours === 0) {
+      return `You rode for ${minutes} minutes`;
+    } else if (minutes === 0) {
+      return `You rode for ${hours} hours`;
+    } else {
+      return `You rode for ${hours} hours and ${minutes} minutes`;
+    }
+  };
+
   return (
     <div>
       <Backdrop
@@ -211,7 +282,7 @@ const ProfileNav = ({
             ? 'rgba(133, 211, 255, 1)'
             : 'rgba((25, 26, 53, 1)',
           color: '#fff',
-          zIndex: (theme) => theme.zIndex.drawer + 1,
+          // zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
         open={open}
         //  onClick={handleClose}
@@ -286,40 +357,76 @@ const ProfileNav = ({
             {/* <div>{`Hello ${user}!`}</div> */}
 
             <div className='profile-pic-Theme-icon'>
-              <img className='profile-pic' src={photo} alt='avatar' />
-              {displayNoBadgeIfEmpty()}
-              <ThemeProvider>
-                <div id='profile' className='themeIcon'>
-                  <IconButton
-                    // onClick={() => {
-                    //   handleToggleStyle();
-                    //   saveTheme();
-                    // }}
+              {appTheme ? (
+                <img
+                  className='profile-pic'
+                  style={{ boxShadow: '0 0 10px 5px rgba(0, 0, 0, 0.4)' }}
+                  src={photo}
+                  alt='avatar'
+                />
+              ) : (
+                <img
+                  className='profile-pic'
+                  style={{
+                    boxShadow:
+                      '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71',
+                  }}
+                  src={photo}
+                  alt='avatar'
+                />
+              )}
+                {displayNoBadgeIfEmpty()}
+              <div className='logout-block'>
+                <Button
+                  className='logout-button'
+                  variant='contained'
+                  size='small'
+                  endIcon={<LogoutIcon />}
+                  style={{
+                    boxShadow: appTheme
+                      ? '-8px 2px 6px rgba(0, 0, 0, 0.3)'
+                      : '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71',
+                  }}
+                  onClick={logout}
+                >
+                  Logout
+                </Button>
+                <ThemeProvider>
+                  <div id='profile' className='themeIcon'>
+                    <IconButton
+                      // onClick={() => {
+                      //   handleToggleStyle();
+                      //   saveTheme();
+                      // }}
 
-                    onClick={handleThemeIconClick}
-                  >
-                    {appTheme ? (
-                      <LightModeIcon className='theme-icon' />
-                    ) : (
-                      <DarkMode className='theme-icon' />
-                    )}
-                    {/* <DarkModeIcon /> */}
-                  </IconButton>
-                </div>
-              </ThemeProvider>
+                      onClick={handleThemeIconClick}
+                    >
+                      {appTheme ? (
+                        <LightModeIcon className='theme-icon' />
+                      ) : (
+                        <DarkMode className='theme-icon' />
+                      )}
+                      {/* <DarkModeIcon /> */}
+                    </IconButton>
+                  </div>
+                </ThemeProvider>
+              </div>
             </div>
 
             {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 
             <div hidden={!tabVisibility[0]}>
-              <SetHome />
+              <SetHome
+                homeAddress={homeAddress}
+                setHomeAddress={setHomeAddress}
+              />
             </div>
             <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
               <div style={{ width: '100%' }}>
-                {/* {`My current weight is ${weight} lbs`} */}
                 <SetWeight
-                  weight={weight}
                   onWeightChange={handleWeightChange}
+                  weightMessage={weightMessage}
+                  setWeightMessage={setWeightMessage}
                 />
               </div>
             </div>
@@ -331,6 +438,10 @@ const ProfileNav = ({
                 theme={theme}
                 saveTheme={saveTheme}
                 appTheme={appTheme}
+                setLastRideActivity={setLastRideActivity}
+                setLastRideDuration={setLastRideDuration}
+                setLastRideWeight={setLastRideWeight}
+                setLastRideCalories={setLastRideCalories}
               />
             )}
 
@@ -347,45 +458,85 @@ const ProfileNav = ({
               areTabsVisible ? '' : 'hidden'
             } default-profile-display`}
           >
-            <ProfileDisplays>
-              <h4>
-                {address === undefined || address === null
-                  ? 'No Address Saved'
-                  : `Your home is ${address}`}
-              </h4>
-            </ProfileDisplays>
-            <ProfileDisplays>
-              <h4>
-                {weight === 0
-                  ? 'No Weight Saved'
-                  : `Your current weight is ${weight} lbs`}
-              </h4>
-            </ProfileDisplays>
+            {appTheme ? (
+              <ProfileDefaultAddressDisplayLight>
+                <ProfileDisplays>
+                  <h4>{address}</h4>
+                </ProfileDisplays>
+              </ProfileDefaultAddressDisplayLight>
+            ) : (
+              <ProfileDefaultAddressDisplayDark>
+                <ProfileDisplays>
+                  <h4>{address}</h4>
+                </ProfileDisplays>
+              </ProfileDefaultAddressDisplayDark>
+            )}
 
-            <ProfileRideDisplay>
-              <h4>
-                {lastRideActivity === undefined
-                  ? 'No Saved Rides'
-                  : `Your most recent ride was ${lastRideActivity}`}
-              </h4>
-              <h4>
-                {lastRideDuration === undefined
-                  ? null
-                  : `You rode for ${Math.floor(
-                      lastRideDuration / 60
-                    )} hours and ${lastRideDuration % 60} minutes`}
-              </h4>
-              <h4>
-                {lastRideWeight === undefined
-                  ? null
-                  : `Your weight for this ride was ${lastRideWeight} lbs`}
-              </h4>
-              <h4>
-                {lastRideCalories === undefined
-                  ? null
-                  : `You burned ${lastRideCalories} calories!`}
-              </h4>
-            </ProfileRideDisplay>
+            {appTheme ? (
+              <ProfileDefaultWeightDisplayLight>
+                <ProfileDisplays>
+                  <h4>{weightMessage}</h4>
+                </ProfileDisplays>
+              </ProfileDefaultWeightDisplayLight>
+            ) : (
+              <ProfileDefaultWeightDisplayDark>
+                <ProfileDisplays>
+                  <h4>{weightMessage}</h4>
+                </ProfileDisplays>
+              </ProfileDefaultWeightDisplayDark>
+            )}
+
+            {appTheme ? (
+              <ProfileDefaultLastRideDisplayLight>
+                <ProfileRideDisplay>
+                  <h4>
+                    {lastRideActivity === undefined
+                      ? 'No Saved Rides'
+                      : `Your most recent ride was ${lastRideActivity}`}
+                  </h4>
+                  <h4>
+                    {lastRideDuration === undefined
+                      ? null
+                      : formatDuration(lastRideDuration)}
+                  </h4>
+                  <h4>
+                    {lastRideWeight === undefined
+                      ? null
+                      : `Your weight for this ride was ${lastRideWeight} lbs`}
+                  </h4>
+                  <h4>
+                    {lastRideCalories === undefined
+                      ? null
+                      : `You burned ${lastRideCalories} calories!`}
+                  </h4>
+                </ProfileRideDisplay>
+              </ProfileDefaultLastRideDisplayLight>
+            ) : (
+              <ProfileDefaultLastRideDisplayDark>
+                <ProfileRideDisplay>
+                  <h4>
+                    {lastRideActivity === undefined
+                      ? 'No Saved Rides'
+                      : `Your most recent ride was ${lastRideActivity}`}
+                  </h4>
+                  <h4>
+                    {lastRideDuration === undefined
+                      ? null
+                      : formatDuration(lastRideDuration)}
+                  </h4>
+                  <h4>
+                    {lastRideWeight === undefined
+                      ? null
+                      : `Your weight for this ride was ${lastRideWeight} lbs`}
+                  </h4>
+                  <h4>
+                    {lastRideCalories === undefined
+                      ? null
+                      : `You burned ${lastRideCalories} calories!`}
+                  </h4>
+                </ProfileRideDisplay>
+              </ProfileDefaultLastRideDisplayDark>
+            )}
           </div>
         </Box>
       </div>
