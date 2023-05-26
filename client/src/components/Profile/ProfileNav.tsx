@@ -136,11 +136,7 @@ const ProfileNav = ({
 
 
   const logout = () => {
-    axios.get('/logout')
-    .then(() => {})
-    .catch((err) => {
-      console.log(err);
-    })
+    window.location.href = '/logout'
   }
 
   useEffect(() => {

@@ -105,11 +105,11 @@ app.get('/logout', (req, res) => {
   req.logout(() => {
     if (req.session) {
       req.session.destroy(() => {
-        //alert('Now logged out');
       });
     }
   });
   res.redirect('/');
+  console.log('logged out')
 });
 
 // 7. Provides user context to every part of the client
