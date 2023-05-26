@@ -1,17 +1,10 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import {
-  Routes,
-  Route,
-  BrowserRouter,
-  useNavigate,
-  Link,
-} from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import {
   weatherIcons,
   badgeInfo,
   standardTiers,
-  weeklyTiers,
   badgesWithSpecialTiers,
 } from '../assets';
 import App from './components/App';
@@ -25,13 +18,10 @@ import RouteM, { LatLngLiteral } from './components/BikeRoutes/RouteM';
 import ReportsMap from './components/Reports/ReportsMap';
 import DirectMessages from './components/DirectMessages/DirectMessages';
 import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
-import { ThemeProvider, useTheme } from './components/Profile/ThemeContext';
 import { toast } from 'react-toastify';
 import { SocketContext } from './SocketContext';
 import { Socket } from 'socket.io-client';
-import { SocketProvider } from './SocketContext';
 import DMNotifications from './DMNotifications';
-import { useStyles } from './components/DirectMessages/DMStyles';
 
 export interface CurrentWeather {
   temperature: number;
@@ -155,41 +145,19 @@ export interface BadgeWithAdditions extends Badge {
 }
 
 export const UserContext = createContext<any>(Object());
-
 export const MessageContext = createContext<any>(Object());
-// const MessageContext = createContext<MessageContextType | undefined>(undefined);
-
-// let selectedTheme;
-
-// export const currentTheme = selectedTheme;
 
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
   const [isDark, setIsDark] = useState(false);
 
-  // selectedTheme = isDark;
-  // export const currentTheme = isDark;
-
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
-
-    // const currentTheme = isDark ? GlobalStyleDark : GlobalStyleLight;
-
-    // const location = useLocation();
-    // let savedTheme = location.state && location.state.savedTheme;
-    // setIsDark(savedTheme);
   };
-
-  // useEffect(() => {
-  //   console.log('theme', selectedTheme)
-  //   // export selectedTheme
-  // }, [isDark])
-  //.........................................
 
   // Created User Info and Geolocation for context //
   const [user, setUser] = useState<User>();
   const [geoLocation, setGeoLocation] = useState<geoLocation>();
-  const LocationContext = createContext(geoLocation);
   const [error, setError] = useState<string | undefined>(undefined);
   //holds all badge objects
   const [allBadges, setAllBadges] = useState<Badge[]>([
@@ -382,18 +350,6 @@ const Root = () => {
     if (socket && user) {
       socket.on('message', handleReceivedMessage);
     }
-    // Keep the socket event handling
-    useEffect(() => {
-      if (socket && user) {
-        socket.on('message', handleReceivedMessage);
-      }
-
-      return () => {
-        if (socket) {
-          socket.off('message', handleReceivedMessage);
-        }
-      };
-    }, [socket, user]);
     return () => {
       if (socket) {
         socket.off('message', handleReceivedMessage);
@@ -403,19 +359,6 @@ const Root = () => {
 
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
-    console.log('Received message:', newMessage);
-    // Adjust handleReceivedMessage
-    const handleReceivedMessage = (newMessage: RootMessage) => {
-      console.log('Received message:', newMessage);
-
-      // Only set the state here, don't show notifications or navigate
-      if (
-        newMessage.senderId !== user?.id &&
-        newMessage.receiverId === user?.id
-      ) {
-        setRootNewMessage(newMessage);
-      }
-    };
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
@@ -742,7 +685,6 @@ const Root = () => {
     }
   });
 
-  const reports = [];
   const [monthReports, setMonthReports] = useState<Report[]>([]);
 
   const fetchThisMonthReports = async () => {
@@ -845,7 +787,6 @@ const Root = () => {
                   }
                 />
 
-                {/* <Route path='directMessages' element={<DirectMessages />} /> */}
                 <Route
                   path='directMessages'
                   element={
@@ -873,7 +814,6 @@ const Root = () => {
                     />
                   }
                 />
-                {/* <Route path='directMessages' element={<DirectMessages />} /> */}
                 <Route path='report' element={<Report />} />
                 <Route
                   path='createReport'
