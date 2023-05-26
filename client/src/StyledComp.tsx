@@ -152,8 +152,8 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 const SelectedBadge = styled.img`
   height: 3.875em;
   width: 3.875em;
-  margin-top: 55px;
-  margin-left: -120px;
+  margin-top: 3.4375em;
+  margin-left: -3.4375em;
 `;
 
 const AchievementBadgeByName = styled.img`

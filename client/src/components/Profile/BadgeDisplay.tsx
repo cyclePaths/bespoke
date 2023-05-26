@@ -40,14 +40,17 @@ const BadgeDisplay = () => {
     return undefined;
   };
 
-  const handleBadgeClick = (event, tooltipId) => {
-    event.stopPropagation();
+  const clearTooltips = () => {
     let tooltips = tooltipVisibility;
     for (let key in tooltips) {
-      console.log(`this is tooltips[${key}]: `, tooltips[key]);
       tooltips[key] = null;
     }
     setTooltipVisibility(tooltips);
+  };
+
+  const handleBadgeClick = (event, tooltipId) => {
+    event.stopPropagation();
+    clearTooltips();
     setTooltipVisibility((prevVisibility) => ({
       ...prevVisibility,
       [tooltipId]: !prevVisibility[tooltipId],
@@ -57,16 +60,13 @@ const BadgeDisplay = () => {
   const handleFavoriteClick = (event, image) => {
     event.stopPropagation();
     selectBadge(image);
+    clearTooltips();
   };
 
   useEffect(() => {
     console.log('here are the userBadges: ', userBadges);
     const handleOutsideClick = (event) => {
-      let tooltips = tooltipVisibility;
-      for (let key in tooltips) {
-        tooltips[key] = null;
-      }
-      setTooltipVisibility(tooltips);
+      clearTooltips();
       if (selectedTooltip !== null) {
         if (!tooltipRefs.current[selectedTooltip]?.contains(event.target)) {
           setSelectedTooltip(null);
