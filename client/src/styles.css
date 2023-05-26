@@ -232,11 +232,32 @@ Above is the styling for the stopwatch
 .theme-icon {
   margin-top: 10px;
   margin-right: 10px;
+  /* margin-top: 10px;
+  margin-right: 0; */
+}
+
+.logout-block {
+  margin-top: 20px;
+  margin-right: 20px;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+
+}
+
+
+.themeIcon {
+  margin-top: 20px;
+  position: absolute;
+  right: 0;
+  /* margin-left: auto; */
+
 }
 
 .profile-pic-Theme-icon {
   display: flex;
   justify-content: space-between;
+  position: relative;
   /* align-items: center; */
 }
 
