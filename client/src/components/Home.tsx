@@ -1,7 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
-import Forecast from './Weather/Forecast';
 import {
   BandAid,
   WeatherWidgetLabel,
@@ -16,36 +14,24 @@ import { UserContext } from '../Root';
 import {
   Card,
   CardHeader,
-  Collapse,
   CardContent,
   CardActions,
   Typography,
-  IconButton,
-  IconButtonProps,
   Button,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BikeRoutes, Bulletin } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
-import { styled } from '@mui/material/styles';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import 'dayjs/locale/en'; // Import the locale you want to use for month names
+import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
+import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
+dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
 
-// For the expandable cards on the home page //
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+dayjs.extend(utc);
 
 const Home = ({
   currentTimeIndex,
@@ -161,14 +147,20 @@ const Home = ({
                     </div>
                   </div>
                 ) : (
-                  <div>
+                  <div style={{ textAlign: 'center' }}>
                     No post found. Check the bulletin board or create one.
                   </div>
                 )}
               </Typography>
             </CardContent>
           </Card>
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              height: '35vh',
+            }}
+          >
             <Card
               sx={{
                 margin: '10px',
@@ -181,12 +173,19 @@ const Home = ({
                 title='LeaderBoards'
                 sx={{
                   padding: '9px',
-                  paddingTop: '16px',
+                  paddingTop: '20px',
                   paddingBottom: '16px',
                   textAlign: 'center',
                 }}
               />
-              <CardContent sx={{ paddingBottom: '0px' }}>
+              <CardContent
+                sx={{
+                  height: '12vh',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
                 <Typography sx={{ textAlign: 'center' }}>
                   See our top 10 users in select categories
                 </Typography>
@@ -202,7 +201,7 @@ const Home = ({
                 margin: '10px',
                 maxWidth: '45%',
                 backgroundColor: isDark ? '#cacaca' : '#ececec',
-                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+                boxShadow: '0px 0px 8px 2px #00000033',
               }}
             >
               <CardHeader
@@ -213,12 +212,23 @@ const Home = ({
                   flexDirection: 'column',
                 }}
               />
-              <CardContent>
-                <Typography paragraph sx={{ textAlign: 'center' }}>
-                  {routeInfo
-                    ? routeInfo.name
-                    : 'You have not been on a route yet. Please search a route or create a new route'}
-                </Typography>
+              <CardContent
+                style={{ display: 'flex', justifyContent: 'center' }}
+              >
+                {routeInfo ? (
+                  <div style={{ textAlign: 'center' }}>
+                    <Typography sx={{ fontWeight: 'bold' }}>Name</Typography>
+                    <Typography>{routeInfo.name}</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>
+                      Created On
+                    </Typography>
+                    <Typography>
+                      {dayjs(routeInfo.createdAt).format('MMMM D, YYYY')}
+                    </Typography>
+                  </div>
+                ) : (
+                  <Typography>Not Hello</Typography>
+                )}
               </CardContent>
             </Card>
           </div>
