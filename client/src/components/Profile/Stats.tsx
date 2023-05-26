@@ -66,7 +66,6 @@ const Stats = () => {
       });
   };
 
-
   const theme = createTheme({
     components: {
       MuiSelect: {
@@ -89,10 +88,11 @@ const Stats = () => {
         </div>
         <div>
           <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperProps={{
-              sx: {
+            sx={{
+              '& .MuiPaper-root': {
+                margin: '10px',
+                padding: '10px',
+                color: isDark ? 'white' : 'black',
                 background: isDark
                   ? 'linear-gradient(145deg, #1e2062, #030312)'
                   : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
@@ -104,30 +104,23 @@ const Stats = () => {
                     ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71'
                     : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
                 },
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
               },
+
             }}
+            open={open}
+            onClose={handleClose}
           >
             <DialogTitle
               className='select-stats-dialog'
-              sx={{
-                margin: '0',
-                color: isDark ? 'white' : 'black',
-                background: isDark
-                  ? 'linear-gradient(145deg, #1e2062, #030312)'
-                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
-              }}
+              sx={{ color: isDark ? 'white' : 'black', }}
             >
               Select Rides By Speed
             </DialogTitle>
-            <DialogContent
-              className='select-stats-dialog'
-              sx={{
-                margin: '0',
-                background: isDark
-                  ? 'linear-gradient(145deg, #1e2062, #030312)'
-                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
-              }}
-            >
+            <DialogContent className='select-stats-dialog' sx={{ margin: '0' }}>
               <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 <FormControl
                   sx={{
@@ -166,18 +159,7 @@ const Stats = () => {
                         id='demo-dialog-native'
                       />
                     }
-                    sx={{
-                       width: 200, // set the width as you prefer
-                      color: isDark ? 'white' : 'black',
-                      '& .MuiListItem-root.Mui-selected': {
-                        backgroundColor: 'green', // change this to the color you want
-                        color: 'white', // change text color here
-                      },
-                      // '& .MuiListItem-root.Mui-selected:hover': {
-                      //   backgroundColor: 'green', // change this to the color you want
-                      //   color: 'white', // change text color here
-                      // },
-                    }}
+                    sx={{ width: 200, color: isDark ? 'white' : 'black', }}
                   >
                     <MenuItem value=''>
                       <em>None</em>
@@ -195,17 +177,9 @@ const Stats = () => {
             </DialogContent>
             <DialogActions
               className='select-stats-dialog'
-              sx={{
-                margin: '0',
-                justifyContent: 'center',
-                background: isDark
-                  ? 'linear-gradient(145deg, #1e2062, #030312)'
-                  : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
-              }}
+              sx={{ justifyContent: 'center', }}
             >
-              {/* <Button onClick={handleClose}>Cancel</Button> */}
               <Button
-                sx={{ justifyContent: 'center' }}
                 color='success'
                 variant='contained'
                 onClick={(event) => {
