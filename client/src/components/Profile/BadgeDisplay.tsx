@@ -18,17 +18,26 @@ const BadgeDisplay = () => {
     tickBadgeCounter,
     addBadge,
     tierCheck,
+    isDark,
   } = useContext(UserContext);
-
-  const selectBadge = (image) => {
-    console.log('selectBadge has fired');
-    setSelectedBadge(image);
-    return undefined;
-  };
 
   const [tooltipVisibility, setTooltipVisibility] = useState({});
   const [selectedTooltip, setSelectedTooltip] = useState<string | null>(null);
   const tooltipRefs = useRef<{ [key: string]: HTMLElement }>({});
+
+  const notAllBlackTierOneBadgeNames = [
+    'Storm Chaser',
+    'Speedster',
+    'Social Butterfly',
+    'Community Legend',
+    'Likable Legend',
+    'Legendary Explorer',
+  ];
+
+  const selectBadge = (image) => {
+    setSelectedBadge(image);
+    return undefined;
+  };
 
   const handleBadgeClick = (event, tooltipId) => {
     event.stopPropagation();
@@ -50,10 +59,10 @@ const BadgeDisplay = () => {
   };
 
   useEffect(() => {
+    console.log('here are the userBadges: ', userBadges);
     const handleOutsideClick = (event) => {
       let tooltips = tooltipVisibility;
       for (let key in tooltips) {
-        console.log(`this is tooltips[${key}]: `, tooltips[key]);
         tooltips[key] = null;
       }
       setTooltipVisibility(tooltips);
@@ -72,12 +81,22 @@ const BadgeDisplay = () => {
   }, [selectedTooltip]);
 
   return (
-    <div>
-      <div>Your Badges:</div>
+    <AchievementBadgeHolder isDark={isDark}>
+      <div>Your Earned Badges:</div>
 
-      <AchievementBadgeHolder id='badges'>
+      <span id='badges'>
         {userBadges.map((badge) => {
           const tooltipVisible = tooltipVisibility[badge.id];
+          let allBlack = true;
+          if (
+            isDark &&
+            (badge.name === 'Iron Lungs' ||
+              (badge.tier === 1 &&
+                !notAllBlackTierOneBadgeNames.includes(badge.name)))
+          ) {
+            allBlack = true;
+          }
+
           return (
             <AchievementBadgeAndTooltipContainer
               id='achievementContainer'
@@ -85,9 +104,9 @@ const BadgeDisplay = () => {
               show={tooltipVisible}
               onClick={(event) => handleBadgeClick(event, badge.id)}
             >
-              <AchievementBadge src={badge.badgeIcon} />
+              <AchievementBadge src={badge.badgeIcon} allBlack={allBlack} />
               <AchievementBadgeTooltip show={tooltipVisible} id={badge.id}>
-                <TooltipBox>
+                <TooltipBox isDark={isDark}>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
                   <button
@@ -102,8 +121,8 @@ const BadgeDisplay = () => {
             </AchievementBadgeAndTooltipContainer>
           );
         })}
-      </AchievementBadgeHolder>
-    </div>
+      </span>
+    </AchievementBadgeHolder>
   );
 };
 

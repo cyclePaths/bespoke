@@ -290,7 +290,7 @@ const Root = () => {
       weatherIcon = weatherIcons[timeOfDay].overcast;
     } else if (weather === 'Fog') {
       weatherIcon = weatherIcons[timeOfDay].fog;
-    } else if (weather === 'Depositing Rime Fog') {
+    } else if (weather === 'Rime Fog') {
       weatherIcon = weatherIcons[timeOfDay].haze;
     } else if (
       weather === 'Light Drizzle' ||
@@ -298,10 +298,7 @@ const Root = () => {
       weather === 'Dense Drizzle'
     ) {
       weatherIcon = weatherIcons[timeOfDay].drizzle;
-    } else if (
-      weather === 'Light Freezing Drizzle' ||
-      weather === 'Dense Freezing Drizzle'
-    ) {
+    } else if (weather === 'Freezing Drizzle' || weather === 'Freezing Rain') {
       weatherIcon = weatherIcons[timeOfDay].sleet;
     } else if (
       weather === 'Light Rain' ||
@@ -313,49 +310,25 @@ const Root = () => {
     ) {
       weatherIcon = weatherIcons[timeOfDay].rain;
     } else if (
-      weather === 'Moderate Snow' ||
-      weather === 'Heavy Snow' ||
+      weather === 'Moderate Snowfall' ||
+      weather === 'Snow Showers' ||
+      weather === 'Heavy Snow Showers' ||
       weather === 'Snow Grains' ||
-      weather === 'Light Snow Showers' ||
-      weather === 'Heavy Snow Showers'
+      weather === 'Light Snowfall' ||
+      weather === 'Heavy Snowfall'
     ) {
       weatherIcon = weatherIcons[timeOfDay].snow;
-    } else if (weather === 'Thunderstorm') {
+    } else if (
+      weather === 'Thunderstorms' ||
+      weather === 'Moderate Thunderstorms' ||
+      weather === 'Heavy Thunderstorms'
+    ) {
       if (chanceOfRain >= 50) {
-        //I noticed the below logic doesn't really work sometimes, probably b/c rainfall/snowfall is based on the previous hour
-        // if (rainfall > 0) {
-        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        // } else if (snowfall > 0) {
-        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        // }
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
       } else {
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
       }
-    } else if (
-      weather === 'Thunderstorm With Light Hail' ||
-      weather === 'Thunderstorm With Heavy Hail'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
     }
-    //control for sunrise/sunset (no longer needed due to weather card changes)
-    // const moonriseHour = sunsetHour + 1;
-    // const moonsetHour = sunriseHour - 1;
-    // const pertinentWeather = !(
-    //   weather === 'Clear Sky' ||
-    //   weather === 'Mainly Clear' ||
-    //   weather === 'Fog' ||
-    //   weather === 'Partly Cloudy'
-    // );
-    // if (hour === sunriseHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.day.sunrise;
-    // } else if (hour === sunsetHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.day.sunset;
-    // } else if (hour === moonriseHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.night.moonrise;
-    // } else if (hour === moonsetHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.night.moonset;
-    // }
     return weatherIcon;
   };
 

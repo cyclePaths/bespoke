@@ -12,6 +12,14 @@ export type BrightnessProps = {
   bright: number;
 };
 
+export type ShowProps = {
+  show: boolean;
+};
+
+export type AllBlackProps = {
+  allBlack: boolean;
+};
+
 const Button = styled.button`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
@@ -174,7 +182,7 @@ const AchievementBadgeByName = styled.img`
   width: 1.875em;
 `;
 
-const AchievementBadgeTooltip = styled.span`
+const AchievementBadgeTooltip = styled.span<ShowProps>`
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   padding: 0.3125em 0;
   pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
@@ -192,21 +200,27 @@ const AchievementBadgeTooltip = styled.span`
 
 const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 9.375em;
-  border: 0.625em solid green;
-  padding: 1.5625em;
-  margin: 0.625em;
-  background-color: ${(props) =>
-    props.isDark ? '#191a35' : 'rgb(133, 211, 255)'};
+  border: ${(props) =>
+    props.isDark ? '0.05em solid black' : '0.05em solid white'};
+  padding: 1em;
+  background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 1.25em 1.25em 1.4375em #030312, inset -1.25em -1.25em 1.4375em #1e2062, #282b71 -5px -5px 15px'
+      : 'inset 1.25em 1.25em 1.4375em #59bddf, inset -1.25em -1.25em 1.4375em #d8f1ff, #71b3d9 -5px -5px 15px'};
+  border-radius: 7px;
 `;
 
-const AchievementBadge = styled.img`
-  height: 2.1875em;
-  width: 2.1875em;
+const AchievementBadge = styled.img<AllBlackProps>`
+  height: 2.25em;
+  width: 2.25em;
   margin-left: 0.75em;
   margin-right: 0.75em;
+  transform: ${(props) =>
+    props.allBlack ? 'invert(100%) brightness(200%)' : 'none'};
 `;
 
-const AchievementBadgeAndTooltipContainer = styled.div`
+const AchievementBadgeAndTooltipContainer = styled.div<ShowProps>`
   position: relative;
   display: inline-block;
   ${AchievementBadgeTooltip} {
@@ -217,7 +231,19 @@ const AchievementBadgeAndTooltipContainer = styled.div`
   }
 `;
 
-const AchievementBadgeHolder = styled.span``;
+const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 40px;
+  padding: 20px;
+  box-shadow: ${(props) =>
+    props.isDark
+      ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
+      : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5'};
+  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
+`;
+// Darker: #171730 #78bee6
+// Lighter: #1b1c39 #8ee2ff
 
 //For use in Forecasts/Weather
 
