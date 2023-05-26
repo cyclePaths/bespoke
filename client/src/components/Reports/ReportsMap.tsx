@@ -169,7 +169,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               };
             case 'Theft Alert':
               return {
-                url: isDark ? 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685128269/p1mbpwlndm78m79nyrek.png' : 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
+                url: isDark ? 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132831/ums6svk2hlgqpiuq2ehc.png' : 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
                 scaledSize: markerSize,
               };
             case 'Collision':
