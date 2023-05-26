@@ -105,7 +105,7 @@ app.get('/logout', (req, res) => {
   req.logout(() => {
     if (req.session) {
       req.session.destroy(() => {
-        alert('Now logged out');
+        //alert('Now logged out');
       });
     }
   });
