@@ -387,7 +387,7 @@ const ProfileNav = ({
                       ? '-8px 2px 6px rgba(0, 0, 0, 0.3)'
                       : '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71',
                   }}
-                  onClick={logout}
+                  onClick={() => logout()}
                 >
                   Logout
                 </Button>
