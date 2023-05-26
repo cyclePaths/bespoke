@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 import styled from 'styled-components';
 import PlacesAutocomplete from 'react-places-autocomplete';
 import {
@@ -7,7 +8,6 @@ import {
   geocodeByPlaceId,
   getLatLng,
 } from 'react-places-autocomplete';
-
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -22,33 +22,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-// Define styles for the autocomplete input box and suggestion list
-const AutocompleteWrapper = styled.div`
-  position: relative;
-  width: 100%;
-`;
 
-const AutocompleteInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const AutocompleteSuggestions = styled.div`
-  position: absolute;
-  width: 100%;
-  z-index: 100;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-`;
 
 export type Address = string;
 export type SelectedAddress = string;
@@ -88,7 +62,34 @@ const Addresses = ({
   const [showDelete, setShowDelete] = useState(false);
   const [selectedAddressPlaceholder, setSelectedAddressPlaceholder] =
     useState('');
-  // const [showHomeAddressWarning, setShowHomeAddressWarning] = useState(true);
+
+
+  // User Context //
+  const { isDark } = useContext(UserContext);
+
+// // Define styles for the autocomplete input box and suggestion list
+// const AutocompleteWrapper = styled.div`
+//   position: relative;
+//   width: 100%;
+// `;
+
+// const AutocompleteInput = styled.input`
+// color: ${isDark ? 'white' : 'black'};
+//   /* width: 100%;
+//   padding: 10px;
+//   font-size: 1rem;
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+//   &:focus {
+//     outline: none; */
+//   /* } */
+// `;
+
+const AutocompleteSuggestions = styled.div`
+  color: ${isDark ? 'white' : 'black'};
+`;
+
+
 
   // setting state on change
   const handleChange = useCallback((address) => {
@@ -243,37 +244,40 @@ const Addresses = ({
               loading,
             }) => (
               <div id='address' className='address'>
+
                 <TextField
                   id='address-input'
                   className='search-places'
                   type='search'
                   variant='standard'
                   inputProps={{
-                    style: { color: '#ffffff' },
+                    style: { color: isDark ? '#ffffff' : '#000000' },
                   }}
                   {...getInputProps({
                     placeholder: 'Search Places ...',
                   })}
                 />
+
                 <div className='autocomplete-dropdown-container'>
-                  {loading && <div>Loading...</div>}
+                  {loading && <div style={{color: isDark ? '#ffffff' : '#000000' }}>Loading...</div>}
                   {suggestions.map((suggestion) => {
                     const className = suggestion.active
                       ? 'suggestion-item--active'
                       : 'suggestion-item';
                     // inline style for demonstration purpose
-                    // const style = suggestion.active
-                    //   ? { backgroundColor: '#b01e1e', cursor: 'pointer' }
-                    //   : { backgroundColor: '#21a136', cursor: 'pointer' };
+
                     return (
-                      <div
+
+
+
+                      <AutocompleteSuggestions
                         {...getSuggestionItemProps(suggestion, {
                           className,
                           // style,
                         })}
                       >
                         <span>{suggestion.description}</span>
-                      </div>
+                      </AutocompleteSuggestions>
                     );
                   })}
                   {/* <div>{selectedAddress}</div> */}
