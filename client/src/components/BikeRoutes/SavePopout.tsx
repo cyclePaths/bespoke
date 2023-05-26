@@ -52,13 +52,19 @@ const SavePopout = ({
       open={openPopup}
       sx={{
         '& .MuiPaper-root': {
-          backgroundColor: isDark ? '#707070' : '#ececec',
+          backgroundColor: isDark ? '#969696' : '#ececec',
           margin: '10px',
           padding: '10px',
         },
       }}
     >
-      <DialogTitle sx={{ fontSize: '2rem', textAlign: 'center' }}>
+      <DialogTitle
+        sx={{
+          fontSize: '2rem',
+          textAlign: 'center',
+          color: isDark ? '#ececec' : 'black',
+        }}
+      >
         Save Route
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -69,13 +75,13 @@ const SavePopout = ({
               height: '5vh',
               backgroundColor: isDark ? '#ececec' : '#FFFFFF',
               boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
+              color: 'black',
             },
           }}
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
           type='text'
           placeholder='Enter Name of Route...'
-          inputProps={{ style: { color: isDark ? '#FFFFFF' : 'black' } }}
         />
         <FormControl
           fullWidth
@@ -83,7 +89,7 @@ const SavePopout = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: '#ffffff',
+            backgroundColor: isDark ? '#ececec' : '#FFFFFF',
             borderRadius: '4px',
             boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
           }}
@@ -108,15 +114,35 @@ const SavePopout = ({
                 name: 'category',
                 id: 'uncontrolled-native',
                 style: {
-                  color: isDark ? '#FFFFFF' : 'black',
+                  color: 'black',
                 },
               }}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value={'None'}>None</option>
-              <option value={'Casual'}>Casual</option>
-              <option value={'Speedy'}>Speedy</option>
-              <option value={'Scenic'}>Scenic</option>
+              <option
+                value={'None'}
+                style={{ backgroundColor: isDark ? '#ececec' : '#FFFFFF' }}
+              >
+                None
+              </option>
+              <option
+                value={'Casual'}
+                style={{ backgroundColor: isDark ? '#ececec' : '#FFFFFF' }}
+              >
+                Casual
+              </option>
+              <option
+                value={'Speedy'}
+                style={{ backgroundColor: isDark ? '#ececec' : '#FFFFFF' }}
+              >
+                Speedy
+              </option>
+              <option
+                value={'Scenic'}
+                style={{ backgroundColor: isDark ? '#ececec' : '#FFFFFF' }}
+              >
+                Scenic
+              </option>
             </NativeSelect>
           </div>
           <FormControlLabel
@@ -132,8 +158,12 @@ const SavePopout = ({
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button variant='contained' onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button variant='contained' color='success' onClick={handleSave}>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );

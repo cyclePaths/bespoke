@@ -117,6 +117,7 @@ const Home = ({
               margin: '10px',
               width: '100%',
               backgroundColor: isDark ? '#cacaca' : '#ececec',
+              boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
             }}
           >
             <CardHeader
@@ -163,11 +164,17 @@ const Home = ({
                 margin: '10px',
                 maxWidth: '45%',
                 backgroundColor: isDark ? '#cacaca' : '#ececec',
+                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
               }}
             >
               <CardHeader
                 title='LeaderBoards'
-                sx={{ padding: '10px', marginTop: '5px', textAlign: 'center' }}
+                sx={{
+                  padding: '9px',
+                  paddingTop: '16px',
+                  paddingBottom: '16px',
+                  textAlign: 'center',
+                }}
               />
               <CardContent sx={{ paddingBottom: '0px' }}>
                 <Typography sx={{ textAlign: 'center' }}>
@@ -183,11 +190,19 @@ const Home = ({
             <Card
               sx={{
                 margin: '10px',
-                maxWidth: '50%',
+                maxWidth: '45%',
                 backgroundColor: isDark ? '#cacaca' : '#ececec',
+                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
               }}
             >
-              <CardHeader title='Recent Ride' />
+              <CardHeader
+                title='Recent Ride'
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                }}
+              />
               <CardContent>
                 <Typography paragraph sx={{ textAlign: 'center' }}>
                   {routeInfo

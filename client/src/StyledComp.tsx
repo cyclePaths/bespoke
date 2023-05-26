@@ -479,7 +479,7 @@ const NavBarTop = styled.span<DarkModeHelperProps>`
   border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   align-items: center;
   height: 6.6vh;
