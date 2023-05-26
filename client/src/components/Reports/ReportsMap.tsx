@@ -35,6 +35,7 @@ import 'dayjs/locale/en'; // Import the locale you want to use for month names
 import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
 import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
 
+
 dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
 dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
 
@@ -163,22 +164,22 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
           switch (reportType) {
             case 'Road Hazard':
               return {
-                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960006/ypfefgfrehn6jqgdlvez.svg',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685130782/owbm7dh1aqkzgz8fpkay.png',
                 scaledSize: markerSize,
               };
             case 'Theft Alert':
               return {
-                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960049/k6ynymryw47wtkgpfzj6.svg',
+                url: isDark ? 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685128269/p1mbpwlndm78m79nyrek.png' : 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
                 scaledSize: markerSize,
               };
             case 'Collision':
               return {
-                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960175/bgespvkap5mz1n6z5nqs.svg',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126153/mbgbyds2wb6sdy8srfrv.png',
                 scaledSize: markerSize,
               };
             case 'Point of Interest':
               return {
-                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960221/uuezqsykzzbju2in5iqf.svg',
+                url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685130912/vzeaonc0wqjars5lrils.png',
                 scaledSize: markerSize,
               };
             default:
