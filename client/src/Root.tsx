@@ -210,7 +210,7 @@ const Root = () => {
         'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg',
       tier: 0,
       counter: 0,
-      description: '',
+      description: 'You have not earned any achievements yet',
     },
   ]);
   //holds URL of badge to display by username
@@ -455,47 +455,9 @@ const Root = () => {
       });
   };
 
-  //function to check if tier should increase (and increase it if so)
-  const tierCheck = (badgeName, tier) => {
-    let badgeId = 0;
-    //look through all of the badges to find the one with this badge name and tier; get its id
-    for (let i = 0; i < allBadges.length; i++) {
-      if (allBadges[i].tier) {
-        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
-          badgeId = allBadges[i].id;
-          break;
-        }
-      }
-    }
-    if (badgeId === 0) {
-      console.error('There is no tier to check!');
-      return;
-    }
-    let tiersObj = standardTiers;
-    if (badgesWithSpecialTiers[badgeName] !== undefined) {
-      tiersObj = badgesWithSpecialTiers[badgeName];
-    }
-    let config = {
-      badgeId: badgeId,
-      tiers: {
-        ...tiersObj,
-      },
-    };
-    axios
-      .post('/badges/tier', config)
-      .then(({ data }) => {
-        if (data.tierUp) {
-          toast(`You have just achieved tier ${data.tier} on ${badgeName}!`);
-        }
-        getBadges(); //update allBadges and badgesOnUser with new DB info
-      })
-      .catch((err) =>
-        console.error('there was an error when checking/updating tiers: ', err)
-      );
-  };
-
   //function to add or remove (or update?) badges for users
-  const addBadge = (badgeName, tier = undefined) => {
+  const addBadge = (badgeName, count = 0) => {
+    console.log('addBadge has fired!');
     //will not attempt to add badge if it already exists on user
     const badgeNamesOnUser = userBadges.map((ele) => {
       return ele.name;
@@ -504,7 +466,7 @@ const Root = () => {
       let badgeId = 0;
       for (let i = 0; i < allBadges.length; i++) {
         if (allBadges[i].tier) {
-          if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
+          if (allBadges[i].tier === 1 && allBadges[i].name === badgeName) {
             badgeId = allBadges[i].id;
             break;
           }
@@ -518,21 +480,24 @@ const Root = () => {
       axios
         .post('/badges/add', {
           badgeId: badgeId,
+          count: count,
         })
-        .then(() => {
-          if (tier) {
-            toast(`New Achievement Earned: ${badgeName} Tier ${tier}!`);
+        .then(({ data }) => {
+          if (data.tier) {
+            toast(`New Achievement Earned: ${badgeName} Tier ${data.tier}!`);
           } else {
             toast(`New Achievement Earned: ${badgeName}!`);
           }
-          getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
           console.error(
             `an error has occurred adding badge with ID ${badgeId} to user`,
             err
           )
-        );
+        )
+        .finally(() => {
+          getBadges(); //update allBadges and badgesOnUser with new DB info
+        });
     } else {
       console.error(`User has already earned ${badgeName}!`);
     }
@@ -540,69 +505,127 @@ const Root = () => {
 
   //function to increment or decrement values on the User table used for achievements/badges
   //will change counter by +1 by default. Enter number to change by as final argument to increase by more than one (or decrease if negative number is passed)
-  const updateBadgeCounter = (badgeName, tier = undefined, change = 1) => {
+  const updateBadgeCounter = (badgeName, change = 1) => {
+    console.log('updateBadgeCounter has fired!');
+    //placeholders for badge and tier
     let badgeId = 0;
-    for (let i = 0; i < allBadges.length; i++) {
-      if (allBadges[i].tier) {
-        if (allBadges[i].tier === tier && allBadges[i].name === badgeName) {
-          badgeId = allBadges[i].id;
-          break;
-        }
-      } else {
-        if (allBadges[i].name === badgeName) {
-          badgeId = allBadges[i].id;
-          break;
+    let tier = 0;
+    //iterates through the badges the user has earned
+    for (let i = 0; i < userBadges.length; i++) {
+      //if the user has a badge with this badge name
+      if (userBadges[i].name === badgeName) {
+        //badgeId becomes the id of the badge the user has currently earned
+        badgeId = userBadges[i].id;
+        //ensure this badge has a tier
+        if (userBadges[i].tier !== undefined) {
+          //tier becomes the tier of the badge the user currently has earned
+          tier = userBadges[i].tier!;
         }
       }
     }
+    //if the user currently does not have this badge
+    if (badgeId === 0) {
+      //if the change value is positive, we want to add this badge
+      if (change) {
+        //iterates through all badges
+        for (let i = 0; i < allBadges.length; i++) {
+          //only look at tiered badge (tier > 0)
+          if (allBadges[i].tier) {
+            //when we've found a badge with the appropriate name, add the tier 1 version
+            if (allBadges[i].name === badgeName && allBadges[i].tier === 1) {
+              //save the id
+              badgeId = allBadges[i].id;
+              break;
+            }
+            addBadge(badgeId, change);
+          }
+        }
+      }
+      //if the user does have a badge with the given name
+    } else {
+      //update the counter on this badge by the change value (a positive or negative number)
+      axios
+        .patch('/badges/counter', {
+          badgeId: badgeId,
+          change: change,
+        })
+        .then(({ data }) => {
+          //log success
+          console.log(`successfully updated badge with ID ${badgeId} on user`);
+          //run tierCheck to see if the newly updated badge should be replaced with a higher tiered one
+          tierCheck(badgeName, badgeId, tier, data.newValue);
+        })
+        .catch((err) =>
+          console.error(
+            `an error occurred attempting to increment/decrement counter for user's badge with id ${badgeId}`,
+            err
+          )
+        );
+    }
+  };
+
+  //function to check if tier should increase (and increase it if so)
+  const tierCheck = (badgeName, badgeId, currentTier, currentCount) => {
+    console.log('tierCheck has fired!');
+    let tiersObj = standardTiers;
+    if (badgesWithSpecialTiers[badgeName] !== undefined) {
+      tiersObj = badgesWithSpecialTiers[badgeName];
+    }
+    let config = {
+      badgeId: badgeId,
+      tiers: {
+        ...tiersObj,
+      },
+      currentTier: currentTier,
+      currentCount: currentCount,
+    };
     axios
-      .patch('/badges/counter', {
-        badgeId: badgeId,
-        change: change,
+      .post('/badges/tier', config)
+      .then(({ data }) => {
+        if (data.tierUp) {
+          toast(`You have just achieved tier ${data.tier} on ${badgeName}!`);
+        }
       })
-      .then(() =>
-        console.log(`successfully updated badge with ID ${badgeId} on user`)
-      )
       .catch((err) =>
-        console.error(
-          `an error occurred attempting to increment/decrement counter for user's badge with id ${badgeId}`,
-          err
-        )
-      );
+        console.error('there was an error when checking/updating tiers: ', err)
+      )
+      .finally(() => {
+        getBadges(); //update allBadges and badgesOnUser with new DB info
+      });
   };
 
   //if only a badgeName is passed in, will add badge to user
   //if badgeName and change are passed in, will add the badge (if not already earned) and update the counter on the badge by the value of change (if not 0)
   //If counter is updating, tier should also be passed in - function will check to see if tier should be updated in that case and will update if appropriate
-  const updateAchievements = async (
-    badgeName,
-    tier = undefined,
-    change = 0
-  ) => {
-    try {
-      if (!badgeName) {
-        console.error('You need to pass in a badge name!');
-        return;
-      } else {
-        await addBadge(badgeName, tier); //won't fire if badge is already on user
-      }
-    } catch (err) {
-      console.error(`was not able to add ${badgeName} to user!`);
-    }
-    try {
-      if (change !== 0) {
-        await updateBadgeCounter(badgeName, tier, change);
-        if (tier) {
-          await tierCheck(badgeName, tier);
-        }
-      }
-    } catch (err) {
-      console.error(
-        'an error has occurred while attempting to update the database with achievement related info',
-        err
-      );
-    }
-  };
+  // const updateAchievements = async (
+  //   badgeName,
+  //   tier = undefined,
+  //   change = 0
+  // ) => {
+  //   try {
+  //     if (!badgeName) {
+  //       console.error('You need to pass in a badge name!');
+  //       return;
+  //     } else {
+  //       await addBadge(badgeName, tier); //won't fire if badge is already on user
+  //     }
+  //   } catch (err) {
+  //     console.error(`was not able to add ${badgeName} to user!`);
+  //   }
+  //   try {
+  //     if (change !== 0) {
+  //       await updateBadgeCounter(badgeName, tier, change);
+  //       if (tier) {
+  //         await tierCheck(badgeName, tier);
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       'an error has occurred while attempting to update the database with achievement related info',
+  //       err
+  //     );
+  //   }
+  // };
 
   const findContext = () => {
     axios
@@ -748,7 +771,7 @@ const Root = () => {
           updateBadgeCounter,
           addBadge,
           tierCheck,
-          updateAchievements,
+          // updateAchievements,
           isDark,
         }}
       >
@@ -832,29 +855,19 @@ const Root = () => {
                     />
                   }
                 />
-                <Route
-                  path='createReport'
-                  element={
-                    <CreateReport
-                      fetchThisMonthReports={fetchThisMonthReports}
-                    />
-                  }
-                />
-                <Route
-                  path='reportsMap'
-                  element={
-                    <ReportsMap
-                      monthReports={monthReports}
-                      fetchThisMonthReports={fetchThisMonthReports}
-                    />
-                  }
-                />
                 {/* <Route path='directMessages' element={<DirectMessages />} /> */}
                 <Route path='report' element={<Report />} />
                 <Route
                   path='createReport'
                   element={
                     <CreateReport
+                      userBadges={userBadges}
+                      setUserBadges={setUserBadges}
+                      selectedBadge={selectedBadge}
+                      setSelectedBadge={setSelectedBadge}
+                      updateBadgeCounter={updateBadgeCounter}
+                      addBadge={addBadge}
+                      tierCheck={tierCheck}
                       fetchThisMonthReports={fetchThisMonthReports}
                     />
                   }

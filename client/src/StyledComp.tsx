@@ -189,6 +189,9 @@ const TooltipBox = styled.div<DarkModeHelperProps>`
       : 'inset 1.25em 1.25em 1.4375em #59bddf, inset -1.25em -1.25em 1.4375em #d8f1ff, #71b3d9 -5px -5px 15px'};
   border-radius: 7px;
 `;
+const badgeDescription = styled.div`
+  margin-bottom: 5px;
+`;
 
 const AchievementBadge = styled.img<AllBlackProps>`
   height: 2.25em;
@@ -651,6 +654,7 @@ export {
   AchievementBadgeByName,
   AchievementBadgeTooltip,
   TooltipBox,
+  badgeDescription,
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,

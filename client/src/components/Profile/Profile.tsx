@@ -63,12 +63,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
     calories: 0,
   });
 
-  //holds toggle-able value to control whether badges are displaying on profile page or not
-  const [badgeDisplay, setBadgeDisplay] = useState<string>('none');
-  //temporary - used for manually adding badges
-  const [tier, setTier] = useState(0);
-  const [inputBox, setInputBox] = useState('');
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
   useEffect(() => {
@@ -184,10 +178,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
     setTheme(theme);
     console.log(theme);
   }, [theme]);
-
-  useEffect(() => {}, [inputBox]);
-
-  useEffect(() => {}, [tier]);
 
   //..................................................
 

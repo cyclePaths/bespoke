@@ -1,3 +1,4 @@
+import { badgeClasses } from '@mui/material';
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../Root';
 import {
@@ -8,6 +9,7 @@ import {
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeTooltip,
   TooltipBox,
+  badgeDescription,
 } from '../../StyledComp';
 
 const BadgeDisplay = () => {
@@ -40,14 +42,30 @@ const BadgeDisplay = () => {
     return undefined;
   };
 
-  const handleBadgeClick = (event, tooltipId) => {
-    event.stopPropagation();
+  const clearTooltips = () => {
     let tooltips = tooltipVisibility;
     for (let key in tooltips) {
       console.log(`this is tooltips[${key}]: `, tooltips[key]);
       tooltips[key] = null;
     }
     setTooltipVisibility(tooltips);
+  };
+
+  const displayNoButtonIfNoAchievements = (badge) => {
+    if (badge.name !== 'No Achievements') {
+      return (
+        <button
+          onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
+        >
+          Favorite
+        </button>
+      );
+    }
+  };
+
+  const handleBadgeClick = (event, tooltipId) => {
+    event.stopPropagation();
+    clearTooltips();
     setTooltipVisibility((prevVisibility) => ({
       ...prevVisibility,
       [tooltipId]: !prevVisibility[tooltipId],
@@ -57,16 +75,13 @@ const BadgeDisplay = () => {
   const handleFavoriteClick = (event, image) => {
     event.stopPropagation();
     selectBadge(image);
+    clearTooltips();
   };
 
   useEffect(() => {
     console.log('here are the userBadges: ', userBadges);
     const handleOutsideClick = (event) => {
-      let tooltips = tooltipVisibility;
-      for (let key in tooltips) {
-        tooltips[key] = null;
-      }
-      setTooltipVisibility(tooltips);
+      clearTooltips();
       if (selectedTooltip !== null) {
         if (!tooltipRefs.current[selectedTooltip]?.contains(event.target)) {
           setSelectedTooltip(null);
@@ -80,6 +95,8 @@ const BadgeDisplay = () => {
       window.removeEventListener('click', handleOutsideClick);
     };
   }, [selectedTooltip]);
+
+  useEffect(() => {}, [userBadges]);
 
   return (
     <AchievementBadgeHolder isDark={isDark}>
@@ -112,13 +129,7 @@ const BadgeDisplay = () => {
                 <TooltipBox isDark={isDark}>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
-                  <button
-                    onClick={(event) =>
-                      handleFavoriteClick(event, badge.badgeIcon)
-                    }
-                  >
-                    Favorite
-                  </button>
+                  {displayNoButtonIfNoAchievements(badge)}
                 </TooltipBox>
               </AchievementBadgeTooltip>
             </AchievementBadgeAndTooltipContainer>

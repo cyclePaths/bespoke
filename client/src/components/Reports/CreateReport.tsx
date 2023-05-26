@@ -56,7 +56,8 @@ const CreateReport = ({ fetchThisMonthReports }) => {
   };
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const { user, geoLocation, addBadge, isDark } = useContext(UserContext);
+  const { user, geoLocation, addBadge, updateBadgeCounter, getBadges, isDark } =
+    useContext(UserContext);
 
   const handleTypeText = (
     event: React.MouseEvent<HTMLElement>,
@@ -127,6 +128,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
         setError(error.message);
       } finally {
         setSubmitting(false);
+        getBadges();
       }
     }
   };
@@ -170,7 +172,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                   backgroundColor: isDark ? '#757575' : '#ececec',
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
-                  color: isDark? '#7dc5e3' : '#7dc5e3',
+                  color: isDark ? '#7dc5e3' : '#7dc5e3',
                   backgroundColor: isDark ? '#121212' : '#757575',
                 },
               }}
