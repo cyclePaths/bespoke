@@ -4,6 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useStyles } from './DMStyles';
 import axios from 'axios';
+import Typography from '@mui/material/Typography';
 
 export interface Users {
   id: number;
@@ -48,7 +49,6 @@ function SearchUsers({
     const getUsers = async () => {
       try {
         const response = await axios.get('/dms/findUsers');
-        console.log('RESPONSO', response);
         if (active) {
           setOptions([...response.data]);
         }
@@ -79,8 +79,11 @@ function SearchUsers({
       <Autocomplete
         sx={{
           background:
-            'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-          borderRadius: '5px',
+            'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
+          // background:
+          //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+
+          // borderRadius: '5px',
         }}
         id='asynchronous'
         open={open}
@@ -110,12 +113,17 @@ function SearchUsers({
         loading={loading}
         renderInput={(params) => (
           <TextField
-            sx={{ borderRadius: '25px' }}
             {...params}
-            // label='Search Bikers'
-            // label={senderName || 'Search Bikers'}
             label={label}
+            InputLabelProps={{
+              style: {
+                color: 'rgb(191, 186, 186)',
+              },
+            }}
             InputProps={{
+              style: {
+                color: 'rgb(191, 186, 186)',
+              },
               ...params.InputProps,
               onFocus: resetLabel,
               endAdornment: (

@@ -31,6 +31,7 @@ import { SocketContext } from './SocketContext';
 import { Socket } from 'socket.io-client';
 import { SocketProvider } from './SocketContext';
 import DMNotifications from './DMNotifications';
+import { useStyles } from './components/DirectMessages/DMStyles';
 
 export interface CurrentWeather {
   temperature: number;
@@ -158,19 +159,31 @@ export const UserContext = createContext<any>(Object());
 export const MessageContext = createContext<any>(Object());
 // const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
+// let selectedTheme;
+
+// export const currentTheme = selectedTheme;
+
 const Root = () => {
   /////////// LIGHT/DARK MODE///////////////
   const [isDark, setIsDark] = useState(false);
 
+  // selectedTheme = isDark;
+  // export const currentTheme = isDark;
+
   const handleToggleStyle = () => {
     setIsDark((prevIsDark) => !prevIsDark);
 
-    const currentTheme = isDark ? GlobalStyleDark : GlobalStyleLight;
+    // const currentTheme = isDark ? GlobalStyleDark : GlobalStyleLight;
 
     // const location = useLocation();
     // let savedTheme = location.state && location.state.savedTheme;
     // setIsDark(savedTheme);
   };
+
+  // useEffect(() => {
+  //   console.log('theme', selectedTheme)
+  //   // export selectedTheme
+  // }, [isDark])
   //.........................................
 
   // Created User Info and Geolocation for context //
@@ -347,9 +360,17 @@ const Root = () => {
     text: string;
     fromMe: boolean;
   }
+  // Keep the interface
+  interface RootMessage {
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    receiverName: string;
+    text: string;
+    fromMe: boolean;
+  }
 
   // Keep the socket and state variables
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
   const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(
     null
@@ -361,7 +382,18 @@ const Root = () => {
     if (socket && user) {
       socket.on('message', handleReceivedMessage);
     }
+    // Keep the socket event handling
+    useEffect(() => {
+      if (socket && user) {
+        socket.on('message', handleReceivedMessage);
+      }
 
+      return () => {
+        if (socket) {
+          socket.off('message', handleReceivedMessage);
+        }
+      };
+    }, [socket, user]);
     return () => {
       if (socket) {
         socket.off('message', handleReceivedMessage);
@@ -372,7 +404,18 @@ const Root = () => {
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
     console.log('Received message:', newMessage);
+    // Adjust handleReceivedMessage
+    const handleReceivedMessage = (newMessage: RootMessage) => {
+      console.log('Received message:', newMessage);
 
+      // Only set the state here, don't show notifications or navigate
+      if (
+        newMessage.senderId !== user?.id &&
+        newMessage.receiverId === user?.id
+      ) {
+        setRootNewMessage(newMessage);
+      }
+    };
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
@@ -382,6 +425,7 @@ const Root = () => {
     }
   };
 
+  /*
   /*
   Above is the functionality for direct message notifications. handleMessageData is a call back
   function passed to DirectMessages to capture the user id of a receiver in order to filter
@@ -808,6 +852,7 @@ const Root = () => {
                     <DirectMessages
                       setShowConversations={setShowConversations}
                       showConversations={showConversations}
+                      isDark={isDark}
                     />
                   }
                 />
