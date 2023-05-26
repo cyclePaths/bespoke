@@ -6,10 +6,18 @@ export type DarkModeHelperProps = {
 
 export type InputProps = DarkModeHelperProps & {
   secondary?: boolean;
-}
+};
 
 export type BrightnessProps = {
   bright: number;
+};
+
+export type ShowProps = {
+  show: boolean;
+};
+
+export type AllBlackProps = {
+  allBlack: boolean;
 };
 
 const Button = styled.button`
@@ -36,47 +44,26 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   margin-top: 60px;
 `;
 
-const CategorySelector = styled.select<DarkModeHelperProps>`
-  border-radius: 3px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
-  color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 10px;
-`;
-
-const PrivacySelector = styled.div<DarkModeHelperProps>`
-  display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
-  padding: 3px;
-  border-radius: 3px;
-  border: 1px solid;
-  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  align-items: center;
-  margin-left: 10px;
-  color: ${({ isDark }) => (isDark ? '#e0e0e0' : '#000000')};
-`;
-
-const OptionsDiv = styled.div`
-  display: flex;
-  place-content: flex-start space-evenly;
-  margin: 15px;
-  flex-wrap: wrap;
-  flex-direction: column;
-`;
-
 const InputLayout = styled.input<InputProps>`
   height: 30px;
-  width: ${({ secondary }) => secondary ? '85%' : '75%'};
+  width: ${({ secondary }) => (secondary ? '85%' : '75%')};
   margin: 5px;
   border-radius: 2px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  background-color: ${({ isDark, secondary }) =>
+    secondary
+      ? isDark
+        ? '#a6a6a6'
+        : '#ffffff'
+      : isDark
+      ? '#707070'
+      : '#ececec'};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   ::placeholder {
-    color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
+    color: ${({ isDark, secondary }) =>
+      secondary ? '#000000' : isDark ? '#d3d3d3' : '#707070'};
   }
 `;
 
@@ -162,15 +149,22 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 
 //Related to Badges and Achievements
 
+const SelectedBadge = styled.img`
+  height: 3.875em;
+  width: 3.875em;
+  margin-top: 55px;
+  margin-left: -120px;
+`;
+
 const AchievementBadgeByName = styled.img`
   height: 1.875em;
   width: 1.875em;
 `;
 
-const AchievementBadgeTooltip = styled.span`
+const AchievementBadgeTooltip = styled.span<ShowProps>`
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   padding: 0.3125em 0;
-  pointer-events: none;
+  pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
   border-radius: 0.375em;
   text-align: center;
   position: absolute;
@@ -183,47 +177,58 @@ const AchievementBadgeTooltip = styled.span`
   transition: opacity 1s;
 `;
 
-// const AchievementBadgeTooltip = styled.span`
-//   visibility: hidden;
-//   padding: 0.3125em 0;
-//   border-radius: 0.375em;
-//   text-align: center;
-//   position: absolute;
-//   z-index: 1;
-//   width: 7.5em;
-//   bottom: 100%;
-//   left: 50%;
-//   margin-left: -3.75em;
-//   opacity: 0;
-//   transition: opacity 1s;
-// `;
-
 const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 9.375em;
-  border: 0.625em solid green;
-  padding: 1.5625em;
-  margin: 0.625em;
-  background-color: ${(props) =>
-    props.isDark ? '#191a35' : 'rgb(133, 211, 255)'};
+  border: ${(props) =>
+    props.isDark ? '0.05em solid black' : '0.05em solid white'};
+  padding: 1em;
+  background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 1.25em 1.25em 1.4375em #030312, inset -1.25em -1.25em 1.4375em #1e2062, #282b71 -5px -5px 15px'
+      : 'inset 1.25em 1.25em 1.4375em #59bddf, inset -1.25em -1.25em 1.4375em #d8f1ff, #71b3d9 -5px -5px 15px'};
+  border-radius: 7px;
 `;
 
-const AchievementBadge = styled.img`
-  height: 2.1875em;
-  width: 2.1875em;
+const AchievementBadge = styled.img<AllBlackProps>`
+  height: 2.25em;
+  width: 2.25em;
   margin-left: 0.75em;
   margin-right: 0.75em;
+  transform: ${(props) =>
+    props.allBlack ? 'invert(100%) brightness(200%)' : 'none'};
 `;
 
-const AchievementBadgeAndTooltipContainer = styled.div`
+const AchievementBadgeAndTooltipContainer = styled.div<ShowProps>`
   position: relative;
   display: inline-block;
-  &:hover ${AchievementBadgeTooltip} {
-    visibility: visible;
-    opacity: 1;
+  ${AchievementBadgeTooltip} {
+    visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.show ? 1 : 0)};
+    pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
+    transition: opacity 0.5s;
   }
 `;
 
-const AchievementBadgeHolder = styled.span``;
+const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 40px;
+  padding: 20px;
+  box-shadow: ${(props) =>
+    props.isDark
+      ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
+      : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5'};
+  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
+`;
+// Darker: #171730 #78bee6
+// Lighter: #1b1c39 #8ee2ff
+
+const BadgeContainerLabel = styled.div`
+  position: relative;
+  margin-left: 6.5625em;
+  margin-bottom: 0.9375em;
+`;
 
 //For use in Forecasts/Weather
 
@@ -473,6 +478,22 @@ const ForecastTemperature = styled.div`
   margin-top: 5px;
 `;
 
+const WeatherWidgetLabel = styled.div`
+  position: absolute;
+  margin-top: 2.1875em;
+  margin-right: 14.6875em;
+`;
+
+const SwipeIcon = styled.img<DarkModeHelperProps>`
+  position: absolute;
+  height: 3em;
+  width: 3em;
+  margin-top: 4.0625em;
+  margin-right: 18.5625em;
+  filter: ${(props) =>
+    props.isDark ? 'invert(100%) brightness(200%)' : 'none'};
+`;
+
 //other home components
 
 const HomePageCompWrapper = styled.div`
@@ -485,6 +506,11 @@ const HomePageCompWrapper = styled.div`
 const LeaderBoardDirections = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 50%;
+  width: 85%;
+  right: 7.5%;
 `;
 
 // Misc styled components
@@ -495,7 +521,7 @@ const NavBarTop = styled.span<DarkModeHelperProps>`
   border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   align-items: center;
   height: 6.6vh;
@@ -588,7 +614,6 @@ const ProfileRideDisplay = styled.div`
   align-items: center;
   & > * {
     margin-bottom: 0px;
-
   }
 `;
 
@@ -730,16 +755,16 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
-  CategorySelector,
-  OptionsDiv,
   RouteListOptions,
   RouteList,
+  SelectedBadge,
   AchievementBadgeByName,
   AchievementBadgeTooltip,
   TooltipBox,
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
+  BadgeContainerLabel,
   NavBarTop,
   BandAid,
   RouteAlerts,
@@ -751,13 +776,14 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
+  WeatherWidgetLabel,
+  SwipeIcon,
   ToastBuffer,
   WaveHighlight,
   HighlightText,
   ProfileDisplays,
   ProfileRideDisplay,
   LoadingDiv,
-  PrivacySelector,
   RecentRidesHeader,
   StatsWrapper,
   ProfileDefaultAddressDisplayDark,

@@ -4,12 +4,12 @@ import { createTheme } from '@mui/material'
 const bulletinTheme = createTheme({
     palette: {
         primary: {
-            main: 'rgb(133, 211, 255)',
-            dark: 'rgb(133, 211, 255)'
+            main: '#FFFFFF',
+            dark: '#FFFFFF'
         },
         secondary: {
-            main: 'rgb(133, 211, 255)',
-            dark: 'rgb(133, 211, 255)'
+            main: '#FFFFFF',
+            dark: '#FFFFFF'
         }
     }
 });

@@ -73,9 +73,10 @@ const BulletinBoard = () => {
     getAllComments();
   }, [context]);
 
+
   return (
     <BandAid>
-      <Card style={{ backgroundColor: 'rgb(133, 211, 255)', borderRadius: '5px' }}>
+      <div>
         <EquipmentPool />
         <CreateBulletin bulletins={bulletins} setBulletins={setBulletins}
                         updateBulletins={updateBulletins}/>
@@ -86,9 +87,12 @@ const BulletinBoard = () => {
             handleBulletinSelection={handleBulletinSelection}
             updateComments={updateComments}
             key={i}
+            bulletins={bulletins}
+            setBulletins={setBulletins}
+            getAllBulletins={getAllBulletins}
           />
         ))}
-      </Card>
+        </div>
     </BandAid>
   );
 };

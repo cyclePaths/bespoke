@@ -130,43 +130,82 @@ BikeRoutes.get('/routes', async (req, res) => {
   const { id, location_lat, location_lng } = req.user as User;
 
   if (privacy === 'false') {
-    prisma.bikeRoutes
-      .findMany({
-        where: {
-          category: category as string,
-          isPrivate: JSON.parse(privacy),
-        },
-        include: {
-          userLikes: true,
-        },
-      })
-      .then((routeList) => {
-        const radiusRoutes: BikeRoutes[] = [];
-        const likeList: any[] = [];
-        routeList.forEach((route) => {
-          const origin = JSON.parse(route.origin as string);
-          const destination = JSON.parse(route.destination as string);
+    if (category === 'All') {
+      prisma.bikeRoutes
+        .findMany({
+          where: {
+            isPrivate: JSON.parse(privacy),
+          },
+          include: {
+            userLikes: true,
+          },
+        })
+        .then((routeList) => {
+          const radiusRoutes: BikeRoutes[] = [];
+          const likeList: any[] = [];
+          routeList.forEach((route) => {
+            const origin = JSON.parse(route.origin as string);
+            const destination = JSON.parse(route.destination as string);
 
-          const gteLat = location_lat! - 0.4;
-          const lteLat = location_lat! + 0.4;
-          const gteLng = location_lng! - 0.4;
-          const lteLng = location_lng! + 0.4;
+            const gteLat = location_lat! - 0.4;
+            const lteLat = location_lat! + 0.4;
+            const gteLng = location_lng! - 0.4;
+            const lteLng = location_lng! + 0.4;
 
-          if (
-            (origin.lat as unknown as number) >= gteLat &&
-            (origin.lng as unknown as number) <= lteLat &&
-            (destination.lat as unknown as number) >= gteLng &&
-            (destination.lng as unknown as number) <= lteLng
-          ) {
-            radiusRoutes.push(route);
-            likeList.push(route.userLikes);
-          }
+            if (
+              (origin.lat as unknown as number) >= gteLat &&
+              (origin.lng as unknown as number) <= lteLat &&
+              (destination.lat as unknown as number) >= gteLng &&
+              (destination.lng as unknown as number) <= lteLng
+            ) {
+              radiusRoutes.push(route);
+              likeList.push(route.userLikes);
+            }
+          });
+          res.status(200).send([radiusRoutes, likeList]);
+        })
+        .catch((err) => {
+          console.error('Failed to fetch: ', err);
         });
-        res.status(200).send([radiusRoutes, likeList]);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch: ', err);
-      });
+    } else {
+      prisma.bikeRoutes
+        .findMany({
+          where: {
+            category: category as string,
+            isPrivate: JSON.parse(privacy),
+          },
+          include: {
+            userLikes: true,
+          },
+        })
+        .then((routeList) => {
+          const radiusRoutes: BikeRoutes[] = [];
+          const likeList: any[] = [];
+          routeList.forEach((route) => {
+            const origin = JSON.parse(route.origin as string);
+            const destination = JSON.parse(route.destination as string);
+
+            const gteLat = location_lat! - 0.4;
+            const lteLat = location_lat! + 0.4;
+            const gteLng = location_lng! - 0.4;
+            const lteLng = location_lng! + 0.4;
+
+            if (
+              (origin.lat as unknown as number) >= gteLat &&
+              (origin.lng as unknown as number) <= lteLat &&
+              (destination.lat as unknown as number) >= gteLng &&
+              (destination.lng as unknown as number) <= lteLng
+            ) {
+              radiusRoutes.push(route);
+              likeList.push(route.userLikes);
+            }
+          });
+          res.status(200).send([radiusRoutes, likeList]);
+        })
+        .catch((err) => {
+          console.error('Failed to fetch: ', err);
+        });
+    }
   } else if (privacy === 'true') {
     prisma.user
       .findUnique({
@@ -369,7 +408,10 @@ BikeRoutes.delete('/deleteRoute/:routeId', async (req, res) => {
                 id: id,
               },
               data: {
-                totalLikesReceived: totalLikesReceived !== 0 ? totalLikesReceived - likesCount : 0,
+                totalLikesReceived:
+                  totalLikesReceived !== 0
+                    ? totalLikesReceived - likesCount
+                    : 0,
               },
             })
             .then(() => {
@@ -405,43 +447,45 @@ BikeRoutes.put('/recentRoute', (req, res) => {
   const { id } = req.user as User;
   const { routeId } = req.body;
 
-  const recentRouteId = parseInt(routeId)
-  prisma.user.update({
-    where: { id: id },
-    data: {
-      recentRouteId: recentRouteId
-    }
-  })
+  const recentRouteId = parseInt(routeId);
+  prisma.user
+    .update({
+      where: { id: id },
+      data: {
+        recentRouteId: recentRouteId,
+      },
+    })
     .then(() => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error('Failed to update user: ', err);
       res.sendStatus(500);
-    })
-})
+    });
+});
 
 BikeRoutes.get('/currentRoute', (req, res) => {
   const { recentRouteId } = req.user as User;
 
-  if (recentRouteId !== null){
-    prisma.bikeRoutes.findUnique({
-      where: {
-        id: recentRouteId
-      }
-    })
-    .then(result => {
-      if (result) {
-        res.status(200).send(result)
-      } else {
-        res.sendStatus(404);
-      }
-    })
-    .catch(err => {
-      console.error('Failed to fetch last route: ', err);
-      res.sendStatus(500);
-    })
+  if (recentRouteId !== null) {
+    prisma.bikeRoutes
+      .findUnique({
+        where: {
+          id: recentRouteId,
+        },
+      })
+      .then((result) => {
+        if (result) {
+          res.status(200).send(result);
+        } else {
+          res.sendStatus(404);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch last route: ', err);
+        res.sendStatus(500);
+      });
   }
-})
+});
 
 export default BikeRoutes;

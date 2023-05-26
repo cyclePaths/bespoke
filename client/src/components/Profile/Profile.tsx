@@ -219,6 +219,7 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
     <BandAid>
       {/* <DirectMessages theme={theme}/> */}
       <ProfileNav
+        selectedBadge={selectedBadge}
         // user={user}
         photo={photo}
         saveTheme={saveTheme}

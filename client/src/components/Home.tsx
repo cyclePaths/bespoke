@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
-import ForecastRow from './Weather/ForecastRow';
 import Forecast from './Weather/Forecast';
 import {
   BandAid,
-  ForecastEntry,
+  WeatherWidgetLabel,
+  SwipeIcon,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
   StatsWrapper,
@@ -25,7 +25,7 @@ import {
   Button,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { BikeRoutes } from '@prisma/client';
+import { BikeRoutes, Bulletin } from '@prisma/client';
 import axios from 'axios';
 import WeatherWidget from './Weather/WeatherWidget';
 import { styled } from '@mui/material/styles';
@@ -48,6 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const Home = ({
+  currentTimeIndex,
   hourlyForecasts,
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
@@ -59,6 +60,7 @@ const Home = ({
 }: RootPropsToHome) => {
   const { user, isDark } = useContext(UserContext);
   const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
+  const [randomPost, setRandomPost] = useState<Bulletin | undefined>(undefined);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
   const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
@@ -87,59 +89,139 @@ const Home = ({
     };
   }, []);
 
+  useEffect(() => {
+    axios
+      .get('/bulletin/randomPost')
+      .then(({ data }) => {
+        setRandomPost(data);
+      })
+      .catch((err) => {
+        console.error('Failed to get a bulletin Post: ', err);
+      });
+  }, []);
+
   return (
     <div>
       <BandAid>
         <HomePageCompWrapper>
+          <WeatherWidgetLabel>
+            <strong>Weather Snapshot:</strong>
+          </WeatherWidgetLabel>
+
           <HomeWeatherWidgetHolder>
             <WeatherWidget
+              currentTimeIndex={currentTimeIndex}
               temperatureMeasurementUnit={temperatureMeasurementUnit}
               prepareWeatherIcon={prepareWeatherIcon}
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
+          <SwipeIcon
+            isDark={isDark}
+            src='https://static.thenounproject.com/png/145048-200.png'
+          />
         </HomePageCompWrapper>
         <StatsWrapper>
           <Card
             sx={{
               margin: '10px',
+              width: '100%',
               backgroundColor: isDark ? '#cacaca' : '#ececec',
+              boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
             }}
           >
             <CardHeader
-              title='Most Recent Route'
+              title='Topic of the day'
               sx={{ flexDirection: 'column' }}
             />
-            <CardContent>
-              <Typography paragraph sx={{ textAlign: 'center' }}>
-                {routeInfo
-                  ? routeInfo.name
-                  : 'You have not been on a route yet. Please Search a route or create a new route'}
+            <CardContent sx={{ paddingBottom: '0px', paddingTop: '0px' }}>
+              <Typography paragraph>
+                {randomPost ? (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {randomPost.topic}
+                    </div>
+                    <div>{randomPost.text}</div>
+                    <div
+                      style={{ display: 'flex', justifyContent: 'flex-end' }}
+                    >
+                      - {randomPost.creator}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    No post found. Check the bulletin board or create one.
+                  </div>
+                )}
               </Typography>
             </CardContent>
           </Card>
-          <Card
-            sx={{
-              margin: '10px',
-              maxWidth: '50%',
-              backgroundColor: isDark ? '#cacaca' : '#ececec',
-            }}
-          >
-            <CardHeader
-              title='LeaderBoards'
-              sx={{ paddingBottom: '0px', textAlign: 'center' }}
-            />
-            <CardContent sx={{ paddingBottom: '0px' }}>
-              <Typography sx={{ textAlign: 'center' }}>
-                See our current top 10 users in our selected categories
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size='small' onClick={handleLeaderBoard}>
-                See all LeaderBoards
-              </Button>
-            </CardActions>
-          </Card>
+          <div style={{ display: 'flex' }}>
+            <Card
+              sx={{
+                margin: '10px',
+                maxWidth: '45%',
+                backgroundColor: isDark ? '#cacaca' : '#ececec',
+                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              <CardHeader
+                title='LeaderBoards'
+                sx={{
+                  padding: '9px',
+                  paddingTop: '16px',
+                  paddingBottom: '16px',
+                  textAlign: 'center',
+                }}
+              />
+              <CardContent sx={{ paddingBottom: '0px' }}>
+                <Typography sx={{ textAlign: 'center' }}>
+                  See our top 10 users in select categories
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size='small' onClick={handleLeaderBoard}>
+                  Expand LeaderBoard
+                </Button>
+              </CardActions>
+            </Card>
+            <Card
+              sx={{
+                margin: '10px',
+                maxWidth: '45%',
+                backgroundColor: isDark ? '#cacaca' : '#ececec',
+                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              <CardHeader
+                title='Recent Ride'
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                }}
+              />
+              <CardContent>
+                <Typography paragraph sx={{ textAlign: 'center' }}>
+                  {routeInfo
+                    ? routeInfo.name
+                    : 'You have not been on a route yet. Please search a route or create a new route'}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
         </StatsWrapper>
         <LeaderBoardPopout
           setLeaderBoard={setLeaderBoard}

@@ -118,27 +118,49 @@ if (activeWatch) {
 
   return (
     <div>
-  <NavBarTop isDark={isDark}>
-    <Link to="/home" onClick={() => clickHome()}>
-    <img
-          src="https://res.cloudinary.com/dcecaxmxv/image/upload/v1684942437/nfajohsbfczwqlykn6jk.svg"
-          alt="Bespoke Image"
+      <NavBarTop isDark={isDark}>
+        <Link
+          to='/home'
+          onClick={() => clickHome()}
           style={{
-            height: '150%',
-            position: 'absolute',
-            left: '10px', // Adjust the left position as needed
-            transform: 'translateY(-50%)', // Center vertically
-            // top: '50%', // Center vertically
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '50%',
           }}
-        />
-    </Link>
-        <span style={{ display: 'contents' }}>
+        >
+          <img
+            src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1684942437/nfajohsbfczwqlykn6jk.svg'
+            alt='Bespoke Image'
+            style={{
+              width: '90%',
+            }}
+          />
+        </Link>
+        <span
+          style={{
+            display: 'flex',
+            width: '45%',
+            justifyContent: 'space-around',
+          }}
+        >
           <Link to='/directMessages'>
             <IconButton
               onClick={() => toMessages()}
-              sx={{ color: messages ? '#673ab7' : '#757575', marginLeft: '120px', }}
+              sx={{ color: messages ? '#673ab7' : '#757575', marginLeft: '40px', }}
             >
-              <MessageIcon sx={{ color: isDark ? (messages ? '#85d3ff' : '#ececec') : (messages ? '#191a35' : '#757575') }} />
+              <MessageIcon
+                sx={{
+                  color: isDark
+                    ? messages
+                      ? '#85d3ff'
+                      : '#ececec'
+                    : messages
+                    ? '#191a35'
+                    : '#757575',
+                }}
+              />
             </IconButton>
           </Link>
           <IconButton
@@ -152,7 +174,6 @@ if (activeWatch) {
           >
             <TimerIcon
             style={{ color }}
-            // sx={{ color: isDark ? (activeWatch ? '#d81b60' : '#ececec') : (activeWatch ? '#d81b60' : '#757575') }}
             />
           </IconButton>
         </span>
@@ -183,9 +204,28 @@ if (activeWatch) {
         >
           <BottomNavigationAction
             label='Navigate'
-            style={{ minWidth: '0px', color: isDark ? (navigate ? '#f8827a' : '#ececec') : (navigate ? '#f44336' : '#757575') }}
+            style={{
+              minWidth: '0px',
+              color: isDark
+                ? navigate
+                  ? '#f8827a'
+                  : '#ececec'
+                : navigate
+                ? '#f44336'
+                : '#757575',
+            }}
             icon={
-              <PlaceIcon sx={{ color: isDark ? (navigate ? '#f8827a' : '#ececec') : (navigate ? '#f44336' : '#757575') }} />
+              <PlaceIcon
+                sx={{
+                  color: isDark
+                    ? navigate
+                      ? '#f8827a'
+                      : '#ececec'
+                    : navigate
+                    ? '#f44336'
+                    : '#757575',
+                }}
+              />
             }
             component={Link}
             onClick={() => toNav()}
@@ -193,8 +233,29 @@ if (activeWatch) {
           />
           <BottomNavigationAction
             label='Weather'
-            style={{ minWidth: '0px', color: isDark ? (weather ? '#fafafa' : '#757575') : (weather ? 'black' : '#757575') }}
-            icon={<CloudIcon sx={{ color: isDark ? (weather ? '#fafafa' : '#ececec') : (weather ? '#9c9c9c' : '#757575') }} />}
+            style={{
+              minWidth: '0px',
+              color: isDark
+                ? weather
+                  ? '#fafafa'
+                  : '#757575'
+                : weather
+                ? 'black'
+                : '#757575',
+            }}
+            icon={
+              <CloudIcon
+                sx={{
+                  color: isDark
+                    ? weather
+                      ? '#fafafa'
+                      : '#ececec'
+                    : weather
+                    ? '#9c9c9c'
+                    : '#757575',
+                }}
+              />
+            }
             component={Link}
             onClick={() => toWeather()}
             to='/weather'
@@ -204,7 +265,15 @@ if (activeWatch) {
             style={{ minWidth: '0px', color: report ? '#f44336' : '#757575' }}
             icon={
               <ReportProblemIcon
-                sx={{ color: isDark ? (report ? '#f44336' : '#ececec') : (report ? '#f44336' : '#757575') }}
+                sx={{
+                  color: isDark
+                    ? report
+                      ? '#f44336'
+                      : '#ececec'
+                    : report
+                    ? '#f44336'
+                    : '#757575',
+                }}
               />
             }
             component={Link}
@@ -213,10 +282,27 @@ if (activeWatch) {
           />
           <BottomNavigationAction
             label='Bulletin'
-            style={{ minWidth: '0px', color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#20a03e' : '#757575') }}
+            style={{
+              minWidth: '0px',
+              color: isDark
+                ? bulletin
+                  ? '#7be795'
+                  : '#ececec'
+                : bulletin
+                ? '#20a03e'
+                : '#757575',
+            }}
             icon={
               <FormatListBulletedIcon
-                sx={{ color: isDark ? (bulletin ? '#7be795' : '#ececec') : (bulletin ? '#20a03e' : '#757575') }}
+                sx={{
+                  color: isDark
+                    ? bulletin
+                      ? '#7be795'
+                      : '#ececec'
+                    : bulletin
+                    ? '#20a03e'
+                    : '#757575',
+                }}
               />
             }
             component={Link}

@@ -12,6 +12,7 @@ import NightlightRoundTwoToneIcon from '@mui/icons-material/NightlightRoundTwoTo
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
+import { AchievementBadgeByName, SelectedBadge } from '../../StyledComp';
 import Stats from './Stats';
 import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
@@ -91,7 +92,8 @@ function a11yProps(index: number) {
 }
 
 const ProfileNav = ({
-  // user,
+  selectedBadge,
+  //user,
   photo,
   saveTheme,
   handleToggleStyle,
@@ -152,6 +154,17 @@ const ProfileNav = ({
   }, []);
 
   const socket = useContext(SocketContext).socket as Socket | undefined;
+
+
+  const displayNoBadgeIfEmpty = () => {
+    if (
+      selectedBadge &&
+      selectedBadge !==
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      return <SelectedBadge src={selectedBadge} />;
+    }
+  };
 
   const user = useContext(UserContext);
 
@@ -362,7 +375,7 @@ const ProfileNav = ({
                   alt='avatar'
                 />
               )}
-
+                {displayNoBadgeIfEmpty()}
               <div className='logout-block'>
                 <Button
                   className='logout-button'

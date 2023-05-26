@@ -42,13 +42,11 @@ function SearchUsers({
   senderName,
   setShowTextField,
 }) {
-
   const [showAutoComplete, setShowAutoComplete] = useState(true);
   // const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
 
   const classes = useStyles();
-
 
   useEffect(() => {
     let active = true;
@@ -73,11 +71,9 @@ function SearchUsers({
     };
   }, [loading]);
 
-
   const resetLabel = () => {
     setLabel('Search Bikers');
   };
-
 
   useEffect(() => {
     setLabel(senderName || 'Search Bikers');

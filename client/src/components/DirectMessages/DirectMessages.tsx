@@ -33,7 +33,7 @@ export interface Message {
   receiverId: number;
   receiverName: string;
   text: string;
-  // fromMe: boolean;
+  //fromMe: boolean;
   userId: number;
   isNotificationClicked: boolean;
 }
