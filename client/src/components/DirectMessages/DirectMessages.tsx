@@ -1,30 +1,16 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useContext,
-} from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-// import Button from '@material-ui/core/Button';
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import { useStyles, inputTextStyle } from './DMStyles';
 import SearchUsers, { Users } from './SearchUsers';
-// import { ThemeProvider } from '@mui/material/styles';
-// import { io } from 'socket.io-client';
-// import * as SocketIOClient from 'socket.io-client';
 import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
-// import { DndProvider } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-// import Backdrop from '@mui/material/Backdrop';
-// import CircularProgress from '@mui/material/CircularProgress';
 
 export interface Message {
   id: number;
@@ -174,7 +160,6 @@ function DirectMessages({ showConversations, setShowConversations, isDark }) {
       .get('/profile/user')
       .then(({ data }) => {
         const { id, name } = data;
-        // console.log(id);
         setUserId(id);
         setName(name);
       })

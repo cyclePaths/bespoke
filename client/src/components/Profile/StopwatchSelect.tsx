@@ -49,7 +49,7 @@ const StopwatchSelect = ({ activity, setActivity, activityValue, setActivityValu
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <FormControl  sx={{
     m: 1,
-    minWidth: 120,
+    minWidth: 184,
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
         borderColor: isDark ? 'white' : 'rgb(117, 117, 117)',
@@ -81,6 +81,7 @@ const StopwatchSelect = ({ activity, setActivity, activityValue, setActivityValu
           label='Select Workout'
           onChange={handleChange}
           sx={{
+            color: isDark ? 'white' : 'black',
             '.MuiOutlinedInput-root': {
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: isDark ? 'white' : 'black',

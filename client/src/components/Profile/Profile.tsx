@@ -1,33 +1,13 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Home from '../Home';
-import StopwatchStats from './StopwatchStats';
 import ProfileNav from './ProfileNav';
-import SetHome from './SetHome';
-import DirectMessages from  '../DirectMessages/DirectMessages';
-import styled from 'styled-components';
-import { useTheme } from './ThemeContext';
-// import { ToggleSwitch } from '../../StyledComp';
-import { ToggleSwitch } from '../../ThemeStyles';
-// import { GlobalStyleLight, GlobalStyleDark } from './ThemeStyles';
 import { BadgesOnUsers, Badge } from '@prisma/client';
-import Addresses, { Address, SelectedAddress, HomeAddress } from './Addresses';
-import Scrollers from './Scrollers';
 import '../../styles.css';
 import { UserContext } from '../../Root';
 import { BandAid } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
-import {
-  AchievementBadgeByName,
-  AchievementBadgeTooltip,
-  TooltipBox,
-  AchievementBadge,
-  AchievementBadgeAndTooltipContainer,
-  AchievementBadgeHolder,
-} from '../../StyledComp';
-import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 export interface RideStats {
   activity: string;
@@ -57,12 +37,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark,}) => {
   const [homeAddress, setHomeAddress] = useState('');
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
-  // const [lastRide, setLastRide] = useState<RideStats>({
-  //   activity: '',
-  //   duration: 0,
-  //   weight: 0,
-  //   calories: 0,
-  // });
   const [lastRideActivity, setLastRideActivity] = useState('');
   const [lastRideDuration, setLastRideDuration] = useState('');
   const [lastRideWeight, setLastRideWeight] = useState('');
@@ -93,27 +67,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark,}) => {
       theme: isDark,
     });
   };
-
-  // const navigate = useNavigate();
-
-  /////////////////////////////////////////////////////////////////////////
-  ////// This function grabs ride stats from StopwatchStats.tsx////////////
-  // const location = useLocation();
-  // let stopwatchActivity = location.state && location.state.stopwatchActivity;
-  // const stopwatchDuration = location.state && location.state.stopwatchDuration;
-  // const stopwatchCalories = location.state && location.state.stopwatchCalories;
-
-  // if (
-  //   stopwatchActivity !== '' &&
-  //   stopwatchDuration > 0 &&
-  //   stopwatchCalories > 0
-  // ) {
-  //   rideStats.activity = stopwatchActivity;
-  //   rideStats.duration = stopwatchDuration;
-  //   rideStats.weight = weight;
-  //   rideStats.calories = stopwatchCalories;
-  // }
-  //.................................................
 
   //show/hide badges on user profile page
   // const badgesToggle = () => {
@@ -184,13 +137,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       setLastRideDuration(data.duration);
       setLastRideWeight(data.weight)
       setLastRideCalories(data.calories)
-
-      // setLastRide(data);
     });
   }, []);
 
   useEffect(() => {
-    // setLastRide(lastRide)
     setLastRideActivity(lastRideActivity);
     setLastRideDuration(lastRideDuration);
     setLastRideWeight(lastRideWeight)
@@ -243,39 +193,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         stopwatchCalories={stopwatchCalories}
       />
 
-      {/* <SetHome homeAddress={homeAddress} setHomeAddress={setHomeAddress}/> */}
-      <div>
-        {/* <div style={{ position: 'absolute', marginTop: 20 }}>
-        <ul>
-          <li style={{ listStyleType: 'none' }}>
-            {rideStats && `Your last ride was an ${rideStats.activity}`}
-          </li>
-          <li style={{ listStyleType: 'none' }}>
-            {rideStats &&
-              `You rode for ${Math.floor(rideStats.duration / 60)} hours and ${
-                rideStats.duration % 60
-              } minutes`}
-          </li>
-          <li style={{ listStyleType: 'none' }}>
-            {rideStats &&
-              `Your weight for this ride was ${rideStats.weight} lbs`}
-          </li>
-          <li style={{ listStyleType: 'none' }}>
-            {rideStats && (
-              <>
-                You burned {rideStats.calories} calories!
-                <br />
-                Let's ride some more!
-              </>
-            )}
-          </li>
-        </ul>
-      </div> */}
-      </div>
-
-      {/* <Scrollers theme={theme} /> */}
-
-      {/* </div> */}
       {/* <div style={{ position: 'fixed', bottom: 100, width: '100%' }}>
         <div>Achievement Badges:</div>
 

@@ -3,16 +3,11 @@ import axios from 'axios';
 import { UserContext } from '../../Root';
 import styled from 'styled-components';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import {
-  geocodeByAddress,
-  geocodeByPlaceId,
-  getLatLng,
-} from 'react-places-autocomplete';
+import { geocodeByAddress, geocodeByPlaceId, getLatLng } from 'react-places-autocomplete';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -21,8 +16,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 ) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
-
-
 
 export type Address = string;
 export type SelectedAddress = string;
@@ -47,12 +40,7 @@ const Addresses = ({
   setHomeAddress,
   saveHome,
 }: Props) => {
-  // const [place, setPlace] = useState('');
   const [openAddress, setOpenAddress] = React.useState(false);
-  // const [saveAddressAlert, setSaveAddressAlert] = React.useState(false);
-  // const [alertTypeAddress, setAlertTypeAddress] = useState<
-  //   'success' | 'warning' | null
-  // >(null);
   const [alertTypeSuccess, setAlertTypeSuccess] = React.useState(false);
   const [alertTypeWarning, setAlertTypeWarning] = React.useState(true);
   const [alertTypeError, setAlertTypeError] = React.useState(false);
@@ -63,15 +51,13 @@ const Addresses = ({
   const [selectedAddressPlaceholder, setSelectedAddressPlaceholder] =
     useState('');
 
-
   // User Context //
   const { isDark } = useContext(UserContext);
 
-// Define style for the autocomplete suggestion list
-const AutocompleteSuggestions = styled.div`
-  color: ${isDark ? 'white' : 'black'};
-`;
-
+  // Define style for the autocomplete suggestion list
+  const AutocompleteSuggestions = styled.div`
+    color: ${isDark ? 'white' : 'black'};
+  `;
 
   // setting state on change
   const handleChange = useCallback((address) => {
@@ -86,8 +72,6 @@ const AutocompleteSuggestions = styled.div`
       setSelectedAddress(address);
       setSelectedAddressPlaceholder('');
 
-      // setAlertType('success');
-      // handleAlertClick();
       const input = document.getElementById('address-input');
       if (input instanceof HTMLInputElement) {
         input.blur();
@@ -226,7 +210,6 @@ const AutocompleteSuggestions = styled.div`
               loading,
             }) => (
               <div id='address' className='address'>
-
                 <TextField
                   id='address-input'
                   className='search-places'
@@ -241,7 +224,11 @@ const AutocompleteSuggestions = styled.div`
                 />
 
                 <div className='autocomplete-dropdown-container'>
-                  {loading && <div style={{color: isDark ? '#ffffff' : '#000000' }}>Loading...</div>}
+                  {loading && (
+                    <div style={{ color: isDark ? '#ffffff' : '#000000' }}>
+                      Loading...
+                    </div>
+                  )}
                   {suggestions.map((suggestion) => {
                     const className = suggestion.active
                       ? 'suggestion-item--active'
@@ -249,9 +236,6 @@ const AutocompleteSuggestions = styled.div`
                     // inline style for demonstration purpose
 
                     return (
-
-
-
                       <AutocompleteSuggestions
                         {...getSuggestionItemProps(suggestion, {
                           className,
@@ -291,24 +275,6 @@ const AutocompleteSuggestions = styled.div`
               </div>
             )}
           </PlacesAutocomplete>
-
-          {/* <Stack direction='row' spacing={5}>
-                    <Button
-                      className='saveHome'
-                      variant='contained'
-                      color='success'
-                      style={{
-                        backgroundColor: 'green',
-                        color: 'white',
-                        boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3) !important',
-                      }}
-                      onClick={() => {
-                        handleSetHomeClick();
-                      }}
-                    >
-                      Set Home
-                    </Button>
-                  </Stack> */}
         </Box>
       </div>
 

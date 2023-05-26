@@ -623,17 +623,13 @@ const ProfileDefaultAddressDisplayDark = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 10px;
   border-radius: 7px;
   background: linear-gradient(145deg, #1e2062, #030312);
   box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71;
-    /* Media query for screens with max width 768px */
-    @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 
@@ -641,17 +637,13 @@ const ProfileDefaultAddressDisplayLight = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 10px;
   border-radius: 7px;
   background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
-     /* Media query for screens with max width 768px */
-     @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 
@@ -659,68 +651,52 @@ const ProfileDefaultWeightDisplayDark = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 10px;
   border-radius: 7px;
   background: linear-gradient(145deg, #1e2062, #030312);
   box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
-      /* Media query for screens with max width 768px */
-      @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 const ProfileDefaultWeightDisplayLight = styled.div`
  display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 10px;
   border-radius: 7px;
   background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
-      /* Media query for screens with max width 768px */
-      @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 const ProfileDefaultLastRideDisplayDark = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 20px;
   border-radius: 7px;
   background: linear-gradient(145deg, #1e2062, #030312);
   box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
-      /* Media query for screens with max width 768px */
-      @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 const ProfileDefaultLastRideDisplayLight = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* height: 100px; */
   width: 90vw;
   margin: 0.5rem;
   padding-bottom: 20px;
   border-radius: 7px;
   background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
-      /* Media query for screens with max width 768px */
-      @media (max-width: 380px) {
-    font-size: 14px; /* Adjust the font size as needed */
-    }
+  font-size: 14px;
 `;
 
 //Above are the styles for the default cards on the profile page//

@@ -2,8 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/system';
 import InputBase from '@mui/material/InputBase';
 
@@ -43,7 +41,6 @@ function SearchUsers({
   setShowTextField,
 }) {
   const [showAutoComplete, setShowAutoComplete] = useState(true);
-  // const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
 
   const classes = useStyles();
@@ -80,16 +77,7 @@ function SearchUsers({
   }, [senderName]);
 
 
-  const CustomInput = styled(InputBase)(({ theme }) => ({
-    color: 'rgb(191, 186, 186)',
-
-    '& .MuiInputAdornment-root.MuiInputAdornment-positionEnd': {
-      color: 'green', // Change this to the color you want for the dropdown icon
-    },
-  }));
-
   return (
-    // <ThemeProvider theme={theme}>
     <div className={classes.search}>
         <Autocomplete
           sx={{
@@ -149,7 +137,6 @@ function SearchUsers({
           )}
         />
     </div>
-    // </ThemeProvider>
   );
 }
 

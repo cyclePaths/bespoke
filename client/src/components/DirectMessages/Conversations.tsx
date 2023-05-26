@@ -62,8 +62,6 @@ const Conversations: React.FC<ConversationsProps> = ({
   setIsReceiverSelected,
   setShowTextField,
   setReceiverName,
-  setSenderName,
-  // senderName,
 }) => {
   const [myConversations, setMyConversations] = React.useState<Conversation[]>(
     []
@@ -128,7 +126,6 @@ const Conversations: React.FC<ConversationsProps> = ({
   const handleBackClick = () => {
     setShowConversations(true); // Show the conversation list
     setShowMessageThread(false); // Hide the message thread
-
     setSenderId(0);
     setReceiverId(0);
     setIsReceiverSelected(false);
@@ -182,8 +179,6 @@ const Conversations: React.FC<ConversationsProps> = ({
          style={{
            display: 'flex',
            justifyContent: 'center',
-          //  alignItems: 'center',
-          //  height: '100vh',
          }}
        >
         <List className={classes.list}

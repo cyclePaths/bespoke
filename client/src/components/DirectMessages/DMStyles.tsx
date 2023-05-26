@@ -23,7 +23,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
     '&$underline:hover:not($disabled):before': {
       borderBottom: `2px solid ${theme.palette.primary.dark}`,
     },
-    width: '100% !important', // added width property
+    width: '100% !important',
   },
   underline: {},
   disabled: {},
@@ -35,7 +35,6 @@ const messagesContainerHeight = '70vh';
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // color: 'white',
       backgroundColor: 'transparent',
       margin: 'auto',
       display: 'flex',
@@ -107,7 +106,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: ' #e8e6e6',
       background:
               'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-      // backgroundColor: '#3dca3d',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
@@ -132,7 +130,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2.75),
       '& input': {
         color: 'white',
-      //  color: 'rgb(71, 72, 71)',
         alignItems: 'left',
       },
     },
@@ -141,7 +138,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
     search: {
-      // color: 'rgb(191, 186, 186) !important',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -164,10 +160,7 @@ export const conversationStyle = makeStyles((theme: Theme) => ({
     background:
       'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
     margin: '0 auto',
-    // boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.4)',
   },
 }));
 
-export const searchUsersStyle = makeStyles((theme: Theme) => ({
 
-}))

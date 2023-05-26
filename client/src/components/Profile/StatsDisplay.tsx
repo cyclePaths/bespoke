@@ -2,14 +2,11 @@ import * as React from 'react';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DataGrid, GridColDef, GridPagination } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import { duration } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Fab from '@mui/material/Fab';
 
@@ -166,7 +163,6 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
     >
       <Box style={{ bottom: 0, width: '100%', overflow: 'hidden' }}>
         <div style={{ padding: '16px' }}>
-          {/* <ReturnToDialogButton onClick={handleGridClose} /> */}
           <Fab
         sx={{ left: 0, marginBottom: '10px' , boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
         color='secondary'
@@ -177,14 +173,12 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
               handleClickOpen();
             }}
           >
-            {/* &lt; &lt; Back to Select */}
             <ArrowBackIosNewIcon fontSize='small' />
           </Fab>
           <DataGrid
             components={{
               Pagination: CustomPagination,
             }}
-            // rows={statsWithIds}
             rows={rows}
             columns={columns}
             initialState={{
@@ -195,8 +189,6 @@ const StatsDisplay = ({ stats, handleGridClose, handleClickOpen }) => {
               },
             }}
             pageSizeOptions={[5]}
-            // checkboxSelection
-            // disableRowSelectionOnClick
             style={{
               opacity: 1,
               color: isDark ? 'white' : 'black',

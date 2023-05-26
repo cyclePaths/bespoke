@@ -107,14 +107,14 @@ const Navbar = () => {
   if (isDark) {
     color = '#ececec';
   } else {
-    color = '#757575'
+    color = '#757575';
   }
 
-if (activeWatch) {
-  color = '#d81b60';
-} else if (pauseWatch) {
-  color = '#ff9800';
-}
+  if (activeWatch) {
+    color = '#d81b60';
+  } else if (pauseWatch) {
+    color = '#ff9800';
+  }
 
   return (
     <div>
@@ -148,7 +148,10 @@ if (activeWatch) {
           <Link to='/directMessages'>
             <IconButton
               onClick={() => toMessages()}
-              sx={{ color: messages ? '#673ab7' : '#757575', marginLeft: '40px', }}
+              sx={{
+                color: messages ? '#673ab7' : '#757575',
+                marginLeft: '40px',
+              }}
             >
               <MessageIcon
                 sx={{
@@ -172,9 +175,7 @@ if (activeWatch) {
               }
             }}
           >
-            <TimerIcon
-            style={{ color }}
-            />
+            <TimerIcon style={{ color }} />
           </IconButton>
         </span>
       </NavBarTop>

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
-import Button from '@mui/material/Button';
 import StopwatchSelect from './StopwatchSelect';
 import {
   exiledStopwatchStatsRedHeadedStepChildrenOptionGroups,
@@ -52,8 +51,8 @@ interface NavBarProps {
 
 const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, setPauseWatch, isDark }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
-    hours: 1,
-    minutes: 36,
+    hours: 0,
+    minutes: 0,
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -61,7 +60,6 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
   const intervalRef = useRef<Subscription | null>(null);
   const [swActivity, setSWActivity] = useState('');
   const [isStopwatchOpen, setIsStopwatchOpen] = useState(false);
-  // const [appTheme, setAppTheme] =useState(false);
 
   const [optionGroups, setOptionGroups] = useState<OptionGroup>(
     exiledStopwatchStatsRedHeadedStepChildrenOptionGroups
@@ -71,17 +69,6 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  useEffect(() => {
-    console.log('isDark', isDark)
-  }, [isDark])
-
-
-  const handleChange = (exercise: string, value: string) => {
-    setValueGroups((prevValueGroups) => ({
-      ...prevValueGroups,
-      [exercise]: value,
-    }));
-  };
 
   useEffect(() => {
     return () => {
