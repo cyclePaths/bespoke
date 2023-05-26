@@ -11,12 +11,13 @@ import NightlightRoundTwoToneIcon from '@mui/icons-material/NightlightRoundTwoTo
 import SetHome from './SetHome';
 import SetWeight from './SetWeight';
 import Scrollers from './Scrollers';
+import { AchievementBadgeByName, SelectedBadge } from '../../StyledComp';
 import Stats from './Stats';
 import BadgeDisplay from './BadgeDisplay';
 import { ToggleSwitch } from '../../ThemeStyles';
 import StatsDisplay from './StatsDisplay';
 import { ThemeProvider } from './ThemeContext';
-import { ProfileDisplays, ProfileRideDisplay, } from '../../StyledComp';
+import { ProfileDisplays, ProfileRideDisplay } from '../../StyledComp';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
 import Grid from '@mui/material/Grid';
@@ -32,11 +33,14 @@ interface TabPanelProps {
 }
 
 const LightModeIcon = (props) => {
-  return <DarkModeIcon {...props}
-  style={{
-    color: '#97999e', // replace with your desired color
-  }}
-  />;
+  return (
+    <DarkModeIcon
+      {...props}
+      style={{
+        color: '#97999e', // replace with your desired color
+      }}
+    />
+  );
 };
 
 const DarkMode = (props) => {
@@ -78,7 +82,8 @@ function a11yProps(index: number) {
 }
 
 const ProfileNav = ({
-  // user,
+  selectedBadge,
+  //user,
   photo,
   saveTheme,
   handleToggleStyle,
@@ -122,39 +127,43 @@ const ProfileNav = ({
     };
   }, []);
 
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
 
- const user = useContext(UserContext)
+  const displayNoBadgeIfEmpty = () => {
+    if (
+      selectedBadge &&
+      selectedBadge !==
+        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
+    ) {
+      return <SelectedBadge src={selectedBadge} />;
+    }
+  };
 
+  const user = useContext(UserContext);
 
- useEffect(() => {
-  const { user: { homeAddress, weight } = {} as any } = user;
-  if (homeAddress !== null || homeAddress !== undefined) {
-    setAddress(homeAddress)
-  } else {
-    const myHomeAddress = homeAddress.slice(0, -5);
-    setAddress(`Your home is ${myHomeAddress}`);
-  }
+  useEffect(() => {
+    const { user: { homeAddress, weight } = {} as any } = user;
+    if (homeAddress !== null || homeAddress !== undefined) {
+      setAddress(homeAddress);
+    } else {
+      const myHomeAddress = homeAddress.slice(0, -5);
+      setAddress(`Your home is ${myHomeAddress}`);
+    }
 
-  if (weight === null || weight === undefined) {
-    setWeight(0);
-  } else {
-    setWeight(weight);
-  }
- }, [user])
+    if (weight === null || weight === undefined) {
+      setWeight(0);
+    } else {
+      setWeight(weight);
+    }
+  }, [user]);
 
-
-
- useEffect(() => {
-  if (homeAddress) {
-    setAddress(homeAddress);
-  } else {
-    setAddress('No Address Saved');
-  }
-}, [homeAddress]);
-
-
+  useEffect(() => {
+    if (homeAddress) {
+      setAddress(homeAddress);
+    } else {
+      setAddress('No Address Saved');
+    }
+  }, [homeAddress]);
 
   const handleThemeIconClick = () => {
     setAppTheme(!appTheme);
@@ -196,162 +205,190 @@ const ProfileNav = ({
 
   return (
     <div>
-       <Backdrop
-       sx={{ backgroundColor: appTheme ? 'rgba(133, 211, 255, 1)' : 'rgba((25, 26, 53, 1)' , color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-       open={open}
-      //  onClick={handleClose}
-       >
-        <CircularProgress color="inherit" />
-     </Backdrop>
-     <div style={{ visibility: open ? "hidden" : "visible" }}>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            // sx={{ justifyContent: 'space-between' }}
-            value={value}
-            onChange={handleChange}
-            aria-label='basic tabs example'
-            sx={{
-              '& .MuiTabs-flexContainer': {
-                justifyContent: 'space-evenly',
-              },
+      <Backdrop
+        sx={{
+          backgroundColor: appTheme
+            ? 'rgba(133, 211, 255, 1)'
+            : 'rgba((25, 26, 53, 1)',
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={open}
+        //  onClick={handleClose}
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop>
+      <div style={{ visibility: open ? 'hidden' : 'visible' }}>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              // sx={{ justifyContent: 'space-between' }}
+              value={value}
+              onChange={handleChange}
+              aria-label='basic tabs example'
+              sx={{
+                '& .MuiTabs-flexContainer': {
+                  justifyContent: 'space-evenly',
+                },
+              }}
+            >
+              <Tab
+                label='Home'
+                sx={{
+                  color: appTheme ? '#3c3636' : '#f1e2e2',
+                  minWidth: '0px',
+                }}
+                {...a11yProps(0)}
+              />
+              <Tab
+                label='Weight'
+                sx={{
+                  color: appTheme ? '#3c3636' : '#f1e2e2',
+                  minWidth: '0px',
+                }}
+                {...a11yProps(1)}
+              />
+              <Tab
+                label='Rides'
+                sx={{
+                  color: appTheme ? '#3c3636' : '#f1e2e2',
+                  minWidth: '0px',
+                }}
+                {...a11yProps(2)}
+              />
+              <Tab
+                label='Stats'
+                sx={{
+                  color: appTheme ? '#3c3636' : '#f1e2e2',
+                  minWidth: '0px',
+                }}
+                {...a11yProps(3)}
+              />
+              <Tab
+                label='Badges'
+                sx={{
+                  color: appTheme ? '#3c3636' : '#f1e2e2',
+                  minWidth: '0px',
+                }}
+                {...a11yProps(4)}
+              />
+            </Tabs>
+          </Box>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
             }}
           >
-            <Tab
-              label='Home'
-              sx={{
-                color: appTheme ? '#3c3636' : '#f1e2e2',
-                minWidth: '0px',
-              }}
-              {...a11yProps(0)}
-            />
-            <Tab
-              label='Weight'
-              sx={{
-                color: appTheme ? '#3c3636' : '#f1e2e2',
-                minWidth: '0px',
-              }}
-              {...a11yProps(1)}
-            />
-            <Tab
-              label='Rides'
-              sx={{
-                color: appTheme ? '#3c3636' : '#f1e2e2',
-                minWidth: '0px',
-              }}
-              {...a11yProps(2)}
-            />
-            <Tab
-              label='Stats'
-              sx={{
-                color: appTheme ? '#3c3636' : '#f1e2e2',
-                minWidth: '0px',
-              }}
-              {...a11yProps(3)}
-            />
-            <Tab
-              label='Badges'
-              sx={{
-                color: appTheme ? '#3c3636' : '#f1e2e2',
-                minWidth: '0px',
-              }}
-              {...a11yProps(4)}
-            />
-          </Tabs>
-        </Box>
+            {/* Below is the Greeting and Profile Pic and Theme Selection*/}
+            {/* <div>{`Hello ${user}!`}</div> */}
 
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'stretch',
-          }}
-        >
-          {/* Below is the Greeting and Profile Pic and Theme Selection*/}
-          {/* <div>{`Hello ${user}!`}</div> */}
+            <div className='profile-pic-Theme-icon'>
+              <img className='profile-pic' src={photo} alt='avatar' />
+              {displayNoBadgeIfEmpty()}
+              <ThemeProvider>
+                <div id='profile' className='themeIcon'>
+                  <IconButton
+                    // onClick={() => {
+                    //   handleToggleStyle();
+                    //   saveTheme();
+                    // }}
 
-          <div className='profile-pic-Theme-icon'>
-            <img className='profile-pic' src={photo} alt='avatar' />
+                    onClick={handleThemeIconClick}
+                  >
+                    {appTheme ? (
+                      <LightModeIcon className='theme-icon' />
+                    ) : (
+                      <DarkMode className='theme-icon' />
+                    )}
+                    {/* <DarkModeIcon /> */}
+                  </IconButton>
+                </div>
+              </ThemeProvider>
+            </div>
 
-            <ThemeProvider>
-              <div id='profile' className='themeIcon'>
-                <IconButton
-                  // onClick={() => {
-                  //   handleToggleStyle();
-                  //   saveTheme();
-                  // }}
+            {/* Above is the Greeting and Profile Pic and Theme Selection*/}
 
-                  onClick={handleThemeIconClick}
-                >
-                  {appTheme ? (
-                    <LightModeIcon className='theme-icon' />
-                  ) : (
-                    <DarkMode className='theme-icon' />
-                  )}
-                  {/* <DarkModeIcon /> */}
-                </IconButton>
+            <div hidden={!tabVisibility[0]}>
+              <SetHome />
+            </div>
+            <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
+              <div style={{ width: '100%' }}>
+                {/* {`My current weight is ${weight} lbs`} */}
+                <SetWeight
+                  weight={weight}
+                  onWeightChange={handleWeightChange}
+                />
               </div>
-            </ThemeProvider>
-          </div>
+            </div>
+            <div hidden={!tabVisibility[2]} />
 
-          {/* Above is the Greeting and Profile Pic and Theme Selection*/}
+            {showScrollers && (
+              <Scrollers
+                setShowScrollers={setShowScrollers}
+                theme={theme}
+                saveTheme={saveTheme}
+                appTheme={appTheme}
+              />
+            )}
 
-          <div hidden={!tabVisibility[0]}>
-            <SetHome />
-          </div>
-          <div hidden={!tabVisibility[1]} style={{ width: '100%' }}>
-            <div style={{ width: '100%' }}>
-              {/* {`My current weight is ${weight} lbs`} */}
-              <SetWeight weight={weight} onWeightChange={handleWeightChange} />
+            <div hidden={!tabVisibility[3]}>
+              <Stats />
+            </div>
+            <div hidden={!tabVisibility[4]}>
+              <BadgeDisplay />
             </div>
           </div>
-          <div hidden={!tabVisibility[2]} />
 
-          {showScrollers && (
-            <Scrollers
-              setShowScrollers={setShowScrollers}
-              theme={theme}
-              saveTheme={saveTheme}
-              appTheme={appTheme}
-            />
-          )}
+          <div
+            className={`holder ${
+              areTabsVisible ? '' : 'hidden'
+            } default-profile-display`}
+          >
+            <ProfileDisplays>
+              <h4>
+                {address === undefined || address === null
+                  ? 'No Address Saved'
+                  : `Your home is ${address}`}
+              </h4>
+            </ProfileDisplays>
+            <ProfileDisplays>
+              <h4>
+                {weight === 0
+                  ? 'No Weight Saved'
+                  : `Your current weight is ${weight} lbs`}
+              </h4>
+            </ProfileDisplays>
 
-          <div hidden={!tabVisibility[3]}>
-            <Stats />
+            <ProfileRideDisplay>
+              <h4>
+                {lastRideActivity === undefined
+                  ? 'No Saved Rides'
+                  : `Your most recent ride was ${lastRideActivity}`}
+              </h4>
+              <h4>
+                {lastRideDuration === undefined
+                  ? null
+                  : `You rode for ${Math.floor(
+                      lastRideDuration / 60
+                    )} hours and ${lastRideDuration % 60} minutes`}
+              </h4>
+              <h4>
+                {lastRideWeight === undefined
+                  ? null
+                  : `Your weight for this ride was ${lastRideWeight} lbs`}
+              </h4>
+              <h4>
+                {lastRideCalories === undefined
+                  ? null
+                  : `You burned ${lastRideCalories} calories!`}
+              </h4>
+            </ProfileRideDisplay>
           </div>
-          <div hidden={!tabVisibility[4]}>
-            <BadgeDisplay />
-          </div>
-        </div>
-
-
-        <div className={`holder ${areTabsVisible ? '' : 'hidden'} default-profile-display`}>
-          <ProfileDisplays>
-            <h4>{(address === undefined || address === null) ?
-            'No Address Saved'
-            : `Your home is ${address}`}</h4>
-          </ProfileDisplays>
-          <ProfileDisplays>
-            <h4>{weight === 0 ? 'No Weight Saved' : `Your current weight is ${weight} lbs`}</h4>
-          </ProfileDisplays>
-
-          <ProfileRideDisplay>
-              <h4>{lastRideActivity === undefined ?
-              'No Saved Rides' :
-              `Your most recent ride was ${lastRideActivity}`}</h4>
-              <h4>{lastRideDuration === undefined ? null
-              : `You rode for ${Math.floor(lastRideDuration / 60)} hours and ${
-                lastRideDuration % 60
-              } minutes`}</h4>
-              <h4>{lastRideWeight === undefined ? null
-              : `Your weight for this ride was ${lastRideWeight} lbs`}</h4>
-              <h4>{lastRideCalories === undefined ? null
-              : `You burned ${lastRideCalories} calories!`}</h4>
-          </ProfileRideDisplay>
-
-        </div>
-     </Box>
-     </div>
+        </Box>
+      </div>
     </div>
   );
 };

@@ -37,13 +37,11 @@ function SearchUsers({
   senderName,
   setShowTextField,
 }) {
-
   const [showAutoComplete, setShowAutoComplete] = useState(true);
   // const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
 
   const classes = useStyles();
-
 
   useEffect(() => {
     let active = true;
@@ -68,82 +66,78 @@ function SearchUsers({
     };
   }, [loading]);
 
-
   const resetLabel = () => {
     // setLabel('Search Bikers');
   };
-
 
   useEffect(() => {
     setLabel(senderName || 'Search Bikers');
   }, [senderName]);
 
-
-
   return (
     <div className={classes.search}>
-        <Autocomplete
-          sx={{
-            background: 'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
-            // background:
-            //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
+      <Autocomplete
+        sx={{
+          background:
+            'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
+          // background:
+          //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
 
-            // borderRadius: '5px',
-          }}
-          id='asynchronous'
-          open={open}
-          onOpen={() => {
-            setOpen(true);
-          }}
-          onClose={() => {
-            setOpen(false);
-          }}
-          isOptionEqualToValue={(option: Users, value) =>
-            option.name === value.name
-          }
-          getOptionLabel={(option) => option.name}
-          onChange={async (event, newValue) => {
-            setIsReceiverSelected(true);
-            setShowTextField(true);
-            setReceiver('');
-            setReceiver(newValue);
-            handleSetReceiver(newValue);
-            setShowAutoComplete(false);
+          // borderRadius: '5px',
+        }}
+        id='asynchronous'
+        open={open}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        isOptionEqualToValue={(option: Users, value) =>
+          option.name === value.name
+        }
+        getOptionLabel={(option) => option.name}
+        onChange={async (event, newValue) => {
+          setIsReceiverSelected(true);
+          setShowTextField(true);
+          setReceiver('');
+          setReceiver(newValue);
+          handleSetReceiver(newValue);
+          setShowAutoComplete(false);
 
-            await new Promise((resolve) => setShowMessageContainer(false, resolve));
-          }}
-          options={options}
-          loading={loading}
-          renderInput={(params) => (
-
-            <TextField
-              {...params}
-              label={label}
-              InputLabelProps={{
-                style: {
-                  color: 'rgb(191, 186, 186)',
-                },
-              }}
-              InputProps={{
-                style: {
-                  color: 'rgb(191, 186, 186)',
-                },
-                ...params.InputProps,
-                onFocus: resetLabel,
-                endAdornment: (
-                  <React.Fragment>
-
-                    {loading ? (
-                      <CircularProgress color='inherit' size={20} />
-                    ) : null}
-                    {params.InputProps.endAdornment}
-
-                  </React.Fragment>
-                ),
-              }}
-            />
-          )}
-        />
+          await new Promise((resolve) =>
+            setShowMessageContainer(false, resolve)
+          );
+        }}
+        options={options}
+        loading={loading}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            InputLabelProps={{
+              style: {
+                color: 'rgb(191, 186, 186)',
+              },
+            }}
+            InputProps={{
+              style: {
+                color: 'rgb(191, 186, 186)',
+              },
+              ...params.InputProps,
+              onFocus: resetLabel,
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? (
+                    <CircularProgress color='inherit' size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+      />
     </div>
   );
 }

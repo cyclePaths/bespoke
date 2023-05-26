@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Hourly } from 'client/src/Root';
 import {
   WeatherIcon,
@@ -10,6 +10,7 @@ import {
 import { weatherIcons } from '../../../assets';
 
 interface PropsToWeatherWidget {
+  currentTimeIndex: number;
   temperatureMeasurementUnit: string;
   hourlyForecasts: Hourly[];
   prepareWeatherIcon: (
@@ -23,6 +24,7 @@ interface PropsToWeatherWidget {
 }
 
 const WeatherWidget = ({
+  currentTimeIndex,
   temperatureMeasurementUnit,
   prepareWeatherIcon,
   hourlyForecasts,
@@ -44,8 +46,22 @@ const WeatherWidget = ({
   if (temperatureMeasurementUnit === 'celsius') {
     temperatureUnit = '°C';
   }
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      let scrollPosition = 90 * currentTimeIndex;
+      // Scroll the container to the desired position
+      containerRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'auto',
+      });
+    }
+  }, [currentTimeIndex]);
+
   return (
-    <WeatherWidgetWrapper>
+    <WeatherWidgetWrapper ref={containerRef}>
       {hourlyForecasts.map((forecast, i) => {
         let dateObj = new Date(forecast.time);
         const hour = dateObj.getHours();

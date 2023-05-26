@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../Root';
 import {
   AchievementBadgeByName,
   AchievementBadge,
   AchievementBadgeHolder,
+  BadgeContainerLabel,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeTooltip,
   TooltipBox,
@@ -18,82 +19,113 @@ const BadgeDisplay = () => {
     tickBadgeCounter,
     addBadge,
     tierCheck,
+    isDark,
   } = useContext(UserContext);
-  //holds toggle-able value to control whether badges are displaying on profile page or not
-  const [chooseBadge, setChooseBadge] = useState<boolean>(false);
-  const [displayTooltip, setDisplayTooltip] = useState<boolean>(true);
 
-  const badgeClick = (image, id) => {
-    if (chooseBadge) {
-      setSelectedBadge(image);
-      setChooseBadge(false);
-    }
-  };
+  const [tooltipVisibility, setTooltipVisibility] = useState({});
+  const [selectedTooltip, setSelectedTooltip] = useState<string | null>(null);
+  const tooltipRefs = useRef<{ [key: string]: HTMLElement }>({});
 
-  const toggleBadgeSelection = () => {
-    setChooseBadge(true);
+  const notAllBlackTierOneBadgeNames = [
+    'Storm Chaser',
+    'Speedster',
+    'Social Butterfly',
+    'Community Legend',
+    'Likable Legend',
+    'Legendary Explorer',
+  ];
+
+  const selectBadge = (image) => {
+    setSelectedBadge(image);
     return undefined;
   };
 
-  const toggleTooltip = () => {
-    setDisplayTooltip(!displayTooltip);
+  const handleBadgeClick = (event, tooltipId) => {
+    event.stopPropagation();
+    let tooltips = tooltipVisibility;
+    for (let key in tooltips) {
+      console.log(`this is tooltips[${key}]: `, tooltips[key]);
+      tooltips[key] = null;
+    }
+    setTooltipVisibility(tooltips);
+    setTooltipVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [tooltipId]: !prevVisibility[tooltipId],
+    }));
   };
 
-  const displayNoBadgeIfEmpty = () => {
-    if (
-      selectedBadge &&
-      selectedBadge !==
-        'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
-    ) {
-      return <AchievementBadgeByName src={selectedBadge} />;
-    }
+  const handleFavoriteClick = (event, image) => {
+    event.stopPropagation();
+    selectBadge(image);
   };
 
   useEffect(() => {
-    const containerElement = document.getElementById('achievementContainer');
-
-    if (containerElement) {
-      if (displayTooltip) {
-        containerElement.classList.add('show-tooltip');
-      } else {
-        containerElement.classList.remove('show-tooltip');
+    console.log('here are the userBadges: ', userBadges);
+    const handleOutsideClick = (event) => {
+      let tooltips = tooltipVisibility;
+      for (let key in tooltips) {
+        tooltips[key] = null;
       }
-    }
-  }, [displayTooltip]);
+      setTooltipVisibility(tooltips);
+      if (selectedTooltip !== null) {
+        if (!tooltipRefs.current[selectedTooltip]?.contains(event.target)) {
+          setSelectedTooltip(null);
+        }
+      }
+    };
+
+    window.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+    };
+  }, [selectedTooltip]);
 
   return (
-    <div>
-      <div>Featured Badge:</div>
-      {displayNoBadgeIfEmpty()}
+    <AchievementBadgeHolder isDark={isDark}>
+      <BadgeContainerLabel>
+        <strong>Earned Badges</strong>
+      </BadgeContainerLabel>
 
-      <div>Achievement Badges:</div>
-
-      <AchievementBadgeHolder id='badges'>
+      <span id='badges'>
         {userBadges.map((badge) => {
+          const tooltipVisible = tooltipVisibility[badge.id];
+          let allBlack = true;
+          if (
+            isDark &&
+            (badge.name === 'Iron Lungs' ||
+              (badge.tier === 1 &&
+                !notAllBlackTierOneBadgeNames.includes(badge.name)))
+          ) {
+            allBlack = true;
+          }
+
           return (
             <AchievementBadgeAndTooltipContainer
               id='achievementContainer'
               key={badge.id}
+              show={tooltipVisible}
+              onClick={(event) => handleBadgeClick(event, badge.id)}
             >
-              <AchievementBadge
-                onClick={() => {
-                  badgeClick(badge.badgeIcon, badge.id);
-                }}
-                src={badge.badgeIcon}
-              />
-              <AchievementBadgeTooltip show={true} id={badge.id}>
-                <TooltipBox>
+              <AchievementBadge src={badge.badgeIcon} allBlack={allBlack} />
+              <AchievementBadgeTooltip show={tooltipVisible} id={badge.id}>
+                <TooltipBox isDark={isDark}>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
+                  <button
+                    onClick={(event) =>
+                      handleFavoriteClick(event, badge.badgeIcon)
+                    }
+                  >
+                    Favorite
+                  </button>
                 </TooltipBox>
               </AchievementBadgeTooltip>
             </AchievementBadgeAndTooltipContainer>
           );
         })}
-      </AchievementBadgeHolder>
-      <button onClick={toggleBadgeSelection}>Select Featured Badge</button>
-      <button onClick={toggleTooltip}>Toggle Tooltip</button>
-    </div>
+      </span>
+    </AchievementBadgeHolder>
   );
 };
 

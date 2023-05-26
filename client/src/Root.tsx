@@ -72,6 +72,7 @@ export interface Hourly {
 }
 
 export interface RootPropsToWeather {
+  currentTimeIndex: number;
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
   precipitationMeasurementUnit: string;
@@ -94,6 +95,7 @@ export interface RootPropsToWeather {
 }
 
 export interface RootPropsToHome {
+  currentTimeIndex: number;
   hourlyForecasts: Hourly[];
   windSpeedMeasurementUnit: string;
   temperatureMeasurementUnit: string;
@@ -173,7 +175,6 @@ const Root = () => {
 
     // const currentTheme = isDark ? GlobalStyleDark : GlobalStyleLight;
 
-
     // const location = useLocation();
     // let savedTheme = location.state && location.state.savedTheme;
     // setIsDark(savedTheme);
@@ -233,6 +234,9 @@ const Root = () => {
     time: new Date(),
   }); //note: currentWeather is only going to be used on the home screen - everything else will just use the hourly breakdown
 
+  //marks the index of the entry for the current time among the Hourly forecasts
+  const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0);
+
   //stately variables for the 24 hourly forecasts in a given day as well as that day's sunrise and sunset times
   const [hourlyForecasts, setHourlyForecasts] = useState<Hourly[]>([]);
   const [sunriseHour, setSunriseHour] = useState<number>(0);
@@ -259,6 +263,7 @@ const Root = () => {
         setSunsetHour(data.sunsetHour);
         setCurrentWeather(data.currentWeather);
         setHourlyForecasts(data.hourly);
+        setCurrentTimeIndex(data.currentTimeIndex);
       })
       .catch((err) =>
         console.error(
@@ -298,7 +303,7 @@ const Root = () => {
       weatherIcon = weatherIcons[timeOfDay].overcast;
     } else if (weather === 'Fog') {
       weatherIcon = weatherIcons[timeOfDay].fog;
-    } else if (weather === 'Depositing Rime Fog') {
+    } else if (weather === 'Rime Fog') {
       weatherIcon = weatherIcons[timeOfDay].haze;
     } else if (
       weather === 'Light Drizzle' ||
@@ -306,10 +311,7 @@ const Root = () => {
       weather === 'Dense Drizzle'
     ) {
       weatherIcon = weatherIcons[timeOfDay].drizzle;
-    } else if (
-      weather === 'Light Freezing Drizzle' ||
-      weather === 'Dense Freezing Drizzle'
-    ) {
+    } else if (weather === 'Freezing Drizzle' || weather === 'Freezing Rain') {
       weatherIcon = weatherIcons[timeOfDay].sleet;
     } else if (
       weather === 'Light Rain' ||
@@ -321,49 +323,25 @@ const Root = () => {
     ) {
       weatherIcon = weatherIcons[timeOfDay].rain;
     } else if (
-      weather === 'Moderate Snow' ||
-      weather === 'Heavy Snow' ||
+      weather === 'Moderate Snowfall' ||
+      weather === 'Snow Showers' ||
+      weather === 'Heavy Snow Showers' ||
       weather === 'Snow Grains' ||
-      weather === 'Light Snow Showers' ||
-      weather === 'Heavy Snow Showers'
+      weather === 'Light Snowfall' ||
+      weather === 'Heavy Snowfall'
     ) {
       weatherIcon = weatherIcons[timeOfDay].snow;
-    } else if (weather === 'Thunderstorm') {
+    } else if (
+      weather === 'Thunderstorms' ||
+      weather === 'Moderate Thunderstorms' ||
+      weather === 'Heavy Thunderstorms'
+    ) {
       if (chanceOfRain >= 50) {
-        //I noticed the below logic doesn't really work sometimes, probably b/c rainfall/snowfall is based on the previous hour
-        // if (rainfall > 0) {
-        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
-        // } else if (snowfall > 0) {
-        //   weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
-        // }
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.rain;
       } else {
         weatherIcon = weatherIcons[timeOfDay].thunderstorm.base;
       }
-    } else if (
-      weather === 'Thunderstorm With Light Hail' ||
-      weather === 'Thunderstorm With Heavy Hail'
-    ) {
-      weatherIcon = weatherIcons[timeOfDay].thunderstorm.snow;
     }
-    //control for sunrise/sunset (no longer needed due to weather card changes)
-    // const moonriseHour = sunsetHour + 1;
-    // const moonsetHour = sunriseHour - 1;
-    // const pertinentWeather = !(
-    //   weather === 'Clear Sky' ||
-    //   weather === 'Mainly Clear' ||
-    //   weather === 'Fog' ||
-    //   weather === 'Partly Cloudy'
-    // );
-    // if (hour === sunriseHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.day.sunrise;
-    // } else if (hour === sunsetHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.day.sunset;
-    // } else if (hour === moonriseHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.night.moonrise;
-    // } else if (hour === moonsetHour && !pertinentWeather) {
-    //   weatherIcon = weatherIcons.night.moonset;
-    // }
     return weatherIcon;
   };
 
@@ -382,9 +360,17 @@ const Root = () => {
     text: string;
     fromMe: boolean;
   }
+  // Keep the interface
+  interface RootMessage {
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    receiverName: string;
+    text: string;
+    fromMe: boolean;
+  }
 
   // Keep the socket and state variables
-
   const socket = useContext(SocketContext).socket as Socket | undefined;
   const [rootNewMessage, setRootNewMessage] = useState<RootMessage | null>(
     null
@@ -396,7 +382,18 @@ const Root = () => {
     if (socket && user) {
       socket.on('message', handleReceivedMessage);
     }
+    // Keep the socket event handling
+    useEffect(() => {
+      if (socket && user) {
+        socket.on('message', handleReceivedMessage);
+      }
 
+      return () => {
+        if (socket) {
+          socket.off('message', handleReceivedMessage);
+        }
+      };
+    }, [socket, user]);
     return () => {
       if (socket) {
         socket.off('message', handleReceivedMessage);
@@ -407,7 +404,18 @@ const Root = () => {
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
     console.log('Received message:', newMessage);
+    // Adjust handleReceivedMessage
+    const handleReceivedMessage = (newMessage: RootMessage) => {
+      console.log('Received message:', newMessage);
 
+      // Only set the state here, don't show notifications or navigate
+      if (
+        newMessage.senderId !== user?.id &&
+        newMessage.receiverId === user?.id
+      ) {
+        setRootNewMessage(newMessage);
+      }
+    };
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
@@ -417,6 +425,7 @@ const Root = () => {
     }
   };
 
+  /*
   /*
   Above is the functionality for direct message notifications. handleMessageData is a call back
   function passed to DirectMessages to capture the user id of a receiver in order to filter
@@ -776,6 +785,7 @@ const Root = () => {
                   path='/home'
                   element={
                     <Home
+                      currentTimeIndex={currentTimeIndex}
                       hourlyForecasts={hourlyForecasts}
                       windSpeedMeasurementUnit={windSpeedMeasurementUnit}
                       temperatureMeasurementUnit={temperatureMeasurementUnit}
@@ -803,6 +813,7 @@ const Root = () => {
                   path='weather'
                   element={
                     <Weather
+                      currentTimeIndex={currentTimeIndex}
                       windSpeedMeasurementUnit={windSpeedMeasurementUnit}
                       temperatureMeasurementUnit={temperatureMeasurementUnit}
                       precipitationMeasurementUnit={
