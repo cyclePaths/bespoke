@@ -20,7 +20,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
+const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
+  // lastRideActivity,
+  // lastRideDuration,
+  // lastRideWeight,
+  // lastRideCalories,
+  setLastRideActivity,
+  setLastRideDuration,
+  setLastRideWeight,
+  setLastRideCalories,
+}) => {
   const [refActivity] = useKeenSlider<HTMLDivElement>({
     loop: true,
     mode: 'free',
@@ -117,6 +126,12 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
         .then(({ data }) => {
           // setShowSuccessAlert(true);
           const { total_calories } = data;
+
+          setLastRideActivity(rideSpeed)
+          setLastRideDuration(totalTime)
+          setLastRideWeight(weight)
+          setLastRideCalories(total_calories)
+
           axios
             .post('/profile/workout', {
               activity: rideSpeed,
@@ -295,8 +310,6 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                           setHours(label);
                           setHoursValue(value);
                           console.log('hour', hoursValue);
-                          // filterHours(hours.label);
-                          // console.log('hour label', hour.label)
                           setHoursMessage(`Hours riding: ${label}`);
                           setSliderStage(2);
                         }}
@@ -432,8 +445,6 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
                   center: 0,
                   color: 'white !important',
                   opacity: 0.4,
-                  background:
-                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125) !important',
                 }}
               >
                 Get Ride Stats
@@ -444,10 +455,9 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme }) => {
               <Button
                 type='button'
                 variant='contained'
-                // color='success'
+                color='success'
                 className='rideStatsButton'
-                sx={{ background:
-                  'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)', position: 'fixed', center: 0 }}
+                sx={{ position: 'fixed', center: 0, boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3)' }}
                 onClick={handleGetRideStatsButton}
               >
                 Get Ride Stats

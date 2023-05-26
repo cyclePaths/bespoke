@@ -12,6 +12,14 @@ export type BrightnessProps = {
   bright: number;
 };
 
+export type ShowProps = {
+  show: boolean;
+};
+
+export type AllBlackProps = {
+  allBlack: boolean;
+};
+
 const Button = styled.button`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
@@ -141,15 +149,22 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 
 //Related to Badges and Achievements
 
+const SelectedBadge = styled.img`
+  height: 3.875em;
+  width: 3.875em;
+  margin-top: 55px;
+  margin-left: -120px;
+`;
+
 const AchievementBadgeByName = styled.img`
   height: 1.875em;
   width: 1.875em;
 `;
 
-const AchievementBadgeTooltip = styled.span`
+const AchievementBadgeTooltip = styled.span<ShowProps>`
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   padding: 0.3125em 0;
-  pointer-events: none;
+  pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
   border-radius: 0.375em;
   text-align: center;
   position: absolute;
@@ -162,47 +177,58 @@ const AchievementBadgeTooltip = styled.span`
   transition: opacity 1s;
 `;
 
-// const AchievementBadgeTooltip = styled.span`
-//   visibility: hidden;
-//   padding: 0.3125em 0;
-//   border-radius: 0.375em;
-//   text-align: center;
-//   position: absolute;
-//   z-index: 1;
-//   width: 7.5em;
-//   bottom: 100%;
-//   left: 50%;
-//   margin-left: -3.75em;
-//   opacity: 0;
-//   transition: opacity 1s;
-// `;
-
 const TooltipBox = styled.div<DarkModeHelperProps>`
   width: 9.375em;
-  border: 0.625em solid green;
-  padding: 1.5625em;
-  margin: 0.625em;
-  background-color: ${(props) =>
-    props.isDark ? '#191a35' : 'rgb(133, 211, 255)'};
+  border: ${(props) =>
+    props.isDark ? '0.05em solid black' : '0.05em solid white'};
+  padding: 1em;
+  background: ${(props) => (props.isDark ? '#191a35' : '#85d3ff')};
+  box-shadow: ${(props) =>
+    props.isDark
+      ? 'inset 1.25em 1.25em 1.4375em #030312, inset -1.25em -1.25em 1.4375em #1e2062, #282b71 -5px -5px 15px'
+      : 'inset 1.25em 1.25em 1.4375em #59bddf, inset -1.25em -1.25em 1.4375em #d8f1ff, #71b3d9 -5px -5px 15px'};
+  border-radius: 7px;
 `;
 
-const AchievementBadge = styled.img`
-  height: 2.1875em;
-  width: 2.1875em;
+const AchievementBadge = styled.img<AllBlackProps>`
+  height: 2.25em;
+  width: 2.25em;
   margin-left: 0.75em;
   margin-right: 0.75em;
+  transform: ${(props) =>
+    props.allBlack ? 'invert(100%) brightness(200%)' : 'none'};
 `;
 
-const AchievementBadgeAndTooltipContainer = styled.div`
+const AchievementBadgeAndTooltipContainer = styled.div<ShowProps>`
   position: relative;
   display: inline-block;
-  &:hover ${AchievementBadgeTooltip} {
-    visibility: visible;
-    opacity: 1;
+  ${AchievementBadgeTooltip} {
+    visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.show ? 1 : 0)};
+    pointer-events: ${(props) => (props.show ? 'auto' : 'none')};
+    transition: opacity 0.5s;
   }
 `;
 
-const AchievementBadgeHolder = styled.span``;
+const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 40px;
+  padding: 20px;
+  box-shadow: ${(props) =>
+    props.isDark
+      ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
+      : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5'};
+  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
+`;
+// Darker: #171730 #78bee6
+// Lighter: #1b1c39 #8ee2ff
+
+const BadgeContainerLabel = styled.div`
+  position: relative;
+  margin-left: 6.5625em;
+  margin-bottom: 0.9375em;
+`;
 
 //For use in Forecasts/Weather
 
@@ -452,6 +478,22 @@ const ForecastTemperature = styled.div`
   margin-top: 5px;
 `;
 
+const WeatherWidgetLabel = styled.div`
+  position: absolute;
+  margin-top: 2.1875em;
+  margin-right: 14.6875em;
+`;
+
+const SwipeIcon = styled.img<DarkModeHelperProps>`
+  position: absolute;
+  height: 3em;
+  width: 3em;
+  margin-top: 4.0625em;
+  margin-right: 18.5625em;
+  filter: ${(props) =>
+    props.isDark ? 'invert(100%) brightness(200%)' : 'none'};
+`;
+
 //other home components
 
 const HomePageCompWrapper = styled.div`
@@ -499,14 +541,16 @@ const ToastBuffer = styled.div`
 
 //This is for the instruction text in the Scrollers in Profile //
 
-const lightModeText = 'rgb(47, 132, 66)';
+const lightModeText = 'rgb(50, 53, 50)';
 // const lightModeText = '#7e29d8';
 // const darkModeText = '#ffffff';
 // const darkModeText = '#ac7ede';
-const darkModeText = 'rgb(123, 231, 149)';
+const darkModeText = 'rgb(227, 239, 230)';
 
 const lightModeShadow = 'rgb(11, 11, 11)';
-const darkModeShadow = 'rgb(112, 247, 143)';
+/* const darkModeShadow = 'rgb(112, 247, 143)'; */
+const darkModeShadow = 'rgb(255, 255, 255)';
+// const darkModeShadow = '1.25em 1.25em 3.75em #282b71';
 
 const waveHighlightAnimation = keyframes`
   0% {
@@ -531,22 +575,22 @@ const HighlightText = styled.h4`
   color: ${(props) => (props.theme === 'dark' ? darkModeText : lightModeText)};
   text-shadow: ${(props) =>
     props.theme === 'dark'
-      ? `0 0 2px ${darkModeShadow}`
-      : `0 0 2px ${lightModeShadow}`};
+      ? `0 0 20px ${darkModeShadow}` // Increase the blur radius to create a glow effect
+      : `10px 10px 20px ${lightModeShadow}`};
 
   animation: ${(props) => keyframes`
     0% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     50% {
-      text-shadow: 0 0 10px ${
+      text-shadow: 0 0 50px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
     100% {
-      text-shadow: 0 0 2px ${
+      text-shadow: 0 0 20px ${
         props.theme === 'dark' ? darkModeShadow : lightModeShadow
       };
     }
@@ -560,7 +604,7 @@ const ProfileDisplays = styled.div`
   /* background-color: white; */
   display: flex;
   justify-content: center;
-  margin: 10px;
+  /* margin: 10px; */
 `;
 
 const ProfileRideDisplay = styled.div`
@@ -572,6 +616,90 @@ const ProfileRideDisplay = styled.div`
     margin-bottom: 0px;
   }
 `;
+
+//Below are the styles for the default cards on the profile page//
+
+const ProfileDefaultAddressDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+
+const ProfileDefaultAddressDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+
+const ProfileDefaultWeightDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+const ProfileDefaultWeightDisplayLight = styled.div`
+ display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 10px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+const ProfileDefaultLastRideDisplayDark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1e2062, #030312);
+  box-shadow: 1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71;
+  font-size: 14px;
+`;
+
+const ProfileDefaultLastRideDisplayLight = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  margin: 0.5rem;
+  padding-bottom: 20px;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #3cc6f6, #d8f1ff);
+  box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+`;
+
+//Above are the styles for the default cards on the profile page//
 
 export {
   ForecastBit,
@@ -605,12 +733,14 @@ export {
   PopoutSaveForm,
   RouteListOptions,
   RouteList,
+  SelectedBadge,
   AchievementBadgeByName,
   AchievementBadgeTooltip,
   TooltipBox,
   AchievementBadge,
   AchievementBadgeAndTooltipContainer,
   AchievementBadgeHolder,
+  BadgeContainerLabel,
   NavBarTop,
   BandAid,
   RouteAlerts,
@@ -622,6 +752,8 @@ export {
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
+  WeatherWidgetLabel,
+  SwipeIcon,
   ToastBuffer,
   WaveHighlight,
   HighlightText,
@@ -630,4 +762,10 @@ export {
   LoadingDiv,
   RecentRidesHeader,
   StatsWrapper,
+  ProfileDefaultAddressDisplayDark,
+  ProfileDefaultAddressDisplayLight,
+  ProfileDefaultWeightDisplayDark,
+  ProfileDefaultWeightDisplayLight,
+  ProfileDefaultLastRideDisplayDark,
+  ProfileDefaultLastRideDisplayLight,
 };

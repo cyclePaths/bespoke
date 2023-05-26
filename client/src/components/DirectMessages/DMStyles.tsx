@@ -1,5 +1,3 @@
-
-
 import {
   makeStyles,
   createStyles,
@@ -8,43 +6,11 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 
-// import { currentTheme } from '../../Root';
-
-
-// useEffect(() => {
-  // console.log('currentTheme', currentTheme);
-// }, [currentTheme])
-
-// Define a custom theme with breakpoints for small (sm) and medium (md) screens
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#3f51b5',
-//       light: '#7986cb',
-//       dark: '#303f9f',
-//     },
-//     secondary: {
-//       main: '#f50057',
-//       light: '#ff4081',
-//       dark: '#c51162',
-//     },
-//   },
-//   breakpoints: {
-//     values: {
-//       xs: 0,
-//       sm: 600,
-//       md: 960,
-//       lg: 1280,
-//       xl: 1920,
-//     },
-//   },
-// });
-
 // Define the input text styles
 export const inputTextStyle = makeStyles((theme: Theme) => ({
   root: {},
   input: {
-    color: 'rgb(50, 25, 25) !important',
+    color: 'rgb(253, 251, 251) !important',
     '&::placeholder': {
       color: 'white',
       marginRight: theme.spacing(1),
@@ -57,7 +23,7 @@ export const inputTextStyle = makeStyles((theme: Theme) => ({
     '&$underline:hover:not($disabled):before': {
       borderBottom: `2px solid ${theme.palette.primary.dark}`,
     },
-    width: '100% !important', // added width property
+    width: '100% !important',
   },
   underline: {},
   disabled: {},
@@ -69,7 +35,6 @@ const messagesContainerHeight = '70vh';
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // color: 'white',
       backgroundColor: 'transparent',
       margin: 'auto',
       display: 'flex',
@@ -141,7 +106,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: ' #e8e6e6',
       background:
               'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-      // backgroundColor: '#3dca3d',
       marginLeft: 10,
       marginRight: 120,
       marginTop: 10,
@@ -166,7 +130,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2.75),
       '& input': {
         color: 'white',
-      //  color: 'rgb(71, 72, 71)',
         alignItems: 'left',
       },
     },
@@ -175,7 +138,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
     search: {
-      // color: 'rgb(191, 186, 186) !important',
       margin: 'auto',
       display: 'flex',
       flexDirection: 'column',
@@ -201,6 +163,4 @@ export const conversationStyle = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const searchUsersStyle = makeStyles((theme: Theme) => ({
 
-}))

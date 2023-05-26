@@ -34,15 +34,19 @@ const CreateComment = (props) => {
         }
     }
 
+    // <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: 'rgb(115, 216, 138)',
+    //                       minWidth: '75px', minHeight: '25px', marginBottom: '5px', marginLeft: '5px' }}
+
 
     return (
     <div style={{ textAlign: 'left', marginBottom: '35px', maxHeight: '10px', minHeight: '10px' }}>
     <ThemeProvider theme={themeBulletin}>
         <div id='commentTextField' style={{ display: 'inline-block'}}>
-        <OutlinedInput style={{ backgroundColor: 'rgb(115, 216, 138)', marginTop: '20px', marginBottom: '0px',
+        <OutlinedInput  style={{ backgroundColor: '#73D88B', marginTop: '20px', marginBottom: '0px',
                                 maxHeight: '20px', minHeight: '20px', maxWidth: '200px' }}
             multiline={false}
             rows='1'
+            placeholder='enter comment'
             inputProps={{
               maxLength: 1000,
               onChange: (e) => handleCommentText(e),
@@ -51,7 +55,7 @@ const CreateComment = (props) => {
             />
         </div>
         <div id="submitCommentButton" style={{ display: 'inline-block '}}>
-         <Button style={{ maxWidth: '75px', maxHeight: '25px', backgroundColor: '#17332c',
+         <Button variant='contained' color='success' style={{ maxWidth: '75px', maxHeight: '25px',
                           minWidth: '75px', minHeight: '25px', marginBottom: '5px', marginLeft: '5px' }}
           onClick={() => handleCommentSubmission()}
           >

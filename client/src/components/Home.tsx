@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RootPropsToHome } from '../Root';
-import ForecastRow from './Weather/ForecastRow';
 import Forecast from './Weather/Forecast';
 import {
   BandAid,
-  ForecastEntry,
+  WeatherWidgetLabel,
+  SwipeIcon,
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
   StatsWrapper,
@@ -48,6 +48,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const Home = ({
+  currentTimeIndex,
   hourlyForecasts,
   windSpeedMeasurementUnit,
   temperatureMeasurementUnit,
@@ -103,13 +104,22 @@ const Home = ({
     <div>
       <BandAid>
         <HomePageCompWrapper>
+          <WeatherWidgetLabel>
+            <strong>Weather Snapshot:</strong>
+          </WeatherWidgetLabel>
+
           <HomeWeatherWidgetHolder>
             <WeatherWidget
+              currentTimeIndex={currentTimeIndex}
               temperatureMeasurementUnit={temperatureMeasurementUnit}
               prepareWeatherIcon={prepareWeatherIcon}
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
+          <SwipeIcon
+            isDark={isDark}
+            src='https://static.thenounproject.com/png/145048-200.png'
+          />
         </HomePageCompWrapper>
         <StatsWrapper>
           <Card

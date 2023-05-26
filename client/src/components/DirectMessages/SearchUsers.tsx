@@ -2,6 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
+import { styled } from '@mui/system';
+import InputBase from '@mui/material/InputBase';
+
 import { useStyles } from './DMStyles';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
@@ -37,13 +40,10 @@ function SearchUsers({
   senderName,
   setShowTextField,
 }) {
-
   const [showAutoComplete, setShowAutoComplete] = useState(true);
-  // const [active, setActive] = useState(true);
   const [label, setLabel] = useState(senderName || 'Search Bikers');
 
   const classes = useStyles();
-
 
   useEffect(() => {
     let active = true;
@@ -68,16 +68,13 @@ function SearchUsers({
     };
   }, [loading]);
 
-
   const resetLabel = () => {
-    // setLabel('Search Bikers');
+    setLabel('Search Bikers');
   };
-
 
   useEffect(() => {
     setLabel(senderName || 'Search Bikers');
   }, [senderName]);
-
 
 
   return (
@@ -85,10 +82,6 @@ function SearchUsers({
         <Autocomplete
           sx={{
             background: 'linear-gradient(128deg, rgb(20, 22, 21) 0%, rgb(64, 65, 64) 100%) rgb(46, 48, 47)',
-            // background:
-            //   'linear-gradient(128deg, rgb(42, 164, 71) 0%, rgb(104, 194, 125) 100%) rgb(123, 231, 149)',
-
-            // borderRadius: '5px',
           }}
           id='asynchronous'
           open={open}
@@ -137,7 +130,6 @@ function SearchUsers({
                       <CircularProgress color='inherit' size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
-
                   </React.Fragment>
                 ),
               }}

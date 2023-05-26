@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../../Root';
 import { interval, Subscription, Subject } from 'rxjs';
 import { map, scan, takeUntil } from 'rxjs/operators';
-import Button from '@mui/material/Button';
 import StopwatchSelect from './StopwatchSelect';
 import {
   exiledStopwatchStatsRedHeadedStepChildrenOptionGroups,
@@ -40,18 +39,20 @@ interface NavBarProps {
   openStopWatch?: boolean;
   setOpenStopWatch: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveWatch: React.Dispatch<React.SetStateAction<boolean>>;
+  setPauseWatch: React.Dispatch<React.SetStateAction<boolean>>;
   activity: string;
   setActivity: React.Dispatch<React.SetStateAction<string>>;
   activityValue: string;
   setActivityValue: React.Dispatch<React.SetStateAction<string>>;
+  isDark: boolean;
 }
 
 
 
-const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue }: NavBarProps) => {
+const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, setActivity, activityValue, setActivityValue, setPauseWatch, isDark }: NavBarProps) => {
   const [time, setTime] = useState<StopwatchTime>({
-    hours: 1,
-    minutes: 36,
+    hours: 0,
+    minutes: 0,
     seconds: 0,
   });
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -68,17 +69,6 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     exiledRedHeadedStepChildrenValueGroups
   );
 
-  const user = useContext(UserContext);
-  if (user) {
-    const { weight } = user;
-  }
-
-  const handleChange = (exercise: string, value: string) => {
-    setValueGroups((prevValueGroups) => ({
-      ...prevValueGroups,
-      [exercise]: value,
-    }));
-  };
 
   useEffect(() => {
     return () => {
@@ -166,17 +156,18 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     <div>
   {openStopWatch && <div className="stopwatch-overlay" onClick={() => handleIconClick()} />}
   <div
-  className='stopwatch'
+
     style={{
       position: 'fixed',
       top: 50,
       right: 32,
       transform: 'translateX(-50)',
-      backgroundColor: 'white',
-      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+      background: isDark ?
+        'linear-gradient(145deg, #1e2062, #030312)' :
+        'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+      boxShadow: isDark ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282b71' : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
       padding: '10px',
       width: '200px',
-      // paddingBottom:'10px',
       borderRadius: '20px',
       zIndex: 1001,
       display: openStopWatch ? 'block' : 'none',
@@ -184,7 +175,9 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
     }}
   >
     <div className='stopwatch-text-align'>
-      <h3 className='stopwatch-text'>
+      <h3 className='stopwatch-text'
+        style={{color: isDark ? 'white' : 'black',}}
+      >
         {String(hours).padStart(2, '0')} : {String(minutes).padStart(2, '0')} :{' '}
         {String(seconds).padStart(2, '0')}
       </h3>
@@ -198,6 +191,7 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
         aria-label='back'
           onClick={() => {
             startStopwatch();
+            setPauseWatch(false);
             setActiveWatch(true);
           }}
         >
@@ -221,13 +215,19 @@ const Stopwatch = ({ openStopWatch, setOpenStopWatch, setActiveWatch, activity, 
       <Fab sx={{ left: 0, boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
 color='secondary'
 size='small'
-      onClick={toggleStopwatch}>
+      onClick={() => {toggleStopwatch(); setActiveWatch(false); setPauseWatch(true)}}>
         {isRunning ? <PauseCircleFilledIcon /> : <RestartAltIcon />}
       </Fab>
       </div>
       {isPickerVisible && (
         <div>
-          <StopwatchSelect activity={activity} setActivity={setActivity} activityValue={activityValue} setActivityValue={setActivityValue} />
+          <StopwatchSelect
+            activity={activity}
+            setActivity={setActivity}
+            activityValue={activityValue}
+            setActivityValue={setActivityValue}
+            isDark={isDark}
+            />
         </div>
       )}
       <div>

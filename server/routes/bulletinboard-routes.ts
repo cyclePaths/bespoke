@@ -57,4 +57,20 @@ bulletinRouter.get('/randomPost', (req, res) => {
     });
 });
 
+//DELETE bulletin from database - DeleteBulletin.tsx
+bulletinRouter.delete('/:id', (req, res) => {
+  const { id } = req.params
+  prisma.bulletin
+    .delete({ where: { id: parseInt(id) } })
+    .then(() => res.sendStatus(203)
+     )
+     .catch((error) => {
+      console.log(error, 'bulletin DELETE error')
+      res.sendStatus(500)
+     })
+    })
+
+
+
+
 export default bulletinRouter;

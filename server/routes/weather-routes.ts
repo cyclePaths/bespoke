@@ -20,13 +20,14 @@ WeatherRoute.get('/forecast', (req, res) => {
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto&daily=sunrise&daily=sunset&forecast_days=${numDaysToForecast}&current_weather=true&temperature_unit=${temperatureUnit}&windspeed_unit=${windSpeedUnit}&precipitation_unit=${precipitationUnit}&hourly=temperature_2m&hourly=relativehumidity_2m&hourly=apparent_temperature&hourly=cloudcover&hourly=windspeed_10m&hourly=precipitation&hourly=snowfall&hourly=precipitation_probability&hourly=rain&hourly=showers&hourly=weathercode&hourly=snow_depth&hourly=visibility&hourly=is_day&hourly=direct_radiation&hourly=diffuse_radiation`
     )
     .then(({ data }) => {
+      const currentTime = data.current_weather.time;
       const currentWeather = {
         temperature: data.current_weather.temperature,
         windspeed: data.current_weather.windspeed,
         winddirection: data.current_weather.winddirection,
         weatherdescription: weatherCodes[data.current_weather.weathercode],
         is_day: data.current_weather.is_day,
-        time: data.current_weather.time,
+        time: currentTime,
       };
       const hourly = new Array(24).fill(0).map(() => ({
         time: new Date(),
@@ -48,7 +49,7 @@ WeatherRoute.get('/forecast', (req, res) => {
         visibility: 0,
         isDay: true,
       }));
-
+      let currentTimeIndex = 0;
       for (let key in data.hourly) {
         data.hourly[key].forEach((ele, i) => {
           if (key === 'temperature_2m') {
@@ -78,8 +79,13 @@ WeatherRoute.get('/forecast', (req, res) => {
             } else {
               hourly[i].isDay = false;
             }
+          } else if (key === 'time') {
+            hourly[i].time = ele;
+            if (hourly[i].time === currentTime) {
+              currentTimeIndex = i;
+            }
           } else {
-            //covers these keys: time, cloudcover, precipitation, snowfall, rain, showers, visibility
+            //covers these keys: cloudcover, precipitation, snowfall, rain, showers, visibility
             hourly[i][key] = ele;
           }
         });
@@ -87,6 +93,7 @@ WeatherRoute.get('/forecast', (req, res) => {
       let sunriseHour = new Date(data.daily.sunrise[0]).getHours();
       let sunsetHour = new Date(data.daily.sunset[0]).getHours();
       const responseObj = {
+        currentTimeIndex: currentTimeIndex,
         currentWeather: currentWeather,
         hourly: hourly,
         sunriseHour: sunriseHour,
