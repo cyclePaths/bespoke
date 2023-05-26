@@ -382,18 +382,6 @@ const Root = () => {
     if (socket && user) {
       socket.on('message', handleReceivedMessage);
     }
-    // Keep the socket event handling
-    useEffect(() => {
-      if (socket && user) {
-        socket.on('message', handleReceivedMessage);
-      }
-
-      return () => {
-        if (socket) {
-          socket.off('message', handleReceivedMessage);
-        }
-      };
-    }, [socket, user]);
     return () => {
       if (socket) {
         socket.off('message', handleReceivedMessage);
@@ -404,18 +392,6 @@ const Root = () => {
   // Adjust handleReceivedMessage
   const handleReceivedMessage = (newMessage: RootMessage) => {
     console.log('Received message:', newMessage);
-    // Adjust handleReceivedMessage
-    const handleReceivedMessage = (newMessage: RootMessage) => {
-      console.log('Received message:', newMessage);
-
-      // Only set the state here, don't show notifications or navigate
-      if (
-        newMessage.senderId !== user?.id &&
-        newMessage.receiverId === user?.id
-      ) {
-        setRootNewMessage(newMessage);
-      }
-    };
     // Only set the state here, don't show notifications or navigate
     if (
       newMessage.senderId !== user?.id &&
