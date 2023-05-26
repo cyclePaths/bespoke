@@ -131,7 +131,7 @@ const Navbar = () => {
           }}
         >
           <img
-            src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1684942437/nfajohsbfczwqlykn6jk.svg'
+            src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132266/bespoke-logo-no-neg-space_cg6fmm.png'
             alt='Bespoke Image'
             style={{
               width: '90%',

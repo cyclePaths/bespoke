@@ -22,6 +22,7 @@ import {
   darkModeOptions,
   defaultOptions,
   Theft,
+  TheftDark,
   Collision,
   POI,
   RoadHazard,
@@ -459,7 +460,7 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
                       lng: event.latLng!.lng(),
                     });
                   }}
-                  icon={Theft}
+                  icon = {isDark ? TheftDark : Theft}
                 />
               );
             case 'Point of Interest':
