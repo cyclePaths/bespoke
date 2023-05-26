@@ -22,6 +22,7 @@ const EquipmentPool = () => {
   };
 
   const handleEquipmentPoolClick = () => {
+    getAllEquipment()
     setExpansion(!expansion)
   }
 

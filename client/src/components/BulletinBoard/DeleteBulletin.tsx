@@ -1,33 +1,41 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../../Root';
-import { Button} from'@mui/material'
+import { Button, ThemeProvider } from'@mui/material'
 import axios from 'axios';
+import themeBulletin from './ThemeBulletin'
 
 const DeleteBulletin = (props) => {
+    const { creator, id } = props
+    const getAllBulletins = props.getAllBulletins
     const context = useContext(UserContext)
-    const bulletinOrigin = props.bulletinOrigin
+
+
 
     const handleBulletinDeletion = () => {
-      if (bulletinOrigin === context) {
-        axios.delete('/bulletin', {
-
+      if (creator === context.user.name) {
+        axios.delete(`/bulletin/${id}`, {
          })
-         .then((response) => {
+         .then(() => {
+          getAllBulletins()
          })
-         .catch(() => alert('Unable to make Bulletin!'));
+         .catch(() => alert('Unable to delete bulletin!'));
       } else {
-        alert('Add topic and text to Bulletin!')
+        alert('Not authorized to delete this bulletin')
+        console.log(context.user.name)
+        console.log(creator)
        }
     }
 
 
     return (
         <div>
-        <Button style={{ maxWidth: '25px', maxHeight: '25px', backgroundColor: '#17332c',
+        <ThemeProvider theme={themeBulletin}>
+        <Button variant='contained' color='success' style={{ maxWidth: '25px', maxHeight: '25px',
                           minWidth: '25px', minHeight: '25px', marginLeft: '0px', marginTop: '5px'}}
           onClick={() => handleBulletinDeletion()}>
-        <h5>Delete</h5>
+        <h5>X</h5>
         </Button>
+        </ThemeProvider>
         </div>
       )
    }
