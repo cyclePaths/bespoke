@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.logo-img {
+  width: auto; /* Set the desired width */
+  height: 200px; /* Allow the height to adjust proportionally */
+}
+
 body {
 	background: rgb(133, 211, 255);
   font-family: 'Roboto', sans-serif;

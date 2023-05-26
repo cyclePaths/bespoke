@@ -166,14 +166,13 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 width: '100%',
                 mb: '1rem',
                 '& .MuiToggleButton-root': {
-                  color: '#2e5b70',
+                  color: isDark ? '#7dc5e3' : '#2e5b70',
                   backgroundColor: isDark ? '#757575' : '#ececec',
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
-                  color: '#7dc5e3',
-                  backgroundColor: '#757575',
+                  color: isDark? '#7dc5e3' : '#7dc5e3',
+                  backgroundColor: isDark ? '#121212' : '#757575',
                 },
-
               }}
             >
               <ToggleButton value='Road Hazard' sx={{ width: '30%' }}>
@@ -220,21 +219,21 @@ const CreateReport = ({ fetchThisMonthReports }) => {
               onChange={handleBodyText}
             />
 
-<IconButton
-  color="primary"
-  aria-label="upload picture"
-  component="label"
-  sx={{
-    margin: '4px',
-    backgroundColor: isDark ? '#707070' : '#ececec',
-    '&:hover': {
-      backgroundColor: isDark ? '#707070' : '#ececec',
-    },
-    '&:active': {
-      backgroundColor: isDark ? '#707070' : '#ececec',
-    },
-  }}
->
+            <IconButton
+              color='primary'
+              aria-label='upload picture'
+              component='label'
+              sx={{
+                margin: '4px',
+                backgroundColor: isDark ? '#707070' : '#ececec',
+                '&:hover': {
+                  backgroundColor: isDark ? '#707070' : '#ececec',
+                },
+                '&:active': {
+                  backgroundColor: isDark ? '#707070' : '#ececec',
+                },
+              }}
+            >
               <input
                 hidden
                 accept='image/*'
@@ -257,7 +256,8 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                 '&:active': {
                   backgroundColor: isDark ? '#707070' : '#ececec',
                 },
-              }}              color='primary'
+              }}
+              color='primary'
               style={{
                 float: 'right',
                 // backgroundColor: '#ececec',

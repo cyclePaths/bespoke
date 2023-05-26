@@ -35,7 +35,6 @@ import 'dayjs/locale/en'; // Import the locale you want to use for month names
 import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
 import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
 
-
 dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
 dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
 
@@ -197,8 +196,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
           icon: getMarkerIconUrl(report.type),
         });
 
-
-
         marker.set('reportId', report.id); // Store the reportId using the set method
 
         const isoDate = report.createdAt;
@@ -309,7 +306,10 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
             value={selectedType}
             onChange={handleTypeChange}
             aria-label='Report Type'
-            sx={{ backgroundColor: 'white' }}
+            sx={{
+              backgroundColor: '#ececec',
+              boxShadow: '-4px 3px 5px #00000033',
+            }}
           >
             <ToggleButton
               value='All'
@@ -433,7 +433,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                           color='text.secondary'
                         >
                           <p className='report-date'>
-                            Reported on: {dayjs(selectedReport.createdAt).format(
+                            Reported on:{' '}
+                            {dayjs(selectedReport.createdAt).format(
                               'MMMM D, YYYY'
                             )}
                           </p>
