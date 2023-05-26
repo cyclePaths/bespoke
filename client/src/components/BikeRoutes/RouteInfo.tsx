@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  colors,
 } from '@mui/material';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,7 +28,7 @@ const RouteInfo = ({
   setMarkers,
   deleteRoute,
 }: RouteProps) => {
-  const { user } = useContext(UserContext);
+  const { user, isDark } = useContext(UserContext);
   const [date, setDate] = useState<string>(route.createdAt);
   const [like, setLike] = useState<boolean>(false);
   const [likeNumber, setLikeNumber] = useState<number>(route.likes);
@@ -106,7 +107,7 @@ const RouteInfo = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        backgroundColor: '#e0e0e0',
+        backgroundColor: isDark ? '#191a35' : '#85d3ff',
         width: '92%',
         borderRadius: '4px',
         justifyContent: 'space-between',
@@ -123,44 +124,65 @@ const RouteInfo = ({
           margin: '10px',
         }}
       >
-        <div>{date}</div>
+        <div style={{ color: isDark ? '#ececec' : 'black' }}>{date}</div>
         <div
           style={{
             marginTop: '5px',
             marginBottom: '5px',
             fontWeight: 'bolder',
+            color: isDark ? '#ececec' : 'black',
           }}
         >
           {route.category}
         </div>
-        <div>Likes: {likeNumber}</div>
+        <div style={{ color: isDark ? '#ececec' : 'black' }}>
+          Likes: {likeNumber}
+        </div>
       </span>
-      <div className='route-name' onClick={() => handleRouteParsing()}>
-        {route.name}
-      </div>
-      {route.userId === user.id ? (
-        <IconButton onClick={() => setDeleteOpen(true)}>
-          <DeleteIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={() => {
-            if (!like) {
-              setLike(true);
-              updateLikes(true);
-            } else {
-              setLike(false);
-              updateLikes(false);
-            }
-          }}
+      <div className='searched-blocks'>
+        <div
+          className='route-name'
+          style={{ color: isDark ? '#ececec' : '#1d1dbc' }}
+          onClick={() => handleRouteParsing()}
         >
-          {like === true ? (
-            <ThumbUpAltOutlinedIcon style={{ color: '#6d6dbd' }} />
-          ) : (
-            <ThumbUpAltOutlinedIcon />
-          )}
-        </IconButton>
-      )}
+          {route.name}
+        </div>
+        {route.userId === user.id ? (
+          <IconButton onClick={() => setDeleteOpen(true)}>
+            <DeleteIcon
+              sx={{ fontSize: '2rem', color: isDark ? '#ececec' : '#0000008a' }}
+            />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => {
+              if (!like) {
+                setLike(true);
+                updateLikes(true);
+              } else {
+                setLike(false);
+                updateLikes(false);
+              }
+            }}
+          >
+            {like === true ? (
+              <ThumbUpAltOutlinedIcon
+                style={{
+                  color: isDark ? '#b69ae4' : '#1d1dbc',
+                  fontSize: '2rem',
+                }}
+              />
+            ) : (
+              <ThumbUpAltOutlinedIcon
+                sx={{
+                  fontSize: '2rem',
+                  color: isDark ? '#ececec' : '#0000008a',
+                }}
+              />
+            )}
+          </IconButton>
+        )}
+      </div>
       <Dialog open={deleteOpen}>
         <DialogTitle>Delete this route?</DialogTitle>
         <DialogContent>

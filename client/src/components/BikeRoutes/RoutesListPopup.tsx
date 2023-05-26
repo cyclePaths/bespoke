@@ -18,7 +18,7 @@ const RoutesListPopup = ({
       sx={{
         '& .MuiPaper-root': {
           alignItems: 'flex-end',
-          backgroundColor: isDark ? '#707070' : '#e0e0e0',
+          backgroundColor: isDark ? '#969696' : '#ececec',
           margin: '10px',
           padding: '10px',
           height: '68vh',

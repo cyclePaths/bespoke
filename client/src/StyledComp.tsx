@@ -6,7 +6,7 @@ export type DarkModeHelperProps = {
 
 export type InputProps = DarkModeHelperProps & {
   secondary?: boolean;
-}
+};
 
 export type BrightnessProps = {
   bright: number;
@@ -36,47 +36,26 @@ const PopoutSaveForm = styled.form<DarkModeHelperProps>`
   margin-top: 60px;
 `;
 
-const CategorySelector = styled.select<DarkModeHelperProps>`
-  border-radius: 3px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
-  color: ${({ isDark }) => (isDark ? '#ececec' : '#000000')};
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 10px;
-`;
-
-const PrivacySelector = styled.div<DarkModeHelperProps>`
-  display: flex;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
-  padding: 3px;
-  border-radius: 3px;
-  border: 1px solid;
-  border-color: rgb(118, 118, 118) rgb(133, 133, 133);
-  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  align-items: center;
-  margin-left: 10px;
-  color: ${({ isDark }) => (isDark ? '#e0e0e0' : '#000000')};
-`;
-
-const OptionsDiv = styled.div`
-  display: flex;
-  place-content: flex-start space-evenly;
-  margin: 15px;
-  flex-wrap: wrap;
-  flex-direction: column;
-`;
-
 const InputLayout = styled.input<InputProps>`
   height: 30px;
-  width: ${({ secondary }) => secondary ? '85%' : '75%'};
+  width: ${({ secondary }) => (secondary ? '85%' : '75%')};
   margin: 5px;
   border-radius: 2px;
-  background-color: ${({ isDark }) => (isDark ? '#707070' : '#ececec')};
+  background-color: ${({ isDark, secondary }) =>
+    secondary
+      ? isDark
+        ? '#a6a6a6'
+        : '#ffffff'
+      : isDark
+      ? '#707070'
+      : '#ececec'};
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   border-style: hidden;
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
   ::placeholder {
-    color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
+    color: ${({ isDark, secondary }) =>
+      secondary ? '#000000' : isDark ? '#d3d3d3' : '#707070'};
   }
 `;
 
@@ -485,6 +464,11 @@ const HomePageCompWrapper = styled.div`
 const LeaderBoardDirections = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 50%;
+  width: 85%;
+  right: 7.5%;
 `;
 
 // Misc styled components
@@ -495,7 +479,7 @@ const NavBarTop = styled.span<DarkModeHelperProps>`
   border-color: ${(props) => (props.isDark ? '#ececec' : 'black')};
   position: fixed;
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   align-items: center;
   height: 6.6vh;
@@ -586,7 +570,6 @@ const ProfileRideDisplay = styled.div`
   align-items: center;
   & > * {
     margin-bottom: 0px;
-
   }
 `;
 
@@ -620,8 +603,6 @@ export {
   StartRouteContainer,
   RouteCreatorComponent,
   PopoutSaveForm,
-  CategorySelector,
-  OptionsDiv,
   RouteListOptions,
   RouteList,
   AchievementBadgeByName,
@@ -647,7 +628,6 @@ export {
   ProfileDisplays,
   ProfileRideDisplay,
   LoadingDiv,
-  PrivacySelector,
   RecentRidesHeader,
   StatsWrapper,
 };

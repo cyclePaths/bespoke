@@ -32,7 +32,6 @@ import FetchedRoutes from './FetchedRoutes';
 import axios from 'axios';
 import { UserContext } from '../../Root';
 import SavePopout from './SavePopout';
-import SaveForm from './SaveForm';
 import RoutesListPopup from './RoutesListPopup';
 import { Button } from '@mui/material';
 import NavigationIcon from '@mui/icons-material/Navigation';
@@ -96,7 +95,7 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
   const [openPopup, setOpenPopup] = useState<boolean>(false);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
   const [routeName, setRouteName] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState<string>('None');
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
   const [likeList, setLikeList] = useState<any[]>([]);
   const [saveMessage, setSaveMessage] = useState<boolean>(false);
@@ -657,20 +656,19 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
       </RouteButtonContainer>
 
       {/* These are popup windows that will display when the Save Created Route button is click or the Find Route Button is clicked */}
-      <SavePopout openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <SaveForm
-          routeName={routeName}
-          setRouteName={setRouteName}
-          category={category}
-          setCategory={setCategory}
-          isPrivate={isPrivate}
-          setIsPrivate={setIsPrivate}
-          setOpenPopup={setOpenPopup}
-          directions={directions!}
-          saveRoute={saveRoute}
-          setSaveMessage={setSaveMessage}
-        />
-      </SavePopout>
+      <SavePopout
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+        routeName={routeName}
+        setRouteName={setRouteName}
+        category={category}
+        setCategory={setCategory}
+        isPrivate={isPrivate}
+        setIsPrivate={setIsPrivate}
+        directions={directions!}
+        saveRoute={saveRoute}
+        setSaveMessage={setSaveMessage}
+      />
 
       {/* This is the popout for searching for a route in the database */}
       <RoutesListPopup

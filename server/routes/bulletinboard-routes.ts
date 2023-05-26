@@ -40,4 +40,21 @@ bulletinRouter.post('/', (req, res) => {
     });
 });
 
+bulletinRouter.get('/randomPost', (req, res) => {
+  prisma.bulletin
+    .findMany({})
+    .then((result) => {
+      if (result.length === 0) {
+        res.sendStatus(404);
+      } else {
+        const randomPost = Math.floor(Math.random() * result.length);
+        res.status(200).send(result[randomPost]);
+      }
+    })
+    .catch((err) => {
+      console.error('Failed to find Posts: ', err);
+      res.sendStatus(500);
+    });
+});
+
 export default bulletinRouter;
