@@ -775,10 +775,6 @@ const Root = () => {
                       handleToggleStyle={handleToggleStyle}
                       isDark={isDark}
                       setIsDark={setIsDark}
-                      // homeAddress={homeAddress}
-                      // setHomeAddress={setHomeAddress}
-                      // weight={weight}
-                      // setWeight={setWeight}
                     />
                   }
                 />
@@ -811,23 +807,6 @@ const Root = () => {
                   }
                 />
                 <Route path='report' element={<Report />} />
-                <Route
-                  path='createReport'
-                  element={
-                    <CreateReport
-                      fetchThisMonthReports={fetchThisMonthReports}
-                    />
-                  }
-                />
-                <Route
-                  path='reportsMap'
-                  element={
-                    <ReportsMap
-                      monthReports={monthReports}
-                      fetchThisMonthReports={fetchThisMonthReports}
-                    />
-                  }
-                />
               </Route>
             </Routes>
             {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}
