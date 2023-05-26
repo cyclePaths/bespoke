@@ -101,22 +101,27 @@ const darkModeOptions = {
 const markerSize = new google.maps.Size(35, 35);
 
 const Theft = {
-  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960049/k6ynymryw47wtkgpfzj6.svg',
+  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
+  scaledSize: markerSize,
+};
+
+const TheftDark = {
+  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132831/ums6svk2hlgqpiuq2ehc.png',
   scaledSize: markerSize,
 };
 
 const Collision = {
-  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960175/bgespvkap5mz1n6z5nqs.svg',
+  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126153/mbgbyds2wb6sdy8srfrv.png',
   scaledSize: markerSize,
 };
 
 const POI = {
-  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960221/uuezqsykzzbju2in5iqf.svg',
+  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685130912/vzeaonc0wqjars5lrils.png',
   scaledSize: markerSize,
 };
 
 const RoadHazard = {
-  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1684960006/ypfefgfrehn6jqgdlvez.svg',
+  url: 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685130782/owbm7dh1aqkzgz8fpkay.png',
   scaledSize: markerSize,
 };
 
@@ -130,6 +135,7 @@ export {
   darkModeOptions,
   defaultOptions,
   Theft,
+  TheftDark,
   Collision,
   POI,
   RoadHazard,
