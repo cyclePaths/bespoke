@@ -31,6 +31,7 @@ const LeaderBoardPopout = ({
       sx={{
         '& .MuiPaper-root': {
           backgroundColor: isDark ? '#707070' : '#ececec',
+          margin: '20px',
         },
       }}
     >

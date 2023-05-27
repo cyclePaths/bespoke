@@ -130,13 +130,9 @@ const Navbar = () => {
         >
           <Link to='/home' onClick={() => clickHome()}>
             <img
-              src={
-                isDark
-                  ? 'https://cdn.discordapp.com/attachments/187823430295355392/1111718624739205212/Dark_Mode_Bespoke.png'
-                  : 'https://cdn.discordapp.com/attachments/187823430295355392/1111710285917593732/bespoke-logo-no-neg-space.png'
-              }
+              src='https://cdn.discordapp.com/attachments/187823430295355392/1111797966160789524/bespoke-text-logo-3B97D2.png'
               alt='Bespoke Image'
-              style={{ height: '6.6vh' }}
+              style={{ height: '5.5vh', marginLeft: '10px', marginTop: '5px' }}
             />
           </Link>
           <span

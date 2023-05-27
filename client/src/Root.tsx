@@ -683,7 +683,6 @@ const Root = () => {
     try {
       const response = await axios.get('/reports/thisMonth');
       setMonthReports(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }

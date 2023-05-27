@@ -112,8 +112,12 @@ const Home = ({
             sx={{
               margin: '10px',
               width: '100%',
-              backgroundColor: isDark ? '#cacaca' : '#ececec',
-              boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+              background: isDark
+                ? 'linear-gradient(145deg, #1E2062, #030312)'
+                : 'linear-gradient(145deg, #3CC6F6, #D8F1FF)',
+              boxShadow: isDark
+                ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282B71'
+                : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
             }}
           >
             <CardHeader
@@ -165,8 +169,12 @@ const Home = ({
               sx={{
                 margin: '10px',
                 maxWidth: '45%',
-                backgroundColor: isDark ? '#cacaca' : '#ececec',
-                boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+                background: isDark
+                  ? 'linear-gradient(145deg, #1E2062, #030312)'
+                  : 'linear-gradient(145deg, #3CC6F6, #D8F1FF)',
+                boxShadow: isDark
+                  ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282B71'
+                  : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
               }}
             >
               <CardHeader
@@ -200,8 +208,12 @@ const Home = ({
               sx={{
                 margin: '10px',
                 maxWidth: '45%',
-                backgroundColor: isDark ? '#cacaca' : '#ececec',
-                boxShadow: '0px 0px 8px 2px #00000033',
+                background: isDark
+                  ? 'linear-gradient(145deg, #1E2062, #030312)'
+                  : 'linear-gradient(145deg, #3CC6F6, #D8F1FF)',
+                boxShadow: isDark
+                  ? '1.25em 1.25em 3.75em rgb(40, 43, 113), -0.625em -0.625em 1.3125em #282B71'
+                  : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
               }}
             >
               <CardHeader
@@ -246,15 +258,3 @@ const Home = ({
 };
 
 export default Home;
-
-//old forecastRow on home page:
-
-// <ForecastRow
-// rowData={homeForecasts}
-// prepareWeatherIcon={prepareWeatherIcon}
-// windSpeedMeasurementUnit={windSpeedMeasurementUnit}
-// temperatureMeasurementUnit={temperatureMeasurementUnit}
-// precipitationMeasurementUnit={precipitationMeasurementUnit}
-// sunriseHour={sunriseHour}
-// sunsetHour={sunsetHour}
-// />
