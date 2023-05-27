@@ -217,6 +217,7 @@ const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
   padding: 20px;
   border-radius: 7px;
   position: fixed;
+  width: -webkit-fill-available;
   box-shadow: ${(props) =>
     props.isDark
       ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
