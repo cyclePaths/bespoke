@@ -81,7 +81,23 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: 'white',
       padding: theme.spacing(1),
       wordWrap: 'break-word',
+
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      marginBottom: theme.spacing(2),
     },
+
+    messageText: {
+      marginBottom: theme.spacing(0.5),
+    },
+
+    messageDate: {
+      fontSize: '0.7rem',
+      color: '#ffffff',
+      alignSelf: 'flex-end',
+    },
+
     messageFromMe: {
       color: ' #f0f0f0',
       background: 'linear-gradient(128deg, rgb(43, 139, 195) 0%, rgb(88, 182, 236) 100%) rgb(117, 199, 246)',
