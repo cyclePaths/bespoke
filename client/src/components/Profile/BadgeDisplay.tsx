@@ -57,6 +57,18 @@ const BadgeDisplay = () => {
     }));
   };
 
+  const displayTooltipButton = (badge) => {
+    if (badge.name !== 'No Achievements') {
+      return (
+        <button
+          onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
+        >
+          Favorite
+        </button>
+      );
+    }
+  };
+
   const handleFavoriteClick = (event, image) => {
     event.stopPropagation();
     selectBadge(image);
@@ -112,13 +124,7 @@ const BadgeDisplay = () => {
                 <TooltipBox isDark={isDark}>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
-                  <button
-                    onClick={(event) =>
-                      handleFavoriteClick(event, badge.badgeIcon)
-                    }
-                  >
-                    Favorite
-                  </button>
+                  {displayTooltipButton(badge)}
                 </TooltipBox>
               </AchievementBadgeTooltip>
             </AchievementBadgeAndTooltipContainer>
