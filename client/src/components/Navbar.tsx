@@ -126,19 +126,18 @@ const Navbar = () => {
             alignItems: 'center',
             width: '100%',
             justifyContent: 'space-between',
+            height: '100%',
           }}
         >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link to='/home' onClick={() => clickHome()}>
             <img
-              src={
-                isDark
-                  ? 'https://cdn.discordapp.com/attachments/187823430295355392/1111718624739205212/Dark_Mode_Bespoke.png'
-                  : 'https://cdn.discordapp.com/attachments/187823430295355392/1111710285917593732/bespoke-logo-no-neg-space.png'
-              }
+              src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1685139586/bespoke-text-logo-3B97D2_qtzy1y.png'
               alt='Bespoke Image'
-              style={{ height: '6.6vh' }}
+              style={{ height: '5vh', marginLeft: '10px', marginTop: '10px' }}
             />
           </Link>
+        </div>
           <span
             style={{
               width: '45%',

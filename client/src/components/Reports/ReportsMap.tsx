@@ -35,7 +35,6 @@ import 'dayjs/locale/en'; // Import the locale you want to use for month names
 import 'dayjs/plugin/customParseFormat'; // Import the plugin for custom format parsing
 import 'dayjs/plugin/localizedFormat'; // Import the plugin for localized format
 
-
 dayjs.extend(require('dayjs/plugin/customParseFormat')); // Extend dayjs with the customParseFormat plugin
 dayjs.extend(require('dayjs/plugin/localizedFormat')); // Extend dayjs with the localizedFormat plugin
 
@@ -85,7 +84,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
     setMap(map);
   };
 
-  const { user, geoLocation, isDark } = useContext(UserContext);
+  const { user, geoLocation, isDark, joinDate } = useContext(UserContext);
+  // console.log(joinDate);
   const options = {
     disableDefaultUI: true,
     styles: [
@@ -169,7 +169,9 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               };
             case 'Theft Alert':
               return {
-                url: isDark ? 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132831/ums6svk2hlgqpiuq2ehc.png' : 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
+                url: isDark
+                  ? 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685132831/ums6svk2hlgqpiuq2ehc.png'
+                  : 'https://res.cloudinary.com/dcecaxmxv/image/upload/v1685126963/odr2o07adcq5yagvuus2.png',
                 scaledSize: markerSize,
               };
             case 'Collision':
@@ -246,11 +248,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
         return marker;
       });
 
-      // const filteredMarkers = newMarkers.filter((marker) => {
-      //   const reportId = marker.get("reportId");
-      //   return updatedReports.find((report) => report.id === reportId)?.published;
-      // });
-
       const centerLatLng = center;
       const circle = new google.maps.Circle({
         center: centerLatLng!,
@@ -308,16 +305,26 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
             onChange={handleTypeChange}
             aria-label='Report Type'
             sx={{
-              backgroundColor: '#ececec',
+              display: 'flex',
+              flexWrap: 'nowrap',
+              justifyContent: 'center',
+              width: 'auto',
+              marginBottom: '1rem',
               boxShadow: '-4px 3px 5px #00000033',
+              '& .MuiToggleButton-root': {
+                color: isDark ? '#7dc5e3' : '#2e5b70',
+                backgroundColor: isDark ? '#757575' : '#ececec',
+              },
+              '& .MuiToggleButton-root.Mui-selected': {
+                color: isDark ? '#7dc5e3' : '#7dc5e3',
+                backgroundColor: isDark ? '#121212' : '#757575',
+              },
             }}
           >
             <ToggleButton
               value='All'
               sx={{
                 flexGrow: 1,
-                color: selectedType === 'All' ? 'white' : 'grey',
-                backgroundColor: selectedType === 'All' ? 'white' : 'lightgrey',
               }}
             >
               All
@@ -326,9 +333,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               value='Road Hazard'
               sx={{
                 flexGrow: 1,
-                color: selectedType === 'Road Hazard' ? 'white' : 'grey',
-                backgroundColor:
-                  selectedType === 'Road Hazard' ? 'white' : 'lightgrey',
               }}
             >
               Road
@@ -337,9 +341,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               value='Theft Alert'
               sx={{
                 flexGrow: 1,
-                color: selectedType === 'Theft Alert' ? 'white' : 'grey',
-                backgroundColor:
-                  selectedType === 'Theft Alert' ? 'white' : 'lightgrey',
               }}
             >
               Theft
@@ -348,9 +349,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               value='Collision'
               sx={{
                 flexGrow: 1,
-                color: selectedType === 'Collision' ? 'white' : 'grey',
-                backgroundColor:
-                  selectedType === 'Collision' ? 'white' : 'lightgrey',
               }}
             >
               Collision
@@ -359,9 +357,6 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               value='Point of Interest'
               sx={{
                 flexGrow: 1,
-                color: selectedType === 'Point of Interest' ? 'white' : 'grey',
-                backgroundColor:
-                  selectedType === 'Point of Interest' ? 'white' : 'lightgrey',
               }}
             >
               POI
@@ -404,7 +399,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                   <>
                     <p
                       className='report-type'
-                      style={{ marginTop: '1rem', textAlign: 'center' }}
+                      style={{ marginTop: '1rem', textAlign: 'center', fontSize: '1.5rem'}}
                     >
                       {selectedReport.type}: {selectedReport.title}
                     </p>
@@ -429,7 +424,8 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                           sx={{
                             fontSize: 14,
                             textAlign: 'left',
-                            marginTop: '0px',
+                            // marginTop: '0px',
+                            margin: '0px'
                           }} // Reduce margin-top
                           color='text.secondary'
                         >
@@ -448,7 +444,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                             fontSize: 14,
                             textAlign: 'right',
                             marginBottom: '0.5rem',
-                          }} // Reduce margin-bottom
+                          }}
                           color='text.secondary'
                           gutterBottom
                         >
@@ -459,11 +455,13 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                       </CardContent>
                     </Card>
 
-                    <Tooltip title='Archive Report'>
-                      <ArchiveIcon
-                        onClick={() => handleButtonClick(selectedReport.id)}
-                      />
-                    </Tooltip>
+                    <div style={{ marginTop: '1rem' }}>
+                      <Tooltip title='Archive Report'>
+                        <ArchiveIcon
+                          onClick={() => handleButtonClick(selectedReport.id)}
+                        />
+                      </Tooltip>
+                    </div>
                   </>
                 )}
               </Box>
