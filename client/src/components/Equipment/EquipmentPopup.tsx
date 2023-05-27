@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { UserContext } from '../../Root';
 import axios from 'axios';
 import {
@@ -6,13 +6,12 @@ import {
   OutlinedInput,
   Dialog,
   DialogContent,
-  DialogTitle,
 } from '@mui/material';
 
 const EquipmentPopup = ({
   children,
   openEquipmentEntry,
-  setOpenEquipmentEntry,
+  updateEquipment,
   exitPopup
 }) => {
   const context = useContext(UserContext);
@@ -29,10 +28,12 @@ const EquipmentPopup = ({
           equipmentDescription: equipmentDescription,
           equipmentType: equipmentType,
         })
-        .then(() => {
+        .then((response) => {
+          let submittedEquipment = response.data
           context.updateAchievements('Gearhead');
           setEquipmentDescription('');
           setEquipmentType('');
+          updateEquipment(submittedEquipment)
           exitPopup()
         })
         .catch(() => alert('Unable to POST EQUIPMENT!'));
@@ -50,12 +51,13 @@ const EquipmentPopup = ({
   };
 
   return (
-    <Dialog open={openEquipmentEntry} PaperProps={{ style: { backgroundColor: 'rgb(133, 211, 255)'}}}>
+    <Dialog open={openEquipmentEntry} PaperProps={{ style: { backgroundColor: context.isDark ? '#757575' : '#ECECEC' }}}>
           <div style={{display: 'flex', justifyContent: 'center', marginLeft: '10px', marginTop: '10px', marginRight: '10px', marginBottom: '5px'}}>Enter Equipment Information:</div>
       <div style={{ display: 'flex', justifyContent: 'center'}}>
       <OutlinedInput
         style={{
-          backgroundColor: 'rgb(133, 211, 255)',
+          color: context.isDark ? '#FFFFFF' : '#000000',
+          backgroundColor: context.isDark ? '#757575' : '#ECECEC',
           marginTop: '10px',
           maxWidth: '175px',
           maxHeight: '25px',
@@ -75,7 +77,8 @@ const EquipmentPopup = ({
       <div style={{ display: 'flex', justifyContent: 'center'}}>
       <OutlinedInput
         style={{
-          backgroundColor: 'rgb(133, 211, 255)',
+          color: context.isDark ? '#FFFFFF' : '#000000',
+          backgroundColor: context.isDark ? '#757575' : '#ECECEC',
           marginTop: '5px',
           maxWidth: '175px',
           maxHeight: '25px',

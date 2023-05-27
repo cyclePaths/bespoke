@@ -28,13 +28,13 @@ let deleteHolder = <DeleteBulletin style={{ position: 'absolute', top: '0px', ri
    return (
    <div style ={{display: 'flex', justifyContent: 'center', alignItems: 'center',
                  paddingBottom: '20px', paddingTop: '10px', minWidth: '50%', maxWidth: '100%'}}>
-       <div  className='bulletin' style={{  fontFamily: 'roboto', minWidth: '95%', maxWidth: '95%', border: '1px solid #000000',
+       <div  className='bulletin' style={{  fontFamily: 'roboto', minWidth: '93%', maxWidth: '93%', border: '0px solid #000000',
           borderRadius: '4px', background: context.isDark
-          ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
-          : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5',
+          ? 'linear-gradient(145deg, #1e2062, #030312)'
+          : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
           boxShadow: context.isDark
-          ? 'inset 1.25em 1.25em 1.4375em #030312, inset -1.25em -1.25em 1.4375em #1e2062, #282b71 -5px -5px 15px'
-          : 'inset 1.25em 1.25em 1.4375em #59bddf, inset -1.25em -1.25em 1.4375em #71b3d9, #71b3d9 -5px -5px 15px',
+          ? '1.25em 1.25em 3.75em rgb(40, 43, 113)'
+          : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
           position: 'relative',}}>
        <div className='bulletinTopic' style={{ display: 'flex', alignItems: 'center', paddingLeft:'10px', paddingRight:'10px', paddingTop: '3px'}}>
          <span><b>{topic} -- <i>{creator} -- {formattedDate}</i></b></span>
