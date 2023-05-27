@@ -156,6 +156,7 @@ const LeaderBoard = () => {
       </div>
       <LeaderBoardDirections>
         <ArrowBackIcon sx={{ fontSize: '2rem' }} />
+        Swipe
         <ArrowForwardIcon sx={{ fontSize: '2rem' }} />
       </LeaderBoardDirections>
     </>

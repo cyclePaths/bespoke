@@ -508,7 +508,7 @@ const LeaderBoardDirections = styled.div`
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 50%;
+  top: 75.5%;
   width: 85%;
   right: 7.5%;
 `;

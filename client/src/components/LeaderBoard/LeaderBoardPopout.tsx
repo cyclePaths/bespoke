@@ -28,6 +28,7 @@ const LeaderBoardPopout = ({
   return (
     <Dialog
       open={openLeaderBoard}
+      onClose={() => setOpenLeaderBoard(false)}
       sx={{
         '& .MuiPaper-root': {
           backgroundColor: isDark ? '#707070' : '#ececec',
@@ -35,14 +36,6 @@ const LeaderBoardPopout = ({
         },
       }}
     >
-      <CloseIcon
-        sx={{
-          color: isDark ? '#e0e0e0' : 'black',
-          fontSize: '2rem',
-          width: '19em',
-        }}
-        onClick={() => handleClose()}
-      />
       {children}
     </Dialog>
   );
