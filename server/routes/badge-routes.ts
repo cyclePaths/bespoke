@@ -37,10 +37,10 @@ badgeRouter.get('/all-badges', async (req: Request, res: Response) => {
       earnedBadges: earnedBadges,
       joinTableBadges: badgesOnUser,
     };
-    res.status(200).send(outp);
+    return res.status(200).send(outp);
   } catch (err) {
     console.error('an error occurred when GETting all badges', err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -55,16 +55,16 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
     });
     if (!user) {
       console.error('could not find user in database');
-      res.sendStatus(404);
+      return res.sendStatus(404);
     } else {
-      res.send(user.selectedBadge).status(200);
+      return res.send(user.selectedBadge).status(200);
     }
   } catch (err) {
     console.error(
       "an error has occurred GETting the user's selected badge icon: ",
       err
     );
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -83,7 +83,7 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 //     //if user not in db, throw error
 //     if (!user) {
 //       console.error(`could not find user with id ${userId} in the database`);
-//       res.sendStatus(500);
+//       return res.sendStatus(500);
 //     }
 //     //find badge with the id that was sent
 //     const badge = await prisma.badge.findUnique({
@@ -94,7 +94,7 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 //     //if no badge with that id, throw error
 //     if (!badge) {
 //       console.error(`could not find badge with id ${badgeId}`);
-//       res.sendStatus(500);
+//       return res.sendStatus(500);
 //     }
 //     let tier = badge?.tier;
 //     let tierUp = false;
@@ -115,7 +115,7 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 //       //   },
 //       // });
 //       //I think it should just error out instead?
-//       res.sendStatus(404);
+//       return res.sendStatus(404);
 //     } else if (badge && badgeOnUser && badgeOnUser.counter && badge.tier) {
 //       const currentCount = badgeOnUser.counter; //get the current count for this join table
 //       const currentTier = badge.tier; //get the current tier for the badge in question
@@ -160,13 +160,13 @@ badgeRouter.get('/selected-badge', async (req: Request, res: Response) => {
 //       tierUp: tierUp,
 //       tier: tier,
 //     };
-//     res.send(responseData).status(201);
+//     return res.send(responseData).status(201);
 //   } catch (err) {
 //     console.error(
 //       `an error occurred when attempting to check/update the tier of badge with id ${badgeId} for user with id ${userId}`,
 //       err
 //     );
-//     res.sendStatus(500);
+//     return res.sendStatus(500);
 //   }
 // });
 
@@ -183,7 +183,7 @@ badgeRouter.post('/add', async (req, res) => {
     });
     if (!user) {
       console.error(`could not find user with id ${userId}`);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
     const badge = await prisma.badge.findUnique({
       where: {
@@ -192,7 +192,7 @@ badgeRouter.post('/add', async (req, res) => {
     });
     if (!badge) {
       console.error(`could not find badge with id ${badgeId}`);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
     if (badge && user) {
       await prisma.badgesOnUsers.create({
@@ -202,16 +202,16 @@ badgeRouter.post('/add', async (req, res) => {
           counter: 0,
         },
       });
-      res.sendStatus(201);
+      return res.sendStatus(201);
     } else {
-      res.sendStatus(404);
+      return res.sendStatus(404);
     }
   } catch (err) {
     console.error(
       `an error occurred when attempting to add new badge with id ${badgeId} to user with id ${userId}`,
       err
     );
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -225,12 +225,12 @@ badgeRouter.delete('/delete-badge', async (req, res) => {
         userId_badgeId: { userId, badgeId },
       },
     });
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (err) {
     console.error(
       `an error occurred when attempting to delete badge with badge ID ${badgeId} from user with ID ${userId}`
     );
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -249,7 +249,7 @@ badgeRouter.delete('/delete-badge', async (req, res) => {
 //       console.error(
 //         `an error occurred trying to find user with id ${userId}; no user with that id exists in the database`
 //       );
-//       res.sendStatus(500);
+//       return res.sendStatus(500);
 //     }
 //     const badgeOnUser = await prisma.badgesOnUsers.findUnique({
 //       where: {
@@ -265,9 +265,9 @@ badgeRouter.delete('/delete-badge', async (req, res) => {
 //             counter: change,
 //           },
 //         });
-//         res.status(201).send(newBadge);
+//         return res.status(201).send(newBadge);
 //       } else {
-//         res.sendStatus(404); //I assume 404 is the correct status code, since the badge to be downticked wasn't found?
+//         return res.sendStatus(404); //I assume 404 is the correct status code, since the badge to be downticked wasn't found?
 //       }
 //     } else {
 //       let currentValue = badgeOnUser.counter;
@@ -283,14 +283,14 @@ badgeRouter.delete('/delete-badge', async (req, res) => {
 //           counter: newValue,
 //         },
 //       });
-//       res.status(200).send(updateCounter);
+//       return res.status(200).send(updateCounter);
 //     }
 //   } catch (err) {
 //     console.error(
 //       `an error occurred when attempting to update ${req.body.key}`,
 //       err
 //     );
-//     res.sendStatus(500);
+//     return res.sendStatus(500);
 //   }
 // });
 
@@ -308,12 +308,12 @@ badgeRouter.patch('/set', async (req: Request, res: Response) => {
         selectedBadge: iconURL,
       },
     });
-    res.status(201).send(updateBadge);
+    return res.status(201).send(updateBadge);
   } catch (err) {
     console.error(
       `an error has occurred while trying to update user with id ${id} to prefer badge with url ${iconURL}`
     );
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 

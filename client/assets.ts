@@ -201,7 +201,7 @@ export const weatherIcons = {
 export const badgeInfo = [
   {
     name: 'Certified',
-    description: 'Fill out all necessary information on your profile',
+    description: 'Complete your first ride',
   },
   {
     name: 'Bespoke Devotee',
@@ -245,11 +245,11 @@ export const badgeInfo = [
   },
   {
     name: 'Road Warrior',
-    description: 'Ride a significant distance overall',
+    description: 'Complete a ride that lasts longer than 2 hours',
   },
   {
     name: 'Lean Machine',
-    description: 'Burn a significant amount of calories overall',
+    description: 'Burn 400+ calories in one ride',
   },
   {
     name: 'Community Enthusiast',
@@ -273,7 +273,7 @@ export const badgeInfo = [
   },
   {
     name: 'Speedster',
-    description: 'Arrive at your ride destination faster than expected',
+    description: 'Complete a ride with 20+ mph speed',
   },
   {
     name: 'Centurion',

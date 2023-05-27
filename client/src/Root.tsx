@@ -186,6 +186,8 @@ const Root = () => {
     'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
   );
 
+  const [earnedCertified, setEarnedCertified] = useState<Boolean>(false);
+
   //stately variables to save the units of measurement the user wishes weather related figures to be displayed in
   const [windSpeedMeasurementUnit, setWindSpeedMeasurementUnit] =
     useState<string>('mph'); //should be either 'mph' or 'kmh',
@@ -367,6 +369,8 @@ const Root = () => {
   the notifications so that they display only for a receiver, and not for everyone.
   */
 
+  //these are functions related to achievements and badges
+
   //gets all badge objects on database as well as all badges the user has earned
   const getBadges = () => {
     axios
@@ -390,6 +394,9 @@ const Root = () => {
                 if (earnedBadges[i].id === ele.badgeId) {
                   earnedBadges[i].counter = ele.counter;
                 }
+              }
+              if (earnedBadges[i].name === 'Certified') {
+                setEarnedCertified(true);
               }
             }
           });
@@ -454,8 +461,8 @@ const Root = () => {
   //     );
   // };
 
-  //function to add or remove (or update?) badges for users
-  const addBadge = (badgeName, tier = undefined) => {
+  //function to add badges for users
+  const addBadge = (badgeName, tier) => {
     //will not attempt to add badge if it already exists on user
     const badgeNamesOnUser = userBadges.map((ele) => {
       return ele.name;
@@ -480,14 +487,7 @@ const Root = () => {
           badgeId: badgeId,
         })
         .then(() => {
-          if (false) {
-            /** */
-            //this should now be exclusively for Leaderboard achievements - will need to update if statement
-            /** */
-            toast(`New Achievement Earned: ${badgeName} Tier ${tier}!`);
-          } else {
-            toast(`New Achievement Earned: ${badgeName}!`);
-          }
+          toast(`New Achievement Earned: ${badgeName}!`);
           getBadges(); //update allBadges and badgesOnUser with new DB info
         })
         .catch((err) =>
@@ -501,8 +501,82 @@ const Root = () => {
     }
   };
 
+  //function to add ride related badges if they meet requirements
+  const rideBadgeUpdate = async (
+    speed,
+    calories,
+    duration,
+    temperature = currentWeather.temperature,
+    weather = currentWeather.weatherdescription,
+    certified = earnedCertified
+  ) => {
+    // console.log('rideBadgeUpdate has fired!');
+    console.log(
+      'this is what is being passed in as current weather: ',
+      weather
+    );
+    let todayDate = new Date();
+
+    const currentHour = todayDate.getHours();
+    if (certified) {
+      await addBadge('Dedicated Rider', 3);
+    }
+    await addBadge('Certified', null);
+    if (speed >= 25) {
+      await addBadge('Speedster', 3);
+    }
+    if (currentHour >= 6 && currentHour <= 9) {
+      await addBadge('Early Bird', null);
+    }
+    if (currentHour >= 0 && currentHour < 6) {
+      await addBadge('Night Rider', null);
+    }
+    if (temperature >= 90) {
+      await addBadge('Boiling Blood', null);
+    }
+    if (temperature <= 32) {
+      await addBadge('Cold Blooded', null);
+    }
+    if (calories >= 400) {
+      await addBadge('Lean Machine', 3);
+    }
+    if (
+      weather === 'Clear Sky' ||
+      weather === 'Mainly Clear' ||
+      weather === 'Partly Cloudy' ||
+      weather === 'Overcast'
+    ) {
+      await addBadge('Fairweather Friend', 3);
+    }
+    if (
+      weather === 'Thunderstorms' ||
+      weather === 'Moderate Thunderstorms' ||
+      weather === 'Heavy Thunderstorms' ||
+      weather === 'Heavy Snowfall' ||
+      weather === 'Light Snowfall' ||
+      weather === 'Snow Grains' ||
+      weather === 'Violent Showers' ||
+      weather === 'Moderate Showers' ||
+      weather === 'Heavy Rain' ||
+      weather === 'Moderate Rain' ||
+      weather === 'Freezing Drizzle' ||
+      weather === 'Freezing Rain'
+    ) {
+      await addBadge('Storm Chaser', 3);
+    }
+    //if ride was >2hrs, add badge Road Warrior
+    if (duration >= 120) {
+      await addBadge('Road Warrior', 3);
+    }
+    const hours = duration / 60;
+    let miles = hours * speed;
+    if (miles >= 1000) {
+      await addBadge('Centurion', null);
+    }
+  };
+
   //function to delete a badge
-  const deleteBadge = (badgeName, tier = undefined) => {
+  const deleteBadge = (badgeName, tier) => {
     let badgeId = 0;
     //look through all of the badges to find the one with this badge name and tier; get its id
     for (let i = 0; i < allBadges.length; i++) {
@@ -745,6 +819,7 @@ const Root = () => {
           setSelectedBadge,
           // updateBadgeCounter,
           addBadge,
+          rideBadgeUpdate,
           deleteBadge,
           // tierCheck,
           // updateAchievements,

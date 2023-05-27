@@ -18,6 +18,7 @@ const BadgeDisplay = () => {
     setSelectedBadge,
     tickBadgeCounter,
     addBadge,
+    rideBadgeUpdate,
     tierCheck,
     isDark,
   } = useContext(UserContext);
