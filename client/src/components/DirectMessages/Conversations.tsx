@@ -244,7 +244,7 @@ const Conversations: React.FC<ConversationsProps> = ({
         </div>
       ) : (
         <Fab
-          sx={{ top: '20px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
+          sx={{ top: '20px', marginLeft: '10px', boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)' }}
           color='secondary'
           size='small'
           aria-label='back'

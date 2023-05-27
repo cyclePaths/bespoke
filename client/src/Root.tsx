@@ -811,15 +811,15 @@ const Root = () => {
                   }
                 />
                 <Route path='report' element={<Report />} />
-                <Route
+                {/* <Route
                   path='createReport'
                   element={
                     <CreateReport
                       fetchThisMonthReports={fetchThisMonthReports}
                     />
                   }
-                />
-                <Route
+                /> */}
+                {/* <Route
                   path='reportsMap'
                   element={
                     <ReportsMap
@@ -827,7 +827,7 @@ const Root = () => {
                       fetchThisMonthReports={fetchThisMonthReports}
                     />
                   }
-                />
+                /> */}
               </Route>
             </Routes>
             {isDark ? <GlobalStyleDark /> : <GlobalStyleLight />}

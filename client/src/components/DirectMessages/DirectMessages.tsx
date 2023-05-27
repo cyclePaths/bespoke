@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
+import { Paper, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import { useStyles, inputTextStyle } from './DMStyles';
 import SearchUsers, { Users } from './SearchUsers';
@@ -11,6 +13,29 @@ import { BandAid } from '../../StyledComp';
 import Conversations from './Conversations';
 import { SocketContext } from '../../SocketContext';
 import { Socket } from 'socket.io-client';
+import { createDeflate } from 'zlib';
+import dayjs from 'dayjs';
+import 'dayjs/locale/en';
+import styled from 'styled-components';
+
+
+// const MessageContainer = styled(Paper)`
+//   display: flex;
+//   flex-direction: column;
+//   padding: ${({ theme }) => theme.spacing(2)};
+//   margin-bottom: ${({ theme }) => theme.spacing(1)};
+// `;
+
+// const MessageText = styled.span`
+//   margin-bottom: ${({ theme }) => theme.spacing(1)};
+// `;
+
+// const MessageDate = styled.span`
+//   font-size: 0.8rem;
+//   color: #888888;
+// `;
+
+
 
 export interface Message {
   id: number;
@@ -22,6 +47,7 @@ export interface Message {
   //fromMe: boolean;
   userId: number;
   isNotificationClicked: boolean;
+  createdAt: Date;
 }
 
 interface SelectedUser {
@@ -59,6 +85,23 @@ interface SelectedUser {
   totalLikesReceived: number;
 }
 
+
+function formatMessageDate(date) {
+  const messageDate = dayjs(date);
+  const now = dayjs();
+
+  if (messageDate.isSame(now, 'day')) {
+    return messageDate.format('[Today], h:mmA');
+  } else if (messageDate.isSame(now.subtract(1, 'day'), 'day')) {
+    return messageDate.format('[Yesterday], h:mmA');
+  } else if (messageDate.isSame(now, 'year')) {
+    return messageDate.format('MMM DD, h:mmA');
+  } else {
+    return messageDate.format('MM/DD/YYYY, h:mmA');
+  }
+}
+
+
 // function Message({ text, fromMe }: Message) {
 function Message({
   id,
@@ -68,10 +111,18 @@ function Message({
   receiverName,
   text,
   userId,
+  createdAt,
 }: Message) {
   const classes = useStyles();
   // const { id: userId } = useContext(UserContext);
   const fromMe = senderId === userId;
+
+    // Format the createdAt date
+    // const formattedDate = dayjs(createdAt)
+    // .locale('en') // Set the locale to English
+    // .format('ddd, h:mmA');
+
+    const formattedDate = formatMessageDate(createdAt);
 
   return (
     <Paper
@@ -79,7 +130,12 @@ function Message({
         fromMe ? classes.messageFromMe : classes.messageFromOther
       }`}
     >
-      {text}
+       <Typography variant="body1" className={classes.messageText}>
+        {text}
+      </Typography>
+      <Typography variant="caption" className={classes.messageDate}>
+        {formattedDate}
+      </Typography>
     </Paper>
   );
 }
@@ -233,6 +289,7 @@ function DirectMessages({ showConversations, setShowConversations, isDark }) {
       receiverName: receiverName,
       text: messageInput,
       fromMe: true,
+      createdAt: new Date(),
     };
 
     // Emit a 'message' event to the server
@@ -328,6 +385,7 @@ function DirectMessages({ showConversations, setShowConversations, isDark }) {
                   text={message.text}
                   userId={userId}
                   isNotificationClicked={isNotificationClicked}
+                  createdAt={message.createdAt}
                 />
               ))}
             </div>
@@ -352,19 +410,15 @@ function DirectMessages({ showConversations, setShowConversations, isDark }) {
                   maxRows={18}
                   inputRef={inputRef}
                 />
-                <Fab
+                <IconButton color="primary" aria-label="send button" onClick={handleSendMessage}>
+                  <SendIcon
+                  fontSize='large'
                   sx={{
                     marginLeft: '20px',
                     marginBottom: '10px',
-                    boxShadow: '6px 6px 6px rgba(0, 0, 0, 0.2)',
                   }}
-                  color='secondary'
-                  size='small'
-                  aria-label='back'
-                  onClick={handleSendMessage}
-                >
-                  <SendIcon />
-                </Fab>
+                  />
+                  </IconButton>
               </div>
             )}
           </Paper>
