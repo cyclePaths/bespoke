@@ -134,6 +134,7 @@ const Home = ({
                     boxShadow: isDark
                     ? '1.25em 1.25em 3.75em rgb(40, 43, 113)'
                     : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
+                    color: isDark ? '#FFFFFF' : '#000000',
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
@@ -159,7 +160,7 @@ const Home = ({
                   </div>
                 ) : (
                   <div style={{ textAlign: 'center' }}>
-                    No post found. Check the bulletin board or create one.
+                    No post found.
                   </div>
                 )}
               </Typography>
@@ -238,7 +239,7 @@ const Home = ({
                     </Typography>
                   </div>
                 ) : (
-                  <Typography>Not Hello</Typography>
+                  <Typography>No Routes Yet</Typography>
                 )}
               </CardContent>
             </Card>
