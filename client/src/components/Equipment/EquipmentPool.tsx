@@ -3,12 +3,15 @@ import axios from 'axios';
 import { UserContext } from '../../Root';
 import Card from '@mui/material/Card';
 import Equipment from './Equipment';
+import ViewEquipment from './ViewEquipment'
+import AddEquipment from './AddEquipment';
+
+
 
 
 const EquipmentPool = () => {
     const context = useContext(UserContext);
-    const [equipment, setEquipment] = useState([]);
-    const [expansion, setExpansion] = useState(false)
+    const [equipment, setEquipment] = useState<object[]>([]);
 
     // Function to retrieve the equipment
   const getAllEquipment = () => {
@@ -21,9 +24,8 @@ const EquipmentPool = () => {
     });
   };
 
-  const handleEquipmentPoolClick = () => {
-    getAllEquipment()
-    setExpansion(!expansion)
+  const updateEquipment = (submittedEquipment) => {
+    setEquipment((previousEquipment) => [...previousEquipment, submittedEquipment])
   }
 
   useEffect(() => {
@@ -32,9 +34,13 @@ const EquipmentPool = () => {
 
   return (
     <div>
-      <Card onClick={handleEquipmentPoolClick} style={{ backgroundColor: 'rgb(115, 216, 139)', borderRadius: '5px'}}>
-        <div style={{paddingLeft:'10px', paddingTop: '3px'}} ><b>View Community Parts:</b>
-      {expansion && equipment.map((equipment, i) => (<Equipment equipment={equipment} key={ i }/>))}
+      <Card style={{ backgroundColor: context.isDark ? '#757575' : '#ECECEC', borderRadius: '4px'}}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft:'10px',
+                      paddingTop: '3px'}}><div><b>Community Equipment:</b></div>
+      <div style={{ display: 'flex'}}>
+      <ViewEquipment equipment={equipment}/>
+      <AddEquipment updateEquipment={updateEquipment}/>
+      </div>
       </div>
       </Card>
     </div>

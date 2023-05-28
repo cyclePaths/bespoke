@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { UserContext } from '../../Root';
 import { ThemeProvider, OutlinedInput, Button} from'@mui/material'
 import themeBulletin from './ThemeBulletin'
-import AddEquipment from '../Equipment/AddEquipment'
 import axios from 'axios';
 
 
@@ -46,16 +45,15 @@ const CreateBulletin = (props) => {
 
     return (
     <div style={{ textAlign: 'center' }}>
-      <AddEquipment/>
-    <ThemeProvider theme={themeBulletin}>
+
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <div id='topicField' style={{ display: 'inline-block', textAlign: 'left'}}>
           <OutlinedInput
-            style={{ backgroundColor: 'rgb(115, 216, 139)', marginTop: '10px',
+            style={{ color: context.isDark ? '#FFFFFF' : '#000000', backgroundColor: context.isDark ? '#757575' : '#ECECEC', marginTop: '10px',
                      maxWidth: '175px', maxHeight: '25px', minWidth: '175px', minHeight: '25px' }}
             multiline={false}
             rows='1'
-            placeholder='enter topic'
+            placeholder='bulletin topic'
             inputProps={{
               maxLength: 100,
               onChange: (e) => handleTopic(e),
@@ -64,7 +62,7 @@ const CreateBulletin = (props) => {
             />
         </div>
         <div id='textField' style={{ display: 'inline-block ', marginTop: '10px'}}>
-        <OutlinedInput style={{ backgroundColor: 'rgb(115, 216, 139)', marginTop: '5px',
+        <OutlinedInput style={{ color: context.isDark ? '#FFFFFF' : '#000000',backgroundColor: context.isDark ? '#757575' : '#ECECEC', marginTop: '5px',
                                maxWidth: '275px', maxHeight: '75px', minWidth: '275px', minHeight: '75px' }}
             multiline={true}
             rows='3'
@@ -78,12 +76,12 @@ const CreateBulletin = (props) => {
         </div>
         </div>
         <Button variant='contained' color='success' style={{ maxWidth: '75px', maxHeight: '25px',
-               minWidth: '75px', minHeight: '25px', marginLeft: '0px', marginTop: '5px'}}
+               minWidth: '75px', minHeight: '25px', marginLeft: '0px', marginTop: '5px', marginBottom: '5px'}}
           onClick={() => handleBulletinSubmission()}
           >
           <h5>Submit</h5>
           </Button>
-    </ThemeProvider>
+
     </div>
   );
 };

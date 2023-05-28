@@ -11,8 +11,8 @@ import { BandAid } from '../../StyledComp';
 
 const BulletinBoard = () => {
   const context = useContext(UserContext);
-  const [bulletins, setBulletins] = useState<any[]>([]);
-  const [comments, setComments] = useState<any[]>([]);
+  const [bulletins, setBulletins] = useState<object[]>([]);
+  const [comments, setComments] = useState<object[]>([]);
   let orderedBulletins: object[] = []
   for (let i = bulletins.length -1; i >= 0; i--) {
     orderedBulletins.push(bulletins[i])
@@ -77,7 +77,7 @@ const BulletinBoard = () => {
   return (
     <BandAid>
       <div>
-        <EquipmentPool />
+      <EquipmentPool/>
         <CreateBulletin bulletins={bulletins} setBulletins={setBulletins}
                         updateBulletins={updateBulletins}/>
         {orderedBulletins.map((bulletin, i) => (
