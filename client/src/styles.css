@@ -557,7 +557,6 @@ The code above is for the scroll wheel
 }
 
 .leaderboardTitles {
-  background-color: #ececec;
   margin-right: 40px;
   margin-left: 40px;
   border-radius: 4px;
@@ -586,13 +585,12 @@ The code above is for the scroll wheel
 }
 
 .leaderBoxOverride {
-  background-color: #ececec;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
