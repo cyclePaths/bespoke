@@ -57,7 +57,9 @@ const Addresses = ({
   // Define style for the autocomplete suggestion list
   const AutocompleteSuggestions = styled.div`
     color: ${isDark ? 'white' : 'black'};
+    /* margin-top: '15px'; */
   `;
+
 
   // setting state on change
   const handleChange = useCallback((address) => {
@@ -247,7 +249,10 @@ const Addresses = ({
                     );
                   })}
                   {/* <div>{selectedAddress}</div> */}
-                  {selectedAddress && <div>{selectedAddress}</div>}
+                  {selectedAddress &&
+                  <AutocompleteSuggestions>
+                    {selectedAddress}
+                    </AutocompleteSuggestions>}
 
                   {!selectedAddress && (
                     <div className='placeholder' style={{ opacity: 0 }}>
