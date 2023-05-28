@@ -108,9 +108,9 @@ const CreateReport = ({ fetchThisMonthReports }) => {
         });
 
         if (type === 'Point of Interest') {
-          addBadge('Tour Guide', 1);
+          addBadge('Tour Guide', 3);
         } else {
-          addBadge('Safety Sentinel', 1);
+          addBadge('Safety Sentinel', 3);
         }
 
         setReports([...reports, response.data]);
@@ -170,7 +170,7 @@ const CreateReport = ({ fetchThisMonthReports }) => {
                   backgroundColor: isDark ? '#757575' : '#ececec',
                 },
                 '& .MuiToggleButton-root.Mui-selected': {
-                  color: isDark? '#7dc5e3' : '#7dc5e3',
+                  color: isDark ? '#7dc5e3' : '#7dc5e3',
                   backgroundColor: isDark ? '#121212' : '#757575',
                 },
               }}

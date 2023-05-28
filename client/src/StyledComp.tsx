@@ -142,8 +142,8 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 const SelectedBadge = styled.img`
   height: 3.875em;
   width: 3.875em;
-  margin-top: 55px;
-  margin-left: -120px;
+  margin-top: 3.4375em;
+  margin-left: -3.4375em;
 `;
 
 const AchievementBadgeByName = styled.img`
@@ -205,14 +205,21 @@ const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
   margin-right: 15px;
   margin-top: 40px;
   padding: 20px;
+  border-radius: 7px;
+  position: fixed;
+  width: -webkit-fill-available;
   box-shadow: ${(props) =>
     props.isDark
       ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5'};
-  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, #1e2062, #030312);'
+      : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)'};
 `;
 // Darker: #171730 #78bee6
 // Lighter: #1b1c39 #8ee2ff
+//  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
 
 const BadgeContainerLabel = styled.div`
   position: relative;

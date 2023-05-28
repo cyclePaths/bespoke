@@ -16,7 +16,7 @@ export interface RideStats {
   calories: number;
 }
 
-const Profile = ({ handleToggleStyle, isDark, setIsDark,}) => {
+const Profile = ({ handleToggleStyle, isDark, setIsDark }) => {
   //Context
   const {
     userBadges,
@@ -68,26 +68,6 @@ const Profile = ({ handleToggleStyle, isDark, setIsDark,}) => {
     });
   };
 
-  //show/hide badges on user profile page
-  // const badgesToggle = () => {
-  //   if (badgeDisplay === 'none') {
-  //     setBadgeDisplay('block');
-  //   } else {
-  //     setBadgeDisplay('none');
-  //   }
-  //   document.getElementById('badges')!.style.display = badgeDisplay;
-  // };
-
-  // const displayNoBadgeIfEmpty = () => {
-  //   if (
-  //     selectedBadge &&
-  //     selectedBadge !==
-  //       'https://www.baptistpress.com/wp-content/uploads/images/IMG201310185483HI.jpg'
-  //   ) {
-  //     return <AchievementBadgeByName src={selectedBadge} />;
-  //   }
-  // };
-
   ///////////////////////////////////////////////////////////
   /*
 Elements that should render on loading the page
@@ -135,18 +115,17 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
       }
       setLastRideActivity(data.activity);
       setLastRideDuration(data.duration);
-      setLastRideWeight(data.weight)
-      setLastRideCalories(data.calories)
+      setLastRideWeight(data.weight);
+      setLastRideCalories(data.calories);
     });
   }, []);
 
   useEffect(() => {
     setLastRideActivity(lastRideActivity);
     setLastRideDuration(lastRideDuration);
-    setLastRideWeight(lastRideWeight)
-    setLastRideCalories(lastRideCalories)
-  }, [lastRideActivity, lastRideDuration, lastRideWeight, lastRideCalories])
-
+    setLastRideWeight(lastRideWeight);
+    setLastRideCalories(lastRideCalories);
+  }, [lastRideActivity, lastRideDuration, lastRideWeight, lastRideCalories]);
 
   useEffect(() => {
     setTheme(theme);
@@ -186,7 +165,6 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
         setLastRideDuration={setLastRideDuration}
         setLastRideWeight={setLastRideWeight}
         setLastRideCalories={setLastRideCalories}
-
         stopwatchActivity={stopwatchActivity}
         stopwatchDuration={stopwatchDuration}
         stopwatchWeight={stopwatchWeight}

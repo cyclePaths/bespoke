@@ -223,7 +223,21 @@ const Home = ({
                 {randomPost ? (
                   <div
                     style={{
+                      fontFamily: 'roboto',
+                      minWidth: '100%',
+                      maxWidth: '100%',
+                      border: '0px solid #000000',
+                      borderRadius: '4px',
+                      background: isDark
+                        ? 'linear-gradient(145deg, #1e2062, #030312)'
+                        : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+                      boxShadow: isDark
+                        ? '1.25em 1.25em 3.75em rgb(40, 43, 113)'
+                        : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
+                      color: isDark ? '#FFFFFF' : '#000000',
                       display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                       flexDirection: 'column',
                     }}
                   >
@@ -237,7 +251,7 @@ const Home = ({
                     >
                       {randomPost.topic}
                     </div>
-                    <div>{randomPost.text}</div>
+
                     <div
                       style={{ display: 'flex', justifyContent: 'flex-end' }}
                     >
@@ -245,9 +259,7 @@ const Home = ({
                     </div>
                   </div>
                 ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    No post found. Check the bulletin board or create one.
-                  </div>
+                  <div style={{ textAlign: 'center' }}>No post found.</div>
                 )}
               </Typography>
             </CardContent>
