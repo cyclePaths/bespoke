@@ -35,7 +35,7 @@ const StopwatchStats = ({
 }) => {
   const user = useContext(UserContext);
 
- const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(0);
 
   let totalTime = 0;
 
@@ -48,14 +48,15 @@ const StopwatchStats = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/profile/weight')
+    axios
+      .get('/profile/weight')
       .then(({ data }) => {
-       setWeight(data.weight)
+        setWeight(data.weight);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }, [])
+      });
+  }, []);
 
   const workoutStats = () => {
     // const { workout } = valueGroups;
@@ -72,11 +73,27 @@ const StopwatchStats = ({
         },
       })
       .then((response) => {
-
         // console.log('response', response)
 
         const { total_calories } = response.data;
-
+        let mph = 0;
+        if (swActivity === 'leisure bicycling') {
+          mph = 5;
+        } else if (
+          swActivity === 'mph, light' ||
+          swActivity === 'mountain bike'
+        ) {
+          mph = 11;
+        } else if (swActivity === '13.9 mph, moderate') {
+          mph = 13;
+        } else if (swActivity === '15.9 mph, vigorous') {
+          mph = 15;
+        } else if (swActivity === 'very fast, racing') {
+          mph = 18;
+        } else if (swActivity === '>20 mph, racing') {
+          mph = 25;
+        }
+        user.rideBadgeUpdate(mph, total_calories, totalTime);
         if (workout === 'leisure bicycling') {
           workout = '<10 mph average';
         }
@@ -129,14 +146,20 @@ const StopwatchStats = ({
     <div>
       <div>
         {isPickerVisible && (
-          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <Button
-            // sx={{background:
-            //   'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
-            className='submit-button'
-            variant="contained"
-            size="small"
-            color="success"
+              // sx={{background:
+              //   'linear-gradient(128deg, rgb(123, 231, 149) 0%, rgb(42, 164, 71) 100%) rgb(104, 194, 125)',}}
+              className='submit-button'
+              variant='contained'
+              size='small'
+              color='success'
               type='button'
               onClick={() => {
                 workoutStats();

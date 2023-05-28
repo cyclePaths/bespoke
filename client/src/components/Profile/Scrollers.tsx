@@ -20,7 +20,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
+const Scrollers = ({
+  setShowScrollers,
+  theme,
+  saveTheme,
+  appTheme,
   // lastRideActivity,
   // lastRideDuration,
   // lastRideWeight,
@@ -78,6 +82,8 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
   const [hoursValue, setHoursValue] = useState('');
   const [minutesValue, setMinutesValue] = useState('');
 
+  const { addBadge, rideBadgeUpdate } = useContext(UserContext);
+
   let rideSpeedValue = '';
 
   const { workout, durationHours, durationMinutes } =
@@ -112,7 +118,6 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
       });
   }, []);
 
-
   const enterWorkout = () => {
     if (weight >= 50) {
       axios
@@ -125,12 +130,31 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
         })
         .then(({ data }) => {
           // setShowSuccessAlert(true);
+          console.log('this is rideSpeed: ', rideSpeed);
+          console.log('this is rideSpeedValue: ', rideSpeedValue);
           const { total_calories } = data;
-
-          setLastRideActivity(rideSpeed)
-          setLastRideDuration(totalTime)
-          setLastRideWeight(weight)
-          setLastRideCalories(total_calories)
+          let mph = 0;
+          if (rideSpeedValue === 'leisure bicycling') {
+            mph = 5;
+          } else if (
+            rideSpeedValue === 'mph, light' ||
+            rideSpeedValue === 'mountain bike'
+          ) {
+            mph = 11;
+          } else if (rideSpeedValue === '13.9 mph, moderate') {
+            mph = 13;
+          } else if (rideSpeedValue === '15.9 mph, vigorous') {
+            mph = 15;
+          } else if (rideSpeedValue === 'very fast, racing') {
+            mph = 18;
+          } else if (rideSpeedValue === '>20 mph, racing') {
+            mph = 25;
+          }
+          rideBadgeUpdate(mph, total_calories, totalTime);
+          setLastRideActivity(rideSpeed);
+          setLastRideDuration(totalTime);
+          setLastRideWeight(weight);
+          setLastRideCalories(total_calories);
 
           axios
             .post('/profile/workout', {
@@ -247,11 +271,11 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
 
         {sliderStage === 0 && (
           <>
-              <WaveHighlight>
+            <WaveHighlight>
               <HighlightText theme={appTheme ? 'light' : 'dark'}>
-              &lt; &lt; Swipe to select your speed &gt; &gt;
-                </HighlightText>
-              </WaveHighlight>
+                &lt; &lt; Swipe to select your speed &gt; &gt;
+              </HighlightText>
+            </WaveHighlight>
             <div
               ref={refActivity}
               className='keen-slider current-scroller'
@@ -285,11 +309,11 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
 
         {sliderStage === 1 && (
           <>
-           <WaveHighlight>
+            <WaveHighlight>
               <HighlightText theme={appTheme ? 'light' : 'dark'}>
                 &lt; &lt; Swipe to select your hours &gt; &gt;
-                </HighlightText>
-              </WaveHighlight>
+              </HighlightText>
+            </WaveHighlight>
             <div
               ref={refHours}
               className='keen-slider current-scroller'
@@ -327,9 +351,9 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
           <>
             <WaveHighlight>
               <HighlightText theme={appTheme ? 'light' : 'dark'}>
-              &lt; &lt; Swipe to select your minutes &gt; &gt;
-                </HighlightText>
-              </WaveHighlight>
+                &lt; &lt; Swipe to select your minutes &gt; &gt;
+              </HighlightText>
+            </WaveHighlight>
             <div
               ref={refMinutes}
               className='keen-slider current-scroller'
@@ -372,10 +396,12 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
                 type='button'
                 variant='contained'
                 className='backButton'
-                sx={{ position: 'fixed',
-                left: 0,
-                background: 'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)'
-              }}
+                sx={{
+                  position: 'fixed',
+                  left: 0,
+                  background:
+                    'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)',
+                }}
                 onClick={handleBackButtonClick}
               >
                 <ArrowBackIcon />
@@ -405,10 +431,12 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
                 type='button'
                 variant='contained'
                 className='forwardButton'
-                sx={{ position: 'fixed',
-                right: 0,
-                background: 'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)'
-              }}
+                sx={{
+                  position: 'fixed',
+                  right: 0,
+                  background:
+                    'linear-gradient(128deg, rgb(101, 198, 254) 0%, rgb(29, 115, 191) 100%) rgb(30, 136, 229)',
+                }}
                 onClick={handleForwardButtonClick}
               >
                 <ArrowForwardIcon />
@@ -457,7 +485,11 @@ const Scrollers = ({ setShowScrollers, theme, saveTheme, appTheme,
                 variant='contained'
                 color='success'
                 className='rideStatsButton'
-                sx={{ position: 'fixed', center: 0, boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3)' }}
+                sx={{
+                  position: 'fixed',
+                  center: 0,
+                  boxShadow: '-8px 2px 6px rgba(0, 0, 0, 0.3)',
+                }}
                 onClick={handleGetRideStatsButton}
               >
                 Get Ride Stats
