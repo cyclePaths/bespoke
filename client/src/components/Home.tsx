@@ -10,6 +10,7 @@ import {
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
+import RouteExpandedPopout from './LeaderBoard/RouteExpandedPopout';
 import { UserContext } from '../Root';
 import {
   Card,
@@ -45,19 +46,99 @@ const Home = ({
   setHomeCoordinates,
 }: RootPropsToHome) => {
   const { user, isDark } = useContext(UserContext);
-  const [routeInfo, setRouteInfo] = useState<BikeRoutes | undefined>(undefined);
+  const [routeInfo, setRouteInfo] = useState<any>(undefined);
   const [randomPost, setRandomPost] = useState<Bulletin | undefined>(undefined);
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [info, setInfo] = useState<any>(undefined);
   const [leaderBoard, setLeaderBoard] = useState<boolean>(false);
   const [openLeaderBoard, setOpenLeaderBoard] = useState<boolean>(false);
+  const [openRouteInfo, setOpenRouteInfo] = useState<boolean>(false);
 
   const handleLeaderBoard = () => {
     setOpenLeaderBoard(true);
     setLeaderBoard(true);
   };
 
-  const handleRouteInfoExpand = () => {
-    setExpanded(!expanded);
+  const fetchRouteInfo = () => {
+    if (!routeInfo) {
+      return null;
+    }
+
+    const origin = JSON.parse(routeInfo.origin);
+    const destination = JSON.parse(routeInfo.destination);
+    let waypoints;
+
+    if (routeInfo.waypoints.length > 0) {
+      waypoints = routeInfo.waypoints;
+
+      const service = new google.maps.DirectionsService();
+      service.route(
+        {
+          origin: origin,
+          destination: destination,
+          waypoints: waypoints,
+          travelMode: google.maps.TravelMode.BICYCLING,
+        },
+        (result, status) => {
+          if (status === 'OK' && result) {
+            const startArr =
+              result.routes[0].legs[0].start_address.split(', USA');
+            const endArr =
+              result.routes[0].legs[
+                result.routes[0].legs.length - 1
+              ].start_address.split(', USA');
+            let routeTotalDist = 0;
+            let routeTotalDur = 0;
+
+            result.routes[0].legs.forEach((route) => {
+              routeTotalDist += route.distance!.value;
+              routeTotalDur += route.duration!.value;
+            });
+            setInfo({
+              distance: `${(routeTotalDist * 0.000621371).toFixed(1)} miles`,
+              duration: `${Math.ceil(routeTotalDur / 60)} mins`,
+              startAddress: startArr[0],
+              endAddress: endArr[0],
+            });
+          }
+        }
+      );
+    } else {
+      const service = new google.maps.DirectionsService();
+      service.route(
+        {
+          origin: origin,
+          destination: destination,
+          travelMode: google.maps.TravelMode.BICYCLING,
+        },
+        (result, status) => {
+          if (status === 'OK' && result) {
+            const startArr =
+              result.routes[0].legs[0].start_address.split(', USA');
+            const endArr =
+              result.routes[0].legs[
+                result.routes[0].legs.length - 1
+              ].start_address.split(', USA');
+            let routeTotalDist = 0;
+            let routeTotalDur = 0;
+
+            result.routes[0].legs.forEach((route) => {
+              routeTotalDist += route.distance!.value;
+              routeTotalDur += route.duration!.value;
+            });
+            setInfo({
+              distance: `${(routeTotalDist * 0.000621371).toFixed(1)} miles`,
+              duration: `${Math.ceil(routeTotalDur / 60)} mins`,
+              startAddress: startArr[0],
+              endAddress: endArr[0],
+            });
+          }
+        }
+      );
+    }
+  };
+
+  const handleExpandedInfo = () => {
+    setOpenRouteInfo(true);
   };
 
   useEffect(() => {
@@ -74,6 +155,10 @@ const Home = ({
       // console.log('Fetched and cleanup');
     };
   }, []);
+
+  useEffect(() => {
+    fetchRouteInfo();
+  }, [routeInfo]);
 
   useEffect(() => {
     axios
@@ -122,9 +207,18 @@ const Home = ({
           >
             <CardHeader
               title='Topic of the day'
-              sx={{ flexDirection: 'column' }}
+              sx={{
+                flexDirection: 'column',
+                color: isDark ? '#ffffff' : 'black',
+              }}
             />
-            <CardContent sx={{ paddingBottom: '0px', paddingTop: '0px' }}>
+            <CardContent
+              sx={{
+                paddingBottom: '0px',
+                paddingTop: '0px',
+                color: isDark ? '#ffffff' : 'black',
+              }}
+            >
               <Typography paragraph>
                 {randomPost ? (
                   <div
@@ -184,6 +278,7 @@ const Home = ({
                   paddingTop: '20px',
                   paddingBottom: '16px',
                   textAlign: 'center',
+                  color: isDark ? '#ffffff' : 'black',
                 }}
               />
               <CardContent
@@ -194,7 +289,12 @@ const Home = ({
                   justifyContent: 'center',
                 }}
               >
-                <Typography sx={{ textAlign: 'center' }}>
+                <Typography
+                  sx={{
+                    textAlign: 'center',
+                    color: isDark ? '#ffffff' : 'black',
+                  }}
+                >
                   See our top 10 users in select categories
                 </Typography>
               </CardContent>
@@ -222,13 +322,17 @@ const Home = ({
                   display: 'flex',
                   justifyContent: 'center',
                   flexDirection: 'column',
+                  color: isDark ? '#ffffff' : 'black',
                 }}
               />
-              <CardContent
-                style={{ display: 'flex', justifyContent: 'center' }}
-              >
+              <CardContent sx={{ paddingTop: '10px', paddingBottom: '5px' }}>
                 {routeInfo ? (
-                  <div style={{ textAlign: 'center' }}>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      color: isDark ? '#ffffff' : 'black',
+                    }}
+                  >
                     <Typography sx={{ fontWeight: 'bold' }}>Name</Typography>
                     <Typography>{routeInfo.name}</Typography>
                     <Typography sx={{ fontWeight: 'bold' }}>
@@ -237,11 +341,24 @@ const Home = ({
                     <Typography>
                       {dayjs(routeInfo.createdAt).format('MMMM D, YYYY')}
                     </Typography>
+                    <Typography sx={{ fontWeight: 'bold' }}>
+                      Created By
+                    </Typography>
+                    <Typography>{routeInfo.user.name}</Typography>
                   </div>
                 ) : (
-                  <Typography>Not Hello</Typography>
+                  <Typography>Take a Ride</Typography>
                 )}
               </CardContent>
+              {routeInfo ? (
+                <CardActions sx={{ justifyContent: 'center' }}>
+                  <Button size='small' onClick={handleExpandedInfo}>
+                    Expand
+                  </Button>
+                </CardActions>
+              ) : (
+                <></>
+              )}
             </Card>
           </div>
         </StatsWrapper>
@@ -252,6 +369,12 @@ const Home = ({
         >
           <LeaderBoard />
         </LeaderBoardPopout>
+        <RouteExpandedPopout
+          openRouteInfo={openRouteInfo}
+          setOpenRouteInfo={setOpenRouteInfo}
+          routeInfo={routeInfo}
+          info={info}
+        />
       </BandAid>
     </div>
   );

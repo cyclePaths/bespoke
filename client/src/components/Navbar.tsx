@@ -126,8 +126,10 @@ const Navbar = () => {
             alignItems: 'center',
             width: '100%',
             justifyContent: 'space-between',
+            height: '100%',
           }}
         >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link to='/home' onClick={() => clickHome()}>
             <img
               src='https://cdn.discordapp.com/attachments/187823430295355392/1111797966160789524/bespoke-text-logo-3B97D2.png'
@@ -135,6 +137,7 @@ const Navbar = () => {
               style={{ height: '5.5vh', marginLeft: '10px', marginTop: '5px' }}
             />
           </Link>
+        </div>
           <span
             style={{
               width: '45%',

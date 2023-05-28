@@ -20,16 +20,6 @@ export type AllBlackProps = {
   allBlack: boolean;
 };
 
-const Button = styled.button`
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.text};
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-  margin-bottom: 16px;
-`;
-
 const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
@@ -513,6 +503,33 @@ const LeaderBoardDirections = styled.div`
   right: 7.5%;
 `;
 
+const RouteDivBox = styled.div<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#ececec' : '#fff')};
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  box-shadow: ${({ isDark }) =>
+    isDark
+      ? '0px 4px 4px rgba(0, 0, 0, 0.25)'
+      : '0px 4px 4px rgba(0, 0, 0, 0.25)'};
+`;
+
+const RouteInfoSpan = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const RouteInfoDiv = styled.div`
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
+`;
+
 // Misc styled components
 
 const NavBarTop = styled.span<DarkModeHelperProps>`
@@ -768,4 +785,7 @@ export {
   ProfileDefaultWeightDisplayLight,
   ProfileDefaultLastRideDisplayDark,
   ProfileDefaultLastRideDisplayLight,
+  RouteInfoSpan,
+  RouteInfoDiv,
+  RouteDivBox,
 };
