@@ -245,7 +245,7 @@ export const badgeInfo = [
   },
   {
     name: 'Road Warrior',
-    description: 'Complete a ride that lasts longer than 2 hours',
+    description: 'Complete a ride that lasts 2+ hours',
   },
   {
     name: 'Lean Machine',
