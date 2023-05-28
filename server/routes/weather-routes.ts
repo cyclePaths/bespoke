@@ -100,10 +100,10 @@ WeatherRoute.get('/forecast', (req, res) => {
         sunsetHour: sunsetHour,
       };
       // console.log(responseObj.hourly);
-      res.status(200).send(responseObj);
+      return res.status(200).send(responseObj);
     })
     .catch((err) => {
       console.error('There was an error GETting the weather forecasts: ', err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     });
 });
