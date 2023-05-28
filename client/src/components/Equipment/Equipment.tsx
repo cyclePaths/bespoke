@@ -8,7 +8,7 @@ const Equipment = (props) => {
 
     const { equipmentOrigin, equipmentDescription, equipmentType } = props.equipment
     return (
-        <div style={{  fontFamily: 'roboto', minWidth: '95%', maxWidth: '95%', border: '0px solid #000000',
+        <div style={{  fontFamily: 'roboto', minWidth: '95%', maxWidth: '95%', border: '0.5px solid #000000',
         borderRadius: '4px', background: context.isDark
         ? 'linear-gradient(145deg, #1e2062, #030312)'
         : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',

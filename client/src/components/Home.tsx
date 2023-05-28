@@ -114,18 +114,29 @@ const Home = ({
               width: '100%',
               backgroundColor: isDark ? '#cacaca' : '#ececec',
               boxShadow: '0px 0px 8px 2px rgba(0, 0, 0, 0.2)',
+              maxHeight: '300px',
+              height: 'fit-content',
+              overflow: 'auto'
             }}
           >
             <CardHeader
-              title='Topic of the day'
+              title='Topic of the Day'
               sx={{ flexDirection: 'column' }}
             />
             <CardContent sx={{ paddingBottom: '0px', paddingTop: '0px' }}>
               <Typography paragraph>
                 {randomPost ? (
                   <div
-                    style={{
+                    style={{ fontFamily: 'roboto', minWidth: '100%', maxWidth: '100%', border: '0px solid #000000',
+                    borderRadius: '4px', background: isDark
+                    ? 'linear-gradient(145deg, #1e2062, #030312)'
+                    : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)',
+                    boxShadow: isDark
+                    ? '1.25em 1.25em 3.75em rgb(40, 43, 113)'
+                    : '-8px 2px 6px rgba(0, 0, 0, 0.3)',
                       display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                       flexDirection: 'column',
                     }}
                   >
@@ -139,7 +150,7 @@ const Home = ({
                     >
                       {randomPost.topic}
                     </div>
-                    <div>{randomPost.text}</div>
+
                     <div
                       style={{ display: 'flex', justifyContent: 'flex-end' }}
                     >

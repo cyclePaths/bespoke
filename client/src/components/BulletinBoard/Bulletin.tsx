@@ -26,7 +26,7 @@ useEffect(() => {
 
 let deleteHolder = <DeleteBulletin style={{ position: 'absolute', top: '0px', right: '5px'}} creator={creator} id={id} getAllBulletins={getAllBulletins}/>
    return (
-   <div style ={{display: 'flex', justifyContent: 'center', alignItems: 'center',
+   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center',
                  paddingBottom: '20px', paddingTop: '10px', minWidth: '50%', maxWidth: '100%'}}>
        <div  className='bulletin' style={{  fontFamily: 'roboto', minWidth: '93%', maxWidth: '93%', border: '0px solid #000000',
           borderRadius: '4px', background: context.isDark
