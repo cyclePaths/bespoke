@@ -142,7 +142,10 @@ const RouteInfo = ({
       <div className='searched-blocks'>
         <div
           className='route-name'
-          style={{ color: isDark ? '#ececec' : '#1d1dbc' }}
+          style={{
+            color: isDark ? '#ececec' : '#1d1dbc',
+            fontSize: route.name.length > 10 ? '17px' : '25px',
+          }}
           onClick={() => handleRouteParsing()}
         >
           {route.name}
