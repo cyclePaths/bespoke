@@ -355,29 +355,16 @@ The code below is for the scroll wheel
   border-radius: 50%;
 }
 
-.invisible-scroller {
-  height: 100px;
-  width: 50px;
-  max-height: 100vh;
-  border-radius: 50%;
-}
-
-.sliderWrapper {
-  height: 100px;
-  /* Adjust the height value as needed */
-  position: relative;
-}
-
-.sliderHidden {
-  visibility: hidden;
-  opacity: 0;
-  height: 100px;
-  bottom: 0;
-  transition: opacity 0.5s;
+/* Styles for larger monitors */
+@media screen and (min-width: 768px) {
+  [class^='number-slide'],
+  [class*=' number-slide'] {
+    border-radius: 0; /* Override border-radius for larger monitors */
+  }
 }
 
 .buttonContainer {
-  position: fixed;
+  /* position: fixed; */
   display: flex;
   justify-content: center;
   width: 100%;
@@ -439,7 +426,7 @@ The code below is for the scroll wheel
   box-shadow: -8px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.number-slide3 {
+/* .number-slide3 {
   background: rgb(182, 255, 64);
   background: linear-gradient(128deg,
       rgba(182, 255, 64, 1) 0%,
@@ -447,21 +434,21 @@ The code below is for the scroll wheel
   background: linear-gradient(128deg,
       rgba(189, 255, 83, 1) 0%,
       rgba(43, 250, 82, 1) 100%);
-}
+} */
 
-.number-slide4 {
+/* .number-slide4 {
   background: rgb(64, 255, 242);
   background: linear-gradient(128deg,
       rgba(64, 255, 242, 1) 0%,
       rgba(63, 188, 255, 1) 100%);
-}
+} */
 
-.number-slide5 {
+/* .number-slide5 {
   background: rgb(255, 64, 156);
   background: linear-gradient(128deg,
       rgba(255, 64, 156, 1) 0%,
       rgba(255, 63, 63, 1) 100%);
-}
+} */
 
 .number-slide6 {
   background: rgb(64, 76, 255);
@@ -557,7 +544,6 @@ The code above is for the scroll wheel
 }
 
 .leaderboardTitles {
-  background-color: #ececec;
   margin-right: 40px;
   margin-left: 40px;
   border-radius: 4px;
@@ -586,13 +572,12 @@ The code above is for the scroll wheel
 }
 
 .leaderBoxOverride {
-  background-color: #ececec;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -631,7 +616,7 @@ The code below is for the Profile search Home address feature
   align-items: center;
   position: absolute;
   /* Position the element relative to the parent element */
-  top: 33%;
+  top: 29%;
   /* Adjust the top value to position the element where you want it */
   transform: translateY(-50%);
   /* Center the element vertically */
@@ -680,7 +665,6 @@ The code below is for the Profile search Home address feature
 
 @media screen and (max-height: 700px) {
   .address {
-    /* bottom: 200px; */
     margin-top: 30px;
   }
 
@@ -702,7 +686,7 @@ The code below is for the Profile search Home address feature
   /* position: relative; */
 
   position: absolute;
-  top: 70px;
+  top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;

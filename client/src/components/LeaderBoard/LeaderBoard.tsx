@@ -23,7 +23,7 @@ const LeaderBoard = () => {
   );
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const user = useContext(UserContext);
+  const { user, isDark } = useContext(UserContext);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     slideChanged(slider) {
@@ -129,7 +129,10 @@ const LeaderBoard = () => {
         <div ref={sliderRef} className='keen-slider' style={{ height: '60vh' }}>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Liked Users</h2>
-            <div className='leaderBoxOverride'>
+            <div
+              className='leaderBoxOverride'
+              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+            >
               {top10Likes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Like Users' />
               ))}
@@ -137,7 +140,10 @@ const LeaderBoard = () => {
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Top Travelers</h2>
-            <div className='leaderBoxOverride'>
+            <div
+              className='leaderBoxOverride'
+              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+            >
               {top10Miles.map((user, i) => (
                 <LeaderBoardList
                   key={i}
@@ -150,7 +156,10 @@ const LeaderBoard = () => {
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Topic Chasers</h2>
-            <div className='leaderBoxOverride'>
+            <div
+              className='leaderBoxOverride'
+              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+            >
               {top10Post.map((user, i) => (
                 <LeaderBoardList
                   key={i}
@@ -163,7 +172,10 @@ const LeaderBoard = () => {
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Good Samaritans</h2>
-            <div className='leaderBoxOverride'>
+            <div
+              className='leaderBoxOverride'
+              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+            >
               {top10Reports.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -171,7 +183,10 @@ const LeaderBoard = () => {
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Reliable Routers</h2>
-            <div className='leaderBoxOverride'>
+            <div
+              className='leaderBoxOverride'
+              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
+            >
               {top10CreatedRoutes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
@@ -181,6 +196,7 @@ const LeaderBoard = () => {
       </div>
       <LeaderBoardDirections>
         <ArrowBackIcon sx={{ fontSize: '2rem' }} />
+        Swipe
         <ArrowForwardIcon sx={{ fontSize: '2rem' }} />
       </LeaderBoardDirections>
     </>

@@ -109,7 +109,6 @@ app.get('/logout', (req, res) => {
     }
   });
   res.redirect('/');
-  console.log('logged out')
 });
 
 // 7. Provides user context to every part of the client

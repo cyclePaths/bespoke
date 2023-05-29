@@ -473,6 +473,7 @@ BikeRoutes.get('/currentRoute', (req, res) => {
         where: {
           id: recentRouteId,
         },
+        include: { user: true },
       })
       .then((result) => {
         if (result) {
