@@ -47,7 +47,7 @@ const InputLayout = styled.input<InputProps>`
       : isDark
       ? '#707070'
       : '#ececec'};
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
   border-style: hidden;
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
@@ -91,9 +91,10 @@ const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   border: 1px solid #d3d3d3;
   border-top: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100%;
+  width: 85%;
   max-height: 200px;
   overflow-y: auto;
+  border-radius: 4px;
 `;
 
 const LoadingDiv = styled.div<DarkModeHelperProps>`

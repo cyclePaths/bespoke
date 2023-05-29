@@ -400,6 +400,8 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
             mapRef.current?.panTo(position);
           }}
           saveMessage={saveMessage}
+          setDestination={setDestination}
+          fetchDirections={fetchDirections}
         />
       </StartRouteContainer>
 
@@ -460,7 +462,7 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
                       lng: event.latLng!.lng(),
                     });
                   }}
-                  icon = {isDark ? TheftDark : Theft}
+                  icon={isDark ? TheftDark : Theft}
                 />
               );
             case 'Point of Interest':
