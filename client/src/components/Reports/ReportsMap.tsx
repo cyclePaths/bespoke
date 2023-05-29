@@ -312,12 +312,12 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
               marginBottom: '1rem',
               boxShadow: '-4px 3px 5px #00000033',
               '& .MuiToggleButton-root': {
-                color: isDark ? '#7dc5e3' : '#2e5b70',
-                backgroundColor: isDark ? '#757575' : '#ececec',
+                color: isDark ? '#7dc5e3 !important' : '#2e5b70 !important',
+                backgroundColor: isDark ? '#757575 !important' : '#ececec !important',
               },
               '& .MuiToggleButton-root.Mui-selected': {
-                color: isDark ? '#7dc5e3' : '#7dc5e3',
-                backgroundColor: isDark ? '#121212' : '#757575',
+                color: isDark ? '#7dc5e3 !important' : '#7dc5e3 !important',
+                backgroundColor: isDark ? '#121212 !important' : '#757575 !important',
               },
             }}
           >
