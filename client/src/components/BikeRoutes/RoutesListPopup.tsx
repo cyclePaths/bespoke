@@ -24,11 +24,8 @@ const RoutesListPopup = ({
           height: '68vh',
         },
       }}
+      onClose={() => exitListForm()}
     >
-      <CloseIcon
-        sx={{ color: isDark ? '#e0e0e0' : 'black', fontSize: '2rem' }}
-        onClick={() => exitListForm()}
-      />
       {children}
     </Dialog>
   );

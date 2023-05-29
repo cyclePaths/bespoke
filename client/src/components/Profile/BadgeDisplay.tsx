@@ -9,6 +9,7 @@ import {
   AchievementBadgeTooltip,
   TooltipBox,
 } from '../../StyledComp';
+import { Button } from '@mui/material';
 
 const BadgeDisplay = () => {
   const {
@@ -61,11 +62,15 @@ const BadgeDisplay = () => {
   const displayTooltipButton = (badge) => {
     if (badge.name !== 'No Achievements') {
       return (
-        <button
+        <Button
+          variant='contained'
+          color='success'
+          size='small'
+          sx={{ marginTop: '15px' }}
           onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
         >
           Favorite
-        </button>
+        </Button>
       );
     }
   };

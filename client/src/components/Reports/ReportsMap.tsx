@@ -389,17 +389,15 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                   position: 'relative', // Add this line
                 }}
               >
-                <IconButton
-                  onClick={() => setSelectedReport(null)}
-                  sx={{ position: 'absolute', top: 8, right: 8 }} // Modify this line
-                >
-                  <CloseIcon />
-                </IconButton>
                 {selectedReport && (
                   <>
                     <p
                       className='report-type'
-                      style={{ marginTop: '1rem', textAlign: 'center', fontSize: '1.5rem'}}
+                      style={{
+                        marginTop: '1rem',
+                        textAlign: 'center',
+                        fontSize: '1.5rem',
+                      }}
                     >
                       {selectedReport.type}: {selectedReport.title}
                     </p>
@@ -425,7 +423,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                             fontSize: 14,
                             textAlign: 'left',
                             // marginTop: '0px',
-                            margin: '0px'
+                            margin: '0px',
                           }} // Reduce margin-top
                           color='text.secondary'
                         >
