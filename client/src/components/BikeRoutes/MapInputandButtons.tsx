@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   geocodeByPlaceId,
@@ -7,16 +7,24 @@ import PlacesAutocomplete, {
 import {
   InputLayout,
   AutoCompleteDropdownLayout,
-  LoadingDiv
+  LoadingDiv,
 } from '../../StyledComp';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { PlaceProps } from './RouteM';
 import { UserContext } from '../../Root';
+import HomeIcon from '@mui/icons-material/Home';
+import e from 'express';
 
-const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
+const MapInputandButtons = ({
+  setStartingPoint,
+  saveMessage,
+  setDestination,
+  fetchDirections,
+}: PlaceProps) => {
   const [currAdd, setCurrAdd] = useState<string>('');
-  const {isDark} = useContext(UserContext);
+  const { isDark, user, geoLocation } = useContext(UserContext);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [homeSet, setHomeSet] = useState<boolean>(false);
 
   // Handle the input box //
   const handleChange = (value: string): void => {
@@ -41,6 +49,33 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
   };
   // End of the input handlers //
 
+  const handleChartHome = () => {
+    if (user.homeAddress) {
+      geocodeByAddress(user.homeAddress).then((result) => {
+        getLatLng(result[0]).then((coordinates) => {
+          console.log(coordinates);
+          setStartingPoint(geoLocation);
+          setDestination({
+            lat: coordinates.lat,
+            lng: coordinates.lng,
+          });
+          setHomeSet(true);
+        });
+      });
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (homeSet) {
+      fetchDirections();
+      setHomeSet(false);
+    } else {
+      return;
+    }
+  }, [homeSet]);
+
   return (
     <div>
       <PlacesAutocomplete
@@ -49,19 +84,32 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
         onSelect={handleSelect}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <InputLayout
-              id='address-input'
-              ref={(ref) => {
-                inputRef.current = ref;
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <form
+              style={{
+                backgroundColor: isDark ? '#707070' : '#ececec',
+                boxShadow: '0px 3px 3px rgba(0, 0, 0, 0.2)',
+                borderRadius: '4px',
+                width: '85%',
+                margin: '5px',
               }}
-              {...getInputProps({
-                placeholder: 'Set Starting Location ...',
-                className: 'location-search-input',
-              })}
-              isDark={isDark}
-            />
+            >
+              <InputLayout
+                id='address-input'
+                ref={(ref) => {
+                  inputRef.current = ref;
+                }}
+                {...getInputProps({
+                  placeholder: 'Set Starting Location ...',
+                  className: 'location-search-input',
+                })}
+                isDark={isDark}
+              />
 
+              <IconButton onClick={handleChartHome}>
+                <HomeIcon sx={{ color: isDark ? '#ececec' : '#0000008a' }} />
+              </IconButton>
+            </form>
             {suggestions.length > 0 && (
               <AutoCompleteDropdownLayout>
                 {loading && <LoadingDiv isDark={isDark}>Loading...</LoadingDiv>}
@@ -71,8 +119,14 @@ const MapInputandButtons = ({ setStartingPoint, saveMessage }: PlaceProps) => {
                     : 'suggestion-item';
                   // inline style for demonstration purpose
                   const style = suggestion.active
-                    ? { backgroundColor: isDark ? '#707070' : '#fafafa', cursor: 'pointer' }
-                    : { backgroundColor: isDark ? '#707070' : '#fafafa', cursor: 'pointer' };
+                    ? {
+                        backgroundColor: isDark ? '#707070' : '#fafafa',
+                        cursor: 'pointer',
+                      }
+                    : {
+                        backgroundColor: isDark ? '#707070' : '#fafafa',
+                        cursor: 'pointer',
+                      };
                   const key = suggestion.placeId;
 
                   return (

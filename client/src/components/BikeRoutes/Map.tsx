@@ -401,6 +401,8 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
             mapRef.current?.panTo(position);
           }}
           saveMessage={saveMessage}
+          setDestination={setDestination}
+          fetchDirections={fetchDirections}
         />
       </StartRouteContainer>
 

@@ -42,7 +42,11 @@ export interface MapOptionsProp {
 // FOR MAPINPUTANDBUTTONS.TSX //
 export type PlaceProps = {
   setStartingPoint: (position: google.maps.LatLngLiteral) => void;
+  setDestination: React.Dispatch<
+    React.SetStateAction<google.maps.LatLngLiteral | null>
+  >;
   saveMessage: boolean;
+  fetchDirections: () => null | undefined;
 };
 ///////////////////////////////////////////////// ->
 
