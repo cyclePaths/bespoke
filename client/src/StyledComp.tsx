@@ -323,8 +323,9 @@ const WeatherDescription = styled.div`
   align-items: center;
   height: 3.125em;
   width: 6.25em;
-  margin-left: -13.0625em;
-  margin-top: 1.5em;
+  margin-left: -17.7625em;
+  margin-top: 2em;
+  font-size: small;
 `;
 
 const ForecastText = styled.p`
