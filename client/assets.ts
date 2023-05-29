@@ -201,7 +201,7 @@ export const weatherIcons = {
 export const badgeInfo = [
   {
     name: 'Certified',
-    description: 'Fill out all necessary information on your profile',
+    description: 'Complete your first ride',
   },
   {
     name: 'Bespoke Devotee',
@@ -245,35 +245,35 @@ export const badgeInfo = [
   },
   {
     name: 'Road Warrior',
-    description: 'Ride a significant distance overall',
+    description: 'Complete a ride that lasts 2+ hours',
   },
   {
     name: 'Lean Machine',
-    description: 'Burn a significant amount of calories overall',
+    description: 'Burn 400+ calories in one ride',
   },
   {
     name: 'Community Enthusiast',
-    description: 'Make a lot of posts on the boards',
+    description: 'Make a post on the community boards',
   },
   {
     name: 'Wheelie Popular',
-    description: 'Accumulate likes on your posts',
+    description: 'Get a like on one of your posts',
   },
   {
     name: 'Storm Chaser',
-    description: 'Ride a significant distance in Inclement weather',
+    description: 'Complete a ride in Inclement weather',
   },
   {
     name: 'Fairweather Friend',
-    description: 'Ride a significant distance in clear weather',
+    description: 'Complete a ride in clear weather',
   },
   {
     name: 'Safety Sentinel',
-    description: 'Report a lot of hazards to the community',
+    description: 'Report a hazard to the community',
   },
   {
     name: 'Speedster',
-    description: 'Arrive at your ride destinations faster than expected',
+    description: 'Complete a ride with 20+ mph speed',
   },
   {
     name: 'Centurion',
@@ -281,15 +281,15 @@ export const badgeInfo = [
   },
   {
     name: 'Social Butterfly',
-    description: 'Like many posts by other Bespoke bikers',
+    description: 'Like a post by another Bespoke biker',
   },
   {
     name: 'Explorer',
-    description: 'Create many routes',
+    description: 'Create a route',
   },
   {
     name: 'Tour Guide',
-    description: 'Report many points of interest',
+    description: 'Report a point of interest',
   },
   {
     name: 'Riding Streak',
@@ -305,31 +305,31 @@ export const badgeInfo = [
   },
   {
     name: 'Gearhead',
-    description: 'Post parts to the Parts Exchange',
+    description: 'Post a part to the Parts Exchange',
   },
   {
     name: 'Lean Legend',
-    description: 'Burn the most calories among all Bespoke bikers',
+    description: 'You have appeared on the Calorie Burners Leaderboard!',
   },
   {
     name: 'Community Legend',
-    description: 'Make the most posts among all Bespoke bikers',
+    description: 'You have appeared on the Topic Chasers Leaderboard!',
   },
   {
     name: 'Traveling Legend',
-    description: 'Travel the longest distance among all Bespoke bikers',
+    description: 'You have appeared on the Top Travelers Leaderboard!',
   },
   {
     name: 'Likable Legend',
-    description: 'Have the most likes among all Bespoke bikers',
+    description: 'You have appeared on the Liked Users Leaderboard!',
   },
   {
     name: 'Legendary Warden',
-    description: 'Report the most hazards among all Bespoke bikers',
+    description: 'You have appeared on the Good Samaritans Leaderboard!',
   },
   {
     name: 'Legendary Explorer',
-    description: 'Create the most public routes among all Bespoke bikers',
+    description: 'You have appeared on the Reliable Routers Leaderboard!',
   },
 ];
 

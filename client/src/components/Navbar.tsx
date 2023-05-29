@@ -132,9 +132,9 @@ const Navbar = () => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
           <Link to='/home' onClick={() => clickHome()}>
             <img
-              src='https://res.cloudinary.com/dcecaxmxv/image/upload/v1685139586/bespoke-text-logo-3B97D2_qtzy1y.png'
+              src='https://cdn.discordapp.com/attachments/187823430295355392/1111797966160789524/bespoke-text-logo-3B97D2.png'
               alt='Bespoke Image'
-              style={{ height: '5vh', marginLeft: '10px', marginTop: '10px' }}
+              style={{ height: '5.5vh', marginLeft: '10px', marginTop: '5px' }}
             />
           </Link>
         </div>

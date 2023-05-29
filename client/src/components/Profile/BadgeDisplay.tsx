@@ -18,6 +18,7 @@ const BadgeDisplay = () => {
     setSelectedBadge,
     tickBadgeCounter,
     addBadge,
+    rideBadgeUpdate,
     tierCheck,
     isDark,
   } = useContext(UserContext);
@@ -40,33 +41,45 @@ const BadgeDisplay = () => {
     return undefined;
   };
 
-  const handleBadgeClick = (event, tooltipId) => {
-    event.stopPropagation();
+  const clearTooltips = () => {
     let tooltips = tooltipVisibility;
     for (let key in tooltips) {
-      console.log(`this is tooltips[${key}]: `, tooltips[key]);
       tooltips[key] = null;
     }
     setTooltipVisibility(tooltips);
+  };
+
+  const handleBadgeClick = (event, tooltipId) => {
+    event.stopPropagation();
+    clearTooltips();
     setTooltipVisibility((prevVisibility) => ({
       ...prevVisibility,
       [tooltipId]: !prevVisibility[tooltipId],
     }));
   };
 
+  const displayTooltipButton = (badge) => {
+    if (badge.name !== 'No Achievements') {
+      return (
+        <button
+          onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
+        >
+          Favorite
+        </button>
+      );
+    }
+  };
+
   const handleFavoriteClick = (event, image) => {
     event.stopPropagation();
     selectBadge(image);
+    clearTooltips();
   };
 
   useEffect(() => {
     console.log('here are the userBadges: ', userBadges);
     const handleOutsideClick = (event) => {
-      let tooltips = tooltipVisibility;
-      for (let key in tooltips) {
-        tooltips[key] = null;
-      }
-      setTooltipVisibility(tooltips);
+      clearTooltips();
       if (selectedTooltip !== null) {
         if (!tooltipRefs.current[selectedTooltip]?.contains(event.target)) {
           setSelectedTooltip(null);
@@ -112,13 +125,7 @@ const BadgeDisplay = () => {
                 <TooltipBox isDark={isDark}>
                   <h3>{badge.name}</h3>
                   <div>{badge.description}</div>
-                  <button
-                    onClick={(event) =>
-                      handleFavoriteClick(event, badge.badgeIcon)
-                    }
-                  >
-                    Favorite
-                  </button>
+                  {displayTooltipButton(badge)}
                 </TooltipBox>
               </AchievementBadgeTooltip>
             </AchievementBadgeAndTooltipContainer>

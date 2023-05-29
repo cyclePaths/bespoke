@@ -20,16 +20,6 @@ export type AllBlackProps = {
   allBlack: boolean;
 };
 
-const Button = styled.button`
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.text};
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  cursor: pointer;
-  margin-bottom: 16px;
-`;
-
 const RouteCreatorComponent = styled.div`
   text-align: center;
 `;
@@ -57,7 +47,7 @@ const InputLayout = styled.input<InputProps>`
       : isDark
       ? '#707070'
       : '#ececec'};
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2); */
   border-style: hidden;
   text-align: center;
   color: ${({ isDark }) => (isDark ? '#ececec' : '#707070')};
@@ -101,9 +91,10 @@ const AutoCompleteDropdownLayout = styled.div<DarkModeHelperProps>`
   border: 1px solid #d3d3d3;
   border-top: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 100%;
+  width: 85%;
   max-height: 200px;
   overflow-y: auto;
+  border-radius: 4px;
 `;
 
 const LoadingDiv = styled.div<DarkModeHelperProps>`
@@ -152,8 +143,8 @@ const RecentRidesHeader = styled.header<DarkModeHelperProps>`
 const SelectedBadge = styled.img`
   height: 3.875em;
   width: 3.875em;
-  margin-top: 55px;
-  margin-left: -120px;
+  margin-top: 3.4375em;
+  margin-left: -3.4375em;
 `;
 
 const AchievementBadgeByName = styled.img`
@@ -215,14 +206,21 @@ const AchievementBadgeHolder = styled.div<DarkModeHelperProps>`
   margin-right: 15px;
   margin-top: 40px;
   padding: 20px;
+  border-radius: 7px;
+  position: fixed;
+  width: -webkit-fill-available;
   box-shadow: ${(props) =>
     props.isDark
       ? '1.25em 1.25em 3.75em #282b71, -0.625em -0.625em 1.3125em #282b71'
       : '1.25em 1.25em 3.75em #8adbff, -0.625em -0.625em 1.3125em #80cbf5'};
-  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
+  background: ${(props) =>
+    props.isDark
+      ? 'linear-gradient(145deg, #1e2062, #030312);'
+      : 'linear-gradient(145deg, #3cc6f6, #d8f1ff)'};
 `;
 // Darker: #171730 #78bee6
 // Lighter: #1b1c39 #8ee2ff
+//  background: ${(props) => (props.isDark ? '#1b1c39' : '#8ee2ff')};
 
 const BadgeContainerLabel = styled.div`
   position: relative;
@@ -508,9 +506,36 @@ const LeaderBoardDirections = styled.div`
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 50%;
+  top: 75.5%;
   width: 85%;
   right: 7.5%;
+`;
+
+const RouteDivBox = styled.div<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#ececec' : '#fff')};
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  box-shadow: ${({ isDark }) =>
+    isDark
+      ? '0px 4px 4px rgba(0, 0, 0, 0.25)'
+      : '0px 4px 4px rgba(0, 0, 0, 0.25)'};
+`;
+
+const RouteInfoSpan = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const RouteInfoDiv = styled.div`
+  display: flex;
+  width: 70%;
+  justify-content: space-between;
 `;
 
 // Misc styled components
@@ -768,4 +793,7 @@ export {
   ProfileDefaultWeightDisplayLight,
   ProfileDefaultLastRideDisplayDark,
   ProfileDefaultLastRideDisplayLight,
+  RouteInfoSpan,
+  RouteInfoDiv,
+  RouteDivBox,
 };
