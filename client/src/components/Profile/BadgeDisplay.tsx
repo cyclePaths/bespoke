@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../Root';
+import { Button } from '@mui/material';
 import {
   AchievementBadgeByName,
   AchievementBadge,
@@ -9,7 +10,6 @@ import {
   AchievementBadgeTooltip,
   TooltipBox,
 } from '../../StyledComp';
-import { Button } from '@mui/material';
 
 const BadgeDisplay = () => {
   const {
@@ -59,13 +59,19 @@ const BadgeDisplay = () => {
     }));
   };
 
+  const handleFavoriteClick = (event, image) => {
+    event.stopPropagation();
+    selectBadge(image);
+    clearTooltips();
+  };
+
   const displayTooltipButton = (badge) => {
     if (badge.name !== 'No Achievements') {
       return (
         <Button
+          size='small'
           variant='contained'
           color='success'
-          size='small'
           sx={{ marginTop: '15px' }}
           onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
         >
@@ -73,12 +79,6 @@ const BadgeDisplay = () => {
         </Button>
       );
     }
-  };
-
-  const handleFavoriteClick = (event, image) => {
-    event.stopPropagation();
-    selectBadge(image);
-    clearTooltips();
   };
 
   useEffect(() => {
