@@ -39,6 +39,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderboard/likes')
       .then(({ data }) => {
+        for (let i = 0; i <= data.length; i++) {
+          if (data[i].name === user.name) {
+            user.addBadge('Likable Legend', 3);
+          }
+        }
         setTop10Likes(data);
       })
       .catch((err) => {
@@ -50,6 +55,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/travelMiles')
       .then(({ data }) => {
+        for (let i = 0; i <= data.length; i++) {
+          if (data[i].name === user.name) {
+            user.addBadge('Traveling Legend', 3);
+          }
+        }
         setTop10Miles(data);
       })
       .catch((err) => {
@@ -61,6 +71,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/totalPosts')
       .then(({ data }) => {
+        for (let i = 0; i <= data.length; i++) {
+          if (data[i].name === user.name) {
+            user.addBadge('Community Legend', 3);
+          }
+        }
         setTop10Post(data);
       })
       .catch((err) => {
@@ -72,6 +87,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/reports')
       .then(({ data }) => {
+        for (let i = 0; i <= data.length; i++) {
+          if (data[i].name === user.name) {
+            user.addBadge('Legendary Warden', 3);
+          }
+        }
         setTop10Reports(data);
       })
       .catch((err) => {
@@ -83,6 +103,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/bikeRoutes')
       .then(({ data }) => {
+        for (let i = 0; i <= data.length; i++) {
+          if (data[i].name === user.name) {
+            user.addBadge('Legendary Explorer', 3);
+          }
+        }
         setTop10CreatedRoutes(data);
       })
       .catch((err) => {
