@@ -54,7 +54,7 @@ import { report } from 'process';
 const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
   /////////////// CONTEXT AND STATE //////////////////
   // Pull user and geoLocation from context //
-  const { user, geoLocation, isDark } = useContext(UserContext);
+  const { user, geoLocation, isDark, addBadge } = useContext(UserContext);
   // Import the start icon //
   const startIcon = {
     url: 'https://cdn.discordapp.com/attachments/187823430295355392/1103112961192636587/green_flag.png',
@@ -166,6 +166,7 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
           userId: user.id,
         })
         .then(({ data }) => {
+          addBadge('Explorer', 3);
           setSaveMessage(true);
           // Timeout to make the message disappear correctly //
           setTimeout(() => {
@@ -460,7 +461,7 @@ const Map = ({ homeCoordinates, setHomeCoordinates }: MapOptionsProp) => {
                       lng: event.latLng!.lng(),
                     });
                   }}
-                  icon = {isDark ? TheftDark : Theft}
+                  icon={isDark ? TheftDark : Theft}
                 />
               );
             case 'Point of Interest':
