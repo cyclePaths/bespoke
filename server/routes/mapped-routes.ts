@@ -489,4 +489,20 @@ BikeRoutes.get('/currentRoute', (req, res) => {
   }
 });
 
+BikeRoutes.get('/:id', (req, res) => {
+  const { id } = req.user as User;
+
+  prisma.user
+    .findUnique({
+      where: { id: id },
+    })
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.error('Failed to fetch user: ', err);
+      res.sendStatus(500);
+    });
+});
+
 export default BikeRoutes;
