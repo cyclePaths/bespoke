@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Hourly } from 'client/src/Root';
+
 import {
   WeatherIcon,
   WeatherWidgetWrapper,

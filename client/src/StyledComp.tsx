@@ -445,6 +445,14 @@ const ForecastRowContainerforHome = styled.div`
   width: 52.7%;
 `;
 
+const HomeSwipe = styled.div`
+  position: absolute;
+  margin-top: 12.1875em;
+  display: flex;
+  justify-content: space-around;
+  width: -webkit-fill-available;
+`;
+
 const HomeWeatherWidgetHolder = styled.div`
   width: 17em;
   height: 11em;
@@ -774,6 +782,7 @@ export {
   ForecastRowContainerforHome,
   HomeWeatherWidgetHolder,
   WeatherWidgetWrapper,
+  HomeSwipe,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
