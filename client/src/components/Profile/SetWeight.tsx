@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../Root';
 import ProfileNav from './ProfileNav';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -18,14 +19,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-// interface WeightTabProps {
-//   weight: number;
-//   onWeightChange: (value: number) => void;
-// }
 
-// const SetWeight = (props: WeightTabProps) => {
+
   const SetWeight = ({ onWeightChange, weightMessage, setWeightMessage }) => {
-  // const { weightChange, onWeightChange } = props;
 
   const [weightValue, setWeightValue] = useState(0);
   const [weight, setWeight] = useState(0);
@@ -38,8 +34,12 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   const [userId, setUserId] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
 
+    // User Context //
+  const { isDark } = useContext(UserContext);
+
   const goodSet = `Current weight is ${weight} lbs`;
   const badSet = 'Weight must be 50 lbs or higher to track calories!';
+
 
   const enterWeight = () => {
     if (weightValue >= 50) {
@@ -162,7 +162,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
               id='weight-input'
               variant='standard'
               inputProps={{
-                style: { color: '#ffffff' },
+                style: { color: isDark ? '#ffffff' : '#000000' },
               }}
               placeholder='Update Weight...'
               onChange={(event) => setWeightValue(Number(event.target.value))}

@@ -30,7 +30,7 @@ const EquipmentPopup = ({
         })
         .then((response) => {
           let submittedEquipment = response.data
-          context.updateAchievements('Gearhead');
+          context.addBadge('Gearhead', null);
           setEquipmentDescription('');
           setEquipmentType('');
           updateEquipment(submittedEquipment)
