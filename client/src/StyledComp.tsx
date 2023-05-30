@@ -323,8 +323,9 @@ const WeatherDescription = styled.div`
   align-items: center;
   height: 3.125em;
   width: 6.25em;
-  margin-left: -13.0625em;
-  margin-top: 1.5em;
+  margin-left: -17.7625em;
+  margin-top: 2em;
+  font-size: small;
 `;
 
 const ForecastText = styled.p`
@@ -443,6 +444,14 @@ const ForecastRowContainerforHome = styled.div`
   flex-wrap: nowrap;
   overflow: auto;
   width: 52.7%;
+`;
+
+const HomeSwipe = styled.div`
+  position: absolute;
+  margin-top: 12.1875em;
+  display: flex;
+  justify-content: space-around;
+  width: -webkit-fill-available;
 `;
 
 const HomeWeatherWidgetHolder = styled.div`
@@ -774,6 +783,7 @@ export {
   ForecastRowContainerforHome,
   HomeWeatherWidgetHolder,
   WeatherWidgetWrapper,
+  HomeSwipe,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
