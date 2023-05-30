@@ -73,7 +73,7 @@ const FetchedRoutes = ({
         exclusive
         onChange={handleSelectedChange}
         sx={{
-          marginTop: '30px',
+          marginTop: '55px',
           '& .MuiToggleButton-root': {
             color: isDark ? '#7dc5e3' : '#2e5b70',
             backgroundColor: isDark ? '#757575' : '#ececec',

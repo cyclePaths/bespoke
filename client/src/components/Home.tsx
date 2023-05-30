@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { RootPropsToHome } from '../Root';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   BandAid,
   WeatherWidgetLabel,
@@ -7,6 +9,7 @@ import {
   HomeWeatherWidgetHolder,
   HomePageCompWrapper,
   StatsWrapper,
+  HomeSwipe,
 } from '../StyledComp';
 import LeaderBoard from './LeaderBoard/LeaderBoard';
 import LeaderBoardPopout from './LeaderBoard/LeaderBoardPopout';
@@ -187,10 +190,11 @@ const Home = ({
               hourlyForecasts={hourlyForecasts}
             ></WeatherWidget>
           </HomeWeatherWidgetHolder>
-          <SwipeIcon
-            isDark={isDark}
-            src='https://static.thenounproject.com/png/145048-200.png'
-          />
+          <HomeSwipe>
+            <ArrowBackIcon sx={{ fontSize: '2rem' }} />
+            Swipe
+            <ArrowForwardIcon sx={{ fontSize: '2rem' }} />
+          </HomeSwipe>
         </HomePageCompWrapper>
         <StatsWrapper>
           <Card
@@ -359,7 +363,14 @@ const Home = ({
                     <Typography>{routeInfo.user.name}</Typography>
                   </div>
                 ) : (
-                  <Typography>Take a Ride</Typography>
+                  <Typography
+                    style={{
+                      textAlign: 'center',
+                      color: isDark ? '#ffffff' : 'black',
+                    }}
+                  >
+                    Take a Ride
+                  </Typography>
                 )}
               </CardContent>
               {routeInfo ? (

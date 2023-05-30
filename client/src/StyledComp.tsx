@@ -323,8 +323,9 @@ const WeatherDescription = styled.div`
   align-items: center;
   height: 3.125em;
   width: 6.25em;
-  margin-left: -13.0625em;
-  margin-top: 1.5em;
+  margin-left: -17.7625em;
+  margin-top: 2em;
+  font-size: small;
 `;
 
 const ForecastText = styled.p`
@@ -445,6 +446,14 @@ const ForecastRowContainerforHome = styled.div`
   width: 52.7%;
 `;
 
+const HomeSwipe = styled.div`
+  position: absolute;
+  margin-top: 12.1875em;
+  display: flex;
+  justify-content: space-around;
+  width: -webkit-fill-available;
+`;
+
 const HomeWeatherWidgetHolder = styled.div`
   width: 17em;
   height: 11em;
@@ -501,12 +510,23 @@ const HomePageCompWrapper = styled.div`
   justify-content: center;
 `;
 
+const LeaderBoardStatsDiv = styled.div<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#ececec' : '#fff')};
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 20px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+`;
+
 const LeaderBoardDirections = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 75.5%;
+  top: 78.5%;
   width: 85%;
   right: 7.5%;
 `;
@@ -774,6 +794,7 @@ export {
   ForecastRowContainerforHome,
   HomeWeatherWidgetHolder,
   WeatherWidgetWrapper,
+  HomeSwipe,
   ForecastItem,
   ForecastHour,
   ForecastTemperature,
@@ -796,4 +817,5 @@ export {
   RouteInfoSpan,
   RouteInfoDiv,
   RouteDivBox,
+  LeaderBoardStatsDiv,
 };

@@ -13,7 +13,7 @@ import { Button, IconButton } from '@mui/material';
 import { PlaceProps } from './RouteM';
 import { UserContext } from '../../Root';
 import HomeIcon from '@mui/icons-material/Home';
-import e from 'express';
+import axios from 'axios';
 
 const MapInputandButtons = ({
   setStartingPoint,
@@ -50,21 +50,28 @@ const MapInputandButtons = ({
   // End of the input handlers //
 
   const handleChartHome = () => {
-    if (user.homeAddress) {
-      geocodeByAddress(user.homeAddress).then((result) => {
-        getLatLng(result[0]).then((coordinates) => {
-          console.log(coordinates);
-          setStartingPoint(geoLocation);
-          setDestination({
-            lat: coordinates.lat,
-            lng: coordinates.lng,
+    axios
+      .get(`/bikeRoutes/${user.id}`)
+      .then(({ data }) => {
+        if (data.id) {
+          geocodeByAddress(user.homeAddress).then((result) => {
+            getLatLng(result[0]).then((coordinates) => {
+              console.log(coordinates);
+              setStartingPoint(geoLocation);
+              setDestination({
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+              });
+              setHomeSet(true);
+            });
           });
-          setHomeSet(true);
-        });
+        } else {
+          return;
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch: ', err);
       });
-    } else {
-      return;
-    }
   };
 
   useEffect(() => {

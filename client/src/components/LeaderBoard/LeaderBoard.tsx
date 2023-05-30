@@ -6,11 +6,12 @@ import { useKeenSlider } from 'keen-slider/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'keen-slider/keen-slider.min.css';
-import { LeaderBoardDirections } from '../../StyledComp';
+import { LeaderBoardDirections, LeaderBoardStatsDiv } from '../../StyledComp';
 
 export interface UserandValue {
   name: string;
   value: number;
+  selectedBadge: string;
 }
 
 const LeaderBoard = () => {
@@ -39,11 +40,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderboard/likes')
       .then(({ data }) => {
-        for (let i = 0; i <= data.length; i++) {
-          if (data[i].name === user.name) {
-            user.addBadge('Likable Legend', 3);
-          }
-        }
+        // for (let i = 0; i <= data.length; i++) {
+        //   if (data[i].name === user.name) {
+        //     user.addBadge('Likable Legend', 3);
+        //   }
+        // }
         setTop10Likes(data);
       })
       .catch((err) => {
@@ -55,11 +56,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/travelMiles')
       .then(({ data }) => {
-        for (let i = 0; i <= data.length; i++) {
-          if (data[i].name === user.name) {
-            user.addBadge('Traveling Legend', 3);
-          }
-        }
+        // for (let i = 0; i <= data.length; i++) {
+        //   if (data[i].name === user.name) {
+        //     user.addBadge('Traveling Legend', 3);
+        //   }
+        // }
         setTop10Miles(data);
       })
       .catch((err) => {
@@ -71,11 +72,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/totalPosts')
       .then(({ data }) => {
-        for (let i = 0; i <= data.length; i++) {
-          if (data[i].name === user.name) {
-            user.addBadge('Community Legend', 3);
-          }
-        }
+        // for (let i = 0; i <= data.length; i++) {
+        //   if (data[i].name === user.name) {
+        //     user.addBadge('Community Legend', 3);
+        //   }
+        // }
         setTop10Post(data);
       })
       .catch((err) => {
@@ -87,11 +88,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/reports')
       .then(({ data }) => {
-        for (let i = 0; i <= data.length; i++) {
-          if (data[i].name === user.name) {
-            user.addBadge('Legendary Warden', 3);
-          }
-        }
+        // for (let i = 0; i <= data.length; i++) {
+        //   if (data[i].name === user.name) {
+        //     user.addBadge('Legendary Warden', 3);
+        //   }
+        // }
         setTop10Reports(data);
       })
       .catch((err) => {
@@ -103,11 +104,11 @@ const LeaderBoard = () => {
     axios
       .get('leaderBoard/bikeRoutes')
       .then(({ data }) => {
-        for (let i = 0; i <= data.length; i++) {
-          if (data[i].name === user.name) {
-            user.addBadge('Legendary Explorer', 3);
-          }
-        }
+        // for (let i = 0; i <= data.length; i++) {
+        //   if (data[i].name === user.name) {
+        //     user.addBadge('Legendary Explorer', 3);
+        //   }
+        // }
         setTop10CreatedRoutes(data);
       })
       .catch((err) => {
@@ -126,24 +127,18 @@ const LeaderBoard = () => {
   return (
     <>
       <div className='navigation-wrapper'>
-        <div ref={sliderRef} className='keen-slider' style={{ height: '60vh' }}>
+        <div ref={sliderRef} className='keen-slider' style={{ height: '65vh' }}>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Liked Users</h2>
-            <div
-              className='leaderBoxOverride'
-              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
-            >
+            <LeaderBoardStatsDiv>
               {top10Likes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Like Users' />
               ))}
-            </div>
+            </LeaderBoardStatsDiv>
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Top Travelers</h2>
-            <div
-              className='leaderBoxOverride'
-              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
-            >
+            <LeaderBoardStatsDiv>
               {top10Miles.map((user, i) => (
                 <LeaderBoardList
                   key={i}
@@ -152,14 +147,11 @@ const LeaderBoard = () => {
                   type='Top Travelers'
                 />
               ))}
-            </div>
+            </LeaderBoardStatsDiv>
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Topic Chasers</h2>
-            <div
-              className='leaderBoxOverride'
-              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
-            >
+            <LeaderBoardStatsDiv>
               {top10Post.map((user, i) => (
                 <LeaderBoardList
                   key={i}
@@ -168,29 +160,23 @@ const LeaderBoard = () => {
                   type='Topic Chasers'
                 />
               ))}
-            </div>
+            </LeaderBoardStatsDiv>
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Good Samaritans</h2>
-            <div
-              className='leaderBoxOverride'
-              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
-            >
+            <LeaderBoardStatsDiv>
               {top10Reports.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
-            </div>
+            </LeaderBoardStatsDiv>
           </div>
           <div className='keen-slider__slide'>
             <h2 className='leaderboardTitles'>Reliable Routers</h2>
-            <div
-              className='leaderBoxOverride'
-              style={{ backgroundColor: isDark ? '#c5c5c5' : '#fff' }}
-            >
+            <LeaderBoardStatsDiv>
               {top10CreatedRoutes.map((user, i) => (
                 <LeaderBoardList key={i} i={i} user={user} type='Total Likes' />
               ))}
-            </div>
+            </LeaderBoardStatsDiv>
           </div>
         </div>
       </div>

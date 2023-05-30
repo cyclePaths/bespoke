@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../Root';
+import { Button } from '@mui/material';
 import {
   AchievementBadgeByName,
   AchievementBadge,
@@ -58,22 +59,26 @@ const BadgeDisplay = () => {
     }));
   };
 
-  const displayTooltipButton = (badge) => {
-    if (badge.name !== 'No Achievements') {
-      return (
-        <button
-          onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
-        >
-          Favorite
-        </button>
-      );
-    }
-  };
-
   const handleFavoriteClick = (event, image) => {
     event.stopPropagation();
     selectBadge(image);
     clearTooltips();
+  };
+
+  const displayTooltipButton = (badge) => {
+    if (badge.name !== 'No Achievements') {
+      return (
+        <Button
+          size='small'
+          variant='contained'
+          color='success'
+          sx={{ marginTop: '15px' }}
+          onClick={(event) => handleFavoriteClick(event, badge.badgeIcon)}
+        >
+          Favorite
+        </Button>
+      );
+    }
   };
 
   useEffect(() => {

@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 interface UserTopTrait {
   name: string;
   value: number;
+  selectedBadge: string;
 }
 
 // Fetches top 10 users in total likes //
@@ -24,6 +25,7 @@ LeaderBoard.get('/likes', (req, res) => {
         const userNameandLikes = {
           name: list[i].name,
           value: list[i].totalLikesReceived,
+          selectedBadge: list[i].selectedBadge!,
         };
         userList.push(userNameandLikes);
       }
@@ -50,6 +52,7 @@ LeaderBoard.get('/travelMiles', async (req, res) => {
         const userNameandMiles = {
           name: list[i].name,
           value: list[i].totalMiles,
+          selectedBadge: list[i].selectedBadge!,
         };
         userList.push(userNameandMiles);
       }
@@ -76,6 +79,7 @@ LeaderBoard.get('/totalPosts', async (req, res) => {
         const userNameandPost = {
           name: list[i].name,
           value: list[i].totalPosts,
+          selectedBadge: list[i].selectedBadge!,
         };
         userList.push(userNameandPost);
       }
@@ -102,6 +106,7 @@ LeaderBoard.get('/reports', async (req, res) => {
         const userNameandReports = {
           name: list[i].name,
           value: list[i].totalReports,
+          selectedBadge: list[i].selectedBadge!,
         };
         userList.push(userNameandReports);
       }
@@ -128,6 +133,7 @@ LeaderBoard.get('/bikeRoutes', async (req, res) => {
         const userNameandRoutes = {
           name: list[i].name,
           value: list[i].totalRoutes,
+          selectedBadge: list[i].selectedBadge!,
         };
         userList.push(userNameandRoutes);
       }
