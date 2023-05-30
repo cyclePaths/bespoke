@@ -389,12 +389,12 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                   position: 'relative', // Add this line
                 }}
               >
-                <IconButton
+                {/* <IconButton
                   onClick={() => setSelectedReport(null)}
                   sx={{ position: 'absolute', top: 8, right: 8 }} // Modify this line
                 >
                   <CloseIcon />
-                </IconButton>
+                </IconButton> */}
                 {selectedReport && (
                   <>
                     <p
@@ -412,7 +412,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                         style={{
                           maxHeight: '100%',
                           maxWidth: '100%',
-                          marginTop: '1rem',
+                          margin: '1rem',
                           display: 'block',
                         }}
                       />
