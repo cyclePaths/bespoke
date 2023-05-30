@@ -18,6 +18,7 @@ const LeaderBoardPopout = ({
         '& .MuiPaper-root': {
           backgroundColor: isDark ? '#969696' : '#ececec',
           margin: '20px',
+          height: '66vh',
         },
       }}
     >
