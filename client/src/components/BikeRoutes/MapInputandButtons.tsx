@@ -13,9 +13,7 @@ import { Button, IconButton } from '@mui/material';
 import { PlaceProps } from './RouteM';
 import { UserContext } from '../../Root';
 import HomeIcon from '@mui/icons-material/Home';
-import e from 'express';
 import axios from 'axios';
-import { Data } from '@react-google-maps/api';
 
 const MapInputandButtons = ({
   setStartingPoint,

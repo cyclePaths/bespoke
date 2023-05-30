@@ -510,12 +510,23 @@ const HomePageCompWrapper = styled.div`
   justify-content: center;
 `;
 
+const LeaderBoardStatsDiv = styled.div<DarkModeHelperProps>`
+  background-color: ${({ isDark }) => (isDark ? '#ececec' : '#fff')};
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  margin-left: 20px;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+`;
+
 const LeaderBoardDirections = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  top: 75.5%;
+  top: 78.5%;
   width: 85%;
   right: 7.5%;
 `;
@@ -806,4 +817,5 @@ export {
   RouteInfoSpan,
   RouteInfoDiv,
   RouteDivBox,
+  LeaderBoardStatsDiv,
 };

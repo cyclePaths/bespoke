@@ -26,8 +26,12 @@ const LeaderBoardList = ({ i, user, type }: ListProp) => {
           <div className='place-lb'>{`${i + 1}th`}</div>
         ) : undefined}
         {i === 9 ? <div className='place-10'>{`${i + 1}th`}</div> : undefined}
-        <div className='user'>
+        <div className='user' style={{ display: 'flex', alignItems: 'center' }}>
           <span className='username-lb'>{user.name}</span>
+          <img
+            src={user.selectedBadge}
+            style={{ marginLeft: '5px', height: '3vh' }}
+          />
         </div>
       </div>
       <div>
