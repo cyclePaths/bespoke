@@ -22,7 +22,7 @@
     "totalPosts": 8,
     "totalMiles": 300,
     "totalLikesReceived": 50,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/2281/2281179.png"
   },
   {
     "email": "user2@example.com",
@@ -47,7 +47,7 @@
     "totalPosts": 10,
     "totalMiles": 250,
     "totalLikesReceived": 60,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/5716/5716364.png"
   },
   {
     "email": "user3@example.com",
@@ -72,7 +72,7 @@
     "totalPosts": 6,
     "totalMiles": 400,
     "totalLikesReceived": 40,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/10552/10552271.png"
   },
   {
     "email": "user4@example.com",
@@ -97,7 +97,7 @@
     "totalPosts": 4,
     "totalMiles": 500,
     "totalLikesReceived": 30,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/3732/3732831.png"
   },
   {
     "email": "user5@example.com",
@@ -122,7 +122,7 @@
     "totalPosts": 2,
     "totalMiles": 200,
     "totalLikesReceived": 10,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/1187/1187563.png"
   },
   {
     "email": "user6@example.com",
@@ -147,7 +147,7 @@
     "totalPosts": 9,
     "totalMiles": 600,
     "totalLikesReceived": 20,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/3843/3843036.png"
   },
   {
     "email": "user7@example.com",
@@ -172,7 +172,7 @@
     "totalPosts": 5,
     "totalMiles": 150,
     "totalLikesReceived": 80,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/4841/4841913.png"
   },
   {
     "email": "user8@example.com",
@@ -197,7 +197,7 @@
     "totalPosts": 7,
     "totalMiles": 450,
     "totalLikesReceived": 70,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/9100/9100364.png"
   },
   {
     "email": "user9@example.com",
@@ -222,7 +222,7 @@
     "totalPosts": 3,
     "totalMiles": 350,
     "totalLikesReceived": 90,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/1910/1910054.png"
   },
   {
     "email": "user10@example.com",
@@ -247,6 +247,6 @@
     "totalPosts": 1,
     "totalMiles": 550,
     "totalLikesReceived": 40,
-    "selectedBadge": null
+    "selectedBadge": "https://cdn-icons-png.flaticon.com/512/3284/3284649.png"
   }
 ]
