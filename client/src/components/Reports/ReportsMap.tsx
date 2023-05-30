@@ -410,7 +410,7 @@ const ReportsMap = ({ monthReports, fetchThisMonthReports }) => {
                         style={{
                           maxHeight: '100%',
                           maxWidth: '100%',
-                          marginTop: '1rem',
+                          margin: '1rem',
                           display: 'block',
                         }}
                       />
