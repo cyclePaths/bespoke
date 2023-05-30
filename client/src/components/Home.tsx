@@ -363,7 +363,14 @@ const Home = ({
                     <Typography>{routeInfo.user.name}</Typography>
                   </div>
                 ) : (
-                  <Typography>Take a Ride</Typography>
+                  <Typography
+                    style={{
+                      textAlign: 'center',
+                      color: isDark ? '#ffffff' : 'black',
+                    }}
+                  >
+                    Take a Ride
+                  </Typography>
                 )}
               </CardContent>
               {routeInfo ? (
