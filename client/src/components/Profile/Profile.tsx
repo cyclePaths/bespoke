@@ -142,6 +142,10 @@ Name, Weight, Thumbnail, Theme Preference, Most recent Ride
   const stopwatchWeight = location?.state?.stopwatchWeight;
   const stopwatchCalories = location?.state?.stopwatchCalories;
 
+  // useEffect(() => {
+  //   console.log('SWACT', stopwatchActivity)
+  // }, [stopwatchActivity])
+
   //..................................................
 
   return (

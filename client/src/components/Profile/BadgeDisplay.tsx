@@ -11,6 +11,7 @@ import {
   TooltipBox,
 } from '../../StyledComp';
 
+
 const BadgeDisplay = () => {
   const {
     userBadges,
