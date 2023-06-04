@@ -11,6 +11,7 @@ import {
 } from '../../StyledComp';
 import { Button } from '@mui/material';
 
+
 const BadgeDisplay = () => {
   const {
     userBadges,

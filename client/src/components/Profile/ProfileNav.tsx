@@ -191,6 +191,7 @@ const ProfileNav = ({
   useEffect(() => {
     if (stopwatchActivity) {
       setLastRideActivity(stopwatchActivity);
+      console.log('SWACT', stopwatchActivity)
     }
     if (stopwatchDuration) {
       setLastRideDuration(stopwatchDuration);
